@@ -1180,7 +1180,8 @@ def test_get_question(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.GetQuestionRequest()
+        request = question_service.GetQuestionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, question.Question)
@@ -1202,6 +1203,58 @@ def test_get_question_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_question), "__call__") as call:
         client.get_question()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.GetQuestionRequest()
+
+
+def test_get_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = QuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = question_service.GetQuestionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_question), "__call__") as call:
+        client.get_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.GetQuestionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_question_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = QuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            question.Question(
+                name="name_value",
+                scopes=["scopes_value"],
+                query="query_value",
+                data_source_annotations=["data_source_annotations_value"],
+                user_email="user_email_value",
+            )
+        )
+        response = await client.get_question()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == question_service.GetQuestionRequest()
@@ -1237,7 +1290,8 @@ async def test_get_question_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.GetQuestionRequest()
+        request = question_service.GetQuestionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, question.Question)
@@ -1424,7 +1478,8 @@ def test_create_question(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.CreateQuestionRequest()
+        request = question_service.CreateQuestionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_question.Question)
@@ -1446,6 +1501,58 @@ def test_create_question_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_question), "__call__") as call:
         client.create_question()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.CreateQuestionRequest()
+
+
+def test_create_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = QuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = question_service.CreateQuestionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_question), "__call__") as call:
+        client.create_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.CreateQuestionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_question_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = QuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_question.Question(
+                name="name_value",
+                scopes=["scopes_value"],
+                query="query_value",
+                data_source_annotations=["data_source_annotations_value"],
+                user_email="user_email_value",
+            )
+        )
+        response = await client.create_question()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == question_service.CreateQuestionRequest()
@@ -1481,7 +1588,8 @@ async def test_create_question_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.CreateQuestionRequest()
+        request = question_service.CreateQuestionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_question.Question)
@@ -1682,7 +1790,8 @@ def test_execute_question(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.ExecuteQuestionRequest()
+        request = question_service.ExecuteQuestionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, question.Question)
@@ -1704,6 +1813,58 @@ def test_execute_question_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_question), "__call__") as call:
         client.execute_question()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.ExecuteQuestionRequest()
+
+
+def test_execute_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = QuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = question_service.ExecuteQuestionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.execute_question), "__call__") as call:
+        client.execute_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.ExecuteQuestionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_execute_question_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = QuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.execute_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            question.Question(
+                name="name_value",
+                scopes=["scopes_value"],
+                query="query_value",
+                data_source_annotations=["data_source_annotations_value"],
+                user_email="user_email_value",
+            )
+        )
+        response = await client.execute_question()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == question_service.ExecuteQuestionRequest()
@@ -1740,7 +1901,8 @@ async def test_execute_question_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.ExecuteQuestionRequest()
+        request = question_service.ExecuteQuestionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, question.Question)
@@ -1937,7 +2099,8 @@ def test_get_user_feedback(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.GetUserFeedbackRequest()
+        request = question_service.GetUserFeedbackRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_feedback.UserFeedback)
@@ -1959,6 +2122,60 @@ def test_get_user_feedback_empty_call():
         type(client.transport.get_user_feedback), "__call__"
     ) as call:
         client.get_user_feedback()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.GetUserFeedbackRequest()
+
+
+def test_get_user_feedback_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = QuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = question_service.GetUserFeedbackRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_user_feedback), "__call__"
+    ) as call:
+        client.get_user_feedback(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.GetUserFeedbackRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_user_feedback_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = QuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_user_feedback), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            user_feedback.UserFeedback(
+                name="name_value",
+                free_form_feedback="free_form_feedback_value",
+                rating=user_feedback.UserFeedback.UserFeedbackRating.POSITIVE,
+            )
+        )
+        response = await client.get_user_feedback()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == question_service.GetUserFeedbackRequest()
@@ -1995,7 +2212,8 @@ async def test_get_user_feedback_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.GetUserFeedbackRequest()
+        request = question_service.GetUserFeedbackRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_feedback.UserFeedback)
@@ -2192,7 +2410,8 @@ def test_update_user_feedback(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.UpdateUserFeedbackRequest()
+        request = question_service.UpdateUserFeedbackRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_user_feedback.UserFeedback)
@@ -2214,6 +2433,56 @@ def test_update_user_feedback_empty_call():
         type(client.transport.update_user_feedback), "__call__"
     ) as call:
         client.update_user_feedback()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.UpdateUserFeedbackRequest()
+
+
+def test_update_user_feedback_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = QuestionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = question_service.UpdateUserFeedbackRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_user_feedback), "__call__"
+    ) as call:
+        client.update_user_feedback(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == question_service.UpdateUserFeedbackRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_user_feedback_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = QuestionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_user_feedback), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_user_feedback.UserFeedback(
+                name="name_value",
+                free_form_feedback="free_form_feedback_value",
+                rating=gcd_user_feedback.UserFeedback.UserFeedbackRating.POSITIVE,
+            )
+        )
+        response = await client.update_user_feedback()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == question_service.UpdateUserFeedbackRequest()
@@ -2250,7 +2519,8 @@ async def test_update_user_feedback_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == question_service.UpdateUserFeedbackRequest()
+        request = question_service.UpdateUserFeedbackRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_user_feedback.UserFeedback)

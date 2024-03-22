@@ -1157,7 +1157,8 @@ def test_create_data_scan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.CreateDataScanRequest()
+        request = datascans.CreateDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1174,6 +1175,54 @@ def test_create_data_scan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_data_scan), "__call__") as call:
         client.create_data_scan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.CreateDataScanRequest()
+
+
+def test_create_data_scan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.CreateDataScanRequest(
+        parent="parent_value",
+        data_scan_id="data_scan_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_data_scan), "__call__") as call:
+        client.create_data_scan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.CreateDataScanRequest(
+            parent="parent_value",
+            data_scan_id="data_scan_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_data_scan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_data_scan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_data_scan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.CreateDataScanRequest()
@@ -1203,7 +1252,8 @@ async def test_create_data_scan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.CreateDataScanRequest()
+        request = datascans.CreateDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1403,7 +1453,8 @@ def test_update_data_scan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.UpdateDataScanRequest()
+        request = datascans.UpdateDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1420,6 +1471,48 @@ def test_update_data_scan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_data_scan), "__call__") as call:
         client.update_data_scan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.UpdateDataScanRequest()
+
+
+def test_update_data_scan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.UpdateDataScanRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_data_scan), "__call__") as call:
+        client.update_data_scan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.UpdateDataScanRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_data_scan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_data_scan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_data_scan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.UpdateDataScanRequest()
@@ -1449,7 +1542,8 @@ async def test_update_data_scan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.UpdateDataScanRequest()
+        request = datascans.UpdateDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1639,7 +1733,8 @@ def test_delete_data_scan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.DeleteDataScanRequest()
+        request = datascans.DeleteDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1656,6 +1751,52 @@ def test_delete_data_scan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_data_scan), "__call__") as call:
         client.delete_data_scan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.DeleteDataScanRequest()
+
+
+def test_delete_data_scan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.DeleteDataScanRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_data_scan), "__call__") as call:
+        client.delete_data_scan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.DeleteDataScanRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_data_scan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_data_scan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_data_scan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.DeleteDataScanRequest()
@@ -1685,7 +1826,8 @@ async def test_delete_data_scan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.DeleteDataScanRequest()
+        request = datascans.DeleteDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1872,7 +2014,8 @@ def test_get_data_scan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GetDataScanRequest()
+        request = datascans.GetDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.DataScan)
@@ -1895,6 +2038,59 @@ def test_get_data_scan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_scan), "__call__") as call:
         client.get_data_scan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GetDataScanRequest()
+
+
+def test_get_data_scan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.GetDataScanRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_scan), "__call__") as call:
+        client.get_data_scan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GetDataScanRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_scan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_scan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.DataScan(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                state=resources.State.ACTIVE,
+                type_=datascans.DataScanType.DATA_QUALITY,
+            )
+        )
+        response = await client.get_data_scan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.GetDataScanRequest()
@@ -1931,7 +2127,8 @@ async def test_get_data_scan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GetDataScanRequest()
+        request = datascans.GetDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.DataScan)
@@ -2116,7 +2313,8 @@ def test_list_data_scans(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.ListDataScansRequest()
+        request = datascans.ListDataScansRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataScansPager)
@@ -2135,6 +2333,61 @@ def test_list_data_scans_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_scans), "__call__") as call:
         client.list_data_scans()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.ListDataScansRequest()
+
+
+def test_list_data_scans_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.ListDataScansRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_scans), "__call__") as call:
+        client.list_data_scans(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.ListDataScansRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_scans_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_scans), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.ListDataScansResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_data_scans()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.ListDataScansRequest()
@@ -2167,7 +2420,8 @@ async def test_list_data_scans_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.ListDataScansRequest()
+        request = datascans.ListDataScansRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataScansAsyncPager)
@@ -2539,7 +2793,8 @@ def test_run_data_scan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.RunDataScanRequest()
+        request = datascans.RunDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.RunDataScanResponse)
@@ -2556,6 +2811,52 @@ def test_run_data_scan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_data_scan), "__call__") as call:
         client.run_data_scan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.RunDataScanRequest()
+
+
+def test_run_data_scan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.RunDataScanRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_data_scan), "__call__") as call:
+        client.run_data_scan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.RunDataScanRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_data_scan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_data_scan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.RunDataScanResponse()
+        )
+        response = await client.run_data_scan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.RunDataScanRequest()
@@ -2585,7 +2886,8 @@ async def test_run_data_scan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.RunDataScanRequest()
+        request = datascans.RunDataScanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.RunDataScanResponse)
@@ -2773,7 +3075,8 @@ def test_get_data_scan_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GetDataScanJobRequest()
+        request = datascans.GetDataScanJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.DataScanJob)
@@ -2797,6 +3100,62 @@ def test_get_data_scan_job_empty_call():
         type(client.transport.get_data_scan_job), "__call__"
     ) as call:
         client.get_data_scan_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GetDataScanJobRequest()
+
+
+def test_get_data_scan_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.GetDataScanJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_scan_job), "__call__"
+    ) as call:
+        client.get_data_scan_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GetDataScanJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_scan_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_scan_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.DataScanJob(
+                name="name_value",
+                uid="uid_value",
+                state=datascans.DataScanJob.State.RUNNING,
+                message="message_value",
+                type_=datascans.DataScanType.DATA_QUALITY,
+            )
+        )
+        response = await client.get_data_scan_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.GetDataScanJobRequest()
@@ -2834,7 +3193,8 @@ async def test_get_data_scan_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GetDataScanJobRequest()
+        request = datascans.GetDataScanJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.DataScanJob)
@@ -3031,7 +3391,8 @@ def test_list_data_scan_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.ListDataScanJobsRequest()
+        request = datascans.ListDataScanJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataScanJobsPager)
@@ -3051,6 +3412,62 @@ def test_list_data_scan_jobs_empty_call():
         type(client.transport.list_data_scan_jobs), "__call__"
     ) as call:
         client.list_data_scan_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.ListDataScanJobsRequest()
+
+
+def test_list_data_scan_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.ListDataScanJobsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_scan_jobs), "__call__"
+    ) as call:
+        client.list_data_scan_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.ListDataScanJobsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_scan_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_scan_jobs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.ListDataScanJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_data_scan_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.ListDataScanJobsRequest()
@@ -3084,7 +3501,8 @@ async def test_list_data_scan_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.ListDataScanJobsRequest()
+        request = datascans.ListDataScanJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataScanJobsAsyncPager)
@@ -3473,7 +3891,8 @@ def test_generate_data_quality_rules(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GenerateDataQualityRulesRequest()
+        request = datascans.GenerateDataQualityRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.GenerateDataQualityRulesResponse)
@@ -3492,6 +3911,56 @@ def test_generate_data_quality_rules_empty_call():
         type(client.transport.generate_data_quality_rules), "__call__"
     ) as call:
         client.generate_data_quality_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GenerateDataQualityRulesRequest()
+
+
+def test_generate_data_quality_rules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datascans.GenerateDataQualityRulesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        client.generate_data_quality_rules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GenerateDataQualityRulesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_data_quality_rules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.GenerateDataQualityRulesResponse()
+        )
+        response = await client.generate_data_quality_rules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datascans.GenerateDataQualityRulesRequest()
@@ -3524,7 +3993,8 @@ async def test_generate_data_quality_rules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GenerateDataQualityRulesRequest()
+        request = datascans.GenerateDataQualityRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.GenerateDataQualityRulesResponse)

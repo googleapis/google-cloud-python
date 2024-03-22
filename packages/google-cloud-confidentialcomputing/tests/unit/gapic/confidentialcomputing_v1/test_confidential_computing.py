@@ -1218,7 +1218,8 @@ def test_create_challenge(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChallengeRequest()
+        request = service.CreateChallengeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Challenge)
@@ -1238,6 +1239,56 @@ def test_create_challenge_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_challenge), "__call__") as call:
         client.create_challenge()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChallengeRequest()
+
+
+def test_create_challenge_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConfidentialComputingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateChallengeRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_challenge), "__call__") as call:
+        client.create_challenge(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChallengeRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_challenge_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfidentialComputingAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_challenge), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Challenge(
+                name="name_value",
+                used=True,
+                tpm_nonce="tpm_nonce_value",
+            )
+        )
+        response = await client.create_challenge()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateChallengeRequest()
@@ -1271,7 +1322,8 @@ async def test_create_challenge_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChallengeRequest()
+        request = service.CreateChallengeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Challenge)
@@ -1464,7 +1516,8 @@ def test_verify_attestation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.VerifyAttestationRequest()
+        request = service.VerifyAttestationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.VerifyAttestationResponse)
@@ -1484,6 +1537,58 @@ def test_verify_attestation_empty_call():
         type(client.transport.verify_attestation), "__call__"
     ) as call:
         client.verify_attestation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.VerifyAttestationRequest()
+
+
+def test_verify_attestation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConfidentialComputingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.VerifyAttestationRequest(
+        challenge="challenge_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_attestation), "__call__"
+    ) as call:
+        client.verify_attestation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.VerifyAttestationRequest(
+            challenge="challenge_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_verify_attestation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfidentialComputingAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_attestation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.VerifyAttestationResponse(
+                oidc_claims_token="oidc_claims_token_value",
+            )
+        )
+        response = await client.verify_attestation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.VerifyAttestationRequest()
@@ -1517,7 +1622,8 @@ async def test_verify_attestation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.VerifyAttestationRequest()
+        request = service.VerifyAttestationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.VerifyAttestationResponse)

@@ -1149,7 +1149,8 @@ def test_create_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.CreateTaxonomyRequest()
+        request = policytagmanager.CreateTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.Taxonomy)
@@ -1173,6 +1174,60 @@ def test_create_taxonomy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_taxonomy), "__call__") as call:
         client.create_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.CreateTaxonomyRequest()
+
+
+def test_create_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.CreateTaxonomyRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_taxonomy), "__call__") as call:
+        client.create_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.CreateTaxonomyRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_taxonomy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.Taxonomy(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                policy_tag_count=1715,
+                activated_policy_types=[
+                    policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+                ],
+            )
+        )
+        response = await client.create_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.CreateTaxonomyRequest()
@@ -1210,7 +1265,8 @@ async def test_create_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.CreateTaxonomyRequest()
+        request = policytagmanager.CreateTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.Taxonomy)
@@ -1407,7 +1463,8 @@ def test_delete_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.DeleteTaxonomyRequest()
+        request = policytagmanager.DeleteTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1424,6 +1481,50 @@ def test_delete_taxonomy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_taxonomy), "__call__") as call:
         client.delete_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.DeleteTaxonomyRequest()
+
+
+def test_delete_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.DeleteTaxonomyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_taxonomy), "__call__") as call:
+        client.delete_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.DeleteTaxonomyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_taxonomy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.DeleteTaxonomyRequest()
@@ -1451,7 +1552,8 @@ async def test_delete_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.DeleteTaxonomyRequest()
+        request = policytagmanager.DeleteTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1635,7 +1737,8 @@ def test_update_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.UpdateTaxonomyRequest()
+        request = policytagmanager.UpdateTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.Taxonomy)
@@ -1659,6 +1762,56 @@ def test_update_taxonomy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_taxonomy), "__call__") as call:
         client.update_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.UpdateTaxonomyRequest()
+
+
+def test_update_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.UpdateTaxonomyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_taxonomy), "__call__") as call:
+        client.update_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.UpdateTaxonomyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_taxonomy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.Taxonomy(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                policy_tag_count=1715,
+                activated_policy_types=[
+                    policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+                ],
+            )
+        )
+        response = await client.update_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.UpdateTaxonomyRequest()
@@ -1696,7 +1849,8 @@ async def test_update_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.UpdateTaxonomyRequest()
+        request = policytagmanager.UpdateTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.Taxonomy)
@@ -1885,7 +2039,8 @@ def test_list_taxonomies(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.ListTaxonomiesRequest()
+        request = policytagmanager.ListTaxonomiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTaxonomiesPager)
@@ -1903,6 +2058,58 @@ def test_list_taxonomies_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_taxonomies), "__call__") as call:
         client.list_taxonomies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.ListTaxonomiesRequest()
+
+
+def test_list_taxonomies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.ListTaxonomiesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_taxonomies), "__call__") as call:
+        client.list_taxonomies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.ListTaxonomiesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_taxonomies_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_taxonomies), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.ListTaxonomiesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_taxonomies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.ListTaxonomiesRequest()
@@ -1934,7 +2141,8 @@ async def test_list_taxonomies_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.ListTaxonomiesRequest()
+        request = policytagmanager.ListTaxonomiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTaxonomiesAsyncPager)
@@ -2313,7 +2521,8 @@ def test_get_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.GetTaxonomyRequest()
+        request = policytagmanager.GetTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.Taxonomy)
@@ -2337,6 +2546,60 @@ def test_get_taxonomy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_taxonomy), "__call__") as call:
         client.get_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.GetTaxonomyRequest()
+
+
+def test_get_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.GetTaxonomyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_taxonomy), "__call__") as call:
+        client.get_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.GetTaxonomyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_taxonomy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.Taxonomy(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                policy_tag_count=1715,
+                activated_policy_types=[
+                    policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+                ],
+            )
+        )
+        response = await client.get_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.GetTaxonomyRequest()
@@ -2374,7 +2637,8 @@ async def test_get_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.GetTaxonomyRequest()
+        request = policytagmanager.GetTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.Taxonomy)
@@ -2569,7 +2833,8 @@ def test_create_policy_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.CreatePolicyTagRequest()
+        request = policytagmanager.CreatePolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.PolicyTag)
@@ -2593,6 +2858,62 @@ def test_create_policy_tag_empty_call():
         type(client.transport.create_policy_tag), "__call__"
     ) as call:
         client.create_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.CreatePolicyTagRequest()
+
+
+def test_create_policy_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.CreatePolicyTagRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_policy_tag), "__call__"
+    ) as call:
+        client.create_policy_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.CreatePolicyTagRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_policy_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_policy_tag), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.PolicyTag(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                parent_policy_tag="parent_policy_tag_value",
+                child_policy_tags=["child_policy_tags_value"],
+            )
+        )
+        response = await client.create_policy_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.CreatePolicyTagRequest()
@@ -2631,7 +2952,8 @@ async def test_create_policy_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.CreatePolicyTagRequest()
+        request = policytagmanager.CreatePolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.PolicyTag)
@@ -2836,7 +3158,8 @@ def test_delete_policy_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.DeletePolicyTagRequest()
+        request = policytagmanager.DeletePolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2855,6 +3178,54 @@ def test_delete_policy_tag_empty_call():
         type(client.transport.delete_policy_tag), "__call__"
     ) as call:
         client.delete_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.DeletePolicyTagRequest()
+
+
+def test_delete_policy_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.DeletePolicyTagRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_policy_tag), "__call__"
+    ) as call:
+        client.delete_policy_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.DeletePolicyTagRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_policy_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_policy_tag), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_policy_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.DeletePolicyTagRequest()
@@ -2885,7 +3256,8 @@ async def test_delete_policy_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.DeletePolicyTagRequest()
+        request = policytagmanager.DeletePolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3077,7 +3449,8 @@ def test_update_policy_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.UpdatePolicyTagRequest()
+        request = policytagmanager.UpdatePolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.PolicyTag)
@@ -3101,6 +3474,58 @@ def test_update_policy_tag_empty_call():
         type(client.transport.update_policy_tag), "__call__"
     ) as call:
         client.update_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.UpdatePolicyTagRequest()
+
+
+def test_update_policy_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.UpdatePolicyTagRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_policy_tag), "__call__"
+    ) as call:
+        client.update_policy_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.UpdatePolicyTagRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_policy_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_policy_tag), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.PolicyTag(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                parent_policy_tag="parent_policy_tag_value",
+                child_policy_tags=["child_policy_tags_value"],
+            )
+        )
+        response = await client.update_policy_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.UpdatePolicyTagRequest()
@@ -3139,7 +3564,8 @@ async def test_update_policy_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.UpdatePolicyTagRequest()
+        request = policytagmanager.UpdatePolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.PolicyTag)
@@ -3334,7 +3760,8 @@ def test_list_policy_tags(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.ListPolicyTagsRequest()
+        request = policytagmanager.ListPolicyTagsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPolicyTagsPager)
@@ -3352,6 +3779,56 @@ def test_list_policy_tags_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policy_tags), "__call__") as call:
         client.list_policy_tags()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.ListPolicyTagsRequest()
+
+
+def test_list_policy_tags_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.ListPolicyTagsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_policy_tags), "__call__") as call:
+        client.list_policy_tags(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.ListPolicyTagsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_policy_tags_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_policy_tags), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.ListPolicyTagsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_policy_tags()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.ListPolicyTagsRequest()
@@ -3383,7 +3860,8 @@ async def test_list_policy_tags_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.ListPolicyTagsRequest()
+        request = policytagmanager.ListPolicyTagsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPolicyTagsAsyncPager)
@@ -3760,7 +4238,8 @@ def test_get_policy_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.GetPolicyTagRequest()
+        request = policytagmanager.GetPolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.PolicyTag)
@@ -3782,6 +4261,58 @@ def test_get_policy_tag_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_policy_tag), "__call__") as call:
         client.get_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.GetPolicyTagRequest()
+
+
+def test_get_policy_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policytagmanager.GetPolicyTagRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy_tag), "__call__") as call:
+        client.get_policy_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanager.GetPolicyTagRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_policy_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy_tag), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.PolicyTag(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                parent_policy_tag="parent_policy_tag_value",
+                child_policy_tags=["child_policy_tags_value"],
+            )
+        )
+        response = await client.get_policy_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policytagmanager.GetPolicyTagRequest()
@@ -3817,7 +4348,8 @@ async def test_get_policy_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.GetPolicyTagRequest()
+        request = policytagmanager.GetPolicyTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policytagmanager.PolicyTag)
@@ -4005,7 +4537,8 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -4024,6 +4557,55 @@ def test_get_iam_policy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+def test_get_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.GetIamPolicyRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.get_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
@@ -4056,7 +4638,8 @@ async def test_get_iam_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -4174,7 +4757,8 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -4193,6 +4777,55 @@ def test_set_iam_policy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+def test_set_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.SetIamPolicyRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
@@ -4225,7 +4858,8 @@ async def test_set_iam_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -4345,7 +4979,8 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
@@ -4365,6 +5000,58 @@ def test_test_iam_permissions_empty_call():
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyTagManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.TestIamPermissionsRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        response = await client.test_iam_permissions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
@@ -4399,7 +5086,8 @@ async def test_test_iam_permissions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)

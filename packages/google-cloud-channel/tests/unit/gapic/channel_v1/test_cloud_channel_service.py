@@ -1190,7 +1190,8 @@ def test_list_customers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListCustomersRequest()
+        request = service.ListCustomersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomersPager)
@@ -1208,6 +1209,58 @@ def test_list_customers_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
         client.list_customers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomersRequest()
+
+
+def test_list_customers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListCustomersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
+        client.list_customers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_customers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListCustomersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_customers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListCustomersRequest()
@@ -1239,7 +1292,8 @@ async def test_list_customers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListCustomersRequest()
+        request = service.ListCustomersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomersAsyncPager)
@@ -1537,7 +1591,8 @@ def test_get_customer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetCustomerRequest()
+        request = service.GetCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -1562,6 +1617,61 @@ def test_get_customer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
         client.get_customer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRequest()
+
+
+def test_get_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetCustomerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
+        client.get_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_customer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                org_display_name="org_display_name_value",
+                alternate_email="alternate_email_value",
+                domain="domain_value",
+                cloud_identity_id="cloud_identity_id_value",
+                language_code="language_code_value",
+                channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
+            )
+        )
+        response = await client.get_customer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetCustomerRequest()
@@ -1600,7 +1710,8 @@ async def test_get_customer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetCustomerRequest()
+        request = service.GetCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -1786,7 +1897,8 @@ def test_check_cloud_identity_accounts_exist(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CheckCloudIdentityAccountsExistRequest()
+        request = service.CheckCloudIdentityAccountsExistRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.CheckCloudIdentityAccountsExistResponse)
@@ -1805,6 +1917,58 @@ def test_check_cloud_identity_accounts_exist_empty_call():
         type(client.transport.check_cloud_identity_accounts_exist), "__call__"
     ) as call:
         client.check_cloud_identity_accounts_exist()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CheckCloudIdentityAccountsExistRequest()
+
+
+def test_check_cloud_identity_accounts_exist_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CheckCloudIdentityAccountsExistRequest(
+        parent="parent_value",
+        domain="domain_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
+    ) as call:
+        client.check_cloud_identity_accounts_exist(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CheckCloudIdentityAccountsExistRequest(
+            parent="parent_value",
+            domain="domain_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_check_cloud_identity_accounts_exist_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_cloud_identity_accounts_exist), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.CheckCloudIdentityAccountsExistResponse()
+        )
+        response = await client.check_cloud_identity_accounts_exist()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CheckCloudIdentityAccountsExistRequest()
@@ -1837,7 +2001,8 @@ async def test_check_cloud_identity_accounts_exist_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CheckCloudIdentityAccountsExistRequest()
+        request = service.CheckCloudIdentityAccountsExistRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.CheckCloudIdentityAccountsExistResponse)
@@ -1948,7 +2113,8 @@ def test_create_customer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateCustomerRequest()
+        request = service.CreateCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -1973,6 +2139,61 @@ def test_create_customer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
         client.create_customer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRequest()
+
+
+def test_create_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateCustomerRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        client.create_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_customer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                org_display_name="org_display_name_value",
+                alternate_email="alternate_email_value",
+                domain="domain_value",
+                cloud_identity_id="cloud_identity_id_value",
+                language_code="language_code_value",
+                channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
+            )
+        )
+        response = await client.create_customer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateCustomerRequest()
@@ -2011,7 +2232,8 @@ async def test_create_customer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateCustomerRequest()
+        request = service.CreateCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -2124,7 +2346,8 @@ def test_update_customer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCustomerRequest()
+        request = service.UpdateCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -2149,6 +2372,57 @@ def test_update_customer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
         client.update_customer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRequest()
+
+
+def test_update_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UpdateCustomerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        client.update_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_customer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                org_display_name="org_display_name_value",
+                alternate_email="alternate_email_value",
+                domain="domain_value",
+                cloud_identity_id="cloud_identity_id_value",
+                language_code="language_code_value",
+                channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
+            )
+        )
+        response = await client.update_customer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UpdateCustomerRequest()
@@ -2187,7 +2461,8 @@ async def test_update_customer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCustomerRequest()
+        request = service.UpdateCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -2291,7 +2566,8 @@ def test_delete_customer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteCustomerRequest()
+        request = service.DeleteCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2308,6 +2584,50 @@ def test_delete_customer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
         client.delete_customer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRequest()
+
+
+def test_delete_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.DeleteCustomerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        client.delete_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_customer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteCustomerRequest()
@@ -2335,7 +2655,8 @@ async def test_delete_customer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteCustomerRequest()
+        request = service.DeleteCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2520,7 +2841,8 @@ def test_import_customer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ImportCustomerRequest()
+        request = service.ImportCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -2545,6 +2867,71 @@ def test_import_customer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
         client.import_customer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ImportCustomerRequest()
+
+
+def test_import_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ImportCustomerRequest(
+        domain="domain_value",
+        cloud_identity_id="cloud_identity_id_value",
+        parent="parent_value",
+        auth_token="auth_token_value",
+        channel_partner_id="channel_partner_id_value",
+        customer="customer_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        client.import_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ImportCustomerRequest(
+            domain="domain_value",
+            cloud_identity_id="cloud_identity_id_value",
+            parent="parent_value",
+            auth_token="auth_token_value",
+            channel_partner_id="channel_partner_id_value",
+            customer="customer_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_customer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                org_display_name="org_display_name_value",
+                alternate_email="alternate_email_value",
+                domain="domain_value",
+                cloud_identity_id="cloud_identity_id_value",
+                language_code="language_code_value",
+                channel_partner_id="channel_partner_id_value",
+                correlation_id="correlation_id_value",
+            )
+        )
+        response = await client.import_customer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ImportCustomerRequest()
@@ -2583,7 +2970,8 @@ async def test_import_customer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ImportCustomerRequest()
+        request = service.ImportCustomerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, customers.Customer)
@@ -2689,7 +3077,8 @@ def test_provision_cloud_identity(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ProvisionCloudIdentityRequest()
+        request = service.ProvisionCloudIdentityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2708,6 +3097,56 @@ def test_provision_cloud_identity_empty_call():
         type(client.transport.provision_cloud_identity), "__call__"
     ) as call:
         client.provision_cloud_identity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ProvisionCloudIdentityRequest()
+
+
+def test_provision_cloud_identity_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ProvisionCloudIdentityRequest(
+        customer="customer_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.provision_cloud_identity), "__call__"
+    ) as call:
+        client.provision_cloud_identity(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ProvisionCloudIdentityRequest(
+            customer="customer_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_provision_cloud_identity_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.provision_cloud_identity), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.provision_cloud_identity()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ProvisionCloudIdentityRequest()
@@ -2739,7 +3178,8 @@ async def test_provision_cloud_identity_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ProvisionCloudIdentityRequest()
+        request = service.ProvisionCloudIdentityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2845,7 +3285,8 @@ def test_list_entitlements(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntitlementsRequest()
+        request = service.ListEntitlementsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitlementsPager)
@@ -2865,6 +3306,60 @@ def test_list_entitlements_empty_call():
         type(client.transport.list_entitlements), "__call__"
     ) as call:
         client.list_entitlements()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementsRequest()
+
+
+def test_list_entitlements_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListEntitlementsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlements), "__call__"
+    ) as call:
+        client.list_entitlements(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entitlements_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlements), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEntitlementsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entitlements()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListEntitlementsRequest()
@@ -2898,7 +3393,8 @@ async def test_list_entitlements_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntitlementsRequest()
+        request = service.ListEntitlementsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitlementsAsyncPager)
@@ -3203,7 +3699,8 @@ def test_list_transferable_skus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTransferableSkusRequest()
+        request = service.ListTransferableSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferableSkusPager)
@@ -3223,6 +3720,68 @@ def test_list_transferable_skus_empty_call():
         type(client.transport.list_transferable_skus), "__call__"
     ) as call:
         client.list_transferable_skus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTransferableSkusRequest()
+
+
+def test_list_transferable_skus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListTransferableSkusRequest(
+        cloud_identity_id="cloud_identity_id_value",
+        customer_name="customer_name_value",
+        parent="parent_value",
+        page_token="page_token_value",
+        auth_token="auth_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transferable_skus), "__call__"
+    ) as call:
+        client.list_transferable_skus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTransferableSkusRequest(
+            cloud_identity_id="cloud_identity_id_value",
+            customer_name="customer_name_value",
+            parent="parent_value",
+            page_token="page_token_value",
+            auth_token="auth_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_transferable_skus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transferable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTransferableSkusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_transferable_skus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListTransferableSkusRequest()
@@ -3256,7 +3815,8 @@ async def test_list_transferable_skus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTransferableSkusRequest()
+        request = service.ListTransferableSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferableSkusAsyncPager)
@@ -3561,7 +4121,8 @@ def test_list_transferable_offers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTransferableOffersRequest()
+        request = service.ListTransferableOffersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferableOffersPager)
@@ -3581,6 +4142,70 @@ def test_list_transferable_offers_empty_call():
         type(client.transport.list_transferable_offers), "__call__"
     ) as call:
         client.list_transferable_offers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTransferableOffersRequest()
+
+
+def test_list_transferable_offers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListTransferableOffersRequest(
+        cloud_identity_id="cloud_identity_id_value",
+        customer_name="customer_name_value",
+        parent="parent_value",
+        page_token="page_token_value",
+        sku="sku_value",
+        language_code="language_code_value",
+        billing_account="billing_account_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transferable_offers), "__call__"
+    ) as call:
+        client.list_transferable_offers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTransferableOffersRequest(
+            cloud_identity_id="cloud_identity_id_value",
+            customer_name="customer_name_value",
+            parent="parent_value",
+            page_token="page_token_value",
+            sku="sku_value",
+            language_code="language_code_value",
+            billing_account="billing_account_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_transferable_offers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transferable_offers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTransferableOffersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_transferable_offers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListTransferableOffersRequest()
@@ -3614,7 +4239,8 @@ async def test_list_transferable_offers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTransferableOffersRequest()
+        request = service.ListTransferableOffersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferableOffersAsyncPager)
@@ -3924,7 +4550,8 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEntitlementRequest()
+        request = service.GetEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, entitlements.Entitlement)
@@ -3951,6 +4578,61 @@ def test_get_entitlement_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
         client.get_entitlement()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetEntitlementRequest()
+
+
+def test_get_entitlement_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetEntitlementRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
+        client.get_entitlement(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetEntitlementRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_entitlement_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            entitlements.Entitlement(
+                name="name_value",
+                offer="offer_value",
+                provisioning_state=entitlements.Entitlement.ProvisioningState.ACTIVE,
+                suspension_reasons=[
+                    entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
+                ],
+                purchase_order_id="purchase_order_id_value",
+                billing_account="billing_account_value",
+            )
+        )
+        response = await client.get_entitlement()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetEntitlementRequest()
@@ -3989,7 +4671,8 @@ async def test_get_entitlement_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEntitlementRequest()
+        request = service.GetEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, entitlements.Entitlement)
@@ -4099,7 +4782,8 @@ def test_create_entitlement(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEntitlementRequest()
+        request = service.CreateEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4118,6 +4802,58 @@ def test_create_entitlement_empty_call():
         type(client.transport.create_entitlement), "__call__"
     ) as call:
         client.create_entitlement()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateEntitlementRequest()
+
+
+def test_create_entitlement_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateEntitlementRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entitlement), "__call__"
+    ) as call:
+        client.create_entitlement(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateEntitlementRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entitlement_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entitlement), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_entitlement()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateEntitlementRequest()
@@ -4149,7 +4885,8 @@ async def test_create_entitlement_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEntitlementRequest()
+        request = service.CreateEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4253,7 +4990,8 @@ def test_change_parameters(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ChangeParametersRequest()
+        request = service.ChangeParametersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4272,6 +5010,60 @@ def test_change_parameters_empty_call():
         type(client.transport.change_parameters), "__call__"
     ) as call:
         client.change_parameters()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ChangeParametersRequest()
+
+
+def test_change_parameters_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ChangeParametersRequest(
+        name="name_value",
+        request_id="request_id_value",
+        purchase_order_id="purchase_order_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.change_parameters), "__call__"
+    ) as call:
+        client.change_parameters(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ChangeParametersRequest(
+            name="name_value",
+            request_id="request_id_value",
+            purchase_order_id="purchase_order_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_change_parameters_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.change_parameters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.change_parameters()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ChangeParametersRequest()
@@ -4303,7 +5095,8 @@ async def test_change_parameters_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ChangeParametersRequest()
+        request = service.ChangeParametersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4407,7 +5200,8 @@ def test_change_renewal_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ChangeRenewalSettingsRequest()
+        request = service.ChangeRenewalSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4426,6 +5220,58 @@ def test_change_renewal_settings_empty_call():
         type(client.transport.change_renewal_settings), "__call__"
     ) as call:
         client.change_renewal_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ChangeRenewalSettingsRequest()
+
+
+def test_change_renewal_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ChangeRenewalSettingsRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.change_renewal_settings), "__call__"
+    ) as call:
+        client.change_renewal_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ChangeRenewalSettingsRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_change_renewal_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.change_renewal_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.change_renewal_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ChangeRenewalSettingsRequest()
@@ -4457,7 +5303,8 @@ async def test_change_renewal_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ChangeRenewalSettingsRequest()
+        request = service.ChangeRenewalSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4559,7 +5406,8 @@ def test_change_offer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ChangeOfferRequest()
+        request = service.ChangeOfferRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4576,6 +5424,60 @@ def test_change_offer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
         client.change_offer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ChangeOfferRequest()
+
+
+def test_change_offer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ChangeOfferRequest(
+        name="name_value",
+        offer="offer_value",
+        purchase_order_id="purchase_order_id_value",
+        request_id="request_id_value",
+        billing_account="billing_account_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
+        client.change_offer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ChangeOfferRequest(
+            name="name_value",
+            offer="offer_value",
+            purchase_order_id="purchase_order_id_value",
+            request_id="request_id_value",
+            billing_account="billing_account_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_change_offer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.change_offer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.change_offer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ChangeOfferRequest()
@@ -4605,7 +5507,8 @@ async def test_change_offer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ChangeOfferRequest()
+        request = service.ChangeOfferRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4705,7 +5608,8 @@ def test_start_paid_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.StartPaidServiceRequest()
+        request = service.StartPaidServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4724,6 +5628,58 @@ def test_start_paid_service_empty_call():
         type(client.transport.start_paid_service), "__call__"
     ) as call:
         client.start_paid_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.StartPaidServiceRequest()
+
+
+def test_start_paid_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.StartPaidServiceRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_paid_service), "__call__"
+    ) as call:
+        client.start_paid_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.StartPaidServiceRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_paid_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_paid_service), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_paid_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.StartPaidServiceRequest()
@@ -4755,7 +5711,8 @@ async def test_start_paid_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.StartPaidServiceRequest()
+        request = service.StartPaidServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4859,7 +5816,8 @@ def test_suspend_entitlement(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SuspendEntitlementRequest()
+        request = service.SuspendEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4878,6 +5836,58 @@ def test_suspend_entitlement_empty_call():
         type(client.transport.suspend_entitlement), "__call__"
     ) as call:
         client.suspend_entitlement()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SuspendEntitlementRequest()
+
+
+def test_suspend_entitlement_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.SuspendEntitlementRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suspend_entitlement), "__call__"
+    ) as call:
+        client.suspend_entitlement(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SuspendEntitlementRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_suspend_entitlement_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suspend_entitlement), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.suspend_entitlement()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.SuspendEntitlementRequest()
@@ -4909,7 +5919,8 @@ async def test_suspend_entitlement_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SuspendEntitlementRequest()
+        request = service.SuspendEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5013,7 +6024,8 @@ def test_cancel_entitlement(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelEntitlementRequest()
+        request = service.CancelEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5032,6 +6044,58 @@ def test_cancel_entitlement_empty_call():
         type(client.transport.cancel_entitlement), "__call__"
     ) as call:
         client.cancel_entitlement()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CancelEntitlementRequest()
+
+
+def test_cancel_entitlement_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CancelEntitlementRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_entitlement), "__call__"
+    ) as call:
+        client.cancel_entitlement(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CancelEntitlementRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_entitlement_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_entitlement), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.cancel_entitlement()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CancelEntitlementRequest()
@@ -5063,7 +6127,8 @@ async def test_cancel_entitlement_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelEntitlementRequest()
+        request = service.CancelEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5167,7 +6232,8 @@ def test_activate_entitlement(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ActivateEntitlementRequest()
+        request = service.ActivateEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5186,6 +6252,58 @@ def test_activate_entitlement_empty_call():
         type(client.transport.activate_entitlement), "__call__"
     ) as call:
         client.activate_entitlement()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ActivateEntitlementRequest()
+
+
+def test_activate_entitlement_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ActivateEntitlementRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_entitlement), "__call__"
+    ) as call:
+        client.activate_entitlement(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ActivateEntitlementRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_activate_entitlement_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_entitlement), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.activate_entitlement()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ActivateEntitlementRequest()
@@ -5217,7 +6335,8 @@ async def test_activate_entitlement_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ActivateEntitlementRequest()
+        request = service.ActivateEntitlementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5321,7 +6440,8 @@ def test_transfer_entitlements(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.TransferEntitlementsRequest()
+        request = service.TransferEntitlementsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5340,6 +6460,60 @@ def test_transfer_entitlements_empty_call():
         type(client.transport.transfer_entitlements), "__call__"
     ) as call:
         client.transfer_entitlements()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.TransferEntitlementsRequest()
+
+
+def test_transfer_entitlements_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.TransferEntitlementsRequest(
+        parent="parent_value",
+        auth_token="auth_token_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_entitlements), "__call__"
+    ) as call:
+        client.transfer_entitlements(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.TransferEntitlementsRequest(
+            parent="parent_value",
+            auth_token="auth_token_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_transfer_entitlements_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_entitlements), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.transfer_entitlements()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.TransferEntitlementsRequest()
@@ -5371,7 +6545,8 @@ async def test_transfer_entitlements_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.TransferEntitlementsRequest()
+        request = service.TransferEntitlementsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5475,7 +6650,8 @@ def test_transfer_entitlements_to_google(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.TransferEntitlementsToGoogleRequest()
+        request = service.TransferEntitlementsToGoogleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5494,6 +6670,58 @@ def test_transfer_entitlements_to_google_empty_call():
         type(client.transport.transfer_entitlements_to_google), "__call__"
     ) as call:
         client.transfer_entitlements_to_google()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.TransferEntitlementsToGoogleRequest()
+
+
+def test_transfer_entitlements_to_google_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.TransferEntitlementsToGoogleRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_entitlements_to_google), "__call__"
+    ) as call:
+        client.transfer_entitlements_to_google(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.TransferEntitlementsToGoogleRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_transfer_entitlements_to_google_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_entitlements_to_google), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.transfer_entitlements_to_google()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.TransferEntitlementsToGoogleRequest()
@@ -5526,7 +6754,8 @@ async def test_transfer_entitlements_to_google_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.TransferEntitlementsToGoogleRequest()
+        request = service.TransferEntitlementsToGoogleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5632,7 +6861,8 @@ def test_list_channel_partner_links(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListChannelPartnerLinksRequest()
+        request = service.ListChannelPartnerLinksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelPartnerLinksPager)
@@ -5652,6 +6882,60 @@ def test_list_channel_partner_links_empty_call():
         type(client.transport.list_channel_partner_links), "__call__"
     ) as call:
         client.list_channel_partner_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerLinksRequest()
+
+
+def test_list_channel_partner_links_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListChannelPartnerLinksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_links), "__call__"
+    ) as call:
+        client.list_channel_partner_links(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerLinksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_links_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListChannelPartnerLinksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_channel_partner_links()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListChannelPartnerLinksRequest()
@@ -5685,7 +6969,8 @@ async def test_list_channel_partner_links_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListChannelPartnerLinksRequest()
+        request = service.ListChannelPartnerLinksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelPartnerLinksAsyncPager)
@@ -5998,7 +7283,8 @@ def test_get_channel_partner_link(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetChannelPartnerLinkRequest()
+        request = service.GetChannelPartnerLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_partner_links.ChannelPartnerLink)
@@ -6022,6 +7308,62 @@ def test_get_channel_partner_link_empty_call():
         type(client.transport.get_channel_partner_link), "__call__"
     ) as call:
         client.get_channel_partner_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerLinkRequest()
+
+
+def test_get_channel_partner_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetChannelPartnerLinkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_link), "__call__"
+    ) as call:
+        client.get_channel_partner_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerLinkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_partner_links.ChannelPartnerLink(
+                name="name_value",
+                reseller_cloud_identity_id="reseller_cloud_identity_id_value",
+                link_state=channel_partner_links.ChannelPartnerLinkState.INVITED,
+                invite_link_uri="invite_link_uri_value",
+                public_id="public_id_value",
+            )
+        )
+        response = await client.get_channel_partner_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetChannelPartnerLinkRequest()
@@ -6059,7 +7401,8 @@ async def test_get_channel_partner_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetChannelPartnerLinkRequest()
+        request = service.GetChannelPartnerLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_partner_links.ChannelPartnerLink)
@@ -6174,7 +7517,8 @@ def test_create_channel_partner_link(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChannelPartnerLinkRequest()
+        request = service.CreateChannelPartnerLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_partner_links.ChannelPartnerLink)
@@ -6198,6 +7542,62 @@ def test_create_channel_partner_link_empty_call():
         type(client.transport.create_channel_partner_link), "__call__"
     ) as call:
         client.create_channel_partner_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerLinkRequest()
+
+
+def test_create_channel_partner_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateChannelPartnerLinkRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_link), "__call__"
+    ) as call:
+        client.create_channel_partner_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerLinkRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_partner_links.ChannelPartnerLink(
+                name="name_value",
+                reseller_cloud_identity_id="reseller_cloud_identity_id_value",
+                link_state=channel_partner_links.ChannelPartnerLinkState.INVITED,
+                invite_link_uri="invite_link_uri_value",
+                public_id="public_id_value",
+            )
+        )
+        response = await client.create_channel_partner_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateChannelPartnerLinkRequest()
@@ -6236,7 +7636,8 @@ async def test_create_channel_partner_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChannelPartnerLinkRequest()
+        request = service.CreateChannelPartnerLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_partner_links.ChannelPartnerLink)
@@ -6351,7 +7752,8 @@ def test_update_channel_partner_link(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateChannelPartnerLinkRequest()
+        request = service.UpdateChannelPartnerLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_partner_links.ChannelPartnerLink)
@@ -6375,6 +7777,62 @@ def test_update_channel_partner_link_empty_call():
         type(client.transport.update_channel_partner_link), "__call__"
     ) as call:
         client.update_channel_partner_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerLinkRequest()
+
+
+def test_update_channel_partner_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UpdateChannelPartnerLinkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_link), "__call__"
+    ) as call:
+        client.update_channel_partner_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerLinkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_partner_links.ChannelPartnerLink(
+                name="name_value",
+                reseller_cloud_identity_id="reseller_cloud_identity_id_value",
+                link_state=channel_partner_links.ChannelPartnerLinkState.INVITED,
+                invite_link_uri="invite_link_uri_value",
+                public_id="public_id_value",
+            )
+        )
+        response = await client.update_channel_partner_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UpdateChannelPartnerLinkRequest()
@@ -6413,7 +7871,8 @@ async def test_update_channel_partner_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateChannelPartnerLinkRequest()
+        request = service.UpdateChannelPartnerLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_partner_links.ChannelPartnerLink)
@@ -6524,7 +7983,8 @@ def test_get_customer_repricing_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetCustomerRepricingConfigRequest()
+        request = service.GetCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.CustomerRepricingConfig)
@@ -6544,6 +8004,58 @@ def test_get_customer_repricing_config_empty_call():
         type(client.transport.get_customer_repricing_config), "__call__"
     ) as call:
         client.get_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRepricingConfigRequest()
+
+
+def test_get_customer_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetCustomerRepricingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        client.get_customer_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRepricingConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_customer_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_customer_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetCustomerRepricingConfigRequest()
@@ -6578,7 +8090,8 @@ async def test_get_customer_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetCustomerRepricingConfigRequest()
+        request = service.GetCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.CustomerRepricingConfig)
@@ -6771,7 +8284,8 @@ def test_list_customer_repricing_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListCustomerRepricingConfigsRequest()
+        request = service.ListCustomerRepricingConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomerRepricingConfigsPager)
@@ -6791,6 +8305,62 @@ def test_list_customer_repricing_configs_empty_call():
         type(client.transport.list_customer_repricing_configs), "__call__"
     ) as call:
         client.list_customer_repricing_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomerRepricingConfigsRequest()
+
+
+def test_list_customer_repricing_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListCustomerRepricingConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        client.list_customer_repricing_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomerRepricingConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListCustomerRepricingConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_customer_repricing_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListCustomerRepricingConfigsRequest()
@@ -6825,7 +8395,8 @@ async def test_list_customer_repricing_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListCustomerRepricingConfigsRequest()
+        request = service.ListCustomerRepricingConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomerRepricingConfigsAsyncPager)
@@ -7216,7 +8787,8 @@ def test_create_customer_repricing_config(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateCustomerRepricingConfigRequest()
+        request = service.CreateCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.CustomerRepricingConfig)
@@ -7236,6 +8808,58 @@ def test_create_customer_repricing_config_empty_call():
         type(client.transport.create_customer_repricing_config), "__call__"
     ) as call:
         client.create_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRepricingConfigRequest()
+
+
+def test_create_customer_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateCustomerRepricingConfigRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        client.create_customer_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRepricingConfigRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_customer_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.create_customer_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateCustomerRepricingConfigRequest()
@@ -7270,7 +8894,8 @@ async def test_create_customer_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateCustomerRepricingConfigRequest()
+        request = service.CreateCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.CustomerRepricingConfig)
@@ -7481,7 +9106,8 @@ def test_update_customer_repricing_config(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+        request = service.UpdateCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.CustomerRepricingConfig)
@@ -7501,6 +9127,54 @@ def test_update_customer_repricing_config_empty_call():
         type(client.transport.update_customer_repricing_config), "__call__"
     ) as call:
         client.update_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+
+
+def test_update_customer_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UpdateCustomerRepricingConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        client.update_customer_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_customer_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_customer_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UpdateCustomerRepricingConfigRequest()
@@ -7535,7 +9209,8 @@ async def test_update_customer_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+        request = service.UpdateCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.CustomerRepricingConfig)
@@ -7734,7 +9409,8 @@ def test_delete_customer_repricing_config(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteCustomerRepricingConfigRequest()
+        request = service.DeleteCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7753,6 +9429,54 @@ def test_delete_customer_repricing_config_empty_call():
         type(client.transport.delete_customer_repricing_config), "__call__"
     ) as call:
         client.delete_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRepricingConfigRequest()
+
+
+def test_delete_customer_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.DeleteCustomerRepricingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        client.delete_customer_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRepricingConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_customer_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteCustomerRepricingConfigRequest()
@@ -7783,7 +9507,8 @@ async def test_delete_customer_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteCustomerRepricingConfigRequest()
+        request = service.DeleteCustomerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7971,7 +9696,8 @@ def test_get_channel_partner_repricing_config(request_type, transport: str = "gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
+        request = service.GetChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
@@ -7991,6 +9717,58 @@ def test_get_channel_partner_repricing_config_empty_call():
         type(client.transport.get_channel_partner_repricing_config), "__call__"
     ) as call:
         client.get_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
+
+
+def test_get_channel_partner_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetChannelPartnerRepricingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.get_channel_partner_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerRepricingConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_channel_partner_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
@@ -8025,7 +9803,8 @@ async def test_get_channel_partner_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
+        request = service.GetChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
@@ -8218,7 +9997,8 @@ def test_list_channel_partner_repricing_configs(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
+        request = service.ListChannelPartnerRepricingConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelPartnerRepricingConfigsPager)
@@ -8238,6 +10018,62 @@ def test_list_channel_partner_repricing_configs_empty_call():
         type(client.transport.list_channel_partner_repricing_configs), "__call__"
     ) as call:
         client.list_channel_partner_repricing_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
+
+
+def test_list_channel_partner_repricing_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListChannelPartnerRepricingConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        client.list_channel_partner_repricing_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListChannelPartnerRepricingConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_channel_partner_repricing_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
@@ -8272,7 +10108,8 @@ async def test_list_channel_partner_repricing_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
+        request = service.ListChannelPartnerRepricingConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelPartnerRepricingConfigsAsyncPager)
@@ -8667,7 +10504,8 @@ def test_create_channel_partner_repricing_config(request_type, transport: str = 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
+        request = service.CreateChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
@@ -8687,6 +10525,58 @@ def test_create_channel_partner_repricing_config_empty_call():
         type(client.transport.create_channel_partner_repricing_config), "__call__"
     ) as call:
         client.create_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
+
+
+def test_create_channel_partner_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateChannelPartnerRepricingConfigRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.create_channel_partner_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.create_channel_partner_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
@@ -8721,7 +10611,8 @@ async def test_create_channel_partner_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
+        request = service.CreateChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
@@ -8932,7 +10823,8 @@ def test_update_channel_partner_repricing_config(request_type, transport: str = 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+        request = service.UpdateChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
@@ -8952,6 +10844,54 @@ def test_update_channel_partner_repricing_config_empty_call():
         type(client.transport.update_channel_partner_repricing_config), "__call__"
     ) as call:
         client.update_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+
+
+def test_update_channel_partner_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UpdateChannelPartnerRepricingConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.update_channel_partner_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_channel_partner_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
@@ -8986,7 +10926,8 @@ async def test_update_channel_partner_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+        request = service.UpdateChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
@@ -9185,7 +11126,8 @@ def test_delete_channel_partner_repricing_config(request_type, transport: str = 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
+        request = service.DeleteChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9204,6 +11146,54 @@ def test_delete_channel_partner_repricing_config_empty_call():
         type(client.transport.delete_channel_partner_repricing_config), "__call__"
     ) as call:
         client.delete_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
+
+
+def test_delete_channel_partner_repricing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.DeleteChannelPartnerRepricingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.delete_channel_partner_repricing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_partner_repricing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_channel_partner_repricing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
@@ -9234,7 +11224,8 @@ async def test_delete_channel_partner_repricing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
+        request = service.DeleteChannelPartnerRepricingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9420,7 +11411,8 @@ def test_list_sku_groups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSkuGroupsRequest()
+        request = service.ListSkuGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkuGroupsPager)
@@ -9438,6 +11430,56 @@ def test_list_sku_groups_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
         client.list_sku_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupsRequest()
+
+
+def test_list_sku_groups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListSkuGroupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        client.list_sku_groups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sku_groups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListSkuGroupsRequest()
@@ -9469,7 +11511,8 @@ async def test_list_sku_groups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSkuGroupsRequest()
+        request = service.ListSkuGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkuGroupsAsyncPager)
@@ -9844,7 +11887,8 @@ def test_list_sku_group_billable_skus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSkuGroupBillableSkusRequest()
+        request = service.ListSkuGroupBillableSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkuGroupBillableSkusPager)
@@ -9864,6 +11908,60 @@ def test_list_sku_group_billable_skus_empty_call():
         type(client.transport.list_sku_group_billable_skus), "__call__"
     ) as call:
         client.list_sku_group_billable_skus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupBillableSkusRequest()
+
+
+def test_list_sku_group_billable_skus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListSkuGroupBillableSkusRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        client.list_sku_group_billable_skus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupBillableSkusRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupBillableSkusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sku_group_billable_skus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListSkuGroupBillableSkusRequest()
@@ -9898,7 +11996,8 @@ async def test_list_sku_group_billable_skus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSkuGroupBillableSkusRequest()
+        request = service.ListSkuGroupBillableSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkuGroupBillableSkusAsyncPager)
@@ -10288,7 +12387,8 @@ def test_lookup_offer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupOfferRequest()
+        request = service.LookupOfferRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, offers.Offer)
@@ -10307,6 +12407,55 @@ def test_lookup_offer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
         client.lookup_offer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupOfferRequest()
+
+
+def test_lookup_offer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.LookupOfferRequest(
+        entitlement="entitlement_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        client.lookup_offer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupOfferRequest(
+            entitlement="entitlement_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_offer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            offers.Offer(
+                name="name_value",
+                deal_code="deal_code_value",
+            )
+        )
+        response = await client.lookup_offer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.LookupOfferRequest()
@@ -10339,7 +12488,8 @@ async def test_lookup_offer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupOfferRequest()
+        request = service.LookupOfferRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, offers.Offer)
@@ -10439,7 +12589,8 @@ def test_list_products(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListProductsRequest()
+        request = service.ListProductsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductsPager)
@@ -10457,6 +12608,58 @@ def test_list_products_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
         client.list_products()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListProductsRequest()
+
+
+def test_list_products_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListProductsRequest(
+        account="account_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_products), "__call__") as call:
+        client.list_products(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListProductsRequest(
+            account="account_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_products_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_products), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListProductsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_products()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListProductsRequest()
@@ -10488,7 +12691,8 @@ async def test_list_products_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListProductsRequest()
+        request = service.ListProductsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductsAsyncPager)
@@ -10715,7 +12919,8 @@ def test_list_skus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSkusRequest()
+        request = service.ListSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkusPager)
@@ -10733,6 +12938,60 @@ def test_list_skus_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
         client.list_skus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkusRequest()
+
+
+def test_list_skus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListSkusRequest(
+        parent="parent_value",
+        account="account_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
+        client.list_skus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkusRequest(
+            parent="parent_value",
+            account="account_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_skus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_skus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListSkusRequest()
@@ -10764,7 +13023,8 @@ async def test_list_skus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSkusRequest()
+        request = service.ListSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkusAsyncPager)
@@ -11055,7 +13315,8 @@ def test_list_offers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListOffersRequest()
+        request = service.ListOffersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOffersPager)
@@ -11073,6 +13334,60 @@ def test_list_offers_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
         client.list_offers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListOffersRequest()
+
+
+def test_list_offers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListOffersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
+        client.list_offers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListOffersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_offers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListOffersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_offers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListOffersRequest()
@@ -11104,7 +13419,8 @@ async def test_list_offers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListOffersRequest()
+        request = service.ListOffersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOffersAsyncPager)
@@ -11397,7 +13713,8 @@ def test_list_purchasable_skus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListPurchasableSkusRequest()
+        request = service.ListPurchasableSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPurchasableSkusPager)
@@ -11417,6 +13734,62 @@ def test_list_purchasable_skus_empty_call():
         type(client.transport.list_purchasable_skus), "__call__"
     ) as call:
         client.list_purchasable_skus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListPurchasableSkusRequest()
+
+
+def test_list_purchasable_skus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListPurchasableSkusRequest(
+        customer="customer_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_purchasable_skus), "__call__"
+    ) as call:
+        client.list_purchasable_skus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListPurchasableSkusRequest(
+            customer="customer_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_purchasable_skus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_purchasable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListPurchasableSkusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_purchasable_skus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListPurchasableSkusRequest()
@@ -11450,7 +13823,8 @@ async def test_list_purchasable_skus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListPurchasableSkusRequest()
+        request = service.ListPurchasableSkusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPurchasableSkusAsyncPager)
@@ -11755,7 +14129,8 @@ def test_list_purchasable_offers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListPurchasableOffersRequest()
+        request = service.ListPurchasableOffersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPurchasableOffersPager)
@@ -11775,6 +14150,62 @@ def test_list_purchasable_offers_empty_call():
         type(client.transport.list_purchasable_offers), "__call__"
     ) as call:
         client.list_purchasable_offers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListPurchasableOffersRequest()
+
+
+def test_list_purchasable_offers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListPurchasableOffersRequest(
+        customer="customer_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_purchasable_offers), "__call__"
+    ) as call:
+        client.list_purchasable_offers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListPurchasableOffersRequest(
+            customer="customer_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_purchasable_offers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_purchasable_offers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListPurchasableOffersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_purchasable_offers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListPurchasableOffersRequest()
@@ -11808,7 +14239,8 @@ async def test_list_purchasable_offers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListPurchasableOffersRequest()
+        request = service.ListPurchasableOffersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPurchasableOffersAsyncPager)
@@ -12111,7 +14543,8 @@ def test_query_eligible_billing_accounts(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryEligibleBillingAccountsRequest()
+        request = service.QueryEligibleBillingAccountsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.QueryEligibleBillingAccountsResponse)
@@ -12130,6 +14563,56 @@ def test_query_eligible_billing_accounts_empty_call():
         type(client.transport.query_eligible_billing_accounts), "__call__"
     ) as call:
         client.query_eligible_billing_accounts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.QueryEligibleBillingAccountsRequest()
+
+
+def test_query_eligible_billing_accounts_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.QueryEligibleBillingAccountsRequest(
+        customer="customer_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        client.query_eligible_billing_accounts(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.QueryEligibleBillingAccountsRequest(
+            customer="customer_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_eligible_billing_accounts_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.QueryEligibleBillingAccountsResponse()
+        )
+        response = await client.query_eligible_billing_accounts()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.QueryEligibleBillingAccountsRequest()
@@ -12162,7 +14645,8 @@ async def test_query_eligible_billing_accounts_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryEligibleBillingAccountsRequest()
+        request = service.QueryEligibleBillingAccountsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.QueryEligibleBillingAccountsResponse)
@@ -12268,7 +14752,8 @@ def test_register_subscriber(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RegisterSubscriberRequest()
+        request = service.RegisterSubscriberRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.RegisterSubscriberResponse)
@@ -12288,6 +14773,60 @@ def test_register_subscriber_empty_call():
         type(client.transport.register_subscriber), "__call__"
     ) as call:
         client.register_subscriber()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RegisterSubscriberRequest()
+
+
+def test_register_subscriber_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.RegisterSubscriberRequest(
+        account="account_value",
+        service_account="service_account_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.register_subscriber), "__call__"
+    ) as call:
+        client.register_subscriber(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RegisterSubscriberRequest(
+            account="account_value",
+            service_account="service_account_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_register_subscriber_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.register_subscriber), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RegisterSubscriberResponse(
+                topic="topic_value",
+            )
+        )
+        response = await client.register_subscriber()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.RegisterSubscriberRequest()
@@ -12321,7 +14860,8 @@ async def test_register_subscriber_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RegisterSubscriberRequest()
+        request = service.RegisterSubscriberRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.RegisterSubscriberResponse)
@@ -12428,7 +14968,8 @@ def test_unregister_subscriber(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UnregisterSubscriberRequest()
+        request = service.UnregisterSubscriberRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.UnregisterSubscriberResponse)
@@ -12448,6 +14989,60 @@ def test_unregister_subscriber_empty_call():
         type(client.transport.unregister_subscriber), "__call__"
     ) as call:
         client.unregister_subscriber()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UnregisterSubscriberRequest()
+
+
+def test_unregister_subscriber_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UnregisterSubscriberRequest(
+        account="account_value",
+        service_account="service_account_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.unregister_subscriber), "__call__"
+    ) as call:
+        client.unregister_subscriber(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UnregisterSubscriberRequest(
+            account="account_value",
+            service_account="service_account_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_unregister_subscriber_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.unregister_subscriber), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.UnregisterSubscriberResponse(
+                topic="topic_value",
+            )
+        )
+        response = await client.unregister_subscriber()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UnregisterSubscriberRequest()
@@ -12481,7 +15076,8 @@ async def test_unregister_subscriber_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UnregisterSubscriberRequest()
+        request = service.UnregisterSubscriberRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.UnregisterSubscriberResponse)
@@ -12588,7 +15184,8 @@ def test_list_subscribers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSubscribersRequest()
+        request = service.ListSubscribersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubscribersPager)
@@ -12608,6 +15205,58 @@ def test_list_subscribers_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
         client.list_subscribers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSubscribersRequest()
+
+
+def test_list_subscribers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListSubscribersRequest(
+        account="account_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
+        client.list_subscribers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSubscribersRequest(
+            account="account_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_subscribers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSubscribersResponse(
+                topic="topic_value",
+                service_accounts=["service_accounts_value"],
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_subscribers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListSubscribersRequest()
@@ -12641,7 +15290,8 @@ async def test_list_subscribers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSubscribersRequest()
+        request = service.ListSubscribersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubscribersAsyncPager)
@@ -12936,7 +15586,8 @@ def test_list_entitlement_changes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntitlementChangesRequest()
+        request = service.ListEntitlementChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitlementChangesPager)
@@ -12956,6 +15607,62 @@ def test_list_entitlement_changes_empty_call():
         type(client.transport.list_entitlement_changes), "__call__"
     ) as call:
         client.list_entitlement_changes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementChangesRequest()
+
+
+def test_list_entitlement_changes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListEntitlementChangesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        client.list_entitlement_changes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntitlementChangesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entitlement_changes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlement_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEntitlementChangesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entitlement_changes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListEntitlementChangesRequest()
@@ -12989,7 +15696,8 @@ async def test_list_entitlement_changes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntitlementChangesRequest()
+        request = service.ListEntitlementChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitlementChangesAsyncPager)
