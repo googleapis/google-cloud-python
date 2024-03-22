@@ -1239,7 +1239,8 @@ def test_list_brands(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListBrandsRequest()
+        request = service.ListBrandsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ListBrandsResponse)
@@ -1256,6 +1257,52 @@ def test_list_brands_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
         client.list_brands()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListBrandsRequest()
+
+
+def test_list_brands_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListBrandsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
+        client.list_brands(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListBrandsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_brands_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListBrandsResponse()
+        )
+        response = await client.list_brands()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListBrandsRequest()
@@ -1285,7 +1332,8 @@ async def test_list_brands_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListBrandsRequest()
+        request = service.ListBrandsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ListBrandsResponse)
@@ -1388,7 +1436,8 @@ def test_create_brand(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateBrandRequest()
+        request = service.CreateBrandRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Brand)
@@ -1409,6 +1458,57 @@ def test_create_brand_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
         client.create_brand()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateBrandRequest()
+
+
+def test_create_brand_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateBrandRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
+        client.create_brand(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateBrandRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_brand_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Brand(
+                name="name_value",
+                support_email="support_email_value",
+                application_title="application_title_value",
+                org_internal_only=True,
+            )
+        )
+        response = await client.create_brand()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateBrandRequest()
@@ -1443,7 +1543,8 @@ async def test_create_brand_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateBrandRequest()
+        request = service.CreateBrandRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Brand)
@@ -1548,7 +1649,8 @@ def test_get_brand(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetBrandRequest()
+        request = service.GetBrandRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Brand)
@@ -1569,6 +1671,57 @@ def test_get_brand_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
         client.get_brand()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetBrandRequest()
+
+
+def test_get_brand_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetBrandRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
+        client.get_brand(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetBrandRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_brand_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Brand(
+                name="name_value",
+                support_email="support_email_value",
+                application_title="application_title_value",
+                org_internal_only=True,
+            )
+        )
+        response = await client.get_brand()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetBrandRequest()
@@ -1603,7 +1756,8 @@ async def test_get_brand_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetBrandRequest()
+        request = service.GetBrandRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Brand)
@@ -1709,7 +1863,8 @@ def test_create_identity_aware_proxy_client(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateIdentityAwareProxyClientRequest()
+        request = service.CreateIdentityAwareProxyClientRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IdentityAwareProxyClient)
@@ -1731,6 +1886,60 @@ def test_create_identity_aware_proxy_client_empty_call():
         type(client.transport.create_identity_aware_proxy_client), "__call__"
     ) as call:
         client.create_identity_aware_proxy_client()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateIdentityAwareProxyClientRequest()
+
+
+def test_create_identity_aware_proxy_client_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateIdentityAwareProxyClientRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_identity_aware_proxy_client), "__call__"
+    ) as call:
+        client.create_identity_aware_proxy_client(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateIdentityAwareProxyClientRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_identity_aware_proxy_client_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_identity_aware_proxy_client), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.IdentityAwareProxyClient(
+                name="name_value",
+                secret="secret_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_identity_aware_proxy_client()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateIdentityAwareProxyClientRequest()
@@ -1767,7 +1976,8 @@ async def test_create_identity_aware_proxy_client_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateIdentityAwareProxyClientRequest()
+        request = service.CreateIdentityAwareProxyClientRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IdentityAwareProxyClient)
@@ -1876,7 +2086,8 @@ def test_list_identity_aware_proxy_clients(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListIdentityAwareProxyClientsRequest()
+        request = service.ListIdentityAwareProxyClientsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIdentityAwareProxyClientsPager)
@@ -1896,6 +2107,60 @@ def test_list_identity_aware_proxy_clients_empty_call():
         type(client.transport.list_identity_aware_proxy_clients), "__call__"
     ) as call:
         client.list_identity_aware_proxy_clients()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListIdentityAwareProxyClientsRequest()
+
+
+def test_list_identity_aware_proxy_clients_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListIdentityAwareProxyClientsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_identity_aware_proxy_clients), "__call__"
+    ) as call:
+        client.list_identity_aware_proxy_clients(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListIdentityAwareProxyClientsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_identity_aware_proxy_clients_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_identity_aware_proxy_clients), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListIdentityAwareProxyClientsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_identity_aware_proxy_clients()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListIdentityAwareProxyClientsRequest()
@@ -1930,7 +2195,8 @@ async def test_list_identity_aware_proxy_clients_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListIdentityAwareProxyClientsRequest()
+        request = service.ListIdentityAwareProxyClientsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIdentityAwareProxyClientsAsyncPager)
@@ -2237,7 +2503,8 @@ def test_get_identity_aware_proxy_client(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetIdentityAwareProxyClientRequest()
+        request = service.GetIdentityAwareProxyClientRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IdentityAwareProxyClient)
@@ -2259,6 +2526,60 @@ def test_get_identity_aware_proxy_client_empty_call():
         type(client.transport.get_identity_aware_proxy_client), "__call__"
     ) as call:
         client.get_identity_aware_proxy_client()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetIdentityAwareProxyClientRequest()
+
+
+def test_get_identity_aware_proxy_client_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetIdentityAwareProxyClientRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_identity_aware_proxy_client), "__call__"
+    ) as call:
+        client.get_identity_aware_proxy_client(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetIdentityAwareProxyClientRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_identity_aware_proxy_client_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_identity_aware_proxy_client), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.IdentityAwareProxyClient(
+                name="name_value",
+                secret="secret_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_identity_aware_proxy_client()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetIdentityAwareProxyClientRequest()
@@ -2295,7 +2616,8 @@ async def test_get_identity_aware_proxy_client_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetIdentityAwareProxyClientRequest()
+        request = service.GetIdentityAwareProxyClientRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IdentityAwareProxyClient)
@@ -2408,7 +2730,8 @@ def test_reset_identity_aware_proxy_client_secret(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ResetIdentityAwareProxyClientSecretRequest()
+        request = service.ResetIdentityAwareProxyClientSecretRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IdentityAwareProxyClient)
@@ -2430,6 +2753,60 @@ def test_reset_identity_aware_proxy_client_secret_empty_call():
         type(client.transport.reset_identity_aware_proxy_client_secret), "__call__"
     ) as call:
         client.reset_identity_aware_proxy_client_secret()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ResetIdentityAwareProxyClientSecretRequest()
+
+
+def test_reset_identity_aware_proxy_client_secret_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ResetIdentityAwareProxyClientSecretRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_identity_aware_proxy_client_secret), "__call__"
+    ) as call:
+        client.reset_identity_aware_proxy_client_secret(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ResetIdentityAwareProxyClientSecretRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_identity_aware_proxy_client_secret_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_identity_aware_proxy_client_secret), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.IdentityAwareProxyClient(
+                name="name_value",
+                secret="secret_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.reset_identity_aware_proxy_client_secret()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ResetIdentityAwareProxyClientSecretRequest()
@@ -2466,7 +2843,8 @@ async def test_reset_identity_aware_proxy_client_secret_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ResetIdentityAwareProxyClientSecretRequest()
+        request = service.ResetIdentityAwareProxyClientSecretRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IdentityAwareProxyClient)
@@ -2573,7 +2951,8 @@ def test_delete_identity_aware_proxy_client(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteIdentityAwareProxyClientRequest()
+        request = service.DeleteIdentityAwareProxyClientRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2592,6 +2971,54 @@ def test_delete_identity_aware_proxy_client_empty_call():
         type(client.transport.delete_identity_aware_proxy_client), "__call__"
     ) as call:
         client.delete_identity_aware_proxy_client()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteIdentityAwareProxyClientRequest()
+
+
+def test_delete_identity_aware_proxy_client_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IdentityAwareProxyOAuthServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.DeleteIdentityAwareProxyClientRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_identity_aware_proxy_client), "__call__"
+    ) as call:
+        client.delete_identity_aware_proxy_client(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteIdentityAwareProxyClientRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_identity_aware_proxy_client_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyOAuthServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_identity_aware_proxy_client), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_identity_aware_proxy_client()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteIdentityAwareProxyClientRequest()
@@ -2622,7 +3049,8 @@ async def test_delete_identity_aware_proxy_client_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteIdentityAwareProxyClientRequest()
+        request = service.DeleteIdentityAwareProxyClientRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

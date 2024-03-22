@@ -1110,7 +1110,8 @@ def test_list_storage_pools(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_pool.ListStoragePoolsRequest()
+        request = storage_pool.ListStoragePoolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoragePoolsPager)
@@ -1131,6 +1132,65 @@ def test_list_storage_pools_empty_call():
         type(client.transport.list_storage_pools), "__call__"
     ) as call:
         client.list_storage_pools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_pool.ListStoragePoolsRequest()
+
+
+def test_list_storage_pools_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_pool.ListStoragePoolsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_storage_pools), "__call__"
+    ) as call:
+        client.list_storage_pools(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_pool.ListStoragePoolsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_storage_pools_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_storage_pools), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_pool.ListStoragePoolsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_storage_pools()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storage_pool.ListStoragePoolsRequest()
@@ -1165,7 +1225,8 @@ async def test_list_storage_pools_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_pool.ListStoragePoolsRequest()
+        request = storage_pool.ListStoragePoolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoragePoolsAsyncPager)
@@ -1555,7 +1616,8 @@ def test_create_storage_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_storage_pool.CreateStoragePoolRequest()
+        request = gcn_storage_pool.CreateStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1574,6 +1636,58 @@ def test_create_storage_pool_empty_call():
         type(client.transport.create_storage_pool), "__call__"
     ) as call:
         client.create_storage_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_storage_pool.CreateStoragePoolRequest()
+
+
+def test_create_storage_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_storage_pool.CreateStoragePoolRequest(
+        parent="parent_value",
+        storage_pool_id="storage_pool_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_storage_pool), "__call__"
+    ) as call:
+        client.create_storage_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_storage_pool.CreateStoragePoolRequest(
+            parent="parent_value",
+            storage_pool_id="storage_pool_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_storage_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_storage_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_storage_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_storage_pool.CreateStoragePoolRequest()
@@ -1606,7 +1720,8 @@ async def test_create_storage_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_storage_pool.CreateStoragePoolRequest()
+        request = gcn_storage_pool.CreateStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1830,7 +1945,8 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_pool.GetStoragePoolRequest()
+        request = storage_pool.GetStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_pool.StoragePool)
@@ -1862,6 +1978,68 @@ def test_get_storage_pool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_storage_pool), "__call__") as call:
         client.get_storage_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_pool.GetStoragePoolRequest()
+
+
+def test_get_storage_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_pool.GetStoragePoolRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_storage_pool), "__call__") as call:
+        client.get_storage_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_pool.GetStoragePoolRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_storage_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_storage_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_pool.StoragePool(
+                name="name_value",
+                service_level=common.ServiceLevel.PREMIUM,
+                capacity_gib=1247,
+                volume_capacity_gib=2006,
+                volume_count=1312,
+                state=storage_pool.StoragePool.State.READY,
+                state_details="state_details_value",
+                description="description_value",
+                network="network_value",
+                active_directory="active_directory_value",
+                kms_config="kms_config_value",
+                ldap_enabled=True,
+                psa_range="psa_range_value",
+                encryption_type=common.EncryptionType.SERVICE_MANAGED,
+                global_access_allowed=True,
+            )
+        )
+        response = await client.get_storage_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storage_pool.GetStoragePoolRequest()
@@ -1907,7 +2085,8 @@ async def test_get_storage_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_pool.GetStoragePoolRequest()
+        request = storage_pool.GetStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_pool.StoragePool)
@@ -2104,7 +2283,8 @@ def test_update_storage_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_storage_pool.UpdateStoragePoolRequest()
+        request = gcn_storage_pool.UpdateStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2123,6 +2303,52 @@ def test_update_storage_pool_empty_call():
         type(client.transport.update_storage_pool), "__call__"
     ) as call:
         client.update_storage_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_storage_pool.UpdateStoragePoolRequest()
+
+
+def test_update_storage_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_storage_pool.UpdateStoragePoolRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_storage_pool), "__call__"
+    ) as call:
+        client.update_storage_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_storage_pool.UpdateStoragePoolRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_storage_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_storage_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_storage_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_storage_pool.UpdateStoragePoolRequest()
@@ -2155,7 +2381,8 @@ async def test_update_storage_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_storage_pool.UpdateStoragePoolRequest()
+        request = gcn_storage_pool.UpdateStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2355,7 +2582,8 @@ def test_delete_storage_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_pool.DeleteStoragePoolRequest()
+        request = storage_pool.DeleteStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2374,6 +2602,56 @@ def test_delete_storage_pool_empty_call():
         type(client.transport.delete_storage_pool), "__call__"
     ) as call:
         client.delete_storage_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_pool.DeleteStoragePoolRequest()
+
+
+def test_delete_storage_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_pool.DeleteStoragePoolRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_storage_pool), "__call__"
+    ) as call:
+        client.delete_storage_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_pool.DeleteStoragePoolRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_storage_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_storage_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_storage_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storage_pool.DeleteStoragePoolRequest()
@@ -2405,7 +2683,8 @@ async def test_delete_storage_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_pool.DeleteStoragePoolRequest()
+        request = storage_pool.DeleteStoragePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2596,7 +2875,8 @@ def test_list_volumes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.ListVolumesRequest()
+        request = volume.ListVolumesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumesPager)
@@ -2615,6 +2895,61 @@ def test_list_volumes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         client.list_volumes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.ListVolumesRequest()
+
+
+def test_list_volumes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = volume.ListVolumesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
+        client.list_volumes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.ListVolumesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_volumes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume.ListVolumesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_volumes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == volume.ListVolumesRequest()
@@ -2647,7 +2982,8 @@ async def test_list_volumes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.ListVolumesRequest()
+        request = volume.ListVolumesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumesAsyncPager)
@@ -3044,7 +3380,8 @@ def test_get_volume(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.GetVolumeRequest()
+        request = volume.GetVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, volume.Volume)
@@ -3085,6 +3422,77 @@ def test_get_volume_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
         client.get_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.GetVolumeRequest()
+
+
+def test_get_volume_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = volume.GetVolumeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
+        client.get_volume(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.GetVolumeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_volume_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume.Volume(
+                name="name_value",
+                state=volume.Volume.State.READY,
+                state_details="state_details_value",
+                share_name="share_name_value",
+                psa_range="psa_range_value",
+                storage_pool="storage_pool_value",
+                network="network_value",
+                service_level=common.ServiceLevel.PREMIUM,
+                capacity_gib=1247,
+                protocols=[volume.Protocols.NFSV3],
+                smb_settings=[volume.SMBSettings.ENCRYPT_DATA],
+                unix_permissions="unix_permissions_value",
+                description="description_value",
+                snap_reserve=0.1293,
+                snapshot_directory=True,
+                used_gib=834,
+                security_style=volume.SecurityStyle.NTFS,
+                kerberos_enabled=True,
+                ldap_enabled=True,
+                active_directory="active_directory_value",
+                kms_config="kms_config_value",
+                encryption_type=common.EncryptionType.SERVICE_MANAGED,
+                has_replication=True,
+                restricted_actions=[volume.RestrictedAction.DELETE],
+            )
+        )
+        response = await client.get_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == volume.GetVolumeRequest()
@@ -3139,7 +3547,8 @@ async def test_get_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.GetVolumeRequest()
+        request = volume.GetVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, volume.Volume)
@@ -3339,7 +3748,8 @@ def test_create_volume(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_volume.CreateVolumeRequest()
+        request = gcn_volume.CreateVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3356,6 +3766,54 @@ def test_create_volume_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_volume), "__call__") as call:
         client.create_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_volume.CreateVolumeRequest()
+
+
+def test_create_volume_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_volume.CreateVolumeRequest(
+        parent="parent_value",
+        volume_id="volume_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_volume), "__call__") as call:
+        client.create_volume(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_volume.CreateVolumeRequest(
+            parent="parent_value",
+            volume_id="volume_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_volume_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_volume.CreateVolumeRequest()
@@ -3385,7 +3843,8 @@ async def test_create_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_volume.CreateVolumeRequest()
+        request = gcn_volume.CreateVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3585,7 +4044,8 @@ def test_update_volume(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_volume.UpdateVolumeRequest()
+        request = gcn_volume.UpdateVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3602,6 +4062,48 @@ def test_update_volume_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_volume), "__call__") as call:
         client.update_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_volume.UpdateVolumeRequest()
+
+
+def test_update_volume_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_volume.UpdateVolumeRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_volume), "__call__") as call:
+        client.update_volume(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_volume.UpdateVolumeRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_volume_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_volume.UpdateVolumeRequest()
@@ -3631,7 +4133,8 @@ async def test_update_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_volume.UpdateVolumeRequest()
+        request = gcn_volume.UpdateVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3821,7 +4324,8 @@ def test_delete_volume(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.DeleteVolumeRequest()
+        request = volume.DeleteVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3838,6 +4342,52 @@ def test_delete_volume_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_volume), "__call__") as call:
         client.delete_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.DeleteVolumeRequest()
+
+
+def test_delete_volume_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = volume.DeleteVolumeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_volume), "__call__") as call:
+        client.delete_volume(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.DeleteVolumeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_volume_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == volume.DeleteVolumeRequest()
@@ -3867,7 +4417,8 @@ async def test_delete_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.DeleteVolumeRequest()
+        request = volume.DeleteVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4047,7 +4598,8 @@ def test_revert_volume(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.RevertVolumeRequest()
+        request = volume.RevertVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4064,6 +4616,54 @@ def test_revert_volume_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.revert_volume), "__call__") as call:
         client.revert_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.RevertVolumeRequest()
+
+
+def test_revert_volume_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = volume.RevertVolumeRequest(
+        name="name_value",
+        snapshot_id="snapshot_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.revert_volume), "__call__") as call:
+        client.revert_volume(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.RevertVolumeRequest(
+            name="name_value",
+            snapshot_id="snapshot_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_revert_volume_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.revert_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.revert_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == volume.RevertVolumeRequest()
@@ -4093,7 +4693,8 @@ async def test_revert_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == volume.RevertVolumeRequest()
+        request = volume.RevertVolumeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4194,7 +4795,8 @@ def test_list_snapshots(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshot.ListSnapshotsRequest()
+        request = snapshot.ListSnapshotsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSnapshotsPager)
@@ -4213,6 +4815,61 @@ def test_list_snapshots_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
         client.list_snapshots()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snapshot.ListSnapshotsRequest()
+
+
+def test_list_snapshots_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snapshot.ListSnapshotsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        client.list_snapshots(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snapshot.ListSnapshotsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            snapshot.ListSnapshotsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_snapshots()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snapshot.ListSnapshotsRequest()
@@ -4245,7 +4902,8 @@ async def test_list_snapshots_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshot.ListSnapshotsRequest()
+        request = snapshot.ListSnapshotsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSnapshotsAsyncPager)
@@ -4623,7 +5281,8 @@ def test_get_snapshot(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshot.GetSnapshotRequest()
+        request = snapshot.GetSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, snapshot.Snapshot)
@@ -4645,6 +5304,58 @@ def test_get_snapshot_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
         client.get_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snapshot.GetSnapshotRequest()
+
+
+def test_get_snapshot_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snapshot.GetSnapshotRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        client.get_snapshot(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snapshot.GetSnapshotRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            snapshot.Snapshot(
+                name="name_value",
+                state=snapshot.Snapshot.State.READY,
+                state_details="state_details_value",
+                description="description_value",
+                used_bytes=0.10790000000000001,
+            )
+        )
+        response = await client.get_snapshot()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snapshot.GetSnapshotRequest()
@@ -4680,7 +5391,8 @@ async def test_get_snapshot_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshot.GetSnapshotRequest()
+        request = snapshot.GetSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, snapshot.Snapshot)
@@ -4861,7 +5573,8 @@ def test_create_snapshot(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_snapshot.CreateSnapshotRequest()
+        request = gcn_snapshot.CreateSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4878,6 +5591,54 @@ def test_create_snapshot_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
         client.create_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_snapshot.CreateSnapshotRequest()
+
+
+def test_create_snapshot_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_snapshot.CreateSnapshotRequest(
+        parent="parent_value",
+        snapshot_id="snapshot_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        client.create_snapshot(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_snapshot.CreateSnapshotRequest(
+            parent="parent_value",
+            snapshot_id="snapshot_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_snapshot_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_snapshot()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_snapshot.CreateSnapshotRequest()
@@ -4907,7 +5668,8 @@ async def test_create_snapshot_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_snapshot.CreateSnapshotRequest()
+        request = gcn_snapshot.CreateSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5107,7 +5869,8 @@ def test_delete_snapshot(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshot.DeleteSnapshotRequest()
+        request = snapshot.DeleteSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5124,6 +5887,52 @@ def test_delete_snapshot_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
         client.delete_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snapshot.DeleteSnapshotRequest()
+
+
+def test_delete_snapshot_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snapshot.DeleteSnapshotRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        client.delete_snapshot(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snapshot.DeleteSnapshotRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_snapshot()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snapshot.DeleteSnapshotRequest()
@@ -5153,7 +5962,8 @@ async def test_delete_snapshot_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshot.DeleteSnapshotRequest()
+        request = snapshot.DeleteSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5333,7 +6143,8 @@ def test_update_snapshot(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_snapshot.UpdateSnapshotRequest()
+        request = gcn_snapshot.UpdateSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5350,6 +6161,48 @@ def test_update_snapshot_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
         client.update_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_snapshot.UpdateSnapshotRequest()
+
+
+def test_update_snapshot_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_snapshot.UpdateSnapshotRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        client.update_snapshot(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_snapshot.UpdateSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_snapshot_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_snapshot()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_snapshot.UpdateSnapshotRequest()
@@ -5379,7 +6232,8 @@ async def test_update_snapshot_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_snapshot.UpdateSnapshotRequest()
+        request = gcn_snapshot.UpdateSnapshotRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5574,7 +6428,8 @@ def test_list_active_directories(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == active_directory.ListActiveDirectoriesRequest()
+        request = active_directory.ListActiveDirectoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListActiveDirectoriesPager)
@@ -5595,6 +6450,65 @@ def test_list_active_directories_empty_call():
         type(client.transport.list_active_directories), "__call__"
     ) as call:
         client.list_active_directories()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == active_directory.ListActiveDirectoriesRequest()
+
+
+def test_list_active_directories_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = active_directory.ListActiveDirectoriesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_active_directories), "__call__"
+    ) as call:
+        client.list_active_directories(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == active_directory.ListActiveDirectoriesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_active_directories_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_active_directories), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            active_directory.ListActiveDirectoriesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_active_directories()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == active_directory.ListActiveDirectoriesRequest()
@@ -5630,7 +6544,8 @@ async def test_list_active_directories_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == active_directory.ListActiveDirectoriesRequest()
+        request = active_directory.ListActiveDirectoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListActiveDirectoriesAsyncPager)
@@ -6040,7 +6955,8 @@ def test_get_active_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == active_directory.GetActiveDirectoryRequest()
+        request = active_directory.GetActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, active_directory.ActiveDirectory)
@@ -6078,6 +6994,76 @@ def test_get_active_directory_empty_call():
         type(client.transport.get_active_directory), "__call__"
     ) as call:
         client.get_active_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == active_directory.GetActiveDirectoryRequest()
+
+
+def test_get_active_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = active_directory.GetActiveDirectoryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_active_directory), "__call__"
+    ) as call:
+        client.get_active_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == active_directory.GetActiveDirectoryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_active_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_active_directory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            active_directory.ActiveDirectory(
+                name="name_value",
+                state=active_directory.ActiveDirectory.State.CREATING,
+                domain="domain_value",
+                site="site_value",
+                dns="dns_value",
+                net_bios_prefix="net_bios_prefix_value",
+                organizational_unit="organizational_unit_value",
+                aes_encryption=True,
+                username="username_value",
+                password="password_value",
+                backup_operators=["backup_operators_value"],
+                security_operators=["security_operators_value"],
+                kdc_hostname="kdc_hostname_value",
+                kdc_ip="kdc_ip_value",
+                nfs_users_with_ldap=True,
+                description="description_value",
+                ldap_signing=True,
+                encrypt_dc_connections=True,
+                state_details="state_details_value",
+            )
+        )
+        response = await client.get_active_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == active_directory.GetActiveDirectoryRequest()
@@ -6130,7 +7116,8 @@ async def test_get_active_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == active_directory.GetActiveDirectoryRequest()
+        request = active_directory.GetActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, active_directory.ActiveDirectory)
@@ -6339,7 +7326,8 @@ def test_create_active_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_active_directory.CreateActiveDirectoryRequest()
+        request = gcn_active_directory.CreateActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6358,6 +7346,58 @@ def test_create_active_directory_empty_call():
         type(client.transport.create_active_directory), "__call__"
     ) as call:
         client.create_active_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_active_directory.CreateActiveDirectoryRequest()
+
+
+def test_create_active_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_active_directory.CreateActiveDirectoryRequest(
+        parent="parent_value",
+        active_directory_id="active_directory_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_active_directory), "__call__"
+    ) as call:
+        client.create_active_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_active_directory.CreateActiveDirectoryRequest(
+            parent="parent_value",
+            active_directory_id="active_directory_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_active_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_active_directory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_active_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_active_directory.CreateActiveDirectoryRequest()
@@ -6390,7 +7430,8 @@ async def test_create_active_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_active_directory.CreateActiveDirectoryRequest()
+        request = gcn_active_directory.CreateActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6600,7 +7641,8 @@ def test_update_active_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_active_directory.UpdateActiveDirectoryRequest()
+        request = gcn_active_directory.UpdateActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6619,6 +7661,52 @@ def test_update_active_directory_empty_call():
         type(client.transport.update_active_directory), "__call__"
     ) as call:
         client.update_active_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_active_directory.UpdateActiveDirectoryRequest()
+
+
+def test_update_active_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_active_directory.UpdateActiveDirectoryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_active_directory), "__call__"
+    ) as call:
+        client.update_active_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_active_directory.UpdateActiveDirectoryRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_active_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_active_directory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_active_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_active_directory.UpdateActiveDirectoryRequest()
@@ -6651,7 +7739,8 @@ async def test_update_active_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_active_directory.UpdateActiveDirectoryRequest()
+        request = gcn_active_directory.UpdateActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6851,7 +7940,8 @@ def test_delete_active_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == active_directory.DeleteActiveDirectoryRequest()
+        request = active_directory.DeleteActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6870,6 +7960,56 @@ def test_delete_active_directory_empty_call():
         type(client.transport.delete_active_directory), "__call__"
     ) as call:
         client.delete_active_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == active_directory.DeleteActiveDirectoryRequest()
+
+
+def test_delete_active_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = active_directory.DeleteActiveDirectoryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_active_directory), "__call__"
+    ) as call:
+        client.delete_active_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == active_directory.DeleteActiveDirectoryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_active_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_active_directory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_active_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == active_directory.DeleteActiveDirectoryRequest()
@@ -6902,7 +8042,8 @@ async def test_delete_active_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == active_directory.DeleteActiveDirectoryRequest()
+        request = active_directory.DeleteActiveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7093,7 +8234,8 @@ def test_list_kms_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.ListKmsConfigsRequest()
+        request = kms.ListKmsConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKmsConfigsPager)
@@ -7112,6 +8254,61 @@ def test_list_kms_configs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_kms_configs), "__call__") as call:
         client.list_kms_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.ListKmsConfigsRequest()
+
+
+def test_list_kms_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.ListKmsConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_kms_configs), "__call__") as call:
+        client.list_kms_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.ListKmsConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_kms_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_kms_configs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            kms.ListKmsConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_kms_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.ListKmsConfigsRequest()
@@ -7144,7 +8341,8 @@ async def test_list_kms_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.ListKmsConfigsRequest()
+        request = kms.ListKmsConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKmsConfigsAsyncPager)
@@ -7518,7 +8716,8 @@ def test_create_kms_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.CreateKmsConfigRequest()
+        request = kms.CreateKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7537,6 +8736,58 @@ def test_create_kms_config_empty_call():
         type(client.transport.create_kms_config), "__call__"
     ) as call:
         client.create_kms_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.CreateKmsConfigRequest()
+
+
+def test_create_kms_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.CreateKmsConfigRequest(
+        parent="parent_value",
+        kms_config_id="kms_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_kms_config), "__call__"
+    ) as call:
+        client.create_kms_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.CreateKmsConfigRequest(
+            parent="parent_value",
+            kms_config_id="kms_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_kms_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_kms_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_kms_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.CreateKmsConfigRequest()
@@ -7568,7 +8819,8 @@ async def test_create_kms_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.CreateKmsConfigRequest()
+        request = kms.CreateKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7784,7 +9036,8 @@ def test_get_kms_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.GetKmsConfigRequest()
+        request = kms.GetKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, kms.KmsConfig)
@@ -7808,6 +9061,60 @@ def test_get_kms_config_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_kms_config), "__call__") as call:
         client.get_kms_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.GetKmsConfigRequest()
+
+
+def test_get_kms_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.GetKmsConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_kms_config), "__call__") as call:
+        client.get_kms_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.GetKmsConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_kms_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_kms_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            kms.KmsConfig(
+                name="name_value",
+                crypto_key_name="crypto_key_name_value",
+                state=kms.KmsConfig.State.READY,
+                state_details="state_details_value",
+                description="description_value",
+                instructions="instructions_value",
+                service_account="service_account_value",
+            )
+        )
+        response = await client.get_kms_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.GetKmsConfigRequest()
@@ -7845,7 +9152,8 @@ async def test_get_kms_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.GetKmsConfigRequest()
+        request = kms.GetKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, kms.KmsConfig)
@@ -8030,7 +9338,8 @@ def test_update_kms_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.UpdateKmsConfigRequest()
+        request = kms.UpdateKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8049,6 +9358,52 @@ def test_update_kms_config_empty_call():
         type(client.transport.update_kms_config), "__call__"
     ) as call:
         client.update_kms_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.UpdateKmsConfigRequest()
+
+
+def test_update_kms_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.UpdateKmsConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_kms_config), "__call__"
+    ) as call:
+        client.update_kms_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.UpdateKmsConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_kms_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_kms_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_kms_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.UpdateKmsConfigRequest()
@@ -8080,7 +9435,8 @@ async def test_update_kms_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.UpdateKmsConfigRequest()
+        request = kms.UpdateKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8278,7 +9634,8 @@ def test_encrypt_volumes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.EncryptVolumesRequest()
+        request = kms.EncryptVolumesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8295,6 +9652,52 @@ def test_encrypt_volumes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.encrypt_volumes), "__call__") as call:
         client.encrypt_volumes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.EncryptVolumesRequest()
+
+
+def test_encrypt_volumes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.EncryptVolumesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.encrypt_volumes), "__call__") as call:
+        client.encrypt_volumes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.EncryptVolumesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_encrypt_volumes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.encrypt_volumes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.encrypt_volumes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.EncryptVolumesRequest()
@@ -8324,7 +9727,8 @@ async def test_encrypt_volumes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.EncryptVolumesRequest()
+        request = kms.EncryptVolumesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8428,7 +9832,8 @@ def test_verify_kms_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.VerifyKmsConfigRequest()
+        request = kms.VerifyKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, kms.VerifyKmsConfigResponse)
@@ -8450,6 +9855,60 @@ def test_verify_kms_config_empty_call():
         type(client.transport.verify_kms_config), "__call__"
     ) as call:
         client.verify_kms_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.VerifyKmsConfigRequest()
+
+
+def test_verify_kms_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.VerifyKmsConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_kms_config), "__call__"
+    ) as call:
+        client.verify_kms_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.VerifyKmsConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_verify_kms_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_kms_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            kms.VerifyKmsConfigResponse(
+                healthy=True,
+                health_error="health_error_value",
+                instructions="instructions_value",
+            )
+        )
+        response = await client.verify_kms_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.VerifyKmsConfigRequest()
@@ -8485,7 +9944,8 @@ async def test_verify_kms_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.VerifyKmsConfigRequest()
+        request = kms.VerifyKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, kms.VerifyKmsConfigResponse)
@@ -8592,7 +10052,8 @@ def test_delete_kms_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.DeleteKmsConfigRequest()
+        request = kms.DeleteKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8611,6 +10072,56 @@ def test_delete_kms_config_empty_call():
         type(client.transport.delete_kms_config), "__call__"
     ) as call:
         client.delete_kms_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.DeleteKmsConfigRequest()
+
+
+def test_delete_kms_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = kms.DeleteKmsConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_kms_config), "__call__"
+    ) as call:
+        client.delete_kms_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == kms.DeleteKmsConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_kms_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_kms_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_kms_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == kms.DeleteKmsConfigRequest()
@@ -8642,7 +10153,8 @@ async def test_delete_kms_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == kms.DeleteKmsConfigRequest()
+        request = kms.DeleteKmsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8835,7 +10347,8 @@ def test_list_replications(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.ListReplicationsRequest()
+        request = replication.ListReplicationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReplicationsPager)
@@ -8856,6 +10369,65 @@ def test_list_replications_empty_call():
         type(client.transport.list_replications), "__call__"
     ) as call:
         client.list_replications()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.ListReplicationsRequest()
+
+
+def test_list_replications_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.ListReplicationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_replications), "__call__"
+    ) as call:
+        client.list_replications(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.ListReplicationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_replications_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_replications), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            replication.ListReplicationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_replications()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == replication.ListReplicationsRequest()
@@ -8890,7 +10462,8 @@ async def test_list_replications_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.ListReplicationsRequest()
+        request = replication.ListReplicationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReplicationsAsyncPager)
@@ -9289,7 +10862,8 @@ def test_get_replication(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.GetReplicationRequest()
+        request = replication.GetReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, replication.Replication)
@@ -9319,6 +10893,63 @@ def test_get_replication_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_replication), "__call__") as call:
         client.get_replication()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.GetReplicationRequest()
+
+
+def test_get_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.GetReplicationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_replication), "__call__") as call:
+        client.get_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.GetReplicationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_replication_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_replication), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            replication.Replication(
+                name="name_value",
+                state=replication.Replication.State.CREATING,
+                state_details="state_details_value",
+                role=replication.Replication.ReplicationRole.SOURCE,
+                replication_schedule=replication.Replication.ReplicationSchedule.EVERY_10_MINUTES,
+                mirror_state=replication.Replication.MirrorState.PREPARING,
+                healthy=True,
+                destination_volume="destination_volume_value",
+                description="description_value",
+                source_volume="source_volume_value",
+            )
+        )
+        response = await client.get_replication()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == replication.GetReplicationRequest()
@@ -9359,7 +10990,8 @@ async def test_get_replication_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.GetReplicationRequest()
+        request = replication.GetReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, replication.Replication)
@@ -9554,7 +11186,8 @@ def test_create_replication(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_replication.CreateReplicationRequest()
+        request = gcn_replication.CreateReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9573,6 +11206,58 @@ def test_create_replication_empty_call():
         type(client.transport.create_replication), "__call__"
     ) as call:
         client.create_replication()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_replication.CreateReplicationRequest()
+
+
+def test_create_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_replication.CreateReplicationRequest(
+        parent="parent_value",
+        replication_id="replication_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_replication), "__call__"
+    ) as call:
+        client.create_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_replication.CreateReplicationRequest(
+            parent="parent_value",
+            replication_id="replication_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_replication_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_replication), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_replication()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_replication.CreateReplicationRequest()
@@ -9605,7 +11290,8 @@ async def test_create_replication_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_replication.CreateReplicationRequest()
+        request = gcn_replication.CreateReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9815,7 +11501,8 @@ def test_delete_replication(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.DeleteReplicationRequest()
+        request = replication.DeleteReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9834,6 +11521,56 @@ def test_delete_replication_empty_call():
         type(client.transport.delete_replication), "__call__"
     ) as call:
         client.delete_replication()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.DeleteReplicationRequest()
+
+
+def test_delete_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.DeleteReplicationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_replication), "__call__"
+    ) as call:
+        client.delete_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.DeleteReplicationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_replication_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_replication), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_replication()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == replication.DeleteReplicationRequest()
@@ -9865,7 +11602,8 @@ async def test_delete_replication_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.DeleteReplicationRequest()
+        request = replication.DeleteReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10055,7 +11793,8 @@ def test_update_replication(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_replication.UpdateReplicationRequest()
+        request = gcn_replication.UpdateReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10074,6 +11813,52 @@ def test_update_replication_empty_call():
         type(client.transport.update_replication), "__call__"
     ) as call:
         client.update_replication()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_replication.UpdateReplicationRequest()
+
+
+def test_update_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_replication.UpdateReplicationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_replication), "__call__"
+    ) as call:
+        client.update_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_replication.UpdateReplicationRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_replication_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_replication), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_replication()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_replication.UpdateReplicationRequest()
@@ -10106,7 +11891,8 @@ async def test_update_replication_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_replication.UpdateReplicationRequest()
+        request = gcn_replication.UpdateReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10304,7 +12090,8 @@ def test_stop_replication(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.StopReplicationRequest()
+        request = replication.StopReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10321,6 +12108,52 @@ def test_stop_replication_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_replication), "__call__") as call:
         client.stop_replication()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.StopReplicationRequest()
+
+
+def test_stop_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.StopReplicationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_replication), "__call__") as call:
+        client.stop_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.StopReplicationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_replication_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_replication), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.stop_replication()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == replication.StopReplicationRequest()
@@ -10350,7 +12183,8 @@ async def test_stop_replication_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.StopReplicationRequest()
+        request = replication.StopReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10450,7 +12284,8 @@ def test_resume_replication(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.ResumeReplicationRequest()
+        request = replication.ResumeReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10469,6 +12304,56 @@ def test_resume_replication_empty_call():
         type(client.transport.resume_replication), "__call__"
     ) as call:
         client.resume_replication()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.ResumeReplicationRequest()
+
+
+def test_resume_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.ResumeReplicationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_replication), "__call__"
+    ) as call:
+        client.resume_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.ResumeReplicationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_replication_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_replication), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.resume_replication()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == replication.ResumeReplicationRequest()
@@ -10500,7 +12385,8 @@ async def test_resume_replication_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.ResumeReplicationRequest()
+        request = replication.ResumeReplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10604,7 +12490,8 @@ def test_reverse_replication_direction(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.ReverseReplicationDirectionRequest()
+        request = replication.ReverseReplicationDirectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10623,6 +12510,56 @@ def test_reverse_replication_direction_empty_call():
         type(client.transport.reverse_replication_direction), "__call__"
     ) as call:
         client.reverse_replication_direction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.ReverseReplicationDirectionRequest()
+
+
+def test_reverse_replication_direction_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.ReverseReplicationDirectionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reverse_replication_direction), "__call__"
+    ) as call:
+        client.reverse_replication_direction(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.ReverseReplicationDirectionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reverse_replication_direction_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reverse_replication_direction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reverse_replication_direction()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == replication.ReverseReplicationDirectionRequest()
@@ -10655,7 +12592,8 @@ async def test_reverse_replication_direction_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == replication.ReverseReplicationDirectionRequest()
+        request = replication.ReverseReplicationDirectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10759,7 +12697,8 @@ def test_create_backup_vault(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_vault.CreateBackupVaultRequest()
+        request = gcn_backup_vault.CreateBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10778,6 +12717,58 @@ def test_create_backup_vault_empty_call():
         type(client.transport.create_backup_vault), "__call__"
     ) as call:
         client.create_backup_vault()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_vault.CreateBackupVaultRequest()
+
+
+def test_create_backup_vault_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_backup_vault.CreateBackupVaultRequest(
+        parent="parent_value",
+        backup_vault_id="backup_vault_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_vault), "__call__"
+    ) as call:
+        client.create_backup_vault(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_vault.CreateBackupVaultRequest(
+            parent="parent_value",
+            backup_vault_id="backup_vault_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_backup_vault_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_vault), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_backup_vault()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_backup_vault.CreateBackupVaultRequest()
@@ -10810,7 +12801,8 @@ async def test_create_backup_vault_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_vault.CreateBackupVaultRequest()
+        request = gcn_backup_vault.CreateBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11022,7 +13014,8 @@ def test_get_backup_vault(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_vault.GetBackupVaultRequest()
+        request = backup_vault.GetBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_vault.BackupVault)
@@ -11042,6 +13035,56 @@ def test_get_backup_vault_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup_vault), "__call__") as call:
         client.get_backup_vault()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_vault.GetBackupVaultRequest()
+
+
+def test_get_backup_vault_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup_vault.GetBackupVaultRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup_vault), "__call__") as call:
+        client.get_backup_vault(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_vault.GetBackupVaultRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_vault_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup_vault), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_vault.BackupVault(
+                name="name_value",
+                state=backup_vault.BackupVault.State.CREATING,
+                description="description_value",
+            )
+        )
+        response = await client.get_backup_vault()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup_vault.GetBackupVaultRequest()
@@ -11075,7 +13118,8 @@ async def test_get_backup_vault_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_vault.GetBackupVaultRequest()
+        request = backup_vault.GetBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_vault.BackupVault)
@@ -11263,7 +13307,8 @@ def test_list_backup_vaults(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_vault.ListBackupVaultsRequest()
+        request = backup_vault.ListBackupVaultsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupVaultsPager)
@@ -11284,6 +13329,65 @@ def test_list_backup_vaults_empty_call():
         type(client.transport.list_backup_vaults), "__call__"
     ) as call:
         client.list_backup_vaults()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_vault.ListBackupVaultsRequest()
+
+
+def test_list_backup_vaults_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup_vault.ListBackupVaultsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_vaults), "__call__"
+    ) as call:
+        client.list_backup_vaults(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_vault.ListBackupVaultsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backup_vaults_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_vaults), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_vault.ListBackupVaultsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backup_vaults()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup_vault.ListBackupVaultsRequest()
@@ -11318,7 +13422,8 @@ async def test_list_backup_vaults_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_vault.ListBackupVaultsRequest()
+        request = backup_vault.ListBackupVaultsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupVaultsAsyncPager)
@@ -11708,7 +13813,8 @@ def test_update_backup_vault(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_vault.UpdateBackupVaultRequest()
+        request = gcn_backup_vault.UpdateBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11727,6 +13833,52 @@ def test_update_backup_vault_empty_call():
         type(client.transport.update_backup_vault), "__call__"
     ) as call:
         client.update_backup_vault()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_vault.UpdateBackupVaultRequest()
+
+
+def test_update_backup_vault_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_backup_vault.UpdateBackupVaultRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_vault), "__call__"
+    ) as call:
+        client.update_backup_vault(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_vault.UpdateBackupVaultRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_backup_vault_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_vault), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_backup_vault()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_backup_vault.UpdateBackupVaultRequest()
@@ -11759,7 +13911,8 @@ async def test_update_backup_vault_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_vault.UpdateBackupVaultRequest()
+        request = gcn_backup_vault.UpdateBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11959,7 +14112,8 @@ def test_delete_backup_vault(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_vault.DeleteBackupVaultRequest()
+        request = backup_vault.DeleteBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11978,6 +14132,56 @@ def test_delete_backup_vault_empty_call():
         type(client.transport.delete_backup_vault), "__call__"
     ) as call:
         client.delete_backup_vault()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_vault.DeleteBackupVaultRequest()
+
+
+def test_delete_backup_vault_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup_vault.DeleteBackupVaultRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_vault), "__call__"
+    ) as call:
+        client.delete_backup_vault(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_vault.DeleteBackupVaultRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_vault_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_vault), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_backup_vault()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup_vault.DeleteBackupVaultRequest()
@@ -12009,7 +14213,8 @@ async def test_delete_backup_vault_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_vault.DeleteBackupVaultRequest()
+        request = backup_vault.DeleteBackupVaultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12197,7 +14402,8 @@ def test_create_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup.CreateBackupRequest()
+        request = gcn_backup.CreateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12214,6 +14420,54 @@ def test_create_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
         client.create_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup.CreateBackupRequest()
+
+
+def test_create_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_backup.CreateBackupRequest(
+        parent="parent_value",
+        backup_id="backup_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        client.create_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup.CreateBackupRequest(
+            parent="parent_value",
+            backup_id="backup_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_backup.CreateBackupRequest()
@@ -12243,7 +14497,8 @@ async def test_create_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup.CreateBackupRequest()
+        request = gcn_backup.CreateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12452,7 +14707,8 @@ def test_get_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.GetBackupRequest()
+        request = backup.GetBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup.Backup)
@@ -12477,6 +14733,61 @@ def test_get_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
         client.get_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup.GetBackupRequest()
+
+
+def test_get_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup.GetBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup.GetBackupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.Backup(
+                name="name_value",
+                state=backup.Backup.State.CREATING,
+                description="description_value",
+                volume_usage_bytes=1938,
+                backup_type=backup.Backup.Type.MANUAL,
+                source_volume="source_volume_value",
+                source_snapshot="source_snapshot_value",
+                chain_storage_bytes=2013,
+            )
+        )
+        response = await client.get_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup.GetBackupRequest()
@@ -12515,7 +14826,8 @@ async def test_get_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.GetBackupRequest()
+        request = backup.GetBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup.Backup)
@@ -12702,7 +15014,8 @@ def test_list_backups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupsRequest()
+        request = backup.ListBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsPager)
@@ -12721,6 +15034,61 @@ def test_list_backups_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
         client.list_backups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup.ListBackupsRequest()
+
+
+def test_list_backups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup.ListBackupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup.ListBackupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup.ListBackupsRequest()
@@ -12753,7 +15121,8 @@ async def test_list_backups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupsRequest()
+        request = backup.ListBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsAsyncPager)
@@ -13125,7 +15494,8 @@ def test_delete_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.DeleteBackupRequest()
+        request = backup.DeleteBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13142,6 +15512,52 @@ def test_delete_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
         client.delete_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup.DeleteBackupRequest()
+
+
+def test_delete_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup.DeleteBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup.DeleteBackupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup.DeleteBackupRequest()
@@ -13171,7 +15587,8 @@ async def test_delete_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.DeleteBackupRequest()
+        request = backup.DeleteBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13351,7 +15768,8 @@ def test_update_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup.UpdateBackupRequest()
+        request = gcn_backup.UpdateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13368,6 +15786,48 @@ def test_update_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
         client.update_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup.UpdateBackupRequest()
+
+
+def test_update_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_backup.UpdateBackupRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        client.update_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup.UpdateBackupRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_backup.UpdateBackupRequest()
@@ -13397,7 +15857,8 @@ async def test_update_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup.UpdateBackupRequest()
+        request = gcn_backup.UpdateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13589,7 +16050,8 @@ def test_create_backup_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_policy.CreateBackupPolicyRequest()
+        request = gcn_backup_policy.CreateBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13608,6 +16070,58 @@ def test_create_backup_policy_empty_call():
         type(client.transport.create_backup_policy), "__call__"
     ) as call:
         client.create_backup_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_policy.CreateBackupPolicyRequest()
+
+
+def test_create_backup_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_backup_policy.CreateBackupPolicyRequest(
+        parent="parent_value",
+        backup_policy_id="backup_policy_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_policy), "__call__"
+    ) as call:
+        client.create_backup_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_policy.CreateBackupPolicyRequest(
+            parent="parent_value",
+            backup_policy_id="backup_policy_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_backup_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_backup_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_backup_policy.CreateBackupPolicyRequest()
@@ -13640,7 +16154,8 @@ async def test_create_backup_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_policy.CreateBackupPolicyRequest()
+        request = gcn_backup_policy.CreateBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13859,7 +16374,8 @@ def test_get_backup_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_policy.GetBackupPolicyRequest()
+        request = backup_policy.GetBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_policy.BackupPolicy)
@@ -13886,6 +16402,65 @@ def test_get_backup_policy_empty_call():
         type(client.transport.get_backup_policy), "__call__"
     ) as call:
         client.get_backup_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_policy.GetBackupPolicyRequest()
+
+
+def test_get_backup_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup_policy.GetBackupPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_policy), "__call__"
+    ) as call:
+        client.get_backup_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_policy.GetBackupPolicyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_policy.BackupPolicy(
+                name="name_value",
+                daily_backup_limit=1894,
+                weekly_backup_limit=2020,
+                monthly_backup_limit=2142,
+                description="description_value",
+                enabled=True,
+                assigned_volume_count=2253,
+                state=backup_policy.BackupPolicy.State.CREATING,
+            )
+        )
+        response = await client.get_backup_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup_policy.GetBackupPolicyRequest()
@@ -13926,7 +16501,8 @@ async def test_get_backup_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_policy.GetBackupPolicyRequest()
+        request = backup_policy.GetBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_policy.BackupPolicy)
@@ -14127,7 +16703,8 @@ def test_list_backup_policies(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_policy.ListBackupPoliciesRequest()
+        request = backup_policy.ListBackupPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupPoliciesPager)
@@ -14148,6 +16725,65 @@ def test_list_backup_policies_empty_call():
         type(client.transport.list_backup_policies), "__call__"
     ) as call:
         client.list_backup_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_policy.ListBackupPoliciesRequest()
+
+
+def test_list_backup_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup_policy.ListBackupPoliciesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_policies), "__call__"
+    ) as call:
+        client.list_backup_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_policy.ListBackupPoliciesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backup_policies_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_policy.ListBackupPoliciesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backup_policies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup_policy.ListBackupPoliciesRequest()
@@ -14183,7 +16819,8 @@ async def test_list_backup_policies_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_policy.ListBackupPoliciesRequest()
+        request = backup_policy.ListBackupPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupPoliciesAsyncPager)
@@ -14573,7 +17210,8 @@ def test_update_backup_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_policy.UpdateBackupPolicyRequest()
+        request = gcn_backup_policy.UpdateBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14592,6 +17230,52 @@ def test_update_backup_policy_empty_call():
         type(client.transport.update_backup_policy), "__call__"
     ) as call:
         client.update_backup_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_policy.UpdateBackupPolicyRequest()
+
+
+def test_update_backup_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcn_backup_policy.UpdateBackupPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_policy), "__call__"
+    ) as call:
+        client.update_backup_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcn_backup_policy.UpdateBackupPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_backup_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_backup_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcn_backup_policy.UpdateBackupPolicyRequest()
@@ -14624,7 +17308,8 @@ async def test_update_backup_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_backup_policy.UpdateBackupPolicyRequest()
+        request = gcn_backup_policy.UpdateBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14824,7 +17509,8 @@ def test_delete_backup_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_policy.DeleteBackupPolicyRequest()
+        request = backup_policy.DeleteBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14843,6 +17529,56 @@ def test_delete_backup_policy_empty_call():
         type(client.transport.delete_backup_policy), "__call__"
     ) as call:
         client.delete_backup_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_policy.DeleteBackupPolicyRequest()
+
+
+def test_delete_backup_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = backup_policy.DeleteBackupPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_policy), "__call__"
+    ) as call:
+        client.delete_backup_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == backup_policy.DeleteBackupPolicyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NetAppAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_backup_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == backup_policy.DeleteBackupPolicyRequest()
@@ -14875,7 +17611,8 @@ async def test_delete_backup_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_policy.DeleteBackupPolicyRequest()
+        request = backup_policy.DeleteBackupPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

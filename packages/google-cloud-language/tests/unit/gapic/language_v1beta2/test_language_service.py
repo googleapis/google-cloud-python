@@ -1172,7 +1172,8 @@ def test_analyze_sentiment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeSentimentRequest()
+        request = language_service.AnalyzeSentimentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSentimentResponse)
@@ -1192,6 +1193,54 @@ def test_analyze_sentiment_empty_call():
         type(client.transport.analyze_sentiment), "__call__"
     ) as call:
         client.analyze_sentiment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeSentimentRequest()
+
+
+def test_analyze_sentiment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.AnalyzeSentimentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_sentiment), "__call__"
+    ) as call:
+        client.analyze_sentiment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeSentimentRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_sentiment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_sentiment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.AnalyzeSentimentResponse(
+                language="language_value",
+            )
+        )
+        response = await client.analyze_sentiment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.AnalyzeSentimentRequest()
@@ -1226,7 +1275,8 @@ async def test_analyze_sentiment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeSentimentRequest()
+        request = language_service.AnalyzeSentimentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSentimentResponse)
@@ -1374,7 +1424,8 @@ def test_analyze_entities(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeEntitiesRequest()
+        request = language_service.AnalyzeEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitiesResponse)
@@ -1392,6 +1443,50 @@ def test_analyze_entities_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_entities), "__call__") as call:
         client.analyze_entities()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeEntitiesRequest()
+
+
+def test_analyze_entities_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.AnalyzeEntitiesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_entities), "__call__") as call:
+        client.analyze_entities(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeEntitiesRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_entities_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_entities), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.AnalyzeEntitiesResponse(
+                language="language_value",
+            )
+        )
+        response = await client.analyze_entities()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.AnalyzeEntitiesRequest()
@@ -1424,7 +1519,8 @@ async def test_analyze_entities_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeEntitiesRequest()
+        request = language_service.AnalyzeEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitiesResponse)
@@ -1570,7 +1666,8 @@ def test_analyze_entity_sentiment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeEntitySentimentRequest()
+        request = language_service.AnalyzeEntitySentimentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitySentimentResponse)
@@ -1590,6 +1687,54 @@ def test_analyze_entity_sentiment_empty_call():
         type(client.transport.analyze_entity_sentiment), "__call__"
     ) as call:
         client.analyze_entity_sentiment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeEntitySentimentRequest()
+
+
+def test_analyze_entity_sentiment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.AnalyzeEntitySentimentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_entity_sentiment), "__call__"
+    ) as call:
+        client.analyze_entity_sentiment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeEntitySentimentRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_entity_sentiment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.analyze_entity_sentiment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.AnalyzeEntitySentimentResponse(
+                language="language_value",
+            )
+        )
+        response = await client.analyze_entity_sentiment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.AnalyzeEntitySentimentRequest()
@@ -1624,7 +1769,8 @@ async def test_analyze_entity_sentiment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeEntitySentimentRequest()
+        request = language_service.AnalyzeEntitySentimentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitySentimentResponse)
@@ -1772,7 +1918,8 @@ def test_analyze_syntax(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeSyntaxRequest()
+        request = language_service.AnalyzeSyntaxRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSyntaxResponse)
@@ -1790,6 +1937,50 @@ def test_analyze_syntax_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_syntax), "__call__") as call:
         client.analyze_syntax()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeSyntaxRequest()
+
+
+def test_analyze_syntax_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.AnalyzeSyntaxRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_syntax), "__call__") as call:
+        client.analyze_syntax(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnalyzeSyntaxRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_syntax_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_syntax), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.AnalyzeSyntaxResponse(
+                language="language_value",
+            )
+        )
+        response = await client.analyze_syntax()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.AnalyzeSyntaxRequest()
@@ -1821,7 +2012,8 @@ async def test_analyze_syntax_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeSyntaxRequest()
+        request = language_service.AnalyzeSyntaxRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSyntaxResponse)
@@ -1963,7 +2155,8 @@ def test_classify_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.ClassifyTextRequest()
+        request = language_service.ClassifyTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ClassifyTextResponse)
@@ -1980,6 +2173,48 @@ def test_classify_text_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.classify_text), "__call__") as call:
         client.classify_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ClassifyTextRequest()
+
+
+def test_classify_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.ClassifyTextRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.classify_text), "__call__") as call:
+        client.classify_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ClassifyTextRequest()
+
+
+@pytest.mark.asyncio
+async def test_classify_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.classify_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.ClassifyTextResponse()
+        )
+        response = await client.classify_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.ClassifyTextRequest()
@@ -2009,7 +2244,8 @@ async def test_classify_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.ClassifyTextRequest()
+        request = language_service.ClassifyTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ClassifyTextResponse)
@@ -2140,7 +2376,8 @@ def test_moderate_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.ModerateTextRequest()
+        request = language_service.ModerateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ModerateTextResponse)
@@ -2157,6 +2394,48 @@ def test_moderate_text_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
         client.moderate_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ModerateTextRequest()
+
+
+def test_moderate_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.ModerateTextRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        client.moderate_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ModerateTextRequest()
+
+
+@pytest.mark.asyncio
+async def test_moderate_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.ModerateTextResponse()
+        )
+        response = await client.moderate_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.ModerateTextRequest()
@@ -2186,7 +2465,8 @@ async def test_moderate_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.ModerateTextRequest()
+        request = language_service.ModerateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ModerateTextResponse)
@@ -2319,7 +2599,8 @@ def test_annotate_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnnotateTextRequest()
+        request = language_service.AnnotateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnnotateTextResponse)
@@ -2337,6 +2618,50 @@ def test_annotate_text_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.annotate_text), "__call__") as call:
         client.annotate_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnnotateTextRequest()
+
+
+def test_annotate_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = language_service.AnnotateTextRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.annotate_text), "__call__") as call:
+        client.annotate_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.AnnotateTextRequest()
+
+
+@pytest.mark.asyncio
+async def test_annotate_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.annotate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.AnnotateTextResponse(
+                language="language_value",
+            )
+        )
+        response = await client.annotate_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == language_service.AnnotateTextRequest()
@@ -2368,7 +2693,8 @@ async def test_annotate_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnnotateTextRequest()
+        request = language_service.AnnotateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnnotateTextResponse)

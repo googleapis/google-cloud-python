@@ -1182,7 +1182,8 @@ def test_create_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.CreateServiceRequest()
+        request = service_service.CreateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_service.Service)
@@ -1201,6 +1202,57 @@ def test_create_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         client.create_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.CreateServiceRequest()
+
+
+def test_create_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.CreateServiceRequest(
+        parent="parent_value",
+        service_id="service_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        client.create_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.CreateServiceRequest(
+            parent="parent_value",
+            service_id="service_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_service.Service(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.CreateServiceRequest()
@@ -1233,7 +1285,8 @@ async def test_create_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.CreateServiceRequest()
+        request = service_service.CreateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_service.Service)
@@ -1424,7 +1477,8 @@ def test_get_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.GetServiceRequest()
+        request = service_service.GetServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
@@ -1443,6 +1497,55 @@ def test_get_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         client.get_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.GetServiceRequest()
+
+
+def test_get_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.GetServiceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        client.get_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.GetServiceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Service(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.GetServiceRequest()
@@ -1475,7 +1578,8 @@ async def test_get_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.GetServiceRequest()
+        request = service_service.GetServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
@@ -1655,7 +1759,8 @@ def test_list_services(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.ListServicesRequest()
+        request = service_service.ListServicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
@@ -1673,6 +1778,58 @@ def test_list_services_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         client.list_services()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.ListServicesRequest()
+
+
+def test_list_services_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.ListServicesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        client.list_services(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.ListServicesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_services_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_service.ListServicesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_services()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.ListServicesRequest()
@@ -1704,7 +1861,8 @@ async def test_list_services_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.ListServicesRequest()
+        request = service_service.ListServicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
@@ -2078,7 +2236,8 @@ def test_update_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.UpdateServiceRequest()
+        request = service_service.UpdateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_service.Service)
@@ -2097,6 +2256,51 @@ def test_update_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         client.update_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.UpdateServiceRequest()
+
+
+def test_update_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.UpdateServiceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        client.update_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.UpdateServiceRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_service.Service(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.UpdateServiceRequest()
@@ -2129,7 +2333,8 @@ async def test_update_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.UpdateServiceRequest()
+        request = service_service.UpdateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_service.Service)
@@ -2307,7 +2512,8 @@ def test_delete_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.DeleteServiceRequest()
+        request = service_service.DeleteServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2324,6 +2530,50 @@ def test_delete_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         client.delete_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.DeleteServiceRequest()
+
+
+def test_delete_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.DeleteServiceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        client.delete_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.DeleteServiceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.DeleteServiceRequest()
@@ -2351,7 +2601,8 @@ async def test_delete_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.DeleteServiceRequest()
+        request = service_service.DeleteServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2534,7 +2785,8 @@ def test_create_service_level_objective(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.CreateServiceLevelObjectiveRequest()
+        request = service_service.CreateServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -2556,6 +2808,62 @@ def test_create_service_level_objective_empty_call():
         type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         client.create_service_level_objective()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.CreateServiceLevelObjectiveRequest()
+
+
+def test_create_service_level_objective_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.CreateServiceLevelObjectiveRequest(
+        parent="parent_value",
+        service_level_objective_id="service_level_objective_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_level_objective), "__call__"
+    ) as call:
+        client.create_service_level_objective(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.CreateServiceLevelObjectiveRequest(
+            parent="parent_value",
+            service_level_objective_id="service_level_objective_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_service_level_objective_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_level_objective), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ServiceLevelObjective(
+                name="name_value",
+                display_name="display_name_value",
+                goal=0.419,
+            )
+        )
+        response = await client.create_service_level_objective()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.CreateServiceLevelObjectiveRequest()
@@ -2592,7 +2900,8 @@ async def test_create_service_level_objective_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.CreateServiceLevelObjectiveRequest()
+        request = service_service.CreateServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -2800,7 +3109,8 @@ def test_get_service_level_objective(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.GetServiceLevelObjectiveRequest()
+        request = service_service.GetServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -2822,6 +3132,60 @@ def test_get_service_level_objective_empty_call():
         type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         client.get_service_level_objective()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.GetServiceLevelObjectiveRequest()
+
+
+def test_get_service_level_objective_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.GetServiceLevelObjectiveRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_level_objective), "__call__"
+    ) as call:
+        client.get_service_level_objective(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.GetServiceLevelObjectiveRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_service_level_objective_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_level_objective), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ServiceLevelObjective(
+                name="name_value",
+                display_name="display_name_value",
+                goal=0.419,
+            )
+        )
+        response = await client.get_service_level_objective()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.GetServiceLevelObjectiveRequest()
@@ -2858,7 +3222,8 @@ async def test_get_service_level_objective_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.GetServiceLevelObjectiveRequest()
+        request = service_service.GetServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -3053,7 +3418,8 @@ def test_list_service_level_objectives(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.ListServiceLevelObjectivesRequest()
+        request = service_service.ListServiceLevelObjectivesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceLevelObjectivesPager)
@@ -3073,6 +3439,62 @@ def test_list_service_level_objectives_empty_call():
         type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         client.list_service_level_objectives()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.ListServiceLevelObjectivesRequest()
+
+
+def test_list_service_level_objectives_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.ListServiceLevelObjectivesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_level_objectives), "__call__"
+    ) as call:
+        client.list_service_level_objectives(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.ListServiceLevelObjectivesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_service_level_objectives_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_level_objectives), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_service.ListServiceLevelObjectivesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_service_level_objectives()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.ListServiceLevelObjectivesRequest()
@@ -3107,7 +3529,8 @@ async def test_list_service_level_objectives_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.ListServiceLevelObjectivesRequest()
+        request = service_service.ListServiceLevelObjectivesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceLevelObjectivesAsyncPager)
@@ -3501,7 +3924,8 @@ def test_update_service_level_objective(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
+        request = service_service.UpdateServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -3523,6 +3947,56 @@ def test_update_service_level_objective_empty_call():
         type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         client.update_service_level_objective()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
+
+
+def test_update_service_level_objective_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.UpdateServiceLevelObjectiveRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_service_level_objective), "__call__"
+    ) as call:
+        client.update_service_level_objective(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_service_level_objective_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_service_level_objective), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ServiceLevelObjective(
+                name="name_value",
+                display_name="display_name_value",
+                goal=0.419,
+            )
+        )
+        response = await client.update_service_level_objective()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
@@ -3559,7 +4033,8 @@ async def test_update_service_level_objective_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
+        request = service_service.UpdateServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -3752,7 +4227,8 @@ def test_delete_service_level_objective(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.DeleteServiceLevelObjectiveRequest()
+        request = service_service.DeleteServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3771,6 +4247,54 @@ def test_delete_service_level_objective_empty_call():
         type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         client.delete_service_level_objective()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.DeleteServiceLevelObjectiveRequest()
+
+
+def test_delete_service_level_objective_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceMonitoringServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_service.DeleteServiceLevelObjectiveRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_service_level_objective), "__call__"
+    ) as call:
+        client.delete_service_level_objective(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_service.DeleteServiceLevelObjectiveRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_service_level_objective_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceMonitoringServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_service_level_objective), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_service_level_objective()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_service.DeleteServiceLevelObjectiveRequest()
@@ -3801,7 +4325,8 @@ async def test_delete_service_level_objective_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_service.DeleteServiceLevelObjectiveRequest()
+        request = service_service.DeleteServiceLevelObjectiveRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

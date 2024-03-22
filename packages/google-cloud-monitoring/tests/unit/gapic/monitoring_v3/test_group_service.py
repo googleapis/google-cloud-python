@@ -1107,7 +1107,8 @@ def test_list_groups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupsRequest()
+        request = group_service.ListGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupsPager)
@@ -1125,6 +1126,62 @@ def test_list_groups_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         client.list_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.ListGroupsRequest()
+
+
+def test_list_groups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = group_service.ListGroupsRequest(
+        name="name_value",
+        children_of_group="children_of_group_value",
+        ancestors_of_group="ancestors_of_group_value",
+        descendants_of_group="descendants_of_group_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
+        client.list_groups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.ListGroupsRequest(
+            name="name_value",
+            children_of_group="children_of_group_value",
+            ancestors_of_group="ancestors_of_group_value",
+            descendants_of_group="descendants_of_group_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_groups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GroupServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            group_service.ListGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_groups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == group_service.ListGroupsRequest()
@@ -1156,7 +1213,8 @@ async def test_list_groups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupsRequest()
+        request = group_service.ListGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupsAsyncPager)
@@ -1533,7 +1591,8 @@ def test_get_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.GetGroupRequest()
+        request = group_service.GetGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, group.Group)
@@ -1555,6 +1614,58 @@ def test_get_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         client.get_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.GetGroupRequest()
+
+
+def test_get_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = group_service.GetGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
+        client.get_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.GetGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GroupServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            group.Group(
+                name="name_value",
+                display_name="display_name_value",
+                parent_name="parent_name_value",
+                filter="filter_value",
+                is_cluster=True,
+            )
+        )
+        response = await client.get_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == group_service.GetGroupRequest()
@@ -1590,7 +1701,8 @@ async def test_get_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.GetGroupRequest()
+        request = group_service.GetGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, group.Group)
@@ -1777,7 +1889,8 @@ def test_create_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.CreateGroupRequest()
+        request = group_service.CreateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_group.Group)
@@ -1799,6 +1912,58 @@ def test_create_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         client.create_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.CreateGroupRequest()
+
+
+def test_create_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = group_service.CreateGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
+        client.create_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.CreateGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GroupServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_group.Group(
+                name="name_value",
+                display_name="display_name_value",
+                parent_name="parent_name_value",
+                filter="filter_value",
+                is_cluster=True,
+            )
+        )
+        response = await client.create_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == group_service.CreateGroupRequest()
@@ -1834,7 +1999,8 @@ async def test_create_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.CreateGroupRequest()
+        request = group_service.CreateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_group.Group)
@@ -2031,7 +2197,8 @@ def test_update_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.UpdateGroupRequest()
+        request = group_service.UpdateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_group.Group)
@@ -2053,6 +2220,54 @@ def test_update_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         client.update_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.UpdateGroupRequest()
+
+
+def test_update_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = group_service.UpdateGroupRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        client.update_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.UpdateGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GroupServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_group.Group(
+                name="name_value",
+                display_name="display_name_value",
+                parent_name="parent_name_value",
+                filter="filter_value",
+                is_cluster=True,
+            )
+        )
+        response = await client.update_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == group_service.UpdateGroupRequest()
@@ -2088,7 +2303,8 @@ async def test_update_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.UpdateGroupRequest()
+        request = group_service.UpdateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_group.Group)
@@ -2269,7 +2485,8 @@ def test_delete_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.DeleteGroupRequest()
+        request = group_service.DeleteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2286,6 +2503,50 @@ def test_delete_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         client.delete_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.DeleteGroupRequest()
+
+
+def test_delete_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = group_service.DeleteGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
+        client.delete_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.DeleteGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GroupServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == group_service.DeleteGroupRequest()
@@ -2313,7 +2574,8 @@ async def test_delete_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.DeleteGroupRequest()
+        request = group_service.DeleteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2494,7 +2756,8 @@ def test_list_group_members(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupMembersRequest()
+        request = group_service.ListGroupMembersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupMembersPager)
@@ -2515,6 +2778,63 @@ def test_list_group_members_empty_call():
         type(client.transport.list_group_members), "__call__"
     ) as call:
         client.list_group_members()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.ListGroupMembersRequest()
+
+
+def test_list_group_members_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = group_service.ListGroupMembersRequest(
+        name="name_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_group_members), "__call__"
+    ) as call:
+        client.list_group_members(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == group_service.ListGroupMembersRequest(
+            name="name_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_group_members_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GroupServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_group_members), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            group_service.ListGroupMembersResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_group_members()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == group_service.ListGroupMembersRequest()
@@ -2549,7 +2869,8 @@ async def test_list_group_members_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupMembersRequest()
+        request = group_service.ListGroupMembersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupMembersAsyncPager)

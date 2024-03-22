@@ -1116,7 +1116,8 @@ def test_list_ekm_connections(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.ListEkmConnectionsRequest()
+        request = ekm_service.ListEkmConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEkmConnectionsPager)
@@ -1137,6 +1138,65 @@ def test_list_ekm_connections_empty_call():
         type(client.transport.list_ekm_connections), "__call__"
     ) as call:
         client.list_ekm_connections()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.ListEkmConnectionsRequest()
+
+
+def test_list_ekm_connections_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.ListEkmConnectionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ekm_connections), "__call__"
+    ) as call:
+        client.list_ekm_connections(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.ListEkmConnectionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_ekm_connections_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ekm_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.ListEkmConnectionsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_ekm_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.ListEkmConnectionsRequest()
@@ -1171,7 +1231,8 @@ async def test_list_ekm_connections_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.ListEkmConnectionsRequest()
+        request = ekm_service.ListEkmConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEkmConnectionsAsyncPager)
@@ -1566,7 +1627,8 @@ def test_get_ekm_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.GetEkmConnectionRequest()
+        request = ekm_service.GetEkmConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConnection)
@@ -1592,6 +1654,61 @@ def test_get_ekm_connection_empty_call():
         type(client.transport.get_ekm_connection), "__call__"
     ) as call:
         client.get_ekm_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.GetEkmConnectionRequest()
+
+
+def test_get_ekm_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.GetEkmConnectionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ekm_connection), "__call__"
+    ) as call:
+        client.get_ekm_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.GetEkmConnectionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_ekm_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ekm_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.EkmConnection(
+                name="name_value",
+                etag="etag_value",
+                key_management_mode=ekm_service.EkmConnection.KeyManagementMode.MANUAL,
+                crypto_space_path="crypto_space_path_value",
+            )
+        )
+        response = await client.get_ekm_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.GetEkmConnectionRequest()
@@ -1628,7 +1745,8 @@ async def test_get_ekm_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.GetEkmConnectionRequest()
+        request = ekm_service.GetEkmConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConnection)
@@ -1830,7 +1948,8 @@ def test_create_ekm_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.CreateEkmConnectionRequest()
+        request = ekm_service.CreateEkmConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConnection)
@@ -1856,6 +1975,63 @@ def test_create_ekm_connection_empty_call():
         type(client.transport.create_ekm_connection), "__call__"
     ) as call:
         client.create_ekm_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.CreateEkmConnectionRequest()
+
+
+def test_create_ekm_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.CreateEkmConnectionRequest(
+        parent="parent_value",
+        ekm_connection_id="ekm_connection_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ekm_connection), "__call__"
+    ) as call:
+        client.create_ekm_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.CreateEkmConnectionRequest(
+            parent="parent_value",
+            ekm_connection_id="ekm_connection_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_ekm_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ekm_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.EkmConnection(
+                name="name_value",
+                etag="etag_value",
+                key_management_mode=ekm_service.EkmConnection.KeyManagementMode.MANUAL,
+                crypto_space_path="crypto_space_path_value",
+            )
+        )
+        response = await client.create_ekm_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.CreateEkmConnectionRequest()
@@ -1892,7 +2068,8 @@ async def test_create_ekm_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.CreateEkmConnectionRequest()
+        request = ekm_service.CreateEkmConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConnection)
@@ -2114,7 +2291,8 @@ def test_update_ekm_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.UpdateEkmConnectionRequest()
+        request = ekm_service.UpdateEkmConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConnection)
@@ -2140,6 +2318,57 @@ def test_update_ekm_connection_empty_call():
         type(client.transport.update_ekm_connection), "__call__"
     ) as call:
         client.update_ekm_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.UpdateEkmConnectionRequest()
+
+
+def test_update_ekm_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.UpdateEkmConnectionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ekm_connection), "__call__"
+    ) as call:
+        client.update_ekm_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.UpdateEkmConnectionRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_ekm_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ekm_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.EkmConnection(
+                name="name_value",
+                etag="etag_value",
+                key_management_mode=ekm_service.EkmConnection.KeyManagementMode.MANUAL,
+                crypto_space_path="crypto_space_path_value",
+            )
+        )
+        response = await client.update_ekm_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.UpdateEkmConnectionRequest()
@@ -2176,7 +2405,8 @@ async def test_update_ekm_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.UpdateEkmConnectionRequest()
+        request = ekm_service.UpdateEkmConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConnection)
@@ -2384,7 +2614,8 @@ def test_get_ekm_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.GetEkmConfigRequest()
+        request = ekm_service.GetEkmConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConfig)
@@ -2403,6 +2634,55 @@ def test_get_ekm_config_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_ekm_config), "__call__") as call:
         client.get_ekm_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.GetEkmConfigRequest()
+
+
+def test_get_ekm_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.GetEkmConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_ekm_config), "__call__") as call:
+        client.get_ekm_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.GetEkmConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_ekm_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_ekm_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.EkmConfig(
+                name="name_value",
+                default_ekm_connection="default_ekm_connection_value",
+            )
+        )
+        response = await client.get_ekm_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.GetEkmConfigRequest()
@@ -2435,7 +2715,8 @@ async def test_get_ekm_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.GetEkmConfigRequest()
+        request = ekm_service.GetEkmConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConfig)
@@ -2622,7 +2903,8 @@ def test_update_ekm_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.UpdateEkmConfigRequest()
+        request = ekm_service.UpdateEkmConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConfig)
@@ -2643,6 +2925,55 @@ def test_update_ekm_config_empty_call():
         type(client.transport.update_ekm_config), "__call__"
     ) as call:
         client.update_ekm_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.UpdateEkmConfigRequest()
+
+
+def test_update_ekm_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.UpdateEkmConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ekm_config), "__call__"
+    ) as call:
+        client.update_ekm_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.UpdateEkmConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_ekm_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ekm_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.EkmConfig(
+                name="name_value",
+                default_ekm_connection="default_ekm_connection_value",
+            )
+        )
+        response = await client.update_ekm_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.UpdateEkmConfigRequest()
@@ -2677,7 +3008,8 @@ async def test_update_ekm_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.UpdateEkmConfigRequest()
+        request = ekm_service.UpdateEkmConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.EkmConfig)
@@ -2879,7 +3211,8 @@ def test_verify_connectivity(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.VerifyConnectivityRequest()
+        request = ekm_service.VerifyConnectivityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.VerifyConnectivityResponse)
@@ -2898,6 +3231,56 @@ def test_verify_connectivity_empty_call():
         type(client.transport.verify_connectivity), "__call__"
     ) as call:
         client.verify_connectivity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.VerifyConnectivityRequest()
+
+
+def test_verify_connectivity_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EkmServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ekm_service.VerifyConnectivityRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_connectivity), "__call__"
+    ) as call:
+        client.verify_connectivity(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ekm_service.VerifyConnectivityRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_verify_connectivity_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EkmServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_connectivity), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_service.VerifyConnectivityResponse()
+        )
+        response = await client.verify_connectivity()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ekm_service.VerifyConnectivityRequest()
@@ -2929,7 +3312,8 @@ async def test_verify_connectivity_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.VerifyConnectivityRequest()
+        request = ekm_service.VerifyConnectivityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.VerifyConnectivityResponse)
