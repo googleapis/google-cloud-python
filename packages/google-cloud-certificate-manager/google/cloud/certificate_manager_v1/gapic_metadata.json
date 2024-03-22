@@ -35,6 +35,11 @@
                 "create_dns_authorization"
               ]
             },
+            "CreateTrustConfig": {
+              "methods": [
+                "create_trust_config"
+              ]
+            },
             "DeleteCertificate": {
               "methods": [
                 "delete_certificate"
@@ -58,6 +63,11 @@
             "DeleteDnsAuthorization": {
               "methods": [
                 "delete_dns_authorization"
+              ]
+            },
+            "DeleteTrustConfig": {
+              "methods": [
+                "delete_trust_config"
               ]
             },
             "GetCertificate": {
@@ -85,6 +95,11 @@
                 "get_dns_authorization"
               ]
             },
+            "GetTrustConfig": {
+              "methods": [
+                "get_trust_config"
+              ]
+            },
             "ListCertificateIssuanceConfigs": {
               "methods": [
                 "list_certificate_issuance_configs"
@@ -110,6 +125,11 @@
                 "list_dns_authorizations"
               ]
             },
+            "ListTrustConfigs": {
+              "methods": [
+                "list_trust_configs"
+              ]
+            },
             "UpdateCertificate": {
               "methods": [
                 "update_certificate"
@@ -128,6 +148,11 @@
             "UpdateDnsAuthorization": {
               "methods": [
                 "update_dns_authorization"
+              ]
+            },
+            "UpdateTrustConfig": {
+              "methods": [
+                "update_trust_config"
               ]
             }
           }
@@ -160,6 +185,11 @@
                 "create_dns_authorization"
               ]
             },
+            "CreateTrustConfig": {
+              "methods": [
+                "create_trust_config"
+              ]
+            },
             "DeleteCertificate": {
               "methods": [
                 "delete_certificate"
@@ -183,6 +213,11 @@
             "DeleteDnsAuthorization": {
               "methods": [
                 "delete_dns_authorization"
+              ]
+            },
+            "DeleteTrustConfig": {
+              "methods": [
+                "delete_trust_config"
               ]
             },
             "GetCertificate": {
@@ -210,6 +245,11 @@
                 "get_dns_authorization"
               ]
             },
+            "GetTrustConfig": {
+              "methods": [
+                "get_trust_config"
+              ]
+            },
             "ListCertificateIssuanceConfigs": {
               "methods": [
                 "list_certificate_issuance_configs"
@@ -235,6 +275,11 @@
                 "list_dns_authorizations"
               ]
             },
+            "ListTrustConfigs": {
+              "methods": [
+                "list_trust_configs"
+              ]
+            },
             "UpdateCertificate": {
               "methods": [
                 "update_certificate"
@@ -253,6 +298,11 @@
             "UpdateDnsAuthorization": {
               "methods": [
                 "update_dns_authorization"
+              ]
+            },
+            "UpdateTrustConfig": {
+              "methods": [
+                "update_trust_config"
               ]
             }
           }
@@ -285,6 +335,11 @@
                 "create_dns_authorization"
               ]
             },
+            "CreateTrustConfig": {
+              "methods": [
+                "create_trust_config"
+              ]
+            },
             "DeleteCertificate": {
               "methods": [
                 "delete_certificate"
@@ -308,6 +363,11 @@
             "DeleteDnsAuthorization": {
               "methods": [
                 "delete_dns_authorization"
+              ]
+            },
+            "DeleteTrustConfig": {
+              "methods": [
+                "delete_trust_config"
               ]
             },
             "GetCertificate": {
@@ -335,6 +395,11 @@
                 "get_dns_authorization"
               ]
             },
+            "GetTrustConfig": {
+              "methods": [
+                "get_trust_config"
+              ]
+            },
             "ListCertificateIssuanceConfigs": {
               "methods": [
                 "list_certificate_issuance_configs"
@@ -360,6 +425,11 @@
                 "list_dns_authorizations"
               ]
             },
+            "ListTrustConfigs": {
+              "methods": [
+                "list_trust_configs"
+              ]
+            },
             "UpdateCertificate": {
               "methods": [
                 "update_certificate"
@@ -378,6 +448,11 @@
             "UpdateDnsAuthorization": {
               "methods": [
                 "update_dns_authorization"
+              ]
+            },
+            "UpdateTrustConfig": {
+              "methods": [
+                "update_trust_config"
               ]
             }
           }

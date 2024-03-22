@@ -265,10 +265,10 @@ class QuotaPreference(proto.Message):
             "locations/" must be "global". Example:
             ``projects/123/locations/global/quotaPreferences/my-config-for-us-east1``
         dimensions (MutableMapping[str, str]):
-            The dimensions that this quota preference applies to. The
-            key of the map entry is the name of a dimension, such as
-            "region", "zone", "network_id", and the value of the map
-            entry is the dimension value.
+            Immutable. The dimensions that this quota preference applies
+            to. The key of the map entry is the name of a dimension,
+            such as "region", "zone", "network_id", and the value of the
+            map entry is the dimension value.
 
             If a dimension is missing from the map of dimensions, the
             quota preference applies to all the dimension values except
@@ -395,9 +395,9 @@ class QuotaConfig(proto.Message):
             each request. The quota decrease requests do not
             have a trace id.
         annotations (MutableMapping[str, str]):
-            The annotations map for clients to store
-            small amounts of arbitrary data. Do not put PII
-            or other sensitive information here. See
+            Optional. The annotations map for clients to
+            store small amounts of arbitrary data. Do not
+            put PII or other sensitive information here. See
             https://google.aip.dev/128#annotations
         request_origin (google.cloud.cloudquotas_v1.types.QuotaConfig.Origin):
             Output only. The origin of the quota
