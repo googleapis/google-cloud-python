@@ -829,6 +829,66 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
             )
         return self._stubs["export_preview_result"]
 
+    @property
+    def list_terraform_versions(
+        self,
+    ) -> Callable[
+        [config.ListTerraformVersionsRequest],
+        Awaitable[config.ListTerraformVersionsResponse],
+    ]:
+        r"""Return a callable for the list terraform versions method over gRPC.
+
+        Lists
+        [TerraformVersion][google.cloud.config.v1.TerraformVersion]s in
+        a given project and location.
+
+        Returns:
+            Callable[[~.ListTerraformVersionsRequest],
+                    Awaitable[~.ListTerraformVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_terraform_versions" not in self._stubs:
+            self._stubs["list_terraform_versions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ListTerraformVersions",
+                request_serializer=config.ListTerraformVersionsRequest.serialize,
+                response_deserializer=config.ListTerraformVersionsResponse.deserialize,
+            )
+        return self._stubs["list_terraform_versions"]
+
+    @property
+    def get_terraform_version(
+        self,
+    ) -> Callable[
+        [config.GetTerraformVersionRequest], Awaitable[config.TerraformVersion]
+    ]:
+        r"""Return a callable for the get terraform version method over gRPC.
+
+        Gets details about a
+        [TerraformVersion][google.cloud.config.v1.TerraformVersion].
+
+        Returns:
+            Callable[[~.GetTerraformVersionRequest],
+                    Awaitable[~.TerraformVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_terraform_version" not in self._stubs:
+            self._stubs["get_terraform_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetTerraformVersion",
+                request_serializer=config.GetTerraformVersionRequest.serialize,
+                response_deserializer=config.TerraformVersion.deserialize,
+            )
+        return self._stubs["get_terraform_version"]
+
     def close(self):
         return self.grpc_channel.close()
 

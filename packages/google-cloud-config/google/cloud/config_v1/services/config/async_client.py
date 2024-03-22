@@ -85,6 +85,10 @@ class ConfigAsyncClient:
     parse_revision_path = staticmethod(ConfigClient.parse_revision_path)
     service_account_path = staticmethod(ConfigClient.service_account_path)
     parse_service_account_path = staticmethod(ConfigClient.parse_service_account_path)
+    terraform_version_path = staticmethod(ConfigClient.terraform_version_path)
+    parse_terraform_version_path = staticmethod(
+        ConfigClient.parse_terraform_version_path
+    )
     worker_pool_path = staticmethod(ConfigClient.worker_pool_path)
     parse_worker_pool_path = staticmethod(ConfigClient.parse_worker_pool_path)
     common_billing_account_path = staticmethod(ConfigClient.common_billing_account_path)
@@ -2632,6 +2636,234 @@ class ConfigAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_terraform_versions(
+        self,
+        request: Optional[Union[config.ListTerraformVersionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTerraformVersionsAsyncPager:
+        r"""Lists
+        [TerraformVersion][google.cloud.config.v1.TerraformVersion]s in
+        a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_list_terraform_versions():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ListTerraformVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_terraform_versions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.ListTerraformVersionsRequest, dict]]):
+                The request object. The request message for the
+                ListTerraformVersions method.
+            parent (:class:`str`):
+                Required. The parent in whose context the
+                TerraformVersions are listed. The parent value is in the
+                format: 'projects/{project_id}/locations/{location}'.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.services.config.pagers.ListTerraformVersionsAsyncPager:
+                The response message for the ListTerraformVersions
+                method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = config.ListTerraformVersionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_terraform_versions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListTerraformVersionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_terraform_version(
+        self,
+        request: Optional[Union[config.GetTerraformVersionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> config.TerraformVersion:
+        r"""Gets details about a
+        [TerraformVersion][google.cloud.config.v1.TerraformVersion].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_get_terraform_version():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                request = config_v1.GetTerraformVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_terraform_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.GetTerraformVersionRequest, dict]]):
+                The request object. The request message for the
+                GetTerraformVersion method.
+            name (:class:`str`):
+                Required. The name of the TerraformVersion. Format:
+                'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.types.TerraformVersion:
+                A TerraformVersion represents the
+                support state the corresponding
+                Terraform version.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = config.GetTerraformVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_terraform_version,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.

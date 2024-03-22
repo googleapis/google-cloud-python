@@ -236,6 +236,16 @@ class ConfigTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_terraform_versions: gapic_v1.method.wrap_method(
+                self.list_terraform_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_terraform_version: gapic_v1.method.wrap_method(
+                self.get_terraform_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -440,6 +450,27 @@ class ConfigTransport(abc.ABC):
             config.ExportPreviewResultResponse,
             Awaitable[config.ExportPreviewResultResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_terraform_versions(
+        self,
+    ) -> Callable[
+        [config.ListTerraformVersionsRequest],
+        Union[
+            config.ListTerraformVersionsResponse,
+            Awaitable[config.ListTerraformVersionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_terraform_version(
+        self,
+    ) -> Callable[
+        [config.GetTerraformVersionRequest],
+        Union[config.TerraformVersion, Awaitable[config.TerraformVersion]],
     ]:
         raise NotImplementedError()
 

@@ -310,6 +310,28 @@ class ConfigClient(metaclass=ConfigClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def terraform_version_path(
+        project: str,
+        location: str,
+        terraform_version: str,
+    ) -> str:
+        """Returns a fully-qualified terraform_version string."""
+        return "projects/{project}/locations/{location}/terraformVersions/{terraform_version}".format(
+            project=project,
+            location=location,
+            terraform_version=terraform_version,
+        )
+
+    @staticmethod
+    def parse_terraform_version_path(path: str) -> Dict[str, str]:
+        """Parses a terraform_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/terraformVersions/(?P<terraform_version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def worker_pool_path(
         project: str,
         location: str,
@@ -3165,6 +3187,234 @@ class ConfigClient(metaclass=ConfigClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_terraform_versions(
+        self,
+        request: Optional[Union[config.ListTerraformVersionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTerraformVersionsPager:
+        r"""Lists
+        [TerraformVersion][google.cloud.config.v1.TerraformVersion]s in
+        a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_list_terraform_versions():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ListTerraformVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_terraform_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.ListTerraformVersionsRequest, dict]):
+                The request object. The request message for the
+                ListTerraformVersions method.
+            parent (str):
+                Required. The parent in whose context the
+                TerraformVersions are listed. The parent value is in the
+                format: 'projects/{project_id}/locations/{location}'.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.services.config.pagers.ListTerraformVersionsPager:
+                The response message for the ListTerraformVersions
+                method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a config.ListTerraformVersionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, config.ListTerraformVersionsRequest):
+            request = config.ListTerraformVersionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_terraform_versions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListTerraformVersionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_terraform_version(
+        self,
+        request: Optional[Union[config.GetTerraformVersionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> config.TerraformVersion:
+        r"""Gets details about a
+        [TerraformVersion][google.cloud.config.v1.TerraformVersion].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            def sample_get_terraform_version():
+                # Create a client
+                client = config_v1.ConfigClient()
+
+                # Initialize request argument(s)
+                request = config_v1.GetTerraformVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_terraform_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.config_v1.types.GetTerraformVersionRequest, dict]):
+                The request object. The request message for the
+                GetTerraformVersion method.
+            name (str):
+                Required. The name of the TerraformVersion. Format:
+                'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.types.TerraformVersion:
+                A TerraformVersion represents the
+                support state the corresponding
+                Terraform version.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a config.GetTerraformVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, config.GetTerraformVersionRequest):
+            request = config.GetTerraformVersionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_terraform_version]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
