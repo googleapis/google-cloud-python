@@ -1143,7 +1143,8 @@ def test_list_image_versions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_versions.ListImageVersionsRequest()
+        request = image_versions.ListImageVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListImageVersionsPager)
@@ -1163,6 +1164,60 @@ def test_list_image_versions_empty_call():
         type(client.transport.list_image_versions), "__call__"
     ) as call:
         client.list_image_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == image_versions.ListImageVersionsRequest()
+
+
+def test_list_image_versions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ImageVersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = image_versions.ListImageVersionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_image_versions), "__call__"
+    ) as call:
+        client.list_image_versions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == image_versions.ListImageVersionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_image_versions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ImageVersionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_image_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            image_versions.ListImageVersionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_image_versions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == image_versions.ListImageVersionsRequest()
@@ -1197,7 +1252,8 @@ async def test_list_image_versions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_versions.ListImageVersionsRequest()
+        request = image_versions.ListImageVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListImageVersionsAsyncPager)

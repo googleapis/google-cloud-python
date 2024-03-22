@@ -1228,10 +1228,10 @@ def test_create_prediction_api_key_registration(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
+        request = (
+            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1253,6 +1253,65 @@ def test_create_prediction_api_key_registration_empty_call():
         type(client.transport.create_prediction_api_key_registration), "__call__"
     ) as call:
         client.create_prediction_api_key_registration()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
+        )
+
+
+def test_create_prediction_api_key_registration_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PredictionApiKeyRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
+            parent="parent_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_prediction_api_key_registration), "__call__"
+    ) as call:
+        client.create_prediction_api_key_registration(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_prediction_api_key_registration_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PredictionApiKeyRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_prediction_api_key_registration), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            prediction_apikey_registry_service.PredictionApiKeyRegistration(
+                api_key="api_key_value",
+            )
+        )
+        response = await client.create_prediction_api_key_registration()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1290,10 +1349,10 @@ async def test_create_prediction_api_key_registration_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
+        request = (
+            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1520,10 +1579,10 @@ def test_list_prediction_api_key_registrations(request_type, transport: str = "g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
+        request = (
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPredictionApiKeyRegistrationsPager)
@@ -1543,6 +1602,67 @@ def test_list_prediction_api_key_registrations_empty_call():
         type(client.transport.list_prediction_api_key_registrations), "__call__"
     ) as call:
         client.list_prediction_api_key_registrations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
+        )
+
+
+def test_list_prediction_api_key_registrations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PredictionApiKeyRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_prediction_api_key_registrations), "__call__"
+    ) as call:
+        client.list_prediction_api_key_registrations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_prediction_api_key_registrations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PredictionApiKeyRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_prediction_api_key_registrations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_prediction_api_key_registrations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1580,10 +1700,10 @@ async def test_list_prediction_api_key_registrations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
+        request = (
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPredictionApiKeyRegistrationsAsyncPager)
@@ -1992,10 +2112,10 @@ def test_delete_prediction_api_key_registration(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
+        request = (
+            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2014,6 +2134,61 @@ def test_delete_prediction_api_key_registration_empty_call():
         type(client.transport.delete_prediction_api_key_registration), "__call__"
     ) as call:
         client.delete_prediction_api_key_registration()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
+        )
+
+
+def test_delete_prediction_api_key_registration_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PredictionApiKeyRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
+            name="name_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_prediction_api_key_registration), "__call__"
+    ) as call:
+        client.delete_prediction_api_key_registration(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_prediction_api_key_registration_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PredictionApiKeyRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_prediction_api_key_registration), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_prediction_api_key_registration()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -2047,10 +2222,10 @@ async def test_delete_prediction_api_key_registration_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
+        request = (
+            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
