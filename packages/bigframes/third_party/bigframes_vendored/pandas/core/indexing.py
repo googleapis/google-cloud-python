@@ -1,6 +1,6 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/indexing.py
 
-from bigframes import constants
+import bigframes.constants as constants
 
 
 class IndexingMixin:

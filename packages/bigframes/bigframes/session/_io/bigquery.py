@@ -29,7 +29,6 @@ import google.cloud.bigquery as bigquery
 import bigframes
 from bigframes.core import log_adapter
 import bigframes.formatting_helpers as formatting_helpers
-import bigframes.session._io.bigquery as bigframes_io
 
 IO_ORDERING_ID = "bqdf_row_nums"
 MAX_LABELS_COUNT = 64
@@ -226,7 +225,7 @@ def start_query_with_client(
     Starts query job and waits for results.
     """
     api_methods = log_adapter.get_and_reset_api_methods()
-    job_config.labels = bigframes_io.create_job_configs_labels(
+    job_config.labels = create_job_configs_labels(
         job_configs_labels=job_config.labels, api_methods=api_methods
     )
 

@@ -35,6 +35,7 @@ import pytz
 import test_utils.prefixer
 
 import bigframes
+import bigframes.dataframe
 import tests.system.utils
 
 # Use this to control the number of cloud functions being deleted in a single

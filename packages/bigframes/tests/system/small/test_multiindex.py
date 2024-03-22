@@ -45,8 +45,9 @@ def test_read_pandas_multi_index_axes():
         [[1, 2], [3, 4]], index=index, columns=columns, dtype=pandas.Int64Dtype()
     )
     bf_df = bpd.DataFrame(pandas_df)
+    bf_df_computed = bf_df.to_pandas()
 
-    pandas.testing.assert_frame_equal(bf_df.to_pandas(), pandas_df)
+    pandas.testing.assert_frame_equal(bf_df_computed, pandas_df)
 
 
 # Row Multi-index tests

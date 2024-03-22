@@ -71,7 +71,7 @@ class Series(NDFrame):  # type: ignore[misc]
             >>> s.index # doctest: +ELLIPSIS
             Index([10, 20, 30], dtype='Int64')
             >>> s.index.values
-            array([10, 20, 30], dtype=object)
+            array([10, 20, 30])
 
         Let's try setting a multi-index case reflect via ``index`` property.
 
@@ -3305,7 +3305,7 @@ class Series(NDFrame):  # type: ignore[misc]
             >>> bpd.options.display.progress_bar = None
 
             >>> bpd.Series([1, 2, 3]).values
-            array([1, 2, 3], dtype=object)
+            array([1, 2, 3])
 
             >>> bpd.Series(list('aabc')).values
             array(['a', 'a', 'b', 'c'], dtype=object)

@@ -70,10 +70,10 @@ import bigframes.session._io.bigquery
 if typing.TYPE_CHECKING:
     import bigframes.session
 
+    SingleItemValue = Union[bigframes.series.Series, int, float, Callable]
 
 LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
-SingleItemValue = Union[bigframes.series.Series, int, float, Callable]
 
 ERROR_IO_ONLY_GS_PATHS = f"Only Google Cloud Storage (gs://...) paths are supported. {constants.FEEDBACK_LINK}"
 ERROR_IO_REQUIRES_WILDCARD = (

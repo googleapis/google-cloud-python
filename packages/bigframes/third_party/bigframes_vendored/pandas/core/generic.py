@@ -6,7 +6,7 @@ from typing import Callable, Iterator, Literal, Optional, TYPE_CHECKING
 from bigframes_vendored.pandas.core import indexing
 import bigframes_vendored.pandas.core.common as common
 
-from bigframes import constants
+import bigframes.constants as constants
 
 if TYPE_CHECKING:
     from bigframes_vendored.pandas.pandas._typing import T

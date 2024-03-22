@@ -21,6 +21,7 @@ import pandas as pd
 import pytest
 
 import bigframes.core.global_session
+import bigframes.dataframe
 import bigframes.pandas as bpd
 import bigframes.session
 
@@ -67,7 +68,11 @@ def test_method_matches_session(method_name: str):
 
     # Add `eval_str = True` so that deferred annotations are turned into their
     # corresponding type objects. Need Python 3.10 for eval_str parameter.
-    session_signature = inspect.signature(session_method, eval_str=True)
+    session_signature = inspect.signature(
+        session_method,
+        eval_str=True,
+        globals={**vars(bigframes.session), **{"dataframe": bigframes.dataframe}},
+    )
     pandas_signature = inspect.signature(pandas_method, eval_str=True)
     assert [
         # Kind includes position, which will be an offset.

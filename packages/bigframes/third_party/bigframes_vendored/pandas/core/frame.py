@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from typing import Hashable, Iterable, Literal, Mapping, Optional, Sequence, Union
 
-from bigframes_vendored.pandas.core.generic import NDFrame
+import bigframes_vendored.pandas.core.generic as generic
 import numpy as np
 import pandas as pd
 
@@ -23,7 +23,7 @@ from bigframes import constants
 # DataFrame class
 
 
-class DataFrame(NDFrame):
+class DataFrame(generic.NDFrame):
     """Two-dimensional, size-mutable, potentially heterogeneous tabular data.
 
     Data structure also contains labeled axes (rows and columns).
@@ -592,7 +592,7 @@ class DataFrame(NDFrame):
             >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
             >>> df.to_records()
             rec.array([(0, 1, 3), (1, 2, 4)],
-                      dtype=[('index', 'O'), ('col1', 'O'), ('col2', 'O')])
+                      dtype=[('index', '<i8'), ('col1', '<i8'), ('col2', '<i8')])
 
         Args:
             index (bool, default True):
@@ -4402,7 +4402,7 @@ class DataFrame(NDFrame):
     def diff(
         self,
         periods: int = 1,
-    ) -> NDFrame:
+    ) -> generic.NDFrame:
         """First discrete difference of element.
 
         Calculates the difference of a DataFrame element compared with another
@@ -4750,7 +4750,7 @@ class DataFrame(NDFrame):
             >>> df.index # doctest: +ELLIPSIS
             Index([10, 20, 30], dtype='Int64')
             >>> df.index.values
-            array([10, 20, 30], dtype=object)
+            array([10, 20, 30])
 
         Let's try setting a new index for the dataframe and see that reflect via
         ``index`` property.

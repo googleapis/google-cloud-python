@@ -1497,7 +1497,8 @@ def test_groupby_prod(scalars_dfs):
         (lambda x: x.cumcount()),
         (lambda x: x.cummin()),
         (lambda x: x.cummax()),
-        (lambda x: x.cumprod()),
+        # Pandas 2.2 casts to cumprod to float.
+        (lambda x: x.cumprod().astype("Float64")),
         (lambda x: x.diff()),
         (lambda x: x.shift(2)),
         (lambda x: x.shift(-2)),
@@ -1521,7 +1522,7 @@ def test_groupby_window_ops(scalars_df_index, scalars_pandas_df_index, operator)
     ).to_pandas()
     pd_series = operator(
         scalars_pandas_df_index[col_name].groupby(scalars_pandas_df_index[group_key])
-    ).astype(pd.Int64Dtype())
+    ).astype(bf_series.dtype)
     pd.testing.assert_series_equal(
         pd_series,
         bf_series,
@@ -2709,7 +2710,14 @@ def test_mask_simple_udf(scalars_dfs):
         ("timestamp_col", "time64[us][pyarrow]"),
         ("timestamp_col", pd.ArrowDtype(pa.timestamp("us"))),
         ("datetime_col", "date32[day][pyarrow]"),
-        ("datetime_col", "string[pyarrow]"),
+        pytest.param(
+            "datetime_col",
+            "string[pyarrow]",
+            marks=pytest.mark.skipif(
+                pd.__version__.startswith("2.2"),
+                reason="pandas 2.2 uses T as date/time separator whereas earlier versions use space",
+            ),
+        ),
         ("datetime_col", "time64[us][pyarrow]"),
         ("datetime_col", pd.ArrowDtype(pa.timestamp("us", tz="UTC"))),
         ("date_col", "string[pyarrow]"),
@@ -3294,7 +3302,10 @@ def test_apply_lambda(scalars_dfs, col, lambda_):
     bf_result = bf_col.apply(lambda_, by_row=False).to_pandas()
 
     pd_col = scalars_pandas_df[col]
-    pd_result = pd_col.apply(lambda_)
+    if pd.__version__.startswith("2.2"):
+        pd_result = pd_col.apply(lambda_, by_row=False)
+    else:
+        pd_result = pd_col.apply(lambda_)
 
     # ignore dtype check, which are Int64 and object respectively
     assert_series_equal(bf_result, pd_result, check_dtype=False)
@@ -3345,7 +3356,11 @@ def test_apply_simple_udf(scalars_dfs):
     bf_result = bf_col.apply(foo, by_row=False).to_pandas()
 
     pd_col = scalars_pandas_df["int64_col"]
-    pd_result = pd_col.apply(foo)
+
+    if pd.__version__.startswith("2.2"):
+        pd_result = pd_col.apply(foo, by_row=False)
+    else:
+        pd_result = pd_col.apply(foo)
 
     # ignore dtype check, which are Int64 and object respectively
     assert_series_equal(bf_result, pd_result, check_dtype=False)

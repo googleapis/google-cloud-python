@@ -70,7 +70,9 @@ def split_index(
 
 
 def get_standardized_ids(
-    col_labels: Iterable[Hashable], idx_labels: Iterable[Hashable] = ()
+    col_labels: Iterable[Hashable],
+    idx_labels: Iterable[Hashable] = (),
+    strict: bool = False,
 ) -> tuple[list[str], list[str]]:
     """Get stardardized column ids as column_ids_list, index_ids_list.
     The standardized_column_id must be valid BQ SQL schema column names, can only be string type and unique.
@@ -84,11 +86,15 @@ def get_standardized_ids(
         Tuple of (standardized_column_ids, standardized_index_ids)
     """
     col_ids = [
-        UNNAMED_COLUMN_ID if col_label is None else label_to_identifier(col_label)
+        UNNAMED_COLUMN_ID
+        if col_label is None
+        else label_to_identifier(col_label, strict=strict)
         for col_label in col_labels
     ]
     idx_ids = [
-        UNNAMED_INDEX_ID if idx_label is None else label_to_identifier(idx_label)
+        UNNAMED_INDEX_ID
+        if idx_label is None
+        else label_to_identifier(idx_label, strict=strict)
         for idx_label in idx_labels
     ]
 
@@ -107,6 +113,7 @@ def label_to_identifier(label: typing.Hashable, strict: bool = False) -> str:
     # Column values will be loaded as null if the column name has spaces.
     # https://github.com/googleapis/python-bigquery/issues/1566
     identifier = str(label).replace(" ", "_")
+
     if strict:
         identifier = re.sub(r"[^a-zA-Z0-9_]", "", identifier)
         if not identifier:

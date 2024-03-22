@@ -118,6 +118,7 @@ def bq_cf_connection() -> str:
 def test_remote_function_multiply_with_ibis(
     session,
     scalars_table_id,
+    bigquery_client,
     ibis_client,
     dataset_id,
     bq_cf_connection,
@@ -134,20 +135,22 @@ def test_remote_function_multiply_with_ibis(
         def multiply(x, y):
             return x * y
 
-        project_id, dataset_name, table_name = scalars_table_id.split(".")
+        _, dataset_name, table_name = scalars_table_id.split(".")
         if not ibis_client.dataset:
             ibis_client.dataset = dataset_name
 
         col_name = "int64_col"
         table = ibis_client.tables[table_name]
         table = table.filter(table[col_name].notnull()).order_by("rowindex").head(10)
-        pandas_df_orig = table.execute()
+        sql = table.compile()
+        pandas_df_orig = bigquery_client.query(sql).to_dataframe()
 
         col = table[col_name]
         col_2x = multiply(col, 2).name("int64_col_2x")
         col_square = multiply(col, col).name("int64_col_square")
         table = table.mutate([col_2x, col_square])
-        pandas_df_new = table.execute()
+        sql = table.compile()
+        pandas_df_new = bigquery_client.query(sql).to_dataframe()
 
         pandas.testing.assert_series_equal(
             pandas_df_orig[col_name] * 2,
@@ -163,7 +166,7 @@ def test_remote_function_multiply_with_ibis(
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, multiply
+            bigquery_client, session.cloudfunctionsclient, multiply
         )
 
 
@@ -171,6 +174,7 @@ def test_remote_function_multiply_with_ibis(
 def test_remote_function_stringify_with_ibis(
     session,
     scalars_table_id,
+    bigquery_client,
     ibis_client,
     dataset_id,
     bq_cf_connection,
@@ -187,19 +191,21 @@ def test_remote_function_stringify_with_ibis(
         def stringify(x):
             return f"I got {x}"
 
-        project_id, dataset_name, table_name = scalars_table_id.split(".")
+        _, dataset_name, table_name = scalars_table_id.split(".")
         if not ibis_client.dataset:
             ibis_client.dataset = dataset_name
 
         col_name = "int64_col"
         table = ibis_client.tables[table_name]
         table = table.filter(table[col_name].notnull()).order_by("rowindex").head(10)
-        pandas_df_orig = table.execute()
+        sql = table.compile()
+        pandas_df_orig = bigquery_client.query(sql).to_dataframe()
 
         col = table[col_name]
         col_2x = stringify(col).name("int64_str_col")
         table = table.mutate([col_2x])
-        pandas_df_new = table.execute()
+        sql = table.compile()
+        pandas_df_new = bigquery_client.query(sql).to_dataframe()
 
         pandas.testing.assert_series_equal(
             pandas_df_orig[col_name].apply(lambda x: f"I got {x}"),
@@ -209,7 +215,7 @@ def test_remote_function_stringify_with_ibis(
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_remote_function_assets(
-            session.bqclient, session.cloudfunctionsclient, stringify
+            bigquery_client, session.cloudfunctionsclient, stringify
         )
 
 

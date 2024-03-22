@@ -18,15 +18,18 @@ Functions for Merging Data Structures in BigFrames.
 
 from __future__ import annotations
 
+import typing
 from typing import Literal, Optional
 
-from bigframes.dataframe import DataFrame
-from bigframes.series import Series
+# Avoid cirular imports.
+if typing.TYPE_CHECKING:
+    import bigframes.dataframe
+    import bigframes.series
 
 
 def merge(
-    left: DataFrame,
-    right: DataFrame,
+    left: bigframes.dataframe.DataFrame,
+    right: bigframes.dataframe.DataFrame,
     how: Literal[
         "inner",
         "left",
@@ -40,7 +43,7 @@ def merge(
     right_on: Optional[str] = None,
     sort: bool = False,
     suffixes: tuple[str, str] = ("_x", "_y"),
-) -> DataFrame:
+) -> bigframes.dataframe.DataFrame:
     left = _validate_operand(left)
     right = _validate_operand(right)
 
@@ -55,14 +58,19 @@ def merge(
     )
 
 
-def _validate_operand(obj: DataFrame | Series) -> DataFrame:
-    if isinstance(obj, DataFrame):
+def _validate_operand(
+    obj: bigframes.dataframe.DataFrame | bigframes.series.Series,
+) -> bigframes.dataframe.DataFrame:
+    import bigframes.dataframe
+    import bigframes.series
+
+    if isinstance(obj, bigframes.dataframe.DataFrame):
         return obj
-    elif isinstance(obj, Series):
+    elif isinstance(obj, bigframes.series.Series):
         if obj.name is None:
-            raise ValueError("Cannot merge a Series without a name")
+            raise ValueError("Cannot merge a bigframes.series.Series without a name")
         return obj.to_frame()
     else:
         raise TypeError(
-            f"Can only merge Series or DataFrame objects, a {type(obj)} was passed"
+            f"Can only merge bigframes.series.Series or bigframes.dataframe.DataFrame objects, a {type(obj)} was passed"
         )

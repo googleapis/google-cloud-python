@@ -84,7 +84,6 @@ from bigframes.core.ordering import IntegerEncoding
 import bigframes.core.ordering as order
 import bigframes.core.traversal as traversals
 import bigframes.core.utils as utils
-import bigframes.dataframe as dataframe
 import bigframes.dtypes
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.functions.remote_function import read_gbq_function as bigframes_rgf
@@ -92,6 +91,10 @@ from bigframes.functions.remote_function import remote_function as bigframes_rf
 import bigframes.session._io.bigquery as bigframes_io
 import bigframes.session.clients
 import bigframes.version
+
+# Avoid circular imports.
+if typing.TYPE_CHECKING:
+    import bigframes.dataframe as dataframe
 
 _BIGFRAMES_DEFAULT_CONNECTION_ID = "bigframes-default-connection"
 
@@ -557,6 +560,8 @@ class Session(
         api_name: str = "read_gbq_query",
         use_cache: Optional[bool] = None,
     ) -> dataframe.DataFrame:
+        import bigframes.dataframe as dataframe
+
         configuration = _transform_read_gbq_configuration(configuration)
 
         if "query" not in configuration:
@@ -754,6 +759,8 @@ class Session(
         api_name: str,
         use_cache: bool = True,
     ) -> dataframe.DataFrame:
+        import bigframes.dataframe as dataframe
+
         if max_results and max_results <= 0:
             raise ValueError("`max_results` should be a positive number.")
 
@@ -989,6 +996,8 @@ class Session(
     def _read_pandas(
         self, pandas_dataframe: pandas.DataFrame, api_name: str
     ) -> dataframe.DataFrame:
+        import bigframes.dataframe as dataframe
+
         if isinstance(pandas_dataframe, dataframe.DataFrame):
             raise ValueError(
                 "read_pandas() expects a pandas.DataFrame, but got a "
@@ -1003,6 +1012,8 @@ class Session(
     def _read_pandas_inline(
         self, pandas_dataframe: pandas.DataFrame
     ) -> Optional[dataframe.DataFrame]:
+        import bigframes.dataframe as dataframe
+
         if pandas_dataframe.size > MAX_INLINE_DF_SIZE:
             return None
 
@@ -1024,11 +1035,20 @@ class Session(
     def _read_pandas_load_job(
         self, pandas_dataframe: pandas.DataFrame, api_name: str
     ) -> dataframe.DataFrame:
+        import bigframes.dataframe as dataframe
+
+        col_index = pandas_dataframe.columns.copy()
         col_labels, idx_labels = (
-            pandas_dataframe.columns.to_list(),
+            col_index.to_list(),
             pandas_dataframe.index.names,
         )
-        new_col_ids, new_idx_ids = utils.get_standardized_ids(col_labels, idx_labels)
+        new_col_ids, new_idx_ids = utils.get_standardized_ids(
+            col_labels,
+            idx_labels,
+            # Loading parquet files into BigQuery with special column names
+            # is only supported under an allowlist.
+            strict=True,
+        )
 
         # Add order column to pandas DataFrame to preserve order in BigQuery
         ordering_col = "rowid"
@@ -1047,7 +1067,7 @@ class Session(
 
         # Specify the datetime dtypes, which is auto-detected as timestamp types.
         schema: list[bigquery.SchemaField] = []
-        for column, dtype in zip(pandas_dataframe.columns, pandas_dataframe.dtypes):
+        for column, dtype in zip(new_col_ids, pandas_dataframe.dtypes):
             if dtype == "timestamp[us][pyarrow]":
                 schema.append(
                     bigquery.SchemaField(column, bigquery.enums.SqlTypeNames.DATETIME)
@@ -1101,7 +1121,7 @@ class Session(
         block = blocks.Block(
             array_value,
             index_columns=new_idx_ids,
-            column_labels=col_labels,
+            column_labels=col_index,
             index_labels=idx_labels,
         )
         return dataframe.DataFrame(block)
