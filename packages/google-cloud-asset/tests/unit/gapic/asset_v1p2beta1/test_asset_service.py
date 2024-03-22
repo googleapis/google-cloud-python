@@ -1125,7 +1125,8 @@ def test_create_feed(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateFeedRequest()
+        request = asset_service.CreateFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -1146,6 +1147,59 @@ def test_create_feed_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
         client.create_feed()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateFeedRequest()
+
+
+def test_create_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.CreateFeedRequest(
+        parent="parent_value",
+        feed_id="feed_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
+        client.create_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateFeedRequest(
+            parent="parent_value",
+            feed_id="feed_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_feed_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.Feed(
+                name="name_value",
+                asset_names=["asset_names_value"],
+                asset_types=["asset_types_value"],
+                content_type=asset_service.ContentType.RESOURCE,
+            )
+        )
+        response = await client.create_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest()
@@ -1180,7 +1234,8 @@ async def test_create_feed_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateFeedRequest()
+        request = asset_service.CreateFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -1365,7 +1420,8 @@ def test_get_feed(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetFeedRequest()
+        request = asset_service.GetFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -1386,6 +1442,57 @@ def test_get_feed_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
         client.get_feed()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetFeedRequest()
+
+
+def test_get_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.GetFeedRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
+        client.get_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetFeedRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_feed_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.Feed(
+                name="name_value",
+                asset_names=["asset_names_value"],
+                asset_types=["asset_types_value"],
+                content_type=asset_service.ContentType.RESOURCE,
+            )
+        )
+        response = await client.get_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest()
@@ -1420,7 +1527,8 @@ async def test_get_feed_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetFeedRequest()
+        request = asset_service.GetFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -1600,7 +1708,8 @@ def test_list_feeds(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListFeedsRequest()
+        request = asset_service.ListFeedsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
@@ -1617,6 +1726,52 @@ def test_list_feeds_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
         client.list_feeds()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListFeedsRequest()
+
+
+def test_list_feeds_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.ListFeedsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
+        client.list_feeds(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListFeedsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_feeds_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.ListFeedsResponse()
+        )
+        response = await client.list_feeds()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest()
@@ -1646,7 +1801,8 @@ async def test_list_feeds_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListFeedsRequest()
+        request = asset_service.ListFeedsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
@@ -1831,7 +1987,8 @@ def test_update_feed(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateFeedRequest()
+        request = asset_service.UpdateFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -1852,6 +2009,53 @@ def test_update_feed_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
         client.update_feed()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateFeedRequest()
+
+
+def test_update_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.UpdateFeedRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
+        client.update_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateFeedRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_feed_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.Feed(
+                name="name_value",
+                asset_names=["asset_names_value"],
+                asset_types=["asset_types_value"],
+                content_type=asset_service.ContentType.RESOURCE,
+            )
+        )
+        response = await client.update_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.UpdateFeedRequest()
@@ -1886,7 +2090,8 @@ async def test_update_feed_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateFeedRequest()
+        request = asset_service.UpdateFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
@@ -2066,7 +2271,8 @@ def test_delete_feed(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteFeedRequest()
+        request = asset_service.DeleteFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2083,6 +2289,50 @@ def test_delete_feed_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
         client.delete_feed()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteFeedRequest()
+
+
+def test_delete_feed_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = asset_service.DeleteFeedRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
+        client.delete_feed(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteFeedRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_feed_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_feed()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest()
@@ -2110,7 +2360,8 @@ async def test_delete_feed_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteFeedRequest()
+        request = asset_service.DeleteFeedRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

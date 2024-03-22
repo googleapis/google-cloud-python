@@ -1187,7 +1187,8 @@ def test_generate_content(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        request = generative_service.GenerateContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.GenerateContentResponse)
@@ -1204,6 +1205,52 @@ def test_generate_content_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
         client.generate_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.GenerateContentRequest()
+
+
+def test_generate_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = generative_service.GenerateContentRequest(
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+        client.generate_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.GenerateContentRequest(
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GenerativeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_service.GenerateContentResponse()
+        )
+        response = await client.generate_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.GenerateContentRequest()
@@ -1234,7 +1281,8 @@ async def test_generate_content_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        request = generative_service.GenerateContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.GenerateContentResponse)
@@ -1426,7 +1474,8 @@ def test_generate_answer(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateAnswerRequest()
+        request = generative_service.GenerateAnswerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.GenerateAnswerResponse)
@@ -1444,6 +1493,54 @@ def test_generate_answer_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
         client.generate_answer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.GenerateAnswerRequest()
+
+
+def test_generate_answer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = generative_service.GenerateAnswerRequest(
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
+        client.generate_answer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.GenerateAnswerRequest(
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_answer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GenerativeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_service.GenerateAnswerResponse(
+                answerable_probability=0.234,
+            )
+        )
+        response = await client.generate_answer()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.GenerateAnswerRequest()
@@ -1476,7 +1573,8 @@ async def test_generate_answer_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateAnswerRequest()
+        request = generative_service.GenerateAnswerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.GenerateAnswerResponse)
@@ -1709,7 +1807,8 @@ def test_stream_generate_content(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        request = generative_service.GenerateContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     for message in response:
@@ -1729,6 +1828,57 @@ def test_stream_generate_content_empty_call():
         type(client.transport.stream_generate_content), "__call__"
     ) as call:
         client.stream_generate_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.GenerateContentRequest()
+
+
+def test_stream_generate_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = generative_service.GenerateContentRequest(
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_generate_content), "__call__"
+    ) as call:
+        client.stream_generate_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.GenerateContentRequest(
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stream_generate_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GenerativeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_generate_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[generative_service.GenerateContentResponse()]
+        )
+        response = await client.stream_generate_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.GenerateContentRequest()
@@ -1762,7 +1912,8 @@ async def test_stream_generate_content_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest()
+        request = generative_service.GenerateContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     message = await response.read()
@@ -1960,7 +2111,8 @@ def test_embed_content(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.EmbedContentRequest()
+        request = generative_service.EmbedContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.EmbedContentResponse)
@@ -1977,6 +2129,54 @@ def test_embed_content_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
         client.embed_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.EmbedContentRequest()
+
+
+def test_embed_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = generative_service.EmbedContentRequest(
+        model="model_value",
+        title="title_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
+        client.embed_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.EmbedContentRequest(
+            model="model_value",
+            title="title_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_embed_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GenerativeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_service.EmbedContentResponse()
+        )
+        response = await client.embed_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.EmbedContentRequest()
@@ -2006,7 +2206,8 @@ async def test_embed_content_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.EmbedContentRequest()
+        request = generative_service.EmbedContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.EmbedContentResponse)
@@ -2198,7 +2399,8 @@ def test_batch_embed_contents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.BatchEmbedContentsRequest()
+        request = generative_service.BatchEmbedContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.BatchEmbedContentsResponse)
@@ -2217,6 +2419,56 @@ def test_batch_embed_contents_empty_call():
         type(client.transport.batch_embed_contents), "__call__"
     ) as call:
         client.batch_embed_contents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.BatchEmbedContentsRequest()
+
+
+def test_batch_embed_contents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = generative_service.BatchEmbedContentsRequest(
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_embed_contents), "__call__"
+    ) as call:
+        client.batch_embed_contents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.BatchEmbedContentsRequest(
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_embed_contents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GenerativeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_embed_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_service.BatchEmbedContentsResponse()
+        )
+        response = await client.batch_embed_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.BatchEmbedContentsRequest()
@@ -2249,7 +2501,8 @@ async def test_batch_embed_contents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.BatchEmbedContentsRequest()
+        request = generative_service.BatchEmbedContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.BatchEmbedContentsResponse)
@@ -2449,7 +2702,8 @@ def test_count_tokens(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.CountTokensRequest()
+        request = generative_service.CountTokensRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.CountTokensResponse)
@@ -2467,6 +2721,54 @@ def test_count_tokens_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
         client.count_tokens()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.CountTokensRequest()
+
+
+def test_count_tokens_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = generative_service.CountTokensRequest(
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
+        client.count_tokens(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generative_service.CountTokensRequest(
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_count_tokens_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GenerativeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generative_service.CountTokensResponse(
+                total_tokens=1303,
+            )
+        )
+        response = await client.count_tokens()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == generative_service.CountTokensRequest()
@@ -2498,7 +2800,8 @@ async def test_count_tokens_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.CountTokensRequest()
+        request = generative_service.CountTokensRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.CountTokensResponse)

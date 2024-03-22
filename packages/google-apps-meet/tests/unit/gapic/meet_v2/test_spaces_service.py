@@ -1145,7 +1145,8 @@ def test_create_space(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSpaceRequest()
+        request = service.CreateSpaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Space)
@@ -1165,6 +1166,52 @@ def test_create_space_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_space), "__call__") as call:
         client.create_space()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateSpaceRequest()
+
+
+def test_create_space_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SpacesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateSpaceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_space), "__call__") as call:
+        client.create_space(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateSpaceRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_space_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpacesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_space), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.Space(
+                name="name_value",
+                meeting_uri="meeting_uri_value",
+                meeting_code="meeting_code_value",
+            )
+        )
+        response = await client.create_space()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateSpaceRequest()
@@ -1198,7 +1245,8 @@ async def test_create_space_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSpaceRequest()
+        request = service.CreateSpaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Space)
@@ -1322,7 +1370,8 @@ def test_get_space(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSpaceRequest()
+        request = service.GetSpaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Space)
@@ -1342,6 +1391,56 @@ def test_get_space_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space), "__call__") as call:
         client.get_space()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSpaceRequest()
+
+
+def test_get_space_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SpacesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetSpaceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space), "__call__") as call:
+        client.get_space(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSpaceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_space_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpacesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_space), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.Space(
+                name="name_value",
+                meeting_uri="meeting_uri_value",
+                meeting_code="meeting_code_value",
+            )
+        )
+        response = await client.get_space()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetSpaceRequest()
@@ -1375,7 +1474,8 @@ async def test_get_space_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSpaceRequest()
+        request = service.GetSpaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Space)
@@ -1558,7 +1658,8 @@ def test_update_space(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSpaceRequest()
+        request = service.UpdateSpaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Space)
@@ -1578,6 +1679,52 @@ def test_update_space_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_space), "__call__") as call:
         client.update_space()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSpaceRequest()
+
+
+def test_update_space_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SpacesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UpdateSpaceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_space), "__call__") as call:
+        client.update_space(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSpaceRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_space_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpacesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_space), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.Space(
+                name="name_value",
+                meeting_uri="meeting_uri_value",
+                meeting_code="meeting_code_value",
+            )
+        )
+        response = await client.update_space()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UpdateSpaceRequest()
@@ -1611,7 +1758,8 @@ async def test_update_space_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSpaceRequest()
+        request = service.UpdateSpaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Space)
@@ -1802,7 +1950,8 @@ def test_end_active_conference(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EndActiveConferenceRequest()
+        request = service.EndActiveConferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1821,6 +1970,54 @@ def test_end_active_conference_empty_call():
         type(client.transport.end_active_conference), "__call__"
     ) as call:
         client.end_active_conference()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.EndActiveConferenceRequest()
+
+
+def test_end_active_conference_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SpacesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.EndActiveConferenceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.end_active_conference), "__call__"
+    ) as call:
+        client.end_active_conference(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.EndActiveConferenceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_end_active_conference_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpacesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.end_active_conference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.end_active_conference()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.EndActiveConferenceRequest()
@@ -1850,7 +2047,8 @@ async def test_end_active_conference_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EndActiveConferenceRequest()
+        request = service.EndActiveConferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

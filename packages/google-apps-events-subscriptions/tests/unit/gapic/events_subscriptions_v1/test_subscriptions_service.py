@@ -1241,7 +1241,8 @@ def test_create_subscription(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.CreateSubscriptionRequest()
+        request = subscriptions_service.CreateSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1260,6 +1261,52 @@ def test_create_subscription_empty_call():
         type(client.transport.create_subscription), "__call__"
     ) as call:
         client.create_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.CreateSubscriptionRequest()
+
+
+def test_create_subscription_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SubscriptionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = subscriptions_service.CreateSubscriptionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subscription), "__call__"
+    ) as call:
+        client.create_subscription(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.CreateSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_subscription_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SubscriptionsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_subscription()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == subscriptions_service.CreateSubscriptionRequest()
@@ -1292,7 +1339,8 @@ async def test_create_subscription_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.CreateSubscriptionRequest()
+        request = subscriptions_service.CreateSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1429,7 +1477,8 @@ def test_delete_subscription(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.DeleteSubscriptionRequest()
+        request = subscriptions_service.DeleteSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1448,6 +1497,58 @@ def test_delete_subscription_empty_call():
         type(client.transport.delete_subscription), "__call__"
     ) as call:
         client.delete_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.DeleteSubscriptionRequest()
+
+
+def test_delete_subscription_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SubscriptionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = subscriptions_service.DeleteSubscriptionRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        client.delete_subscription(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.DeleteSubscriptionRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_subscription_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SubscriptionsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_subscription()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == subscriptions_service.DeleteSubscriptionRequest()
@@ -1480,7 +1581,8 @@ async def test_delete_subscription_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.DeleteSubscriptionRequest()
+        request = subscriptions_service.DeleteSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1678,7 +1780,8 @@ def test_get_subscription(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.GetSubscriptionRequest()
+        request = subscriptions_service.GetSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, subscription_resource.Subscription)
@@ -1707,6 +1810,62 @@ def test_get_subscription_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
         client.get_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.GetSubscriptionRequest()
+
+
+def test_get_subscription_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SubscriptionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = subscriptions_service.GetSubscriptionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        client.get_subscription(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.GetSubscriptionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_subscription_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SubscriptionsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            subscription_resource.Subscription(
+                name="name_value",
+                uid="uid_value",
+                target_resource="target_resource_value",
+                event_types=["event_types_value"],
+                state=subscription_resource.Subscription.State.ACTIVE,
+                suspension_reason=subscription_resource.Subscription.ErrorType.USER_SCOPE_REVOKED,
+                authority="authority_value",
+                reconciling=True,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_subscription()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == subscriptions_service.GetSubscriptionRequest()
@@ -1747,7 +1906,8 @@ async def test_get_subscription_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.GetSubscriptionRequest()
+        request = subscriptions_service.GetSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, subscription_resource.Subscription)
@@ -1943,7 +2103,8 @@ def test_list_subscriptions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.ListSubscriptionsRequest()
+        request = subscriptions_service.ListSubscriptionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubscriptionsPager)
@@ -1963,6 +2124,60 @@ def test_list_subscriptions_empty_call():
         type(client.transport.list_subscriptions), "__call__"
     ) as call:
         client.list_subscriptions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.ListSubscriptionsRequest()
+
+
+def test_list_subscriptions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SubscriptionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = subscriptions_service.ListSubscriptionsRequest(
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        client.list_subscriptions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.ListSubscriptionsRequest(
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SubscriptionsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            subscriptions_service.ListSubscriptionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_subscriptions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == subscriptions_service.ListSubscriptionsRequest()
@@ -1997,7 +2212,8 @@ async def test_list_subscriptions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.ListSubscriptionsRequest()
+        request = subscriptions_service.ListSubscriptionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubscriptionsAsyncPager)
@@ -2318,7 +2534,8 @@ def test_update_subscription(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.UpdateSubscriptionRequest()
+        request = subscriptions_service.UpdateSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2337,6 +2554,52 @@ def test_update_subscription_empty_call():
         type(client.transport.update_subscription), "__call__"
     ) as call:
         client.update_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.UpdateSubscriptionRequest()
+
+
+def test_update_subscription_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SubscriptionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = subscriptions_service.UpdateSubscriptionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subscription), "__call__"
+    ) as call:
+        client.update_subscription(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.UpdateSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_subscription_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SubscriptionsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_subscription()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == subscriptions_service.UpdateSubscriptionRequest()
@@ -2369,7 +2632,8 @@ async def test_update_subscription_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.UpdateSubscriptionRequest()
+        request = subscriptions_service.UpdateSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2581,7 +2845,8 @@ def test_reactivate_subscription(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.ReactivateSubscriptionRequest()
+        request = subscriptions_service.ReactivateSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2600,6 +2865,56 @@ def test_reactivate_subscription_empty_call():
         type(client.transport.reactivate_subscription), "__call__"
     ) as call:
         client.reactivate_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.ReactivateSubscriptionRequest()
+
+
+def test_reactivate_subscription_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SubscriptionsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = subscriptions_service.ReactivateSubscriptionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reactivate_subscription), "__call__"
+    ) as call:
+        client.reactivate_subscription(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == subscriptions_service.ReactivateSubscriptionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reactivate_subscription_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SubscriptionsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reactivate_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reactivate_subscription()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == subscriptions_service.ReactivateSubscriptionRequest()
@@ -2632,7 +2947,8 @@ async def test_reactivate_subscription_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == subscriptions_service.ReactivateSubscriptionRequest()
+        request = subscriptions_service.ReactivateSubscriptionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

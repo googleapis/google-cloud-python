@@ -1093,7 +1093,8 @@ def test_create_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.CreateKeyRequest()
+        request = apikeys.CreateKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1110,6 +1111,54 @@ def test_create_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key), "__call__") as call:
         client.create_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.CreateKeyRequest()
+
+
+def test_create_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.CreateKeyRequest(
+        parent="parent_value",
+        key_id="key_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        client.create_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.CreateKeyRequest(
+            parent="parent_value",
+            key_id="key_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.CreateKeyRequest()
@@ -1139,7 +1188,8 @@ async def test_create_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.CreateKeyRequest()
+        request = apikeys.CreateKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1341,7 +1391,8 @@ def test_list_keys(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.ListKeysRequest()
+        request = apikeys.ListKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKeysPager)
@@ -1359,6 +1410,56 @@ def test_list_keys_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
         client.list_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.ListKeysRequest()
+
+
+def test_list_keys_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.ListKeysRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
+        client.list_keys(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.ListKeysRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_keys_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apikeys.ListKeysResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_keys()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.ListKeysRequest()
@@ -1390,7 +1491,8 @@ async def test_list_keys_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.ListKeysRequest()
+        request = apikeys.ListKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKeysAsyncPager)
@@ -1767,7 +1869,8 @@ def test_get_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.GetKeyRequest()
+        request = apikeys.GetKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Key)
@@ -1789,6 +1892,58 @@ def test_get_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key), "__call__") as call:
         client.get_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.GetKeyRequest()
+
+
+def test_get_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.GetKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
+        client.get_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.GetKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Key(
+                name="name_value",
+                uid="uid_value",
+                display_name="display_name_value",
+                key_string="key_string_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.GetKeyRequest()
@@ -1824,7 +1979,8 @@ async def test_get_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.GetKeyRequest()
+        request = apikeys.GetKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Key)
@@ -2007,7 +2163,8 @@ def test_get_key_string(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.GetKeyStringRequest()
+        request = apikeys.GetKeyStringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apikeys.GetKeyStringResponse)
@@ -2025,6 +2182,54 @@ def test_get_key_string_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_string), "__call__") as call:
         client.get_key_string()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.GetKeyStringRequest()
+
+
+def test_get_key_string_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.GetKeyStringRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key_string), "__call__") as call:
+        client.get_key_string(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.GetKeyStringRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_key_string_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key_string), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apikeys.GetKeyStringResponse(
+                key_string="key_string_value",
+            )
+        )
+        response = await client.get_key_string()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.GetKeyStringRequest()
@@ -2056,7 +2261,8 @@ async def test_get_key_string_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.GetKeyStringRequest()
+        request = apikeys.GetKeyStringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apikeys.GetKeyStringResponse)
@@ -2237,7 +2443,8 @@ def test_update_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.UpdateKeyRequest()
+        request = apikeys.UpdateKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2254,6 +2461,48 @@ def test_update_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_key), "__call__") as call:
         client.update_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.UpdateKeyRequest()
+
+
+def test_update_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.UpdateKeyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        client.update_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.UpdateKeyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.UpdateKeyRequest()
@@ -2283,7 +2532,8 @@ async def test_update_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.UpdateKeyRequest()
+        request = apikeys.UpdateKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2473,7 +2723,8 @@ def test_delete_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.DeleteKeyRequest()
+        request = apikeys.DeleteKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2490,6 +2741,54 @@ def test_delete_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
         client.delete_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.DeleteKeyRequest()
+
+
+def test_delete_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.DeleteKeyRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        client.delete_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.DeleteKeyRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.DeleteKeyRequest()
@@ -2519,7 +2818,8 @@ async def test_delete_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.DeleteKeyRequest()
+        request = apikeys.DeleteKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2699,7 +2999,8 @@ def test_undelete_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.UndeleteKeyRequest()
+        request = apikeys.UndeleteKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2716,6 +3017,52 @@ def test_undelete_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.undelete_key), "__call__") as call:
         client.undelete_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.UndeleteKeyRequest()
+
+
+def test_undelete_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.UndeleteKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_key), "__call__") as call:
+        client.undelete_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.UndeleteKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_undelete_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.undelete_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.UndeleteKeyRequest()
@@ -2745,7 +3092,8 @@ async def test_undelete_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.UndeleteKeyRequest()
+        request = apikeys.UndeleteKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2846,7 +3194,8 @@ def test_lookup_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.LookupKeyRequest()
+        request = apikeys.LookupKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apikeys.LookupKeyResponse)
@@ -2865,6 +3214,55 @@ def test_lookup_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_key), "__call__") as call:
         client.lookup_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.LookupKeyRequest()
+
+
+def test_lookup_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ApiKeysClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apikeys.LookupKeyRequest(
+        key_string="key_string_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_key), "__call__") as call:
+        client.lookup_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apikeys.LookupKeyRequest(
+            key_string="key_string_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ApiKeysAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apikeys.LookupKeyResponse(
+                parent="parent_value",
+                name="name_value",
+            )
+        )
+        response = await client.lookup_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apikeys.LookupKeyRequest()
@@ -2897,7 +3295,8 @@ async def test_lookup_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.LookupKeyRequest()
+        request = apikeys.LookupKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apikeys.LookupKeyResponse)

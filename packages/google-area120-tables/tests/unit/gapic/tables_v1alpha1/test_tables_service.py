@@ -1150,7 +1150,8 @@ def test_get_table(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetTableRequest()
+        request = tables.GetTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Table)
@@ -1169,6 +1170,55 @@ def test_get_table_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
         client.get_table()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.GetTableRequest()
+
+
+def test_get_table_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.GetTableRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        client.get_table(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.GetTableRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_table_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.Table(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.GetTableRequest()
@@ -1201,7 +1251,8 @@ async def test_get_table_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetTableRequest()
+        request = tables.GetTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Table)
@@ -1381,7 +1432,8 @@ def test_list_tables(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListTablesRequest()
+        request = tables.ListTablesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesPager)
@@ -1399,6 +1451,54 @@ def test_list_tables_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
         client.list_tables()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.ListTablesRequest()
+
+
+def test_list_tables_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.ListTablesRequest(
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        client.list_tables(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.ListTablesRequest(
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tables_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.ListTablesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tables()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.ListTablesRequest()
@@ -1430,7 +1530,8 @@ async def test_list_tables_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListTablesRequest()
+        request = tables.ListTablesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesAsyncPager)
@@ -1658,7 +1759,8 @@ def test_get_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetWorkspaceRequest()
+        request = tables.GetWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Workspace)
@@ -1677,6 +1779,55 @@ def test_get_workspace_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
         client.get_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.GetWorkspaceRequest()
+
+
+def test_get_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.GetWorkspaceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
+        client.get_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.GetWorkspaceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.Workspace(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.GetWorkspaceRequest()
@@ -1709,7 +1860,8 @@ async def test_get_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetWorkspaceRequest()
+        request = tables.GetWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Workspace)
@@ -1889,7 +2041,8 @@ def test_list_workspaces(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListWorkspacesRequest()
+        request = tables.ListWorkspacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesPager)
@@ -1907,6 +2060,54 @@ def test_list_workspaces_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
         client.list_workspaces()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.ListWorkspacesRequest()
+
+
+def test_list_workspaces_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.ListWorkspacesRequest(
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
+        client.list_workspaces(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.ListWorkspacesRequest(
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workspaces_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.ListWorkspacesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_workspaces()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.ListWorkspacesRequest()
@@ -1938,7 +2139,8 @@ async def test_list_workspaces_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListWorkspacesRequest()
+        request = tables.ListWorkspacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesAsyncPager)
@@ -2165,7 +2367,8 @@ def test_get_row(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetRowRequest()
+        request = tables.GetRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
@@ -2183,6 +2386,54 @@ def test_get_row_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
         client.get_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.GetRowRequest()
+
+
+def test_get_row_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.GetRowRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_row), "__call__") as call:
+        client.get_row(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.GetRowRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_row_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_row), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.Row(
+                name="name_value",
+            )
+        )
+        response = await client.get_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.GetRowRequest()
@@ -2214,7 +2465,8 @@ async def test_get_row_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetRowRequest()
+        request = tables.GetRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
@@ -2393,7 +2645,8 @@ def test_list_rows(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListRowsRequest()
+        request = tables.ListRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRowsPager)
@@ -2411,6 +2664,58 @@ def test_list_rows_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
         client.list_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.ListRowsRequest()
+
+
+def test_list_rows_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.ListRowsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
+        client.list_rows(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.ListRowsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_rows_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.ListRowsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.ListRowsRequest()
@@ -2442,7 +2747,8 @@ async def test_list_rows_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListRowsRequest()
+        request = tables.ListRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRowsAsyncPager)
@@ -2815,7 +3121,8 @@ def test_create_row(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.CreateRowRequest()
+        request = tables.CreateRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
@@ -2833,6 +3140,54 @@ def test_create_row_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
         client.create_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.CreateRowRequest()
+
+
+def test_create_row_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.CreateRowRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_row), "__call__") as call:
+        client.create_row(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.CreateRowRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_row_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_row), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.Row(
+                name="name_value",
+            )
+        )
+        response = await client.create_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.CreateRowRequest()
@@ -2864,7 +3219,8 @@ async def test_create_row_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.CreateRowRequest()
+        request = tables.CreateRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
@@ -3053,7 +3409,8 @@ def test_batch_create_rows(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchCreateRowsRequest()
+        request = tables.BatchCreateRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.BatchCreateRowsResponse)
@@ -3072,6 +3429,56 @@ def test_batch_create_rows_empty_call():
         type(client.transport.batch_create_rows), "__call__"
     ) as call:
         client.batch_create_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.BatchCreateRowsRequest()
+
+
+def test_batch_create_rows_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.BatchCreateRowsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_rows), "__call__"
+    ) as call:
+        client.batch_create_rows(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.BatchCreateRowsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_rows_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_rows), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.BatchCreateRowsResponse()
+        )
+        response = await client.batch_create_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.BatchCreateRowsRequest()
@@ -3103,7 +3510,8 @@ async def test_batch_create_rows_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchCreateRowsRequest()
+        request = tables.BatchCreateRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.BatchCreateRowsResponse)
@@ -3207,7 +3615,8 @@ def test_update_row(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.UpdateRowRequest()
+        request = tables.UpdateRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
@@ -3225,6 +3634,50 @@ def test_update_row_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
         client.update_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.UpdateRowRequest()
+
+
+def test_update_row_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.UpdateRowRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_row), "__call__") as call:
+        client.update_row(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.UpdateRowRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_row_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_row), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.Row(
+                name="name_value",
+            )
+        )
+        response = await client.update_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.UpdateRowRequest()
@@ -3256,7 +3709,8 @@ async def test_update_row_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.UpdateRowRequest()
+        request = tables.UpdateRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
@@ -3445,7 +3899,8 @@ def test_batch_update_rows(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchUpdateRowsRequest()
+        request = tables.BatchUpdateRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.BatchUpdateRowsResponse)
@@ -3464,6 +3919,56 @@ def test_batch_update_rows_empty_call():
         type(client.transport.batch_update_rows), "__call__"
     ) as call:
         client.batch_update_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.BatchUpdateRowsRequest()
+
+
+def test_batch_update_rows_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.BatchUpdateRowsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_rows), "__call__"
+    ) as call:
+        client.batch_update_rows(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.BatchUpdateRowsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_update_rows_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_rows), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tables.BatchUpdateRowsResponse()
+        )
+        response = await client.batch_update_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.BatchUpdateRowsRequest()
@@ -3495,7 +4000,8 @@ async def test_batch_update_rows_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchUpdateRowsRequest()
+        request = tables.BatchUpdateRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.BatchUpdateRowsResponse)
@@ -3597,7 +4103,8 @@ def test_delete_row(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.DeleteRowRequest()
+        request = tables.DeleteRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3614,6 +4121,50 @@ def test_delete_row_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
         client.delete_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.DeleteRowRequest()
+
+
+def test_delete_row_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.DeleteRowRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
+        client.delete_row(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.DeleteRowRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_row_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.DeleteRowRequest()
@@ -3641,7 +4192,8 @@ async def test_delete_row_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.DeleteRowRequest()
+        request = tables.DeleteRowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3819,7 +4371,8 @@ def test_batch_delete_rows(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchDeleteRowsRequest()
+        request = tables.BatchDeleteRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3838,6 +4391,54 @@ def test_batch_delete_rows_empty_call():
         type(client.transport.batch_delete_rows), "__call__"
     ) as call:
         client.batch_delete_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.BatchDeleteRowsRequest()
+
+
+def test_batch_delete_rows_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TablesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tables.BatchDeleteRowsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_rows), "__call__"
+    ) as call:
+        client.batch_delete_rows(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tables.BatchDeleteRowsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_rows_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_rows), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.batch_delete_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tables.BatchDeleteRowsRequest()
@@ -3867,7 +4468,8 @@ async def test_batch_delete_rows_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchDeleteRowsRequest()
+        request = tables.BatchDeleteRowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
