@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.6.3...google-cloud-certificate-manager-v1.7.0) (2024-03-22)
+
+
+### Features
+
+* [google-cloud-certificate-manager] Added Trust Configs and DnsAuthorization.Type to Certificate Manager ([#12470](https://github.com/googleapis/google-cloud-python/issues/12470)) ([915faee](https://github.com/googleapis/google-cloud-python/commit/915faeeab8ed4d0c7656dec495e9d15a2ccb42d8))
+
 ## [1.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.6.2...google-cloud-certificate-manager-v1.6.3) (2024-03-05)
 
 

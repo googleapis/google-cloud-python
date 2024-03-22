@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.18.3...google-cloud-secret-manager-v2.19.0) (2024-03-22)
+
+
+### Features
+
+* [google-cloud-secret-manager] clients for SecretManager API v1beta2 ([#12437](https://github.com/googleapis/google-cloud-python/issues/12437)) ([8abb150](https://github.com/googleapis/google-cloud-python/commit/8abb150560832dbb1cf2bb777123610f82deedb0))
+
 ## [2.18.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.18.2...google-cloud-secret-manager-v2.18.3) (2024-03-05)
 
 

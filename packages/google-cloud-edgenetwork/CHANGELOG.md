@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.6...google-cloud-edgenetwork-v0.1.7) (2024-03-22)
+
+
+### Bug Fixes
+
+* [google-cloud-edgenetwork] deprecate unimplemented Zone fields and methods ([#12473](https://github.com/googleapis/google-cloud-python/issues/12473)) ([6f26fe8](https://github.com/googleapis/google-cloud-python/commit/6f26fe81c667c6bedfd405caeed90f72feb7ce9d))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.5...google-cloud-edgenetwork-v0.1.6) (2024-03-05)
 
 

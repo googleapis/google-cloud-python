@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.29.0...google-cloud-dialogflow-v2.30.0) (2024-03-22)
+
+
+### Features
+
+* added conformer model migration opt out flag ([9ff7c24](https://github.com/googleapis/google-cloud-python/commit/9ff7c24c5b17d24fc9dfaa27d649027115443045))
+* added intent input to StreamingAnalyzeContentRequest ([9ff7c24](https://github.com/googleapis/google-cloud-python/commit/9ff7c24c5b17d24fc9dfaa27d649027115443045))
+* added text sections to the submitted summary ([9ff7c24](https://github.com/googleapis/google-cloud-python/commit/9ff7c24c5b17d24fc9dfaa27d649027115443045))
+
+
+### Documentation
+
+* clarified wording around END_OF_SINGLE_UTTERANCE ([9ff7c24](https://github.com/googleapis/google-cloud-python/commit/9ff7c24c5b17d24fc9dfaa27d649027115443045))
+
 ## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.28.3...google-cloud-dialogflow-v2.29.0) (2024-03-12)
 
 

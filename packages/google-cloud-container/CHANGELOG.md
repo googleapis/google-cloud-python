@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.43.0...google-cloud-container-v2.44.0) (2024-03-22)
+
+
+### Features
+
+* [google-cloud-container] add optional secondary_boot_disk_update_strategy field to NodePool API ([f88a75d](https://github.com/googleapis/google-cloud-python/commit/f88a75d752fc9798a64eb436ece3effb8f05027a))
+* allow existing clusters to enable multi-networking ([f88a75d](https://github.com/googleapis/google-cloud-python/commit/f88a75d752fc9798a64eb436ece3effb8f05027a))
+
 ## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.42.0...google-cloud-container-v2.43.0) (2024-03-07)
 
 

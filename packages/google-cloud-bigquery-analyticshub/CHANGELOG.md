@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.8...google-cloud-bigquery-analyticshub-v0.4.9) (2024-03-22)
+
+
+### Features
+
+* support output fields on DcrExchangeConfig specifying selective sharing behavior on a data clean room ([334d0b3](https://github.com/googleapis/google-cloud-python/commit/334d0b37db691d925a157eef82930d6d43faa5d6))
+* support selective sharing on data clean room Listings ([334d0b3](https://github.com/googleapis/google-cloud-python/commit/334d0b37db691d925a157eef82930d6d43faa5d6))
+
 ## [0.4.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.7...google-cloud-bigquery-analyticshub-v0.4.8) (2024-03-05)
 
 

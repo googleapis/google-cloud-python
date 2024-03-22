@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.7...google-cloud-securitycentermanagement-v0.1.8) (2024-03-22)
+
+
+### Bug Fixes
+
+* annotate EffectiveEventThreatDetectionCustomModule.name as IDENTIFIER ([9360249](https://github.com/googleapis/google-cloud-python/commit/93602495cf8265cedd188c042c6b45275971980e))
+* annotate EffectiveSecurityHealthAnalyticsCustomModule.name as IDENTIFIER ([9360249](https://github.com/googleapis/google-cloud-python/commit/93602495cf8265cedd188c042c6b45275971980e))
+* annotate EventThreatDetectionCustomModule.name as IDENTIFIER ([9360249](https://github.com/googleapis/google-cloud-python/commit/93602495cf8265cedd188c042c6b45275971980e))
+* annotate SecurityHealthAnalyticsCustomModule.name as IDENTIFIER ([9360249](https://github.com/googleapis/google-cloud-python/commit/93602495cf8265cedd188c042c6b45275971980e))
+
+
+### Documentation
+
+* updated comments ([9360249](https://github.com/googleapis/google-cloud-python/commit/93602495cf8265cedd188c042c6b45275971980e))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.6...google-cloud-securitycentermanagement-v0.1.7) (2024-03-05)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.8...google-cloud-netapp-v0.3.9) (2024-03-22)
+
+
+### Documentation
+
+* [google-cloud-netapp] Rephrase comment on psa_range ([#12476](https://github.com/googleapis/google-cloud-python/issues/12476)) ([585a7e8](https://github.com/googleapis/google-cloud-python/commit/585a7e86058c5beff9fefe3945d3efc0b17f9412))
+
 ## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.7...google-cloud-netapp-v0.3.8) (2024-03-07)
 
 

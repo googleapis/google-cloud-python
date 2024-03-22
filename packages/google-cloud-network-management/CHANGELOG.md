@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.14.0...google-cloud-network-management-v1.15.0) (2024-03-22)
+
+
+### Features
+
+* [google-cloud-network-management] add new enum values related to Google services ([#12478](https://github.com/googleapis/google-cloud-python/issues/12478)) ([8cd9d87](https://github.com/googleapis/google-cloud-python/commit/8cd9d8743b8c58290ed5418f347ffb19a17348fd))
+* add new final state fields to Network Management API version v1 ([af6ce5d](https://github.com/googleapis/google-cloud-python/commit/af6ce5d618b8bd4edb6200f9cbaab90c9da727e4))
+
+
+### Documentation
+
+* update final state comments in Network Management API version v1 ([af6ce5d](https://github.com/googleapis/google-cloud-python/commit/af6ce5d618b8bd4edb6200f9cbaab90c9da727e4))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.13.3...google-cloud-network-management-v1.14.0) (2024-03-11)
 
 

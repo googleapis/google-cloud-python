@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.9.3...grafeas-v1.10.0) (2024-03-22)
+
+
+### Features
+
+* A new field `extra_details` is added to message `VulnerabilityOccurrence` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `impact` is added to message `ComplianceNote` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `in_toto_slsa_provenance_v1` is added to message `BuildOccurrence` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `sbom_reference` is added to message `Note` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `sbom_reference` is added to message `Occurrence` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `sbom_status` is added to message `DiscoveryOccurrence` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `vulnerability_id` is added to message `VulnerabilityAssessmentNote` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new field `vulnerability_id` is added to message `VulnerabilityOccurrence` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new message `InTotoSlsaProvenanceV1` is added ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new message `SbomReferenceIntotoPayload` is added ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new message `SbomReferenceIntotoPredicate` is added ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new message `SBOMReferenceNote` is added ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new message `SBOMReferenceOccurrence` is added ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new message `SBOMStatus` is added ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A new value `SBOM_REFERENCE` is added to enum `NoteKind` ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+
+
+### Documentation
+
+* A comment for field `cve` in message `VulnerabilityAssessmentNote` is changed ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+* A comment for field `cve` in message `VulnerabilityOccurrence` is changed ([5fd0b34](https://github.com/googleapis/google-cloud-python/commit/5fd0b34dc61646406f4a5fe51261dace4438582f))
+
 ## [1.9.3](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.9.2...grafeas-v1.9.3) (2024-03-05)
 
 

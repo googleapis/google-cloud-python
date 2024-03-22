@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.12.3...google-cloud-dataplex-v1.13.0) (2024-03-22)
+
+
+### Features
+
+* [google-cloud-dataplex] added client side library for Unified and CRUD MetaStore APIs ([#12475](https://github.com/googleapis/google-cloud-python/issues/12475)) ([f56d7af](https://github.com/googleapis/google-cloud-python/commit/f56d7aff5caeb1fcf8f3ab421f9da83d88988241))
+
 ## [1.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.12.2...google-cloud-dataplex-v1.12.3) (2024-03-05)
 
 
