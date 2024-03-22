@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.16.1](https://github.com/googleapis/gapic-generator-python/compare/v1.16.0...v1.16.1) (2024-03-22)
+
+
+### Bug Fixes
+
+* Cater for empty async call ([#1997](https://github.com/googleapis/gapic-generator-python/issues/1997)) ([801eedb](https://github.com/googleapis/gapic-generator-python/commit/801eedbb8986516ab354da6bccd4289a9c6d5362))
+
 ## [1.16.0](https://github.com/googleapis/gapic-generator-python/compare/v1.15.0...v1.16.0) (2024-03-22)
 
 
