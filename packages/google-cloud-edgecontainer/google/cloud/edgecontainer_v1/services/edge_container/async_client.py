@@ -547,6 +547,7 @@ class EdgeContainerAsyncClient:
                 # Initialize request argument(s)
                 cluster = edgecontainer_v1.Cluster()
                 cluster.name = "name_value"
+                cluster.fleet.project = "project_value"
                 cluster.networking.cluster_ipv4_cidr_blocks = ['cluster_ipv4_cidr_blocks_value1', 'cluster_ipv4_cidr_blocks_value2']
                 cluster.networking.services_ipv4_cidr_blocks = ['services_ipv4_cidr_blocks_value1', 'services_ipv4_cidr_blocks_value2']
                 cluster.authorization.admin_users.username = "username_value"
@@ -793,6 +794,144 @@ class EdgeContainerAsyncClient:
         # Done; return the response.
         return response
 
+    async def upgrade_cluster(
+        self,
+        request: Optional[Union[service.UpgradeClusterRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        target_version: Optional[str] = None,
+        schedule: Optional[service.UpgradeClusterRequest.Schedule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Upgrades a single cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import edgecontainer_v1
+
+            async def sample_upgrade_cluster():
+                # Create a client
+                client = edgecontainer_v1.EdgeContainerAsyncClient()
+
+                # Initialize request argument(s)
+                request = edgecontainer_v1.UpgradeClusterRequest(
+                    name="name_value",
+                    target_version="target_version_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.UpgradeClusterRequest, dict]]):
+                The request object. Upgrades a cluster.
+            name (:class:`str`):
+                Required. The resource name of the
+                cluster.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_version (:class:`str`):
+                Required. The version the cluster is
+                going to be upgraded to.
+
+                This corresponds to the ``target_version`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schedule (:class:`google.cloud.edgecontainer_v1.types.UpgradeClusterRequest.Schedule`):
+                The schedule for the upgrade.
+                This corresponds to the ``schedule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.edgecontainer_v1.types.Cluster` A
+                Google Distributed Cloud Edge Kubernetes cluster.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, target_version, schedule])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpgradeClusterRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if target_version is not None:
+            request.target_version = target_version
+        if schedule is not None:
+            request.schedule = schedule
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.upgrade_cluster,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            resources.Cluster,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def delete_cluster(
         self,
         request: Optional[Union[service.DeleteClusterRequest, dict]] = None,
@@ -998,6 +1137,127 @@ class EdgeContainerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.generate_access_token,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("cluster", request.cluster),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def generate_offline_credential(
+        self,
+        request: Optional[Union[service.GenerateOfflineCredentialRequest, dict]] = None,
+        *,
+        cluster: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.GenerateOfflineCredentialResponse:
+        r"""Generates an offline credential for a Cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import edgecontainer_v1
+
+            async def sample_generate_offline_credential():
+                # Create a client
+                client = edgecontainer_v1.EdgeContainerAsyncClient()
+
+                # Initialize request argument(s)
+                request = edgecontainer_v1.GenerateOfflineCredentialRequest(
+                    cluster="cluster_value",
+                )
+
+                # Make the request
+                response = await client.generate_offline_credential(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GenerateOfflineCredentialRequest, dict]]):
+                The request object. Generates an offline
+                credential(offline) for a cluster.
+            cluster (:class:`str`):
+                Required. The resource name of the
+                cluster.
+
+                This corresponds to the ``cluster`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.edgecontainer_v1.types.GenerateOfflineCredentialResponse:
+                An offline credential for a cluster.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([cluster])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GenerateOfflineCredentialRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if cluster is not None:
+            request.cluster = cluster
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.generate_offline_credential,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -2406,6 +2666,120 @@ class EdgeContainerAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_server_config(
+        self,
+        request: Optional[Union[service.GetServerConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.ServerConfig:
+        r"""Gets the server config.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import edgecontainer_v1
+
+            async def sample_get_server_config():
+                # Create a client
+                client = edgecontainer_v1.EdgeContainerAsyncClient()
+
+                # Initialize request argument(s)
+                request = edgecontainer_v1.GetServerConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_server_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.edgecontainer_v1.types.GetServerConfigRequest, dict]]):
+                The request object. Gets the server config.
+            name (:class:`str`):
+                Required. The name (project and location) of the server
+                config to get, specified in the format
+                ``projects/*/locations/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.edgecontainer_v1.types.ServerConfig:
+                Server configuration for supported
+                versions and release channels.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetServerConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_server_config,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

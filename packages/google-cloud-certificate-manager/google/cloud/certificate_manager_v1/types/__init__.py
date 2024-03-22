@@ -53,6 +53,15 @@ from .certificate_manager import (
     UpdateCertificateRequest,
     UpdateDnsAuthorizationRequest,
 )
+from .trust_config import (
+    CreateTrustConfigRequest,
+    DeleteTrustConfigRequest,
+    GetTrustConfigRequest,
+    ListTrustConfigsRequest,
+    ListTrustConfigsResponse,
+    TrustConfig,
+    UpdateTrustConfigRequest,
+)
 
 __all__ = (
     "CertificateIssuanceConfig",
@@ -91,4 +100,11 @@ __all__ = (
     "UpdateCertificateRequest",
     "UpdateDnsAuthorizationRequest",
     "ServingState",
+    "CreateTrustConfigRequest",
+    "DeleteTrustConfigRequest",
+    "GetTrustConfigRequest",
+    "ListTrustConfigsRequest",
+    "ListTrustConfigsResponse",
+    "TrustConfig",
+    "UpdateTrustConfigRequest",
 )

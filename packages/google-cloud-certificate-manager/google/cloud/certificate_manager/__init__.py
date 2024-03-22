@@ -64,6 +64,15 @@ from google.cloud.certificate_manager_v1.types.certificate_manager import (
     UpdateCertificateRequest,
     UpdateDnsAuthorizationRequest,
 )
+from google.cloud.certificate_manager_v1.types.trust_config import (
+    CreateTrustConfigRequest,
+    DeleteTrustConfigRequest,
+    GetTrustConfigRequest,
+    ListTrustConfigsRequest,
+    ListTrustConfigsResponse,
+    TrustConfig,
+    UpdateTrustConfigRequest,
+)
 
 __all__ = (
     "CertificateManagerClient",
@@ -104,4 +113,11 @@ __all__ = (
     "UpdateCertificateRequest",
     "UpdateDnsAuthorizationRequest",
     "ServingState",
+    "CreateTrustConfigRequest",
+    "DeleteTrustConfigRequest",
+    "GetTrustConfigRequest",
+    "ListTrustConfigsRequest",
+    "ListTrustConfigsResponse",
+    "TrustConfig",
+    "UpdateTrustConfigRequest",
 )

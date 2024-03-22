@@ -41,6 +41,7 @@ async def sample_create_cluster():
     # Initialize request argument(s)
     cluster = edgecontainer_v1.Cluster()
     cluster.name = "name_value"
+    cluster.fleet.project = "project_value"
     cluster.networking.cluster_ipv4_cidr_blocks = ['cluster_ipv4_cidr_blocks_value1', 'cluster_ipv4_cidr_blocks_value2']
     cluster.networking.services_ipv4_cidr_blocks = ['services_ipv4_cidr_blocks_value1', 'services_ipv4_cidr_blocks_value2']
     cluster.authorization.admin_users.username = "username_value"

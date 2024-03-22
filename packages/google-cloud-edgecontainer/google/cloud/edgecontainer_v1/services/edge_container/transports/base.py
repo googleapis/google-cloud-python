@@ -166,6 +166,11 @@ class EdgeContainerTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.upgrade_cluster: gapic_v1.method.wrap_method(
+                self.upgrade_cluster,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.delete_cluster: gapic_v1.method.wrap_method(
                 self.delete_cluster,
                 default_timeout=60.0,
@@ -173,6 +178,29 @@ class EdgeContainerTransport(abc.ABC):
             ),
             self.generate_access_token: gapic_v1.method.wrap_method(
                 self.generate_access_token,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.generate_offline_credential: gapic_v1.method.wrap_method(
+                self.generate_offline_credential,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -285,6 +313,20 @@ class EdgeContainerTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_server_config: gapic_v1.method.wrap_method(
+                self.get_server_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -338,6 +380,15 @@ class EdgeContainerTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[
+        [service.UpgradeClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_cluster(
         self,
     ) -> Callable[
@@ -354,6 +405,18 @@ class EdgeContainerTransport(abc.ABC):
         Union[
             service.GenerateAccessTokenResponse,
             Awaitable[service.GenerateAccessTokenResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_offline_credential(
+        self,
+    ) -> Callable[
+        [service.GenerateOfflineCredentialRequest],
+        Union[
+            service.GenerateOfflineCredentialResponse,
+            Awaitable[service.GenerateOfflineCredentialResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -457,6 +520,15 @@ class EdgeContainerTransport(abc.ABC):
     ) -> Callable[
         [service.DeleteVpnConnectionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_server_config(
+        self,
+    ) -> Callable[
+        [service.GetServerConfigRequest],
+        Union[resources.ServerConfig, Awaitable[resources.ServerConfig]],
     ]:
         raise NotImplementedError()
 

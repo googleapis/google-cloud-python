@@ -537,3 +537,131 @@ class ListPreviewsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListTerraformVersionsPager:
+    """A pager for iterating through ``list_terraform_versions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListTerraformVersionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``terraform_versions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListTerraformVersions`` requests and continue to iterate
+    through the ``terraform_versions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListTerraformVersionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., config.ListTerraformVersionsResponse],
+        request: config.ListTerraformVersionsRequest,
+        response: config.ListTerraformVersionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListTerraformVersionsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListTerraformVersionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = config.ListTerraformVersionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[config.ListTerraformVersionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[config.TerraformVersion]:
+        for page in self.pages:
+            yield from page.terraform_versions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListTerraformVersionsAsyncPager:
+    """A pager for iterating through ``list_terraform_versions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListTerraformVersionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``terraform_versions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListTerraformVersions`` requests and continue to iterate
+    through the ``terraform_versions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListTerraformVersionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[config.ListTerraformVersionsResponse]],
+        request: config.ListTerraformVersionsRequest,
+        response: config.ListTerraformVersionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListTerraformVersionsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListTerraformVersionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = config.ListTerraformVersionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[config.ListTerraformVersionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[config.TerraformVersion]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.terraform_versions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
