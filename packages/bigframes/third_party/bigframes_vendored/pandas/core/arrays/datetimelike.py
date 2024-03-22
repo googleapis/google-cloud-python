@@ -33,7 +33,7 @@ class DatelikeOps:
                 Date format string (e.g. "%Y-%m-%d").
 
         Returns:
-            bigframes.series.Series of formatted strings.
+            bigframes.series.Series: Series of formatted strings.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

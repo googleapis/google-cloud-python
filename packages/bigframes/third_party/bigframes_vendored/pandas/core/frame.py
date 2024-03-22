@@ -1141,7 +1141,7 @@ class DataFrame(NDFrame):
 
         Args:
             other (DataFrame or Series):
-            join ({{'outer', 'inner', 'left', 'right'}}, default 'outer'):
+            join ({'outer', 'inner', 'left', 'right'}, default 'outer'):
                 Type of alignment to be performed.
                 left: use only keys from left frame, preserve key order.
                 right: use only keys from right frame, preserve key order.
@@ -1627,9 +1627,6 @@ class DataFrame(NDFrame):
 
         This is index for Series, columns for DataFrame.
 
-        Returns:
-            Index: Info axis.
-
         **Examples:**
 
             >>> import bigframes.pandas as bpd
@@ -1641,6 +1638,9 @@ class DataFrame(NDFrame):
             ...     })
             >>> df.keys()
             Index(['A', 'B'], dtype='object')
+
+        Returns:
+            Index: Info axis.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1673,6 +1673,17 @@ class DataFrame(NDFrame):
         """
         Iterate over DataFrame rows as namedtuples.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({
+            ...     'A': [1, 2, 3],
+            ...     'B': [4, 5, 6],
+            ...     })
+            >>> next(df.itertuples(name="Pair"))
+            Pair(Index=0, A=1, B=4)
+
         Args:
             index (bool, default True):
                 If True, return the index as the first element of the tuple.
@@ -1685,18 +1696,6 @@ class DataFrame(NDFrame):
                 An object to iterate over namedtuples for each row in the
                 DataFrame with the first field possibly being the index and
                 following fields being the column values.
-
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-            >>> df = bpd.DataFrame({
-            ...     'A': [1, 2, 3],
-            ...     'B': [4, 5, 6],
-            ...     })
-            >>> next(df.itertuples(name="Pair"))
-            Pair(Index=0, A=1, B=4)
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3155,7 +3154,7 @@ class DataFrame(NDFrame):
             on:
                 Column in the caller to join on the index in other, otherwise
                 joins index-on-index. Like an Excel VLOOKUP operation.
-            how ({'left', 'right', 'outer', 'inner'}, default 'left'`):
+            how ({'left', 'right', 'outer', 'inner'}, default 'left'):
                 How to handle the operation of the two objects.
                 ``left``: use calling frame's index (or column if on is specified)
                 ``right``: use `other`'s index. ``outer``: form union of calling
