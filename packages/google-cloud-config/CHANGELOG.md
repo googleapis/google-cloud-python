@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.7...google-cloud-config-v0.1.8) (2024-03-22)
+
+
+### Features
+
+* Infrastructure Manager can validate and enforce quota limits, preventing infrastructure that exceeds quota limits from being deployed ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+* Infrastructure Manager supports the deployment of infrastructure from Terraform configurations in a private Git repository ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+* Infrastructure manager supports the following versions of Terraform when creating a deployment  Terraform version 1.2.3, 1.3.10, 1.4.7, 1.5.7 ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+
+
+### Documentation
+
+* A comment for field `page_size` in message `.google.cloud.config.v1.ListDeploymentsRequest` is changed ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+* A comment for field `page_size` in message `.google.cloud.config.v1.ListPreviewsRequest` is changed ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+* A comment for field `page_size` in message `.google.cloud.config.v1.ListResourcesRequest` is changed ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+* A comment for field `page_size` in message `.google.cloud.config.v1.ListRevisionsRequest` is changed ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+* A comment for field `service_account` in message `.google.cloud.config.v1.Preview` is changed ([b8abb5d](https://github.com/googleapis/google-cloud-python/commit/b8abb5dc7a51773039a9034cf845bd64d0221314))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.6...google-cloud-config-v0.1.7) (2024-03-05)
 
 

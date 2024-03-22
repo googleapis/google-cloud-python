@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.24.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.24.1...google-cloud-documentai-v2.24.2) (2024-03-22)
+
+
+### Documentation
+
+* A comment for field `processor_version_source` in message `.google.cloud.documentai.v1beta3.ImportProcessorVersionRequest` is changed ([5499d6c](https://github.com/googleapis/google-cloud-python/commit/5499d6c298544c7a0b1122ec4abbedcd7ee5ab0e))
+
 ## [2.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.24.0...google-cloud-documentai-v2.24.1) (2024-03-05)
 
 

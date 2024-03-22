@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.4...google-cloud-cloudquotas-v0.1.5) (2024-03-22)
+
+
+### Documentation
+
+* A comment for field `filter` in message `.google.api.cloudquotas.v1.ListQuotaPreferencesRequest` is changed ([55bf59f](https://github.com/googleapis/google-cloud-python/commit/55bf59ffe7d96c747b4b2c47cbcebe31e4bc0183))
+* A comment for field `order_by` in message `.google.api.cloudquotas.v1.ListQuotaPreferencesRequest` is changed ([55bf59f](https://github.com/googleapis/google-cloud-python/commit/55bf59ffe7d96c747b4b2c47cbcebe31e4bc0183))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.3...google-cloud-cloudquotas-v0.1.4) (2024-03-05)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.3...google-cloud-build-v3.24.0) (2024-03-22)
+
+
+### Features
+
+* Add Bitbucket Data Center Config and Bitbucket Cloud config for Cloud Build Repositories ([6994587](https://github.com/googleapis/google-cloud-python/commit/69945872255a166e5078b5f63f146cf4e51f557f))
+
 ## [3.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.2...google-cloud-build-v3.23.3) (2024-03-05)
 
 

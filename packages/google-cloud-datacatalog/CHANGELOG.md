@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.18.3...google-cloud-datacatalog-v3.19.0) (2024-03-22)
+
+
+### Features
+
+* Add RANGE type to Data Catalog ([d60ef17](https://github.com/googleapis/google-cloud-python/commit/d60ef17c81981c5e4a7315fce0a2b5d40a91a959))
+
 ## [3.18.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.18.2...google-cloud-datacatalog-v3.18.3) (2024-03-05)
 
 

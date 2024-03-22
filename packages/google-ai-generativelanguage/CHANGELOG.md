@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.5.4...google-ai-generativelanguage-v0.6.0) (2024-03-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* make learning rate a one-of
+
+### Features
+
+* Add `learning_rate_multiplier` to tuning `Hyperparameters` ([35017ea](https://github.com/googleapis/google-cloud-python/commit/35017ea297f47f9dd9de3e1a881e05ae6705baae))
+
+
+### Bug Fixes
+
+* make learning rate a one-of ([35017ea](https://github.com/googleapis/google-cloud-python/commit/35017ea297f47f9dd9de3e1a881e05ae6705baae))
+
+
+### Documentation
+
+* A few small updates ([35017ea](https://github.com/googleapis/google-cloud-python/commit/35017ea297f47f9dd9de3e1a881e05ae6705baae))
+
 ## [0.5.4](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.5.3...google-ai-generativelanguage-v0.5.4) (2024-03-05)
 
 
