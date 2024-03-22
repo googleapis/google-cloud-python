@@ -181,6 +181,26 @@ def test_len(scalars_dfs):
     )
 
 
+def test_len_with_array_column(nested_df, nested_pandas_df):
+    """
+    Series.str.len() is expected to work on columns containing lists as well as strings.
+
+    See: https://stackoverflow.com/a/41340543/101923
+    """
+    col_name = "event_sequence"
+    bf_series: bigframes.series.Series = nested_df[col_name]
+    bf_result = bf_series.str.len().to_pandas()
+    pd_result = nested_pandas_df[col_name].str.len()
+
+    # One of dtype mismatches to be documented. Here, the `bf_result.dtype` is `Int64` but
+    # the `pd_result.dtype` is `float64`: https://github.com/pandas-dev/pandas/issues/51948
+    assert_series_equal(
+        pd_result.astype(pd.Int64Dtype()),
+        bf_result,
+        check_index_type=False,
+    )
+
+
 def test_lower(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"

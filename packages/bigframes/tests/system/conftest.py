@@ -357,8 +357,6 @@ def nested_pandas_df() -> pd.DataFrame:
         DATA_DIR / "nested.jsonl",
         lines=True,
     )
-    tests.system.utils.convert_pandas_dtypes(df, bytes_col=True)
-
     df = df.set_index("rowindex")
     return df
 
