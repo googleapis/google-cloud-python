@@ -1197,7 +1197,8 @@ def test_list_policy_based_routes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.ListPolicyBasedRoutesRequest()
+        request = policy_based_routing.ListPolicyBasedRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPolicyBasedRoutesPager)
@@ -1218,6 +1219,65 @@ def test_list_policy_based_routes_empty_call():
         type(client.transport.list_policy_based_routes), "__call__"
     ) as call:
         client.list_policy_based_routes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.ListPolicyBasedRoutesRequest()
+
+
+def test_list_policy_based_routes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyBasedRoutingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policy_based_routing.ListPolicyBasedRoutesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_policy_based_routes), "__call__"
+    ) as call:
+        client.list_policy_based_routes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.ListPolicyBasedRoutesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_policy_based_routes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyBasedRoutingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_policy_based_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_based_routing.ListPolicyBasedRoutesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_policy_based_routes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policy_based_routing.ListPolicyBasedRoutesRequest()
@@ -1253,7 +1313,8 @@ async def test_list_policy_based_routes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.ListPolicyBasedRoutesRequest()
+        request = policy_based_routing.ListPolicyBasedRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPolicyBasedRoutesAsyncPager)
@@ -1655,7 +1716,8 @@ def test_get_policy_based_route(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.GetPolicyBasedRouteRequest()
+        request = policy_based_routing.GetPolicyBasedRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_based_routing.PolicyBasedRoute)
@@ -1680,6 +1742,63 @@ def test_get_policy_based_route_empty_call():
         type(client.transport.get_policy_based_route), "__call__"
     ) as call:
         client.get_policy_based_route()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.GetPolicyBasedRouteRequest()
+
+
+def test_get_policy_based_route_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyBasedRoutingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policy_based_routing.GetPolicyBasedRouteRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_policy_based_route), "__call__"
+    ) as call:
+        client.get_policy_based_route(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.GetPolicyBasedRouteRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_policy_based_route_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyBasedRoutingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_policy_based_route), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_based_routing.PolicyBasedRoute(
+                name="name_value",
+                description="description_value",
+                network="network_value",
+                priority=898,
+                self_link="self_link_value",
+                kind="kind_value",
+            )
+        )
+        response = await client.get_policy_based_route()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policy_based_routing.GetPolicyBasedRouteRequest()
@@ -1719,7 +1838,8 @@ async def test_get_policy_based_route_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.GetPolicyBasedRouteRequest()
+        request = policy_based_routing.GetPolicyBasedRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_based_routing.PolicyBasedRoute)
@@ -1915,7 +2035,8 @@ def test_create_policy_based_route(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.CreatePolicyBasedRouteRequest()
+        request = policy_based_routing.CreatePolicyBasedRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1934,6 +2055,60 @@ def test_create_policy_based_route_empty_call():
         type(client.transport.create_policy_based_route), "__call__"
     ) as call:
         client.create_policy_based_route()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.CreatePolicyBasedRouteRequest()
+
+
+def test_create_policy_based_route_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyBasedRoutingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policy_based_routing.CreatePolicyBasedRouteRequest(
+        parent="parent_value",
+        policy_based_route_id="policy_based_route_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_policy_based_route), "__call__"
+    ) as call:
+        client.create_policy_based_route(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.CreatePolicyBasedRouteRequest(
+            parent="parent_value",
+            policy_based_route_id="policy_based_route_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_policy_based_route_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyBasedRoutingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_policy_based_route), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_policy_based_route()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policy_based_routing.CreatePolicyBasedRouteRequest()
@@ -1966,7 +2141,8 @@ async def test_create_policy_based_route_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.CreatePolicyBasedRouteRequest()
+        request = policy_based_routing.CreatePolicyBasedRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2200,7 +2376,8 @@ def test_delete_policy_based_route(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.DeletePolicyBasedRouteRequest()
+        request = policy_based_routing.DeletePolicyBasedRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2219,6 +2396,58 @@ def test_delete_policy_based_route_empty_call():
         type(client.transport.delete_policy_based_route), "__call__"
     ) as call:
         client.delete_policy_based_route()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.DeletePolicyBasedRouteRequest()
+
+
+def test_delete_policy_based_route_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PolicyBasedRoutingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = policy_based_routing.DeletePolicyBasedRouteRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_policy_based_route), "__call__"
+    ) as call:
+        client.delete_policy_based_route(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policy_based_routing.DeletePolicyBasedRouteRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_policy_based_route_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyBasedRoutingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_policy_based_route), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_policy_based_route()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == policy_based_routing.DeletePolicyBasedRouteRequest()
@@ -2251,7 +2480,8 @@ async def test_delete_policy_based_route_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy_based_routing.DeletePolicyBasedRouteRequest()
+        request = policy_based_routing.DeletePolicyBasedRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

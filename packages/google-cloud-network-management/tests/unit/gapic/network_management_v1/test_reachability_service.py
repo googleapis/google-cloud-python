@@ -1238,7 +1238,8 @@ def test_list_connectivity_tests(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.ListConnectivityTestsRequest()
+        request = reachability.ListConnectivityTestsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectivityTestsPager)
@@ -1259,6 +1260,65 @@ def test_list_connectivity_tests_empty_call():
         type(client.transport.list_connectivity_tests), "__call__"
     ) as call:
         client.list_connectivity_tests()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.ListConnectivityTestsRequest()
+
+
+def test_list_connectivity_tests_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reachability.ListConnectivityTestsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_connectivity_tests), "__call__"
+    ) as call:
+        client.list_connectivity_tests(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.ListConnectivityTestsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_connectivity_tests_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReachabilityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_connectivity_tests), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reachability.ListConnectivityTestsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_connectivity_tests()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reachability.ListConnectivityTestsRequest()
@@ -1294,7 +1354,8 @@ async def test_list_connectivity_tests_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.ListConnectivityTestsRequest()
+        request = reachability.ListConnectivityTestsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectivityTestsAsyncPager)
@@ -1690,7 +1751,8 @@ def test_get_connectivity_test(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.GetConnectivityTestRequest()
+        request = reachability.GetConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, connectivity_test.ConnectivityTest)
@@ -1714,6 +1776,62 @@ def test_get_connectivity_test_empty_call():
         type(client.transport.get_connectivity_test), "__call__"
     ) as call:
         client.get_connectivity_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.GetConnectivityTestRequest()
+
+
+def test_get_connectivity_test_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reachability.GetConnectivityTestRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_connectivity_test), "__call__"
+    ) as call:
+        client.get_connectivity_test(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.GetConnectivityTestRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_connectivity_test_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReachabilityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_connectivity_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            connectivity_test.ConnectivityTest(
+                name="name_value",
+                description="description_value",
+                protocol="protocol_value",
+                related_projects=["related_projects_value"],
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_connectivity_test()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reachability.GetConnectivityTestRequest()
@@ -1752,7 +1870,8 @@ async def test_get_connectivity_test_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.GetConnectivityTestRequest()
+        request = reachability.GetConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, connectivity_test.ConnectivityTest)
@@ -1947,7 +2066,8 @@ def test_create_connectivity_test(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.CreateConnectivityTestRequest()
+        request = reachability.CreateConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1966,6 +2086,58 @@ def test_create_connectivity_test_empty_call():
         type(client.transport.create_connectivity_test), "__call__"
     ) as call:
         client.create_connectivity_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.CreateConnectivityTestRequest()
+
+
+def test_create_connectivity_test_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reachability.CreateConnectivityTestRequest(
+        parent="parent_value",
+        test_id="test_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connectivity_test), "__call__"
+    ) as call:
+        client.create_connectivity_test(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.CreateConnectivityTestRequest(
+            parent="parent_value",
+            test_id="test_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_connectivity_test_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReachabilityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connectivity_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_connectivity_test()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reachability.CreateConnectivityTestRequest()
@@ -1998,7 +2170,8 @@ async def test_create_connectivity_test_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.CreateConnectivityTestRequest()
+        request = reachability.CreateConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2208,7 +2381,8 @@ def test_update_connectivity_test(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.UpdateConnectivityTestRequest()
+        request = reachability.UpdateConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2227,6 +2401,52 @@ def test_update_connectivity_test_empty_call():
         type(client.transport.update_connectivity_test), "__call__"
     ) as call:
         client.update_connectivity_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.UpdateConnectivityTestRequest()
+
+
+def test_update_connectivity_test_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reachability.UpdateConnectivityTestRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connectivity_test), "__call__"
+    ) as call:
+        client.update_connectivity_test(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.UpdateConnectivityTestRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_connectivity_test_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReachabilityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connectivity_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_connectivity_test()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reachability.UpdateConnectivityTestRequest()
@@ -2259,7 +2479,8 @@ async def test_update_connectivity_test_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.UpdateConnectivityTestRequest()
+        request = reachability.UpdateConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2459,7 +2680,8 @@ def test_rerun_connectivity_test(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.RerunConnectivityTestRequest()
+        request = reachability.RerunConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2478,6 +2700,56 @@ def test_rerun_connectivity_test_empty_call():
         type(client.transport.rerun_connectivity_test), "__call__"
     ) as call:
         client.rerun_connectivity_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.RerunConnectivityTestRequest()
+
+
+def test_rerun_connectivity_test_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reachability.RerunConnectivityTestRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rerun_connectivity_test), "__call__"
+    ) as call:
+        client.rerun_connectivity_test(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.RerunConnectivityTestRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rerun_connectivity_test_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReachabilityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rerun_connectivity_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.rerun_connectivity_test()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reachability.RerunConnectivityTestRequest()
@@ -2510,7 +2782,8 @@ async def test_rerun_connectivity_test_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.RerunConnectivityTestRequest()
+        request = reachability.RerunConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2614,7 +2887,8 @@ def test_delete_connectivity_test(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.DeleteConnectivityTestRequest()
+        request = reachability.DeleteConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2633,6 +2907,56 @@ def test_delete_connectivity_test_empty_call():
         type(client.transport.delete_connectivity_test), "__call__"
     ) as call:
         client.delete_connectivity_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.DeleteConnectivityTestRequest()
+
+
+def test_delete_connectivity_test_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReachabilityServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reachability.DeleteConnectivityTestRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connectivity_test), "__call__"
+    ) as call:
+        client.delete_connectivity_test(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reachability.DeleteConnectivityTestRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_connectivity_test_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReachabilityServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connectivity_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_connectivity_test()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reachability.DeleteConnectivityTestRequest()
@@ -2665,7 +2989,8 @@ async def test_delete_connectivity_test_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.DeleteConnectivityTestRequest()
+        request = reachability.DeleteConnectivityTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

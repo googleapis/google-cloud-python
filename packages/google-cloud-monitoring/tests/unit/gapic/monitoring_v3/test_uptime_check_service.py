@@ -1158,7 +1158,8 @@ def test_list_uptime_check_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.ListUptimeCheckConfigsRequest()
+        request = uptime_service.ListUptimeCheckConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUptimeCheckConfigsPager)
@@ -1179,6 +1180,63 @@ def test_list_uptime_check_configs_empty_call():
         type(client.transport.list_uptime_check_configs), "__call__"
     ) as call:
         client.list_uptime_check_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.ListUptimeCheckConfigsRequest()
+
+
+def test_list_uptime_check_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UptimeCheckServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = uptime_service.ListUptimeCheckConfigsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_uptime_check_configs), "__call__"
+    ) as call:
+        client.list_uptime_check_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.ListUptimeCheckConfigsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_uptime_check_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UptimeCheckServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_uptime_check_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            uptime_service.ListUptimeCheckConfigsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_uptime_check_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == uptime_service.ListUptimeCheckConfigsRequest()
@@ -1214,7 +1272,8 @@ async def test_list_uptime_check_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.ListUptimeCheckConfigsRequest()
+        request = uptime_service.ListUptimeCheckConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUptimeCheckConfigsAsyncPager)
@@ -1610,7 +1669,8 @@ def test_get_uptime_check_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.GetUptimeCheckConfigRequest()
+        request = uptime_service.GetUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, uptime.UptimeCheckConfig)
@@ -1636,6 +1696,62 @@ def test_get_uptime_check_config_empty_call():
         type(client.transport.get_uptime_check_config), "__call__"
     ) as call:
         client.get_uptime_check_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.GetUptimeCheckConfigRequest()
+
+
+def test_get_uptime_check_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UptimeCheckServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = uptime_service.GetUptimeCheckConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uptime_check_config), "__call__"
+    ) as call:
+        client.get_uptime_check_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.GetUptimeCheckConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_uptime_check_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UptimeCheckServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_uptime_check_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            uptime.UptimeCheckConfig(
+                name="name_value",
+                display_name="display_name_value",
+                checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
+                selected_regions=[uptime.UptimeCheckRegion.USA],
+                is_internal=True,
+            )
+        )
+        response = await client.get_uptime_check_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == uptime_service.GetUptimeCheckConfigRequest()
@@ -1674,7 +1790,8 @@ async def test_get_uptime_check_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.GetUptimeCheckConfigRequest()
+        request = uptime_service.GetUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, uptime.UptimeCheckConfig)
@@ -1877,7 +1994,8 @@ def test_create_uptime_check_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.CreateUptimeCheckConfigRequest()
+        request = uptime_service.CreateUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, uptime.UptimeCheckConfig)
@@ -1903,6 +2021,62 @@ def test_create_uptime_check_config_empty_call():
         type(client.transport.create_uptime_check_config), "__call__"
     ) as call:
         client.create_uptime_check_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.CreateUptimeCheckConfigRequest()
+
+
+def test_create_uptime_check_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UptimeCheckServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = uptime_service.CreateUptimeCheckConfigRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_uptime_check_config), "__call__"
+    ) as call:
+        client.create_uptime_check_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.CreateUptimeCheckConfigRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_uptime_check_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UptimeCheckServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_uptime_check_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            uptime.UptimeCheckConfig(
+                name="name_value",
+                display_name="display_name_value",
+                checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
+                selected_regions=[uptime.UptimeCheckRegion.USA],
+                is_internal=True,
+            )
+        )
+        response = await client.create_uptime_check_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == uptime_service.CreateUptimeCheckConfigRequest()
@@ -1941,7 +2115,8 @@ async def test_create_uptime_check_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.CreateUptimeCheckConfigRequest()
+        request = uptime_service.CreateUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, uptime.UptimeCheckConfig)
@@ -2154,7 +2329,8 @@ def test_update_uptime_check_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.UpdateUptimeCheckConfigRequest()
+        request = uptime_service.UpdateUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, uptime.UptimeCheckConfig)
@@ -2180,6 +2356,58 @@ def test_update_uptime_check_config_empty_call():
         type(client.transport.update_uptime_check_config), "__call__"
     ) as call:
         client.update_uptime_check_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.UpdateUptimeCheckConfigRequest()
+
+
+def test_update_uptime_check_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UptimeCheckServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = uptime_service.UpdateUptimeCheckConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_uptime_check_config), "__call__"
+    ) as call:
+        client.update_uptime_check_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.UpdateUptimeCheckConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_uptime_check_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UptimeCheckServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_uptime_check_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            uptime.UptimeCheckConfig(
+                name="name_value",
+                display_name="display_name_value",
+                checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
+                selected_regions=[uptime.UptimeCheckRegion.USA],
+                is_internal=True,
+            )
+        )
+        response = await client.update_uptime_check_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == uptime_service.UpdateUptimeCheckConfigRequest()
@@ -2218,7 +2446,8 @@ async def test_update_uptime_check_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.UpdateUptimeCheckConfigRequest()
+        request = uptime_service.UpdateUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, uptime.UptimeCheckConfig)
@@ -2415,7 +2644,8 @@ def test_delete_uptime_check_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.DeleteUptimeCheckConfigRequest()
+        request = uptime_service.DeleteUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2434,6 +2664,54 @@ def test_delete_uptime_check_config_empty_call():
         type(client.transport.delete_uptime_check_config), "__call__"
     ) as call:
         client.delete_uptime_check_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.DeleteUptimeCheckConfigRequest()
+
+
+def test_delete_uptime_check_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UptimeCheckServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = uptime_service.DeleteUptimeCheckConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_uptime_check_config), "__call__"
+    ) as call:
+        client.delete_uptime_check_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.DeleteUptimeCheckConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_uptime_check_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UptimeCheckServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_uptime_check_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_uptime_check_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == uptime_service.DeleteUptimeCheckConfigRequest()
@@ -2464,7 +2742,8 @@ async def test_delete_uptime_check_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.DeleteUptimeCheckConfigRequest()
+        request = uptime_service.DeleteUptimeCheckConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2652,7 +2931,8 @@ def test_list_uptime_check_ips(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.ListUptimeCheckIpsRequest()
+        request = uptime_service.ListUptimeCheckIpsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUptimeCheckIpsPager)
@@ -2672,6 +2952,58 @@ def test_list_uptime_check_ips_empty_call():
         type(client.transport.list_uptime_check_ips), "__call__"
     ) as call:
         client.list_uptime_check_ips()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.ListUptimeCheckIpsRequest()
+
+
+def test_list_uptime_check_ips_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UptimeCheckServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = uptime_service.ListUptimeCheckIpsRequest(
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_uptime_check_ips), "__call__"
+    ) as call:
+        client.list_uptime_check_ips(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == uptime_service.ListUptimeCheckIpsRequest(
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_uptime_check_ips_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UptimeCheckServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_uptime_check_ips), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            uptime_service.ListUptimeCheckIpsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_uptime_check_ips()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == uptime_service.ListUptimeCheckIpsRequest()
@@ -2706,7 +3038,8 @@ async def test_list_uptime_check_ips_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == uptime_service.ListUptimeCheckIpsRequest()
+        request = uptime_service.ListUptimeCheckIpsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUptimeCheckIpsAsyncPager)

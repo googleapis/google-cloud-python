@@ -1185,7 +1185,8 @@ def test_create_microsoft_ad_domain(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.CreateMicrosoftAdDomainRequest()
+        request = managed_identities_service.CreateMicrosoftAdDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1204,6 +1205,58 @@ def test_create_microsoft_ad_domain_empty_call():
         type(client.transport.create_microsoft_ad_domain), "__call__"
     ) as call:
         client.create_microsoft_ad_domain()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.CreateMicrosoftAdDomainRequest()
+
+
+def test_create_microsoft_ad_domain_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.CreateMicrosoftAdDomainRequest(
+        parent="parent_value",
+        domain_name="domain_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_microsoft_ad_domain), "__call__"
+    ) as call:
+        client.create_microsoft_ad_domain(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.CreateMicrosoftAdDomainRequest(
+            parent="parent_value",
+            domain_name="domain_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_microsoft_ad_domain_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_microsoft_ad_domain), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_microsoft_ad_domain()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.CreateMicrosoftAdDomainRequest()
@@ -1236,7 +1289,8 @@ async def test_create_microsoft_ad_domain_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.CreateMicrosoftAdDomainRequest()
+        request = managed_identities_service.CreateMicrosoftAdDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1448,7 +1502,8 @@ def test_reset_admin_password(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ResetAdminPasswordRequest()
+        request = managed_identities_service.ResetAdminPasswordRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_identities_service.ResetAdminPasswordResponse)
@@ -1468,6 +1523,58 @@ def test_reset_admin_password_empty_call():
         type(client.transport.reset_admin_password), "__call__"
     ) as call:
         client.reset_admin_password()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ResetAdminPasswordRequest()
+
+
+def test_reset_admin_password_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.ResetAdminPasswordRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_admin_password), "__call__"
+    ) as call:
+        client.reset_admin_password(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ResetAdminPasswordRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_admin_password_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_admin_password), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_identities_service.ResetAdminPasswordResponse(
+                password="password_value",
+            )
+        )
+        response = await client.reset_admin_password()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.ResetAdminPasswordRequest()
@@ -1502,7 +1609,8 @@ async def test_reset_admin_password_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ResetAdminPasswordRequest()
+        request = managed_identities_service.ResetAdminPasswordRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_identities_service.ResetAdminPasswordResponse)
@@ -1694,7 +1802,8 @@ def test_list_domains(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ListDomainsRequest()
+        request = managed_identities_service.ListDomainsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDomainsPager)
@@ -1713,6 +1822,61 @@ def test_list_domains_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_domains), "__call__") as call:
         client.list_domains()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ListDomainsRequest()
+
+
+def test_list_domains_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.ListDomainsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_domains), "__call__") as call:
+        client.list_domains(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ListDomainsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_domains_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_domains), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_identities_service.ListDomainsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_domains()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.ListDomainsRequest()
@@ -1746,7 +1910,8 @@ async def test_list_domains_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ListDomainsRequest()
+        request = managed_identities_service.ListDomainsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDomainsAsyncPager)
@@ -2127,7 +2292,8 @@ def test_get_domain(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.GetDomainRequest()
+        request = managed_identities_service.GetDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Domain)
@@ -2152,6 +2318,61 @@ def test_get_domain_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_domain), "__call__") as call:
         client.get_domain()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.GetDomainRequest()
+
+
+def test_get_domain_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.GetDomainRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_domain), "__call__") as call:
+        client.get_domain(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.GetDomainRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_domain_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_domain), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.Domain(
+                name="name_value",
+                authorized_networks=["authorized_networks_value"],
+                reserved_ip_range="reserved_ip_range_value",
+                locations=["locations_value"],
+                admin="admin_value",
+                fqdn="fqdn_value",
+                state=resource.Domain.State.CREATING,
+                status_message="status_message_value",
+            )
+        )
+        response = await client.get_domain()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.GetDomainRequest()
@@ -2191,7 +2412,8 @@ async def test_get_domain_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.GetDomainRequest()
+        request = managed_identities_service.GetDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Domain)
@@ -2375,7 +2597,8 @@ def test_update_domain(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.UpdateDomainRequest()
+        request = managed_identities_service.UpdateDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2392,6 +2615,48 @@ def test_update_domain_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_domain), "__call__") as call:
         client.update_domain()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.UpdateDomainRequest()
+
+
+def test_update_domain_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.UpdateDomainRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_domain), "__call__") as call:
+        client.update_domain(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.UpdateDomainRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_domain_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_domain), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_domain()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.UpdateDomainRequest()
@@ -2422,7 +2687,8 @@ async def test_update_domain_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.UpdateDomainRequest()
+        request = managed_identities_service.UpdateDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2612,7 +2878,8 @@ def test_delete_domain(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.DeleteDomainRequest()
+        request = managed_identities_service.DeleteDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2629,6 +2896,52 @@ def test_delete_domain_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_domain), "__call__") as call:
         client.delete_domain()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.DeleteDomainRequest()
+
+
+def test_delete_domain_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.DeleteDomainRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_domain), "__call__") as call:
+        client.delete_domain(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.DeleteDomainRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_domain_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_domain), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_domain()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.DeleteDomainRequest()
@@ -2659,7 +2972,8 @@ async def test_delete_domain_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.DeleteDomainRequest()
+        request = managed_identities_service.DeleteDomainRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2839,7 +3153,8 @@ def test_attach_trust(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.AttachTrustRequest()
+        request = managed_identities_service.AttachTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2856,6 +3171,52 @@ def test_attach_trust_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.attach_trust), "__call__") as call:
         client.attach_trust()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.AttachTrustRequest()
+
+
+def test_attach_trust_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.AttachTrustRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.attach_trust), "__call__") as call:
+        client.attach_trust(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.AttachTrustRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_attach_trust_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.attach_trust), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.attach_trust()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.AttachTrustRequest()
@@ -2886,7 +3247,8 @@ async def test_attach_trust_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.AttachTrustRequest()
+        request = managed_identities_service.AttachTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3078,7 +3440,8 @@ def test_reconfigure_trust(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ReconfigureTrustRequest()
+        request = managed_identities_service.ReconfigureTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3097,6 +3460,58 @@ def test_reconfigure_trust_empty_call():
         type(client.transport.reconfigure_trust), "__call__"
     ) as call:
         client.reconfigure_trust()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ReconfigureTrustRequest()
+
+
+def test_reconfigure_trust_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.ReconfigureTrustRequest(
+        name="name_value",
+        target_domain_name="target_domain_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reconfigure_trust), "__call__"
+    ) as call:
+        client.reconfigure_trust(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ReconfigureTrustRequest(
+            name="name_value",
+            target_domain_name="target_domain_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reconfigure_trust_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reconfigure_trust), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reconfigure_trust()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.ReconfigureTrustRequest()
@@ -3129,7 +3544,8 @@ async def test_reconfigure_trust_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ReconfigureTrustRequest()
+        request = managed_identities_service.ReconfigureTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3337,7 +3753,8 @@ def test_detach_trust(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.DetachTrustRequest()
+        request = managed_identities_service.DetachTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3354,6 +3771,52 @@ def test_detach_trust_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detach_trust), "__call__") as call:
         client.detach_trust()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.DetachTrustRequest()
+
+
+def test_detach_trust_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.DetachTrustRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_trust), "__call__") as call:
+        client.detach_trust(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.DetachTrustRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_detach_trust_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_trust), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.detach_trust()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.DetachTrustRequest()
@@ -3384,7 +3847,8 @@ async def test_detach_trust_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.DetachTrustRequest()
+        request = managed_identities_service.DetachTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3574,7 +4038,8 @@ def test_validate_trust(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ValidateTrustRequest()
+        request = managed_identities_service.ValidateTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3591,6 +4056,52 @@ def test_validate_trust_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_trust), "__call__") as call:
         client.validate_trust()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ValidateTrustRequest()
+
+
+def test_validate_trust_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedIdentitiesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_identities_service.ValidateTrustRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_trust), "__call__") as call:
+        client.validate_trust(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_identities_service.ValidateTrustRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_validate_trust_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedIdentitiesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_trust), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.validate_trust()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_identities_service.ValidateTrustRequest()
@@ -3621,7 +4132,8 @@ async def test_validate_trust_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ValidateTrustRequest()
+        request = managed_identities_service.ValidateTrustRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

@@ -1124,7 +1124,8 @@ def test_create_aws_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsClusterRequest()
+        request = aws_service.CreateAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1143,6 +1144,58 @@ def test_create_aws_cluster_empty_call():
         type(client.transport.create_aws_cluster), "__call__"
     ) as call:
         client.create_aws_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.CreateAwsClusterRequest()
+
+
+def test_create_aws_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.CreateAwsClusterRequest(
+        parent="parent_value",
+        aws_cluster_id="aws_cluster_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_aws_cluster), "__call__"
+    ) as call:
+        client.create_aws_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.CreateAwsClusterRequest(
+            parent="parent_value",
+            aws_cluster_id="aws_cluster_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_aws_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_aws_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_aws_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.CreateAwsClusterRequest()
@@ -1174,7 +1227,8 @@ async def test_create_aws_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsClusterRequest()
+        request = aws_service.CreateAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1384,7 +1438,8 @@ def test_update_aws_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsClusterRequest()
+        request = aws_service.UpdateAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1403,6 +1458,52 @@ def test_update_aws_cluster_empty_call():
         type(client.transport.update_aws_cluster), "__call__"
     ) as call:
         client.update_aws_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.UpdateAwsClusterRequest()
+
+
+def test_update_aws_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.UpdateAwsClusterRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_aws_cluster), "__call__"
+    ) as call:
+        client.update_aws_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.UpdateAwsClusterRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_aws_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_aws_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_aws_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.UpdateAwsClusterRequest()
@@ -1434,7 +1535,8 @@ async def test_update_aws_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsClusterRequest()
+        request = aws_service.UpdateAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1642,7 +1744,8 @@ def test_get_aws_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsClusterRequest()
+        request = aws_service.GetAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsCluster)
@@ -1668,6 +1771,62 @@ def test_get_aws_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
         client.get_aws_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsClusterRequest()
+
+
+def test_get_aws_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GetAwsClusterRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+        client.get_aws_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsClusterRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_aws_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsCluster(
+                name="name_value",
+                description="description_value",
+                aws_region="aws_region_value",
+                state=aws_resources.AwsCluster.State.PROVISIONING,
+                endpoint="endpoint_value",
+                uid="uid_value",
+                reconciling=True,
+                etag="etag_value",
+                cluster_ca_certificate="cluster_ca_certificate_value",
+            )
+        )
+        response = await client.get_aws_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GetAwsClusterRequest()
@@ -1707,7 +1866,8 @@ async def test_get_aws_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsClusterRequest()
+        request = aws_service.GetAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsCluster)
@@ -1900,7 +2060,8 @@ def test_list_aws_clusters(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsClustersRequest()
+        request = aws_service.ListAwsClustersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAwsClustersPager)
@@ -1920,6 +2081,60 @@ def test_list_aws_clusters_empty_call():
         type(client.transport.list_aws_clusters), "__call__"
     ) as call:
         client.list_aws_clusters()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.ListAwsClustersRequest()
+
+
+def test_list_aws_clusters_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.ListAwsClustersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_aws_clusters), "__call__"
+    ) as call:
+        client.list_aws_clusters(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.ListAwsClustersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_aws_clusters_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_aws_clusters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_service.ListAwsClustersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_aws_clusters()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.ListAwsClustersRequest()
@@ -1953,7 +2168,8 @@ async def test_list_aws_clusters_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsClustersRequest()
+        request = aws_service.ListAwsClustersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAwsClustersAsyncPager)
@@ -2342,7 +2558,8 @@ def test_delete_aws_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsClusterRequest()
+        request = aws_service.DeleteAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2361,6 +2578,58 @@ def test_delete_aws_cluster_empty_call():
         type(client.transport.delete_aws_cluster), "__call__"
     ) as call:
         client.delete_aws_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.DeleteAwsClusterRequest()
+
+
+def test_delete_aws_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.DeleteAwsClusterRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_aws_cluster), "__call__"
+    ) as call:
+        client.delete_aws_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.DeleteAwsClusterRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_aws_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_aws_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_aws_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.DeleteAwsClusterRequest()
@@ -2392,7 +2661,8 @@ async def test_delete_aws_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsClusterRequest()
+        request = aws_service.DeleteAwsClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2586,7 +2856,8 @@ def test_generate_aws_cluster_agent_token(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
+        request = aws_service.GenerateAwsClusterAgentTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_service.GenerateAwsClusterAgentTokenResponse)
@@ -2608,6 +2879,78 @@ def test_generate_aws_cluster_agent_token_empty_call():
         type(client.transport.generate_aws_cluster_agent_token), "__call__"
     ) as call:
         client.generate_aws_cluster_agent_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
+
+
+def test_generate_aws_cluster_agent_token_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GenerateAwsClusterAgentTokenRequest(
+        aws_cluster="aws_cluster_value",
+        subject_token="subject_token_value",
+        subject_token_type="subject_token_type_value",
+        version="version_value",
+        node_pool_id="node_pool_id_value",
+        grant_type="grant_type_value",
+        audience="audience_value",
+        scope="scope_value",
+        requested_token_type="requested_token_type_value",
+        options="options_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        client.generate_aws_cluster_agent_token(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest(
+            aws_cluster="aws_cluster_value",
+            subject_token="subject_token_value",
+            subject_token_type="subject_token_type_value",
+            version="version_value",
+            node_pool_id="node_pool_id_value",
+            grant_type="grant_type_value",
+            audience="audience_value",
+            scope="scope_value",
+            requested_token_type="requested_token_type_value",
+            options="options_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_aws_cluster_agent_token_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_service.GenerateAwsClusterAgentTokenResponse(
+                access_token="access_token_value",
+                expires_in=1078,
+                token_type="token_type_value",
+            )
+        )
+        response = await client.generate_aws_cluster_agent_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
@@ -2644,7 +2987,8 @@ async def test_generate_aws_cluster_agent_token_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
+        request = aws_service.GenerateAwsClusterAgentTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_service.GenerateAwsClusterAgentTokenResponse)
@@ -2753,7 +3097,8 @@ def test_generate_aws_access_token(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
+        request = aws_service.GenerateAwsAccessTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_service.GenerateAwsAccessTokenResponse)
@@ -2773,6 +3118,58 @@ def test_generate_aws_access_token_empty_call():
         type(client.transport.generate_aws_access_token), "__call__"
     ) as call:
         client.generate_aws_access_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
+
+
+def test_generate_aws_access_token_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GenerateAwsAccessTokenRequest(
+        aws_cluster="aws_cluster_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_access_token), "__call__"
+    ) as call:
+        client.generate_aws_access_token(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsAccessTokenRequest(
+            aws_cluster="aws_cluster_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_aws_access_token_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_access_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_service.GenerateAwsAccessTokenResponse(
+                access_token="access_token_value",
+            )
+        )
+        response = await client.generate_aws_access_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
@@ -2807,7 +3204,8 @@ async def test_generate_aws_access_token_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsAccessTokenRequest()
+        request = aws_service.GenerateAwsAccessTokenRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_service.GenerateAwsAccessTokenResponse)
@@ -2912,7 +3310,8 @@ def test_create_aws_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsNodePoolRequest()
+        request = aws_service.CreateAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2931,6 +3330,58 @@ def test_create_aws_node_pool_empty_call():
         type(client.transport.create_aws_node_pool), "__call__"
     ) as call:
         client.create_aws_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.CreateAwsNodePoolRequest()
+
+
+def test_create_aws_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.CreateAwsNodePoolRequest(
+        parent="parent_value",
+        aws_node_pool_id="aws_node_pool_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_aws_node_pool), "__call__"
+    ) as call:
+        client.create_aws_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.CreateAwsNodePoolRequest(
+            parent="parent_value",
+            aws_node_pool_id="aws_node_pool_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_aws_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_aws_node_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_aws_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.CreateAwsNodePoolRequest()
@@ -2962,7 +3413,8 @@ async def test_create_aws_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsNodePoolRequest()
+        request = aws_service.CreateAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3172,7 +3624,8 @@ def test_update_aws_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
+        request = aws_service.UpdateAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3191,6 +3644,52 @@ def test_update_aws_node_pool_empty_call():
         type(client.transport.update_aws_node_pool), "__call__"
     ) as call:
         client.update_aws_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
+
+
+def test_update_aws_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.UpdateAwsNodePoolRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_aws_node_pool), "__call__"
+    ) as call:
+        client.update_aws_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_aws_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_aws_node_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_aws_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.UpdateAwsNodePoolRequest()
@@ -3222,7 +3721,8 @@ async def test_update_aws_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
+        request = aws_service.UpdateAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3422,7 +3922,8 @@ def test_rollback_aws_node_pool_update(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
+        request = aws_service.RollbackAwsNodePoolUpdateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3441,6 +3942,56 @@ def test_rollback_aws_node_pool_update_empty_call():
         type(client.transport.rollback_aws_node_pool_update), "__call__"
     ) as call:
         client.rollback_aws_node_pool_update()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
+
+
+def test_rollback_aws_node_pool_update_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.RollbackAwsNodePoolUpdateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        client.rollback_aws_node_pool_update(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_aws_node_pool_update_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.rollback_aws_node_pool_update()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
@@ -3473,7 +4024,8 @@ async def test_rollback_aws_node_pool_update_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
+        request = aws_service.RollbackAwsNodePoolUpdateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3671,7 +4223,8 @@ def test_get_aws_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsNodePoolRequest()
+        request = aws_service.GetAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsNodePool)
@@ -3697,6 +4250,64 @@ def test_get_aws_node_pool_empty_call():
         type(client.transport.get_aws_node_pool), "__call__"
     ) as call:
         client.get_aws_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsNodePoolRequest()
+
+
+def test_get_aws_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GetAwsNodePoolRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_node_pool), "__call__"
+    ) as call:
+        client.get_aws_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsNodePoolRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_aws_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_node_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsNodePool(
+                name="name_value",
+                version="version_value",
+                subnet_id="subnet_id_value",
+                state=aws_resources.AwsNodePool.State.PROVISIONING,
+                uid="uid_value",
+                reconciling=True,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_aws_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GetAwsNodePoolRequest()
@@ -3736,7 +4347,8 @@ async def test_get_aws_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsNodePoolRequest()
+        request = aws_service.GetAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsNodePool)
@@ -3935,7 +4547,8 @@ def test_list_aws_node_pools(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsNodePoolsRequest()
+        request = aws_service.ListAwsNodePoolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAwsNodePoolsPager)
@@ -3955,6 +4568,60 @@ def test_list_aws_node_pools_empty_call():
         type(client.transport.list_aws_node_pools), "__call__"
     ) as call:
         client.list_aws_node_pools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.ListAwsNodePoolsRequest()
+
+
+def test_list_aws_node_pools_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.ListAwsNodePoolsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_aws_node_pools), "__call__"
+    ) as call:
+        client.list_aws_node_pools(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.ListAwsNodePoolsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_aws_node_pools_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_aws_node_pools), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_service.ListAwsNodePoolsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_aws_node_pools()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.ListAwsNodePoolsRequest()
@@ -3988,7 +4655,8 @@ async def test_list_aws_node_pools_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsNodePoolsRequest()
+        request = aws_service.ListAwsNodePoolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAwsNodePoolsAsyncPager)
@@ -4377,7 +5045,8 @@ def test_delete_aws_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsNodePoolRequest()
+        request = aws_service.DeleteAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4396,6 +5065,58 @@ def test_delete_aws_node_pool_empty_call():
         type(client.transport.delete_aws_node_pool), "__call__"
     ) as call:
         client.delete_aws_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.DeleteAwsNodePoolRequest()
+
+
+def test_delete_aws_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.DeleteAwsNodePoolRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_aws_node_pool), "__call__"
+    ) as call:
+        client.delete_aws_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.DeleteAwsNodePoolRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_aws_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_aws_node_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_aws_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.DeleteAwsNodePoolRequest()
@@ -4427,7 +5148,8 @@ async def test_delete_aws_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsNodePoolRequest()
+        request = aws_service.DeleteAwsNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4627,7 +5349,8 @@ def test_get_aws_open_id_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
+        request = aws_service.GetAwsOpenIdConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsOpenIdConfig)
@@ -4655,6 +5378,66 @@ def test_get_aws_open_id_config_empty_call():
         type(client.transport.get_aws_open_id_config), "__call__"
     ) as call:
         client.get_aws_open_id_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
+
+
+def test_get_aws_open_id_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GetAwsOpenIdConfigRequest(
+        aws_cluster="aws_cluster_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        client.get_aws_open_id_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsOpenIdConfigRequest(
+            aws_cluster="aws_cluster_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_aws_open_id_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsOpenIdConfig(
+                issuer="issuer_value",
+                jwks_uri="jwks_uri_value",
+                response_types_supported=["response_types_supported_value"],
+                subject_types_supported=["subject_types_supported_value"],
+                id_token_signing_alg_values_supported=[
+                    "id_token_signing_alg_values_supported_value"
+                ],
+                claims_supported=["claims_supported_value"],
+                grant_types=["grant_types_value"],
+            )
+        )
+        response = await client.get_aws_open_id_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
@@ -4696,7 +5479,8 @@ async def test_get_aws_open_id_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
+        request = aws_service.GetAwsOpenIdConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsOpenIdConfig)
@@ -4809,7 +5593,8 @@ def test_get_aws_json_web_keys(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
+        request = aws_service.GetAwsJsonWebKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsJsonWebKeys)
@@ -4828,6 +5613,56 @@ def test_get_aws_json_web_keys_empty_call():
         type(client.transport.get_aws_json_web_keys), "__call__"
     ) as call:
         client.get_aws_json_web_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
+
+
+def test_get_aws_json_web_keys_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GetAwsJsonWebKeysRequest(
+        aws_cluster="aws_cluster_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        client.get_aws_json_web_keys(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsJsonWebKeysRequest(
+            aws_cluster="aws_cluster_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_aws_json_web_keys_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsJsonWebKeys()
+        )
+        response = await client.get_aws_json_web_keys()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
@@ -4859,7 +5694,8 @@ async def test_get_aws_json_web_keys_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
+        request = aws_service.GetAwsJsonWebKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsJsonWebKeys)
@@ -4966,7 +5802,8 @@ def test_get_aws_server_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsServerConfigRequest()
+        request = aws_service.GetAwsServerConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsServerConfig)
@@ -4987,6 +5824,59 @@ def test_get_aws_server_config_empty_call():
         type(client.transport.get_aws_server_config), "__call__"
     ) as call:
         client.get_aws_server_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsServerConfigRequest()
+
+
+def test_get_aws_server_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = aws_service.GetAwsServerConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_server_config), "__call__"
+    ) as call:
+        client.get_aws_server_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsServerConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_aws_server_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_server_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsServerConfig(
+                name="name_value",
+                supported_aws_regions=["supported_aws_regions_value"],
+            )
+        )
+        response = await client.get_aws_server_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == aws_service.GetAwsServerConfigRequest()
@@ -5021,7 +5911,8 @@ async def test_get_aws_server_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsServerConfigRequest()
+        request = aws_service.GetAwsServerConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsServerConfig)

@@ -1138,7 +1138,8 @@ def test_get_authorization(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.GetAuthorizationRequest()
+        request = gsuiteaddons.GetAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Authorization)
@@ -1160,6 +1161,60 @@ def test_get_authorization_empty_call():
         type(client.transport.get_authorization), "__call__"
     ) as call:
         client.get_authorization()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.GetAuthorizationRequest()
+
+
+def test_get_authorization_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.GetAuthorizationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_authorization), "__call__"
+    ) as call:
+        client.get_authorization(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.GetAuthorizationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_authorization_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_authorization), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsuiteaddons.Authorization(
+                name="name_value",
+                service_account_email="service_account_email_value",
+                oauth_client_id="oauth_client_id_value",
+            )
+        )
+        response = await client.get_authorization()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.GetAuthorizationRequest()
@@ -1195,7 +1250,8 @@ async def test_get_authorization_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.GetAuthorizationRequest()
+        request = gsuiteaddons.GetAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Authorization)
@@ -1392,7 +1448,8 @@ def test_create_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.CreateDeploymentRequest()
+        request = gsuiteaddons.CreateDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Deployment)
@@ -1414,6 +1471,62 @@ def test_create_deployment_empty_call():
         type(client.transport.create_deployment), "__call__"
     ) as call:
         client.create_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.CreateDeploymentRequest()
+
+
+def test_create_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.CreateDeploymentRequest(
+        parent="parent_value",
+        deployment_id="deployment_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deployment), "__call__"
+    ) as call:
+        client.create_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.CreateDeploymentRequest(
+            parent="parent_value",
+            deployment_id="deployment_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsuiteaddons.Deployment(
+                name="name_value",
+                oauth_scopes=["oauth_scopes_value"],
+                etag="etag_value",
+            )
+        )
+        response = await client.create_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.CreateDeploymentRequest()
@@ -1449,7 +1562,8 @@ async def test_create_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.CreateDeploymentRequest()
+        request = gsuiteaddons.CreateDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Deployment)
@@ -1666,7 +1780,8 @@ def test_replace_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.ReplaceDeploymentRequest()
+        request = gsuiteaddons.ReplaceDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Deployment)
@@ -1688,6 +1803,56 @@ def test_replace_deployment_empty_call():
         type(client.transport.replace_deployment), "__call__"
     ) as call:
         client.replace_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.ReplaceDeploymentRequest()
+
+
+def test_replace_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.ReplaceDeploymentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_deployment), "__call__"
+    ) as call:
+        client.replace_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.ReplaceDeploymentRequest()
+
+
+@pytest.mark.asyncio
+async def test_replace_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsuiteaddons.Deployment(
+                name="name_value",
+                oauth_scopes=["oauth_scopes_value"],
+                etag="etag_value",
+            )
+        )
+        response = await client.replace_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.ReplaceDeploymentRequest()
@@ -1723,7 +1888,8 @@ async def test_replace_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.ReplaceDeploymentRequest()
+        request = gsuiteaddons.ReplaceDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Deployment)
@@ -1918,7 +2084,8 @@ def test_get_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.GetDeploymentRequest()
+        request = gsuiteaddons.GetDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Deployment)
@@ -1938,6 +2105,56 @@ def test_get_deployment_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
         client.get_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.GetDeploymentRequest()
+
+
+def test_get_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.GetDeploymentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
+        client.get_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.GetDeploymentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsuiteaddons.Deployment(
+                name="name_value",
+                oauth_scopes=["oauth_scopes_value"],
+                etag="etag_value",
+            )
+        )
+        response = await client.get_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.GetDeploymentRequest()
@@ -1971,7 +2188,8 @@ async def test_get_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.GetDeploymentRequest()
+        request = gsuiteaddons.GetDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.Deployment)
@@ -2156,7 +2374,8 @@ def test_list_deployments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.ListDeploymentsRequest()
+        request = gsuiteaddons.ListDeploymentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeploymentsPager)
@@ -2174,6 +2393,56 @@ def test_list_deployments_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
         client.list_deployments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.ListDeploymentsRequest()
+
+
+def test_list_deployments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.ListDeploymentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
+        client.list_deployments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.ListDeploymentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_deployments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsuiteaddons.ListDeploymentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_deployments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.ListDeploymentsRequest()
@@ -2205,7 +2474,8 @@ async def test_list_deployments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.ListDeploymentsRequest()
+        request = gsuiteaddons.ListDeploymentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeploymentsAsyncPager)
@@ -2578,7 +2848,8 @@ def test_delete_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.DeleteDeploymentRequest()
+        request = gsuiteaddons.DeleteDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2597,6 +2868,56 @@ def test_delete_deployment_empty_call():
         type(client.transport.delete_deployment), "__call__"
     ) as call:
         client.delete_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.DeleteDeploymentRequest()
+
+
+def test_delete_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.DeleteDeploymentRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deployment), "__call__"
+    ) as call:
+        client.delete_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.DeleteDeploymentRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.DeleteDeploymentRequest()
@@ -2626,7 +2947,8 @@ async def test_delete_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.DeleteDeploymentRequest()
+        request = gsuiteaddons.DeleteDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2812,7 +3134,8 @@ def test_install_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.InstallDeploymentRequest()
+        request = gsuiteaddons.InstallDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2831,6 +3154,54 @@ def test_install_deployment_empty_call():
         type(client.transport.install_deployment), "__call__"
     ) as call:
         client.install_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.InstallDeploymentRequest()
+
+
+def test_install_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.InstallDeploymentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.install_deployment), "__call__"
+    ) as call:
+        client.install_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.InstallDeploymentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_install_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.install_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.install_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.InstallDeploymentRequest()
@@ -2860,7 +3231,8 @@ async def test_install_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.InstallDeploymentRequest()
+        request = gsuiteaddons.InstallDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3046,7 +3418,8 @@ def test_uninstall_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.UninstallDeploymentRequest()
+        request = gsuiteaddons.UninstallDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3065,6 +3438,54 @@ def test_uninstall_deployment_empty_call():
         type(client.transport.uninstall_deployment), "__call__"
     ) as call:
         client.uninstall_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.UninstallDeploymentRequest()
+
+
+def test_uninstall_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.UninstallDeploymentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.uninstall_deployment), "__call__"
+    ) as call:
+        client.uninstall_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.UninstallDeploymentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_uninstall_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.uninstall_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.uninstall_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.UninstallDeploymentRequest()
@@ -3095,7 +3516,8 @@ async def test_uninstall_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.UninstallDeploymentRequest()
+        request = gsuiteaddons.UninstallDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3283,7 +3705,8 @@ def test_get_install_status(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.GetInstallStatusRequest()
+        request = gsuiteaddons.GetInstallStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.InstallStatus)
@@ -3303,6 +3726,58 @@ def test_get_install_status_empty_call():
         type(client.transport.get_install_status), "__call__"
     ) as call:
         client.get_install_status()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.GetInstallStatusRequest()
+
+
+def test_get_install_status_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GSuiteAddOnsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gsuiteaddons.GetInstallStatusRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_install_status), "__call__"
+    ) as call:
+        client.get_install_status(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gsuiteaddons.GetInstallStatusRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_install_status_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GSuiteAddOnsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_install_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsuiteaddons.InstallStatus(
+                name="name_value",
+            )
+        )
+        response = await client.get_install_status()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gsuiteaddons.GetInstallStatusRequest()
@@ -3336,7 +3811,8 @@ async def test_get_install_status_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsuiteaddons.GetInstallStatusRequest()
+        request = gsuiteaddons.GetInstallStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsuiteaddons.InstallStatus)
