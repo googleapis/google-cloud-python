@@ -152,6 +152,13 @@ class StructuredQuery(proto.Message):
 
             -  The value must be greater than or equal to zero if
                specified.
+        find_nearest (google.cloud.firestore_v1.types.StructuredQuery.FindNearest):
+            Optional. A potential Nearest Neighbors
+            Search.
+            Applies after all other filters and ordering.
+
+            Finds the closest vector embeddings to the given
+            query vector.
     """
 
     class Direction(proto.Enum):
@@ -512,6 +519,78 @@ class StructuredQuery(proto.Message):
             message="StructuredQuery.FieldReference",
         )
 
+    class FindNearest(proto.Message):
+        r"""Nearest Neighbors search config.
+
+        Attributes:
+            vector_field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
+                Required. An indexed vector field to search upon. Only
+                documents which contain vectors whose dimensionality match
+                the query_vector can be returned.
+            query_vector (google.cloud.firestore_v1.types.Value):
+                Required. The query vector that we are
+                searching on. Must be a vector of no more than
+                2048 dimensions.
+            distance_measure (google.cloud.firestore_v1.types.StructuredQuery.FindNearest.DistanceMeasure):
+                Required. The Distance Measure to use,
+                required.
+            limit (google.protobuf.wrappers_pb2.Int32Value):
+                Required. The number of nearest neighbors to
+                return. Must be a positive integer of no more
+                than 1000.
+        """
+
+        class DistanceMeasure(proto.Enum):
+            r"""The distance measure to use when comparing vectors.
+
+            Values:
+                DISTANCE_MEASURE_UNSPECIFIED (0):
+                    Should not be set.
+                EUCLIDEAN (1):
+                    Measures the EUCLIDEAN distance between the vectors. See
+                    `Euclidean <https://en.wikipedia.org/wiki/Euclidean_distance>`__
+                    to learn more
+                COSINE (2):
+                    Compares vectors based on the angle between them, which
+                    allows you to measure similarity that isn't based on the
+                    vectors magnitude. We recommend using DOT_PRODUCT with unit
+                    normalized vectors instead of COSINE distance, which is
+                    mathematically equivalent with better performance. See
+                    `Cosine
+                    Similarity <https://en.wikipedia.org/wiki/Cosine_similarity>`__
+                    to learn more.
+                DOT_PRODUCT (3):
+                    Similar to cosine but is affected by the magnitude of the
+                    vectors. See `Dot
+                    Product <https://en.wikipedia.org/wiki/Dot_product>`__ to
+                    learn more.
+            """
+            DISTANCE_MEASURE_UNSPECIFIED = 0
+            EUCLIDEAN = 1
+            COSINE = 2
+            DOT_PRODUCT = 3
+
+        vector_field: "StructuredQuery.FieldReference" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="StructuredQuery.FieldReference",
+        )
+        query_vector: document.Value = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=document.Value,
+        )
+        distance_measure: "StructuredQuery.FindNearest.DistanceMeasure" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="StructuredQuery.FindNearest.DistanceMeasure",
+        )
+        limit: wrappers_pb2.Int32Value = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=wrappers_pb2.Int32Value,
+        )
+
     select: Projection = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -550,6 +629,11 @@ class StructuredQuery(proto.Message):
         proto.MESSAGE,
         number=5,
         message=wrappers_pb2.Int32Value,
+    )
+    find_nearest: FindNearest = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=FindNearest,
     )
 
 

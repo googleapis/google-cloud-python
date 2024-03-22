@@ -27,10 +27,12 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.firestore_admin_v1.types import backup
 from google.cloud.firestore_admin_v1.types import database
 from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
+from google.cloud.firestore_admin_v1.types import schedule
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -262,6 +264,51 @@ class FirestoreAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_database: gapic_v1.method.wrap_method(
+                self.restore_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_backup_schedule: gapic_v1.method.wrap_method(
+                self.create_backup_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_schedule: gapic_v1.method.wrap_method(
+                self.get_backup_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_schedules: gapic_v1.method.wrap_method(
+                self.list_backup_schedules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_backup_schedule: gapic_v1.method.wrap_method(
+                self.update_backup_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup_schedule: gapic_v1.method.wrap_method(
+                self.delete_backup_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -408,6 +455,93 @@ class FirestoreAdminTransport(abc.ABC):
     ) -> Callable[
         [firestore_admin.DeleteDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [firestore_admin.GetBackupRequest],
+        Union[backup.Backup, Awaitable[backup.Backup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListBackupsRequest],
+        Union[
+            firestore_admin.ListBackupsResponse,
+            Awaitable[firestore_admin.ListBackupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [firestore_admin.DeleteBackupRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.RestoreDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.CreateBackupScheduleRequest],
+        Union[schedule.BackupSchedule, Awaitable[schedule.BackupSchedule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.GetBackupScheduleRequest],
+        Union[schedule.BackupSchedule, Awaitable[schedule.BackupSchedule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_schedules(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListBackupSchedulesRequest],
+        Union[
+            firestore_admin.ListBackupSchedulesResponse,
+            Awaitable[firestore_admin.ListBackupSchedulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.UpdateBackupScheduleRequest],
+        Union[schedule.BackupSchedule, Awaitable[schedule.BackupSchedule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.DeleteBackupScheduleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

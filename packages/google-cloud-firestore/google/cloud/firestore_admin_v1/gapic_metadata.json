@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "FirestoreAdminClient",
           "rpcs": {
+            "CreateBackupSchedule": {
+              "methods": [
+                "create_backup_schedule"
+              ]
+            },
             "CreateDatabase": {
               "methods": [
                 "create_database"
@@ -18,6 +23,16 @@
             "CreateIndex": {
               "methods": [
                 "create_index"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupSchedule": {
+              "methods": [
+                "delete_backup_schedule"
               ]
             },
             "DeleteDatabase": {
@@ -33,6 +48,16 @@
             "ExportDocuments": {
               "methods": [
                 "export_documents"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupSchedule": {
+              "methods": [
+                "get_backup_schedule"
               ]
             },
             "GetDatabase": {
@@ -55,6 +80,16 @@
                 "import_documents"
               ]
             },
+            "ListBackupSchedules": {
+              "methods": [
+                "list_backup_schedules"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListDatabases": {
               "methods": [
                 "list_databases"
@@ -68,6 +103,16 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "RestoreDatabase": {
+              "methods": [
+                "restore_database"
+              ]
+            },
+            "UpdateBackupSchedule": {
+              "methods": [
+                "update_backup_schedule"
               ]
             },
             "UpdateDatabase": {
@@ -85,6 +130,11 @@
         "grpc-async": {
           "libraryClient": "FirestoreAdminAsyncClient",
           "rpcs": {
+            "CreateBackupSchedule": {
+              "methods": [
+                "create_backup_schedule"
+              ]
+            },
             "CreateDatabase": {
               "methods": [
                 "create_database"
@@ -93,6 +143,16 @@
             "CreateIndex": {
               "methods": [
                 "create_index"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupSchedule": {
+              "methods": [
+                "delete_backup_schedule"
               ]
             },
             "DeleteDatabase": {
@@ -108,6 +168,16 @@
             "ExportDocuments": {
               "methods": [
                 "export_documents"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupSchedule": {
+              "methods": [
+                "get_backup_schedule"
               ]
             },
             "GetDatabase": {
@@ -130,6 +200,16 @@
                 "import_documents"
               ]
             },
+            "ListBackupSchedules": {
+              "methods": [
+                "list_backup_schedules"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListDatabases": {
               "methods": [
                 "list_databases"
@@ -143,6 +223,16 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "RestoreDatabase": {
+              "methods": [
+                "restore_database"
+              ]
+            },
+            "UpdateBackupSchedule": {
+              "methods": [
+                "update_backup_schedule"
               ]
             },
             "UpdateDatabase": {
@@ -160,6 +250,11 @@
         "rest": {
           "libraryClient": "FirestoreAdminClient",
           "rpcs": {
+            "CreateBackupSchedule": {
+              "methods": [
+                "create_backup_schedule"
+              ]
+            },
             "CreateDatabase": {
               "methods": [
                 "create_database"
@@ -168,6 +263,16 @@
             "CreateIndex": {
               "methods": [
                 "create_index"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupSchedule": {
+              "methods": [
+                "delete_backup_schedule"
               ]
             },
             "DeleteDatabase": {
@@ -183,6 +288,16 @@
             "ExportDocuments": {
               "methods": [
                 "export_documents"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupSchedule": {
+              "methods": [
+                "get_backup_schedule"
               ]
             },
             "GetDatabase": {
@@ -205,6 +320,16 @@
                 "import_documents"
               ]
             },
+            "ListBackupSchedules": {
+              "methods": [
+                "list_backup_schedules"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListDatabases": {
               "methods": [
                 "list_databases"
@@ -218,6 +343,16 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "RestoreDatabase": {
+              "methods": [
+                "restore_database"
+              ]
+            },
+            "UpdateBackupSchedule": {
+              "methods": [
+                "update_backup_schedule"
               ]
             },
             "UpdateDatabase": {

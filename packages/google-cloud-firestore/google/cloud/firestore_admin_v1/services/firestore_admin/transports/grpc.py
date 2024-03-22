@@ -25,10 +25,12 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
+from google.cloud.firestore_admin_v1.types import backup
 from google.cloud.firestore_admin_v1.types import database
 from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
+from google.cloud.firestore_admin_v1.types import schedule
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -693,6 +695,269 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_database"]
+
+    @property
+    def get_backup(self) -> Callable[[firestore_admin.GetBackupRequest], backup.Backup]:
+        r"""Return a callable for the get backup method over gRPC.
+
+        Gets information about a backup.
+
+        Returns:
+            Callable[[~.GetBackupRequest],
+                    ~.Backup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup" not in self._stubs:
+            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetBackup",
+                request_serializer=firestore_admin.GetBackupRequest.serialize,
+                response_deserializer=backup.Backup.deserialize,
+            )
+        return self._stubs["get_backup"]
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListBackupsRequest], firestore_admin.ListBackupsResponse
+    ]:
+        r"""Return a callable for the list backups method over gRPC.
+
+        Lists all the backups.
+
+        Returns:
+            Callable[[~.ListBackupsRequest],
+                    ~.ListBackupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backups" not in self._stubs:
+            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListBackups",
+                request_serializer=firestore_admin.ListBackupsRequest.serialize,
+                response_deserializer=firestore_admin.ListBackupsResponse.deserialize,
+            )
+        return self._stubs["list_backups"]
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[[firestore_admin.DeleteBackupRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete backup method over gRPC.
+
+        Deletes a backup.
+
+        Returns:
+            Callable[[~.DeleteBackupRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup" not in self._stubs:
+            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteBackup",
+                request_serializer=firestore_admin.DeleteBackupRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_backup"]
+
+    @property
+    def restore_database(
+        self,
+    ) -> Callable[[firestore_admin.RestoreDatabaseRequest], operations_pb2.Operation]:
+        r"""Return a callable for the restore database method over gRPC.
+
+        Creates a new database by restoring from an existing backup.
+
+        The new database must be in the same cloud region or
+        multi-region location as the existing backup. This behaves
+        similar to
+        [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.CreateDatabase]
+        except instead of creating a new empty database, a new database
+        is created with the database type, index configuration, and
+        documents from an existing backup.
+
+        The [long-running operation][google.longrunning.Operation] can
+        be used to track the progress of the restore, with the
+        Operation's [metadata][google.longrunning.Operation.metadata]
+        field type being the
+        [RestoreDatabaseMetadata][google.firestore.admin.v1.RestoreDatabaseMetadata].
+        The [response][google.longrunning.Operation.response] type is
+        the [Database][google.firestore.admin.v1.Database] if the
+        restore was successful. The new database is not readable or
+        writeable until the LRO has completed.
+
+        Returns:
+            Callable[[~.RestoreDatabaseRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restore_database" not in self._stubs:
+            self._stubs["restore_database"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/RestoreDatabase",
+                request_serializer=firestore_admin.RestoreDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["restore_database"]
+
+    @property
+    def create_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.CreateBackupScheduleRequest], schedule.BackupSchedule
+    ]:
+        r"""Return a callable for the create backup schedule method over gRPC.
+
+        Creates a backup schedule on a database.
+        At most two backup schedules can be configured on a
+        database, one daily backup schedule with retention up to
+        7 days and one weekly backup schedule with retention up
+        to 14 weeks.
+
+        Returns:
+            Callable[[~.CreateBackupScheduleRequest],
+                    ~.BackupSchedule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_schedule" not in self._stubs:
+            self._stubs["create_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/CreateBackupSchedule",
+                request_serializer=firestore_admin.CreateBackupScheduleRequest.serialize,
+                response_deserializer=schedule.BackupSchedule.deserialize,
+            )
+        return self._stubs["create_backup_schedule"]
+
+    @property
+    def get_backup_schedule(
+        self,
+    ) -> Callable[[firestore_admin.GetBackupScheduleRequest], schedule.BackupSchedule]:
+        r"""Return a callable for the get backup schedule method over gRPC.
+
+        Gets information about a backup schedule.
+
+        Returns:
+            Callable[[~.GetBackupScheduleRequest],
+                    ~.BackupSchedule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_schedule" not in self._stubs:
+            self._stubs["get_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetBackupSchedule",
+                request_serializer=firestore_admin.GetBackupScheduleRequest.serialize,
+                response_deserializer=schedule.BackupSchedule.deserialize,
+            )
+        return self._stubs["get_backup_schedule"]
+
+    @property
+    def list_backup_schedules(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListBackupSchedulesRequest],
+        firestore_admin.ListBackupSchedulesResponse,
+    ]:
+        r"""Return a callable for the list backup schedules method over gRPC.
+
+        List backup schedules.
+
+        Returns:
+            Callable[[~.ListBackupSchedulesRequest],
+                    ~.ListBackupSchedulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_schedules" not in self._stubs:
+            self._stubs["list_backup_schedules"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListBackupSchedules",
+                request_serializer=firestore_admin.ListBackupSchedulesRequest.serialize,
+                response_deserializer=firestore_admin.ListBackupSchedulesResponse.deserialize,
+            )
+        return self._stubs["list_backup_schedules"]
+
+    @property
+    def update_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.UpdateBackupScheduleRequest], schedule.BackupSchedule
+    ]:
+        r"""Return a callable for the update backup schedule method over gRPC.
+
+        Updates a backup schedule.
+
+        Returns:
+            Callable[[~.UpdateBackupScheduleRequest],
+                    ~.BackupSchedule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup_schedule" not in self._stubs:
+            self._stubs["update_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/UpdateBackupSchedule",
+                request_serializer=firestore_admin.UpdateBackupScheduleRequest.serialize,
+                response_deserializer=schedule.BackupSchedule.deserialize,
+            )
+        return self._stubs["update_backup_schedule"]
+
+    @property
+    def delete_backup_schedule(
+        self,
+    ) -> Callable[[firestore_admin.DeleteBackupScheduleRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete backup schedule method over gRPC.
+
+        Deletes a backup schedule.
+
+        Returns:
+            Callable[[~.DeleteBackupScheduleRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_schedule" not in self._stubs:
+            self._stubs["delete_backup_schedule"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteBackupSchedule",
+                request_serializer=firestore_admin.DeleteBackupScheduleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_backup_schedule"]
 
     def close(self):
         self.grpc_channel.close()

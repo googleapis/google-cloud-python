@@ -23,6 +23,7 @@ from google.cloud.firestore_v1.types import aggregation_result
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import query as gf_query
+from google.cloud.firestore_v1.types import query_profile
 from google.cloud.firestore_v1.types import write
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -720,6 +721,11 @@ class RunQueryRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
+        explain_options (google.cloud.firestore_v1.types.ExplainOptions):
+            Optional. Explain options for the query. If
+            set, additional query statistics will be
+            returned. If not, only query results will be
+            returned.
     """
 
     parent: str = proto.Field(
@@ -748,6 +754,11 @@ class RunQueryRequest(proto.Message):
         number=7,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
+    )
+    explain_options: query_profile.ExplainOptions = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=query_profile.ExplainOptions,
     )
 
 
@@ -787,6 +798,11 @@ class RunQueryResponse(proto.Message):
             returned.
 
             This field is a member of `oneof`_ ``continuation_selector``.
+        explain_metrics (google.cloud.firestore_v1.types.ExplainMetrics):
+            Query explain metrics. This is only present when the
+            [RunQueryRequest.explain_options][google.firestore.v1.RunQueryRequest.explain_options]
+            is provided, and it is sent only once with the last response
+            in the stream.
     """
 
     transaction: bytes = proto.Field(
@@ -811,6 +827,11 @@ class RunQueryResponse(proto.Message):
         proto.BOOL,
         number=6,
         oneof="continuation_selector",
+    )
+    explain_metrics: query_profile.ExplainMetrics = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=query_profile.ExplainMetrics,
     )
 
 
@@ -861,6 +882,11 @@ class RunAggregationQueryRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
+        explain_options (google.cloud.firestore_v1.types.ExplainOptions):
+            Optional. Explain options for the query. If
+            set, additional query statistics will be
+            returned. If not, only query results will be
+            returned.
     """
 
     parent: str = proto.Field(
@@ -890,6 +916,11 @@ class RunAggregationQueryRequest(proto.Message):
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
     )
+    explain_options: query_profile.ExplainOptions = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=query_profile.ExplainOptions,
+    )
 
 
 class RunAggregationQueryResponse(proto.Message):
@@ -915,6 +946,11 @@ class RunAggregationQueryResponse(proto.Message):
             If the query returns no results, a response with
             ``read_time`` and no ``result`` will be sent, and this
             represents the time at which the query was run.
+        explain_metrics (google.cloud.firestore_v1.types.ExplainMetrics):
+            Query explain metrics. This is only present when the
+            [RunAggregationQueryRequest.explain_options][google.firestore.v1.RunAggregationQueryRequest.explain_options]
+            is provided, and it is sent only once with the last response
+            in the stream.
     """
 
     result: aggregation_result.AggregationResult = proto.Field(
@@ -930,6 +966,11 @@ class RunAggregationQueryResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+    explain_metrics: query_profile.ExplainMetrics = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=query_profile.ExplainMetrics,
     )
 
 

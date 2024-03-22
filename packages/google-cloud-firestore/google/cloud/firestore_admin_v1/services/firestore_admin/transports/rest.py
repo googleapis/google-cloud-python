@@ -41,10 +41,12 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
+from google.cloud.firestore_admin_v1.types import backup
 from google.cloud.firestore_admin_v1.types import database
 from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
+from google.cloud.firestore_admin_v1.types import schedule
 from google.protobuf import empty_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -76,6 +78,14 @@ class FirestoreAdminRestInterceptor:
 
     .. code-block:: python
         class MyCustomFirestoreAdminInterceptor(FirestoreAdminRestInterceptor):
+            def pre_create_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_backup_schedule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_database(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -91,6 +101,14 @@ class FirestoreAdminRestInterceptor:
             def post_create_index(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_delete_database(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -109,6 +127,22 @@ class FirestoreAdminRestInterceptor:
                 return request, metadata
 
             def post_export_documents(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_schedule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -144,6 +178,22 @@ class FirestoreAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_backups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backups(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backup_schedules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_schedules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_databases(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -168,6 +218,22 @@ class FirestoreAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_restore_database(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_restore_database(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_backup_schedule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup_schedule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_database(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -189,6 +255,29 @@ class FirestoreAdminRestInterceptor:
 
 
     """
+
+    def pre_create_backup_schedule(
+        self,
+        request: firestore_admin.CreateBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.CreateBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_create_backup_schedule(
+        self, response: schedule.BackupSchedule
+    ) -> schedule.BackupSchedule:
+        """Post-rpc interceptor for create_backup_schedule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_database(
         self,
@@ -235,6 +324,30 @@ class FirestoreAdminRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def pre_delete_backup(
+        self,
+        request: firestore_admin.DeleteBackupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def pre_delete_backup_schedule(
+        self,
+        request: firestore_admin.DeleteBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.DeleteBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
 
     def pre_delete_database(
         self,
@@ -287,6 +400,50 @@ class FirestoreAdminRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_documents
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup(
+        self,
+        request: firestore_admin.GetBackupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_get_backup(self, response: backup.Backup) -> backup.Backup:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup_schedule(
+        self,
+        request: firestore_admin.GetBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.GetBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_get_backup_schedule(
+        self, response: schedule.BackupSchedule
+    ) -> schedule.BackupSchedule:
+        """Post-rpc interceptor for get_backup_schedule
 
         Override in a subclass to manipulate the response
         after it is returned by the FirestoreAdmin server but before
@@ -380,6 +537,52 @@ class FirestoreAdminRestInterceptor:
         """
         return response
 
+    def pre_list_backups(
+        self,
+        request: firestore_admin.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_list_backups(
+        self, response: firestore_admin.ListBackupsResponse
+    ) -> firestore_admin.ListBackupsResponse:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_backup_schedules(
+        self,
+        request: firestore_admin.ListBackupSchedulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.ListBackupSchedulesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_backup_schedules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_list_backup_schedules(
+        self, response: firestore_admin.ListBackupSchedulesResponse
+    ) -> firestore_admin.ListBackupSchedulesResponse:
+        """Post-rpc interceptor for list_backup_schedules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_databases(
         self,
         request: firestore_admin.ListDatabasesRequest,
@@ -442,6 +645,52 @@ class FirestoreAdminRestInterceptor:
         self, response: firestore_admin.ListIndexesResponse
     ) -> firestore_admin.ListIndexesResponse:
         """Post-rpc interceptor for list_indexes
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_restore_database(
+        self,
+        request: firestore_admin.RestoreDatabaseRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.RestoreDatabaseRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for restore_database
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_restore_database(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for restore_database
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_backup_schedule(
+        self,
+        request: firestore_admin.UpdateBackupScheduleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[firestore_admin.UpdateBackupScheduleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_backup_schedule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_update_backup_schedule(
+        self, response: schedule.BackupSchedule
+    ) -> schedule.BackupSchedule:
+        """Post-rpc interceptor for update_backup_schedule
 
         Override in a subclass to manipulate the response
         after it is returned by the FirestoreAdmin server but before
@@ -764,6 +1013,107 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CreateBackupSchedule(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("CreateBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.CreateBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> schedule.BackupSchedule:
+            r"""Call the create backup schedule method over HTTP.
+
+            Args:
+                request (~.firestore_admin.CreateBackupScheduleRequest):
+                    The request object. The request for
+                [FirestoreAdmin.CreateBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.CreateBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.schedule.BackupSchedule:
+                    A backup schedule for a Cloud
+                Firestore Database.
+                This resource is owned by the database
+                it is backing up, and is deleted along
+                with the database. The actual backups
+                are not though.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/databases/*}/backupSchedules",
+                    "body": "backup_schedule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_backup_schedule(
+                request, metadata
+            )
+            pb_request = firestore_admin.CreateBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = schedule.BackupSchedule()
+            pb_resp = schedule.BackupSchedule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_backup_schedule(resp)
+            return resp
+
     class _CreateDatabase(FirestoreAdminRestStub):
         def __hash__(self):
             return hash("CreateDatabase")
@@ -953,6 +1303,156 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_index(resp)
             return resp
+
+    class _DeleteBackup(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("DeleteBackup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.DeleteBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete backup method over HTTP.
+
+            Args:
+                request (~.firestore_admin.DeleteBackupRequest):
+                    The request object. The request for
+                [FirestoreAdmin.DeleteBackup][google.firestore.admin.v1.FirestoreAdmin.DeleteBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/backups/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_backup(request, metadata)
+            pb_request = firestore_admin.DeleteBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteBackupSchedule(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("DeleteBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.DeleteBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete backup schedule method over HTTP.
+
+            Args:
+                request (~.firestore_admin.DeleteBackupScheduleRequest):
+                    The request object. The request for
+                [FirestoreAdmin.DeleteBackupSchedules][].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/databases/*/backupSchedules/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_backup_schedule(
+                request, metadata
+            )
+            pb_request = firestore_admin.DeleteBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteDatabase(FirestoreAdminRestStub):
         def __hash__(self):
@@ -1209,6 +1709,191 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_export_documents(resp)
+            return resp
+
+    class _GetBackup(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("GetBackup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.GetBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup.Backup:
+            r"""Call the get backup method over HTTP.
+
+            Args:
+                request (~.firestore_admin.GetBackupRequest):
+                    The request object. The request for
+                [FirestoreAdmin.GetBackup][google.firestore.admin.v1.FirestoreAdmin.GetBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup.Backup:
+                    A Backup of a Cloud Firestore
+                Database.
+                The backup contains all documents and
+                index configurations for the given
+                database at a specific point in time.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/backups/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_backup(request, metadata)
+            pb_request = firestore_admin.GetBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup.Backup()
+            pb_resp = backup.Backup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_backup(resp)
+            return resp
+
+    class _GetBackupSchedule(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("GetBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.GetBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> schedule.BackupSchedule:
+            r"""Call the get backup schedule method over HTTP.
+
+            Args:
+                request (~.firestore_admin.GetBackupScheduleRequest):
+                    The request object. The request for
+                [FirestoreAdmin.GetBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.GetBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.schedule.BackupSchedule:
+                    A backup schedule for a Cloud
+                Firestore Database.
+                This resource is owned by the database
+                it is backing up, and is deleted along
+                with the database. The actual backups
+                are not though.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/databases/*/backupSchedules/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_backup_schedule(
+                request, metadata
+            )
+            pb_request = firestore_admin.GetBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = schedule.BackupSchedule()
+            pb_resp = schedule.BackupSchedule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_backup_schedule(resp)
             return resp
 
     class _GetDatabase(FirestoreAdminRestStub):
@@ -1573,6 +2258,184 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
             resp = self._interceptor.post_import_documents(resp)
             return resp
 
+    class _ListBackups(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("ListBackups")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.ListBackupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> firestore_admin.ListBackupsResponse:
+            r"""Call the list backups method over HTTP.
+
+            Args:
+                request (~.firestore_admin.ListBackupsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.ListBackups][google.firestore.admin.v1.FirestoreAdmin.ListBackups].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.firestore_admin.ListBackupsResponse:
+                    The response for
+                [FirestoreAdmin.ListBackups][google.firestore.admin.v1.FirestoreAdmin.ListBackups].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/backups",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_backups(request, metadata)
+            pb_request = firestore_admin.ListBackupsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = firestore_admin.ListBackupsResponse()
+            pb_resp = firestore_admin.ListBackupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_backups(resp)
+            return resp
+
+    class _ListBackupSchedules(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("ListBackupSchedules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.ListBackupSchedulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> firestore_admin.ListBackupSchedulesResponse:
+            r"""Call the list backup schedules method over HTTP.
+
+            Args:
+                request (~.firestore_admin.ListBackupSchedulesRequest):
+                    The request object. The request for
+                [FirestoreAdmin.ListBackupSchedules][google.firestore.admin.v1.FirestoreAdmin.ListBackupSchedules].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.firestore_admin.ListBackupSchedulesResponse:
+                    The response for
+                [FirestoreAdmin.ListBackupSchedules][google.firestore.admin.v1.FirestoreAdmin.ListBackupSchedules].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/databases/*}/backupSchedules",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_backup_schedules(
+                request, metadata
+            )
+            pb_request = firestore_admin.ListBackupSchedulesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = firestore_admin.ListBackupSchedulesResponse()
+            pb_resp = firestore_admin.ListBackupSchedulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_backup_schedules(resp)
+            return resp
+
     class _ListDatabases(FirestoreAdminRestStub):
         def __hash__(self):
             return hash("ListDatabases")
@@ -1836,6 +2699,203 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
             resp = self._interceptor.post_list_indexes(resp)
             return resp
 
+    class _RestoreDatabase(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("RestoreDatabase")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.RestoreDatabaseRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the restore database method over HTTP.
+
+            Args:
+                request (~.firestore_admin.RestoreDatabaseRequest):
+                    The request object. The request message for
+                [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*}/databases:restore",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_restore_database(
+                request, metadata
+            )
+            pb_request = firestore_admin.RestoreDatabaseRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_restore_database(resp)
+            return resp
+
+    class _UpdateBackupSchedule(FirestoreAdminRestStub):
+        def __hash__(self):
+            return hash("UpdateBackupSchedule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: firestore_admin.UpdateBackupScheduleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> schedule.BackupSchedule:
+            r"""Call the update backup schedule method over HTTP.
+
+            Args:
+                request (~.firestore_admin.UpdateBackupScheduleRequest):
+                    The request object. The request for
+                [FirestoreAdmin.UpdateBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.UpdateBackupSchedule].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.schedule.BackupSchedule:
+                    A backup schedule for a Cloud
+                Firestore Database.
+                This resource is owned by the database
+                it is backing up, and is deleted along
+                with the database. The actual backups
+                are not though.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{backup_schedule.name=projects/*/databases/*/backupSchedules/*}",
+                    "body": "backup_schedule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_backup_schedule(
+                request, metadata
+            )
+            pb_request = firestore_admin.UpdateBackupScheduleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = schedule.BackupSchedule()
+            pb_resp = schedule.BackupSchedule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_backup_schedule(resp)
+            return resp
+
     class _UpdateDatabase(FirestoreAdminRestStub):
         def __hash__(self):
             return hash("UpdateDatabase")
@@ -2025,6 +3085,16 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
             return resp
 
     @property
+    def create_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.CreateBackupScheduleRequest], schedule.BackupSchedule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_database(
         self,
     ) -> Callable[[firestore_admin.CreateDatabaseRequest], operations_pb2.Operation]:
@@ -2039,6 +3109,22 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIndex(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[[firestore_admin.DeleteBackupRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_backup_schedule(
+        self,
+    ) -> Callable[[firestore_admin.DeleteBackupScheduleRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_database(
@@ -2063,6 +3149,20 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportDocuments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup(self) -> Callable[[firestore_admin.GetBackupRequest], backup.Backup]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup_schedule(
+        self,
+    ) -> Callable[[firestore_admin.GetBackupScheduleRequest], schedule.BackupSchedule]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_database(
@@ -2093,6 +3193,27 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
         return self._ImportDocuments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListBackupsRequest], firestore_admin.ListBackupsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backup_schedules(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListBackupSchedulesRequest],
+        firestore_admin.ListBackupSchedulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupSchedules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_databases(
         self,
     ) -> Callable[
@@ -2121,6 +3242,24 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIndexes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def restore_database(
+        self,
+    ) -> Callable[[firestore_admin.RestoreDatabaseRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RestoreDatabase(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup_schedule(
+        self,
+    ) -> Callable[
+        [firestore_admin.UpdateBackupScheduleRequest], schedule.BackupSchedule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackupSchedule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_database(

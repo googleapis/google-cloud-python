@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "ExportDocumentsMetadata",
         "ImportDocumentsMetadata",
         "ExportDocumentsResponse",
+        "RestoreDatabaseMetadata",
         "Progress",
     },
 )
@@ -427,6 +428,59 @@ class ExportDocumentsResponse(proto.Message):
     output_uri_prefix: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class RestoreDatabaseMetadata(proto.Message):
+    r"""Metadata for the [long-running
+    operation][google.longrunning.Operation] from the
+    [RestoreDatabase][google.firestore.admin.v1.RestoreDatabase]
+    request.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the restore was started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the restore finished, unset for
+            ongoing restores.
+        operation_state (google.cloud.firestore_admin_v1.types.OperationState):
+            The operation state of the restore.
+        database (str):
+            The name of the database being restored to.
+        backup (str):
+            The name of the backup restoring from.
+        progress_percentage (google.cloud.firestore_admin_v1.types.Progress):
+            How far along the restore is as an estimated
+            percentage of remaining time.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    operation_state: "OperationState" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OperationState",
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    backup: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    progress_percentage: "Progress" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="Progress",
     )
 
 
