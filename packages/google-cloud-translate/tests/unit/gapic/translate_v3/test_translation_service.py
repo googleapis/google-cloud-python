@@ -1198,7 +1198,8 @@ def test_translate_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateTextRequest()
+        request = translation_service.TranslateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateTextResponse)
@@ -1215,6 +1216,60 @@ def test_translate_text_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
         client.translate_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateTextRequest()
+
+
+def test_translate_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.TranslateTextRequest(
+        mime_type="mime_type_value",
+        source_language_code="source_language_code_value",
+        target_language_code="target_language_code_value",
+        parent="parent_value",
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
+        client.translate_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateTextRequest(
+            mime_type="mime_type_value",
+            source_language_code="source_language_code_value",
+            target_language_code="target_language_code_value",
+            parent="parent_value",
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_translate_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateTextResponse()
+        )
+        response = await client.translate_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.TranslateTextRequest()
@@ -1245,7 +1300,8 @@ async def test_translate_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateTextRequest()
+        request = translation_service.TranslateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateTextResponse)
@@ -1475,7 +1531,8 @@ def test_detect_language(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DetectLanguageRequest()
+        request = translation_service.DetectLanguageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.DetectLanguageResponse)
@@ -1492,6 +1549,58 @@ def test_detect_language_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
         client.detect_language()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.DetectLanguageRequest()
+
+
+def test_detect_language_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.DetectLanguageRequest(
+        parent="parent_value",
+        model="model_value",
+        content="content_value",
+        mime_type="mime_type_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
+        client.detect_language(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.DetectLanguageRequest(
+            parent="parent_value",
+            model="model_value",
+            content="content_value",
+            mime_type="mime_type_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_detect_language_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.DetectLanguageResponse()
+        )
+        response = await client.detect_language()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.DetectLanguageRequest()
@@ -1522,7 +1631,8 @@ async def test_detect_language_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DetectLanguageRequest()
+        request = translation_service.DetectLanguageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.DetectLanguageResponse)
@@ -1730,7 +1840,8 @@ def test_get_supported_languages(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetSupportedLanguagesRequest()
+        request = translation_service.GetSupportedLanguagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.SupportedLanguages)
@@ -1749,6 +1860,60 @@ def test_get_supported_languages_empty_call():
         type(client.transport.get_supported_languages), "__call__"
     ) as call:
         client.get_supported_languages()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.GetSupportedLanguagesRequest()
+
+
+def test_get_supported_languages_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.GetSupportedLanguagesRequest(
+        parent="parent_value",
+        display_language_code="display_language_code_value",
+        model="model_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_supported_languages), "__call__"
+    ) as call:
+        client.get_supported_languages(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.GetSupportedLanguagesRequest(
+            parent="parent_value",
+            display_language_code="display_language_code_value",
+            model="model_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_supported_languages_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_supported_languages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.SupportedLanguages()
+        )
+        response = await client.get_supported_languages()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.GetSupportedLanguagesRequest()
@@ -1781,7 +1946,8 @@ async def test_get_supported_languages_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetSupportedLanguagesRequest()
+        request = translation_service.GetSupportedLanguagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.SupportedLanguages)
@@ -1993,7 +2159,8 @@ def test_translate_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateDocumentRequest()
+        request = translation_service.TranslateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateDocumentResponse)
@@ -2013,6 +2180,66 @@ def test_translate_document_empty_call():
         type(client.transport.translate_document), "__call__"
     ) as call:
         client.translate_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateDocumentRequest()
+
+
+def test_translate_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.TranslateDocumentRequest(
+        parent="parent_value",
+        source_language_code="source_language_code_value",
+        target_language_code="target_language_code_value",
+        model="model_value",
+        customized_attribution="customized_attribution_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        client.translate_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateDocumentRequest(
+            parent="parent_value",
+            source_language_code="source_language_code_value",
+            target_language_code="target_language_code_value",
+            model="model_value",
+            customized_attribution="customized_attribution_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_translate_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateDocumentResponse(
+                model="model_value",
+            )
+        )
+        response = await client.translate_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.TranslateDocumentRequest()
@@ -2047,7 +2274,8 @@ async def test_translate_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateDocumentRequest()
+        request = translation_service.TranslateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateDocumentResponse)
@@ -2152,7 +2380,8 @@ def test_batch_translate_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateTextRequest()
+        request = translation_service.BatchTranslateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2171,6 +2400,58 @@ def test_batch_translate_text_empty_call():
         type(client.transport.batch_translate_text), "__call__"
     ) as call:
         client.batch_translate_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateTextRequest()
+
+
+def test_batch_translate_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.BatchTranslateTextRequest(
+        parent="parent_value",
+        source_language_code="source_language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_text), "__call__"
+    ) as call:
+        client.batch_translate_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateTextRequest(
+            parent="parent_value",
+            source_language_code="source_language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_translate_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_text), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_translate_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.BatchTranslateTextRequest()
@@ -2203,7 +2484,8 @@ async def test_batch_translate_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateTextRequest()
+        request = translation_service.BatchTranslateTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2307,7 +2589,8 @@ def test_batch_translate_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateDocumentRequest()
+        request = translation_service.BatchTranslateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2326,6 +2609,60 @@ def test_batch_translate_document_empty_call():
         type(client.transport.batch_translate_document), "__call__"
     ) as call:
         client.batch_translate_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateDocumentRequest()
+
+
+def test_batch_translate_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.BatchTranslateDocumentRequest(
+        parent="parent_value",
+        source_language_code="source_language_code_value",
+        customized_attribution="customized_attribution_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        client.batch_translate_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateDocumentRequest(
+            parent="parent_value",
+            source_language_code="source_language_code_value",
+            customized_attribution="customized_attribution_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_translate_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_translate_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.BatchTranslateDocumentRequest()
@@ -2358,7 +2695,8 @@ async def test_batch_translate_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateDocumentRequest()
+        request = translation_service.BatchTranslateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2642,7 +2980,8 @@ def test_create_glossary(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.CreateGlossaryRequest()
+        request = translation_service.CreateGlossaryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2659,6 +2998,52 @@ def test_create_glossary_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
         client.create_glossary()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.CreateGlossaryRequest()
+
+
+def test_create_glossary_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.CreateGlossaryRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
+        client.create_glossary(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.CreateGlossaryRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_glossary_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_glossary()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.CreateGlossaryRequest()
@@ -2689,7 +3074,8 @@ async def test_create_glossary_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.CreateGlossaryRequest()
+        request = translation_service.CreateGlossaryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2881,7 +3267,8 @@ def test_list_glossaries(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.ListGlossariesRequest()
+        request = translation_service.ListGlossariesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGlossariesPager)
@@ -2899,6 +3286,58 @@ def test_list_glossaries_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
         client.list_glossaries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.ListGlossariesRequest()
+
+
+def test_list_glossaries_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.ListGlossariesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
+        client.list_glossaries(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.ListGlossariesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_glossaries_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.ListGlossariesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_glossaries()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.ListGlossariesRequest()
@@ -2931,7 +3370,8 @@ async def test_list_glossaries_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.ListGlossariesRequest()
+        request = translation_service.ListGlossariesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGlossariesAsyncPager)
@@ -3306,7 +3746,8 @@ def test_get_glossary(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetGlossaryRequest()
+        request = translation_service.GetGlossaryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.Glossary)
@@ -3326,6 +3767,56 @@ def test_get_glossary_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
         client.get_glossary()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.GetGlossaryRequest()
+
+
+def test_get_glossary_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.GetGlossaryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
+        client.get_glossary(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.GetGlossaryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_glossary_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.Glossary(
+                name="name_value",
+                entry_count=1210,
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_glossary()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.GetGlossaryRequest()
@@ -3359,7 +3850,8 @@ async def test_get_glossary_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetGlossaryRequest()
+        request = translation_service.GetGlossaryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.Glossary)
@@ -3542,7 +4034,8 @@ def test_delete_glossary(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DeleteGlossaryRequest()
+        request = translation_service.DeleteGlossaryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3559,6 +4052,52 @@ def test_delete_glossary_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
         client.delete_glossary()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.DeleteGlossaryRequest()
+
+
+def test_delete_glossary_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.DeleteGlossaryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
+        client.delete_glossary(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.DeleteGlossaryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_glossary_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_glossary()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.DeleteGlossaryRequest()
@@ -3589,7 +4128,8 @@ async def test_delete_glossary_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DeleteGlossaryRequest()
+        request = translation_service.DeleteGlossaryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3777,7 +4317,8 @@ def test_create_adaptive_mt_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest()
+        request = adaptive_mt.CreateAdaptiveMtDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
@@ -3801,6 +4342,62 @@ def test_create_adaptive_mt_dataset_empty_call():
         type(client.transport.create_adaptive_mt_dataset), "__call__"
     ) as call:
         client.create_adaptive_mt_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest()
+
+
+def test_create_adaptive_mt_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.CreateAdaptiveMtDatasetRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_adaptive_mt_dataset), "__call__"
+    ) as call:
+        client.create_adaptive_mt_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_adaptive_mt_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_adaptive_mt_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtDataset(
+                name="name_value",
+                display_name="display_name_value",
+                source_language_code="source_language_code_value",
+                target_language_code="target_language_code_value",
+                example_count=1396,
+            )
+        )
+        response = await client.create_adaptive_mt_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest()
@@ -3839,7 +4436,8 @@ async def test_create_adaptive_mt_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest()
+        request = adaptive_mt.CreateAdaptiveMtDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
@@ -4044,7 +4642,8 @@ def test_delete_adaptive_mt_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+        request = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4063,6 +4662,54 @@ def test_delete_adaptive_mt_dataset_empty_call():
         type(client.transport.delete_adaptive_mt_dataset), "__call__"
     ) as call:
         client.delete_adaptive_mt_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+
+
+def test_delete_adaptive_mt_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.DeleteAdaptiveMtDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_dataset), "__call__"
+    ) as call:
+        client.delete_adaptive_mt_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_adaptive_mt_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_adaptive_mt_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest()
@@ -4093,7 +4740,8 @@ async def test_delete_adaptive_mt_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+        request = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4285,7 +4933,8 @@ def test_get_adaptive_mt_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest()
+        request = adaptive_mt.GetAdaptiveMtDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
@@ -4309,6 +4958,62 @@ def test_get_adaptive_mt_dataset_empty_call():
         type(client.transport.get_adaptive_mt_dataset), "__call__"
     ) as call:
         client.get_adaptive_mt_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest()
+
+
+def test_get_adaptive_mt_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.GetAdaptiveMtDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_dataset), "__call__"
+    ) as call:
+        client.get_adaptive_mt_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_adaptive_mt_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtDataset(
+                name="name_value",
+                display_name="display_name_value",
+                source_language_code="source_language_code_value",
+                target_language_code="target_language_code_value",
+                example_count=1396,
+            )
+        )
+        response = await client.get_adaptive_mt_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest()
@@ -4347,7 +5052,8 @@ async def test_get_adaptive_mt_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest()
+        request = adaptive_mt.GetAdaptiveMtDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
@@ -4544,7 +5250,8 @@ def test_list_adaptive_mt_datasets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest()
+        request = adaptive_mt.ListAdaptiveMtDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtDatasetsPager)
@@ -4564,6 +5271,62 @@ def test_list_adaptive_mt_datasets_empty_call():
         type(client.transport.list_adaptive_mt_datasets), "__call__"
     ) as call:
         client.list_adaptive_mt_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest()
+
+
+def test_list_adaptive_mt_datasets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.ListAdaptiveMtDatasetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_datasets), "__call__"
+    ) as call:
+        client.list_adaptive_mt_datasets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_adaptive_mt_datasets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_datasets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ListAdaptiveMtDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_adaptive_mt_datasets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest()
@@ -4598,7 +5361,8 @@ async def test_list_adaptive_mt_datasets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest()
+        request = adaptive_mt.ListAdaptiveMtDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtDatasetsAsyncPager)
@@ -4989,7 +5753,8 @@ def test_adaptive_mt_translate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest()
+        request = adaptive_mt.AdaptiveMtTranslateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtTranslateResponse)
@@ -5009,6 +5774,60 @@ def test_adaptive_mt_translate_empty_call():
         type(client.transport.adaptive_mt_translate), "__call__"
     ) as call:
         client.adaptive_mt_translate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest()
+
+
+def test_adaptive_mt_translate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.AdaptiveMtTranslateRequest(
+        parent="parent_value",
+        dataset="dataset_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.adaptive_mt_translate), "__call__"
+    ) as call:
+        client.adaptive_mt_translate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest(
+            parent="parent_value",
+            dataset="dataset_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_adaptive_mt_translate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.adaptive_mt_translate), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtTranslateResponse(
+                language_code="language_code_value",
+            )
+        )
+        response = await client.adaptive_mt_translate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest()
@@ -5042,7 +5861,8 @@ async def test_adaptive_mt_translate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest()
+        request = adaptive_mt.AdaptiveMtTranslateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtTranslateResponse)
@@ -5247,7 +6067,8 @@ def test_get_adaptive_mt_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest()
+        request = adaptive_mt.GetAdaptiveMtFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtFile)
@@ -5269,6 +6090,60 @@ def test_get_adaptive_mt_file_empty_call():
         type(client.transport.get_adaptive_mt_file), "__call__"
     ) as call:
         client.get_adaptive_mt_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest()
+
+
+def test_get_adaptive_mt_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.GetAdaptiveMtFileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_file), "__call__"
+    ) as call:
+        client.get_adaptive_mt_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_adaptive_mt_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtFile(
+                name="name_value",
+                display_name="display_name_value",
+                entry_count=1210,
+            )
+        )
+        response = await client.get_adaptive_mt_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest()
@@ -5304,7 +6179,8 @@ async def test_get_adaptive_mt_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest()
+        request = adaptive_mt.GetAdaptiveMtFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.AdaptiveMtFile)
@@ -5497,7 +6373,8 @@ def test_delete_adaptive_mt_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest()
+        request = adaptive_mt.DeleteAdaptiveMtFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5516,6 +6393,54 @@ def test_delete_adaptive_mt_file_empty_call():
         type(client.transport.delete_adaptive_mt_file), "__call__"
     ) as call:
         client.delete_adaptive_mt_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest()
+
+
+def test_delete_adaptive_mt_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.DeleteAdaptiveMtFileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_file), "__call__"
+    ) as call:
+        client.delete_adaptive_mt_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_adaptive_mt_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_adaptive_mt_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest()
@@ -5546,7 +6471,8 @@ async def test_delete_adaptive_mt_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest()
+        request = adaptive_mt.DeleteAdaptiveMtFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5732,7 +6658,8 @@ def test_import_adaptive_mt_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest()
+        request = adaptive_mt.ImportAdaptiveMtFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.ImportAdaptiveMtFileResponse)
@@ -5751,6 +6678,56 @@ def test_import_adaptive_mt_file_empty_call():
         type(client.transport.import_adaptive_mt_file), "__call__"
     ) as call:
         client.import_adaptive_mt_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest()
+
+
+def test_import_adaptive_mt_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.ImportAdaptiveMtFileRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_adaptive_mt_file), "__call__"
+    ) as call:
+        client.import_adaptive_mt_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_adaptive_mt_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_adaptive_mt_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ImportAdaptiveMtFileResponse()
+        )
+        response = await client.import_adaptive_mt_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest()
@@ -5783,7 +6760,8 @@ async def test_import_adaptive_mt_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest()
+        request = adaptive_mt.ImportAdaptiveMtFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.ImportAdaptiveMtFileResponse)
@@ -5975,7 +6953,8 @@ def test_list_adaptive_mt_files(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest()
+        request = adaptive_mt.ListAdaptiveMtFilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtFilesPager)
@@ -5995,6 +6974,60 @@ def test_list_adaptive_mt_files_empty_call():
         type(client.transport.list_adaptive_mt_files), "__call__"
     ) as call:
         client.list_adaptive_mt_files()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest()
+
+
+def test_list_adaptive_mt_files_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.ListAdaptiveMtFilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_files), "__call__"
+    ) as call:
+        client.list_adaptive_mt_files(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_adaptive_mt_files_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_files), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ListAdaptiveMtFilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_adaptive_mt_files()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest()
@@ -6028,7 +7061,8 @@ async def test_list_adaptive_mt_files_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest()
+        request = adaptive_mt.ListAdaptiveMtFilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtFilesAsyncPager)
@@ -6419,7 +7453,8 @@ def test_list_adaptive_mt_sentences(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest()
+        request = adaptive_mt.ListAdaptiveMtSentencesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtSentencesPager)
@@ -6439,6 +7474,60 @@ def test_list_adaptive_mt_sentences_empty_call():
         type(client.transport.list_adaptive_mt_sentences), "__call__"
     ) as call:
         client.list_adaptive_mt_sentences()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest()
+
+
+def test_list_adaptive_mt_sentences_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = adaptive_mt.ListAdaptiveMtSentencesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_sentences), "__call__"
+    ) as call:
+        client.list_adaptive_mt_sentences(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_adaptive_mt_sentences_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_sentences), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ListAdaptiveMtSentencesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_adaptive_mt_sentences()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest()
@@ -6473,7 +7562,8 @@ async def test_list_adaptive_mt_sentences_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest()
+        request = adaptive_mt.ListAdaptiveMtSentencesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtSentencesAsyncPager)

@@ -1161,7 +1161,8 @@ def test_batch_annotate_images(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_annotator.BatchAnnotateImagesRequest()
+        request = image_annotator.BatchAnnotateImagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, image_annotator.BatchAnnotateImagesResponse)
@@ -1180,6 +1181,52 @@ def test_batch_annotate_images_empty_call():
         type(client.transport.batch_annotate_images), "__call__"
     ) as call:
         client.batch_annotate_images()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == image_annotator.BatchAnnotateImagesRequest()
+
+
+def test_batch_annotate_images_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = image_annotator.BatchAnnotateImagesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_annotate_images), "__call__"
+    ) as call:
+        client.batch_annotate_images(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == image_annotator.BatchAnnotateImagesRequest()
+
+
+@pytest.mark.asyncio
+async def test_batch_annotate_images_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ImageAnnotatorAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_annotate_images), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            image_annotator.BatchAnnotateImagesResponse()
+        )
+        response = await client.batch_annotate_images()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == image_annotator.BatchAnnotateImagesRequest()
@@ -1212,7 +1259,8 @@ async def test_batch_annotate_images_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_annotator.BatchAnnotateImagesRequest()
+        request = image_annotator.BatchAnnotateImagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, image_annotator.BatchAnnotateImagesResponse)
@@ -1361,7 +1409,8 @@ def test_async_batch_annotate_files(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_annotator.AsyncBatchAnnotateFilesRequest()
+        request = image_annotator.AsyncBatchAnnotateFilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1380,6 +1429,52 @@ def test_async_batch_annotate_files_empty_call():
         type(client.transport.async_batch_annotate_files), "__call__"
     ) as call:
         client.async_batch_annotate_files()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == image_annotator.AsyncBatchAnnotateFilesRequest()
+
+
+def test_async_batch_annotate_files_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = image_annotator.AsyncBatchAnnotateFilesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.async_batch_annotate_files), "__call__"
+    ) as call:
+        client.async_batch_annotate_files(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == image_annotator.AsyncBatchAnnotateFilesRequest()
+
+
+@pytest.mark.asyncio
+async def test_async_batch_annotate_files_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ImageAnnotatorAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.async_batch_annotate_files), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.async_batch_annotate_files()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == image_annotator.AsyncBatchAnnotateFilesRequest()
@@ -1412,7 +1507,8 @@ async def test_async_batch_annotate_files_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_annotator.AsyncBatchAnnotateFilesRequest()
+        request = image_annotator.AsyncBatchAnnotateFilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
