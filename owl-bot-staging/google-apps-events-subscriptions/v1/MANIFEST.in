@@ -1,2 +1,0 @@
-recursive-include google/apps/events_subscriptions *.py
-recursive-include google/apps/events_subscriptions_v1 *.py

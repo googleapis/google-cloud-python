@@ -1097,7 +1097,8 @@ def test_list_apis(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApisRequest()
+        request = registry_service.ListApisRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApisPager)
@@ -1115,6 +1116,58 @@ def test_list_apis_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
         client.list_apis()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApisRequest()
+
+
+def test_list_apis_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListApisRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
+        client.list_apis(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApisRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_apis_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListApisResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_apis()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListApisRequest()
@@ -1146,7 +1199,8 @@ async def test_list_apis_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApisRequest()
+        request = registry_service.ListApisRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApisAsyncPager)
@@ -1524,7 +1578,8 @@ def test_get_api(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiRequest()
+        request = registry_service.GetApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Api)
@@ -1547,6 +1602,59 @@ def test_get_api_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
         client.get_api()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiRequest()
+
+
+def test_get_api_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetApiRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
+        client.get_api(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_api_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.Api(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                availability="availability_value",
+                recommended_version="recommended_version_value",
+                recommended_deployment="recommended_deployment_value",
+            )
+        )
+        response = await client.get_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetApiRequest()
@@ -1583,7 +1691,8 @@ async def test_get_api_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiRequest()
+        request = registry_service.GetApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Api)
@@ -1772,7 +1881,8 @@ def test_create_api(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiRequest()
+        request = registry_service.CreateApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Api)
@@ -1795,6 +1905,61 @@ def test_create_api_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
         client.create_api()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiRequest()
+
+
+def test_create_api_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.CreateApiRequest(
+        parent="parent_value",
+        api_id="api_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
+        client.create_api(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiRequest(
+            parent="parent_value",
+            api_id="api_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_api_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.Api(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                availability="availability_value",
+                recommended_version="recommended_version_value",
+                recommended_deployment="recommended_deployment_value",
+            )
+        )
+        response = await client.create_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.CreateApiRequest()
@@ -1831,7 +1996,8 @@ async def test_create_api_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiRequest()
+        request = registry_service.CreateApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Api)
@@ -2040,7 +2206,8 @@ def test_update_api(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiRequest()
+        request = registry_service.UpdateApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Api)
@@ -2063,6 +2230,55 @@ def test_update_api_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
         client.update_api()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiRequest()
+
+
+def test_update_api_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.UpdateApiRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
+        client.update_api(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_api_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.Api(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                availability="availability_value",
+                recommended_version="recommended_version_value",
+                recommended_deployment="recommended_deployment_value",
+            )
+        )
+        response = await client.update_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.UpdateApiRequest()
@@ -2099,7 +2315,8 @@ async def test_update_api_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiRequest()
+        request = registry_service.UpdateApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Api)
@@ -2291,7 +2508,8 @@ def test_delete_api(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiRequest()
+        request = registry_service.DeleteApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2308,6 +2526,50 @@ def test_delete_api_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
         client.delete_api()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiRequest()
+
+
+def test_delete_api_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteApiRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
+        client.delete_api(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_api_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteApiRequest()
@@ -2335,7 +2597,8 @@ async def test_delete_api_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiRequest()
+        request = registry_service.DeleteApiRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2515,7 +2778,8 @@ def test_list_api_versions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiVersionsRequest()
+        request = registry_service.ListApiVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiVersionsPager)
@@ -2535,6 +2799,62 @@ def test_list_api_versions_empty_call():
         type(client.transport.list_api_versions), "__call__"
     ) as call:
         client.list_api_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiVersionsRequest()
+
+
+def test_list_api_versions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListApiVersionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_versions), "__call__"
+    ) as call:
+        client.list_api_versions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiVersionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_api_versions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListApiVersionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_api_versions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListApiVersionsRequest()
@@ -2569,7 +2889,8 @@ async def test_list_api_versions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiVersionsRequest()
+        request = registry_service.ListApiVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiVersionsAsyncPager)
@@ -2961,7 +3282,8 @@ def test_get_api_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiVersionRequest()
+        request = registry_service.GetApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiVersion)
@@ -2982,6 +3304,57 @@ def test_get_api_version_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_version), "__call__") as call:
         client.get_api_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiVersionRequest()
+
+
+def test_get_api_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetApiVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_version), "__call__") as call:
+        client.get_api_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_api_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_version), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiVersion(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                state="state_value",
+            )
+        )
+        response = await client.get_api_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetApiVersionRequest()
@@ -3016,7 +3389,8 @@ async def test_get_api_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiVersionRequest()
+        request = registry_service.GetApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiVersion)
@@ -3207,7 +3581,8 @@ def test_create_api_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiVersionRequest()
+        request = registry_service.CreateApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiVersion)
@@ -3230,6 +3605,63 @@ def test_create_api_version_empty_call():
         type(client.transport.create_api_version), "__call__"
     ) as call:
         client.create_api_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiVersionRequest()
+
+
+def test_create_api_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.CreateApiVersionRequest(
+        parent="parent_value",
+        api_version_id="api_version_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_version), "__call__"
+    ) as call:
+        client.create_api_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiVersionRequest(
+            parent="parent_value",
+            api_version_id="api_version_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_api_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiVersion(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                state="state_value",
+            )
+        )
+        response = await client.create_api_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.CreateApiVersionRequest()
@@ -3267,7 +3699,8 @@ async def test_create_api_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiVersionRequest()
+        request = registry_service.CreateApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiVersion)
@@ -3486,7 +3919,8 @@ def test_update_api_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiVersionRequest()
+        request = registry_service.UpdateApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiVersion)
@@ -3509,6 +3943,57 @@ def test_update_api_version_empty_call():
         type(client.transport.update_api_version), "__call__"
     ) as call:
         client.update_api_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiVersionRequest()
+
+
+def test_update_api_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.UpdateApiVersionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_version), "__call__"
+    ) as call:
+        client.update_api_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiVersionRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_api_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiVersion(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                state="state_value",
+            )
+        )
+        response = await client.update_api_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.UpdateApiVersionRequest()
@@ -3546,7 +4031,8 @@ async def test_update_api_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiVersionRequest()
+        request = registry_service.UpdateApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiVersion)
@@ -3750,7 +4236,8 @@ def test_delete_api_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiVersionRequest()
+        request = registry_service.DeleteApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3769,6 +4256,54 @@ def test_delete_api_version_empty_call():
         type(client.transport.delete_api_version), "__call__"
     ) as call:
         client.delete_api_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiVersionRequest()
+
+
+def test_delete_api_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteApiVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_version), "__call__"
+    ) as call:
+        client.delete_api_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_api_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_api_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteApiVersionRequest()
@@ -3799,7 +4334,8 @@ async def test_delete_api_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiVersionRequest()
+        request = registry_service.DeleteApiVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3985,7 +4521,8 @@ def test_list_api_specs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiSpecsRequest()
+        request = registry_service.ListApiSpecsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiSpecsPager)
@@ -4003,6 +4540,58 @@ def test_list_api_specs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_specs), "__call__") as call:
         client.list_api_specs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiSpecsRequest()
+
+
+def test_list_api_specs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListApiSpecsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_api_specs), "__call__") as call:
+        client.list_api_specs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiSpecsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_api_specs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_api_specs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListApiSpecsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_api_specs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListApiSpecsRequest()
@@ -4034,7 +4623,8 @@ async def test_list_api_specs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiSpecsRequest()
+        request = registry_service.ListApiSpecsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiSpecsAsyncPager)
@@ -4415,7 +5005,8 @@ def test_get_api_spec(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiSpecRequest()
+        request = registry_service.GetApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -4441,6 +5032,62 @@ def test_get_api_spec_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_spec), "__call__") as call:
         client.get_api_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiSpecRequest()
+
+
+def test_get_api_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetApiSpecRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_spec), "__call__") as call:
+        client.get_api_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiSpecRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_api_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_spec), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiSpec(
+                name="name_value",
+                filename="filename_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                source_uri="source_uri_value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.get_api_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetApiSpecRequest()
@@ -4480,7 +5127,8 @@ async def test_get_api_spec_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiSpecRequest()
+        request = registry_service.GetApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -4674,7 +5322,8 @@ def test_get_api_spec_contents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiSpecContentsRequest()
+        request = registry_service.GetApiSpecContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, httpbody_pb2.HttpBody)
@@ -4695,6 +5344,59 @@ def test_get_api_spec_contents_empty_call():
         type(client.transport.get_api_spec_contents), "__call__"
     ) as call:
         client.get_api_spec_contents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiSpecContentsRequest()
+
+
+def test_get_api_spec_contents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetApiSpecContentsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_api_spec_contents), "__call__"
+    ) as call:
+        client.get_api_spec_contents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiSpecContentsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_api_spec_contents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_api_spec_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            httpbody_pb2.HttpBody(
+                content_type="content_type_value",
+                data=b"data_blob",
+            )
+        )
+        response = await client.get_api_spec_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetApiSpecContentsRequest()
@@ -4730,7 +5432,8 @@ async def test_get_api_spec_contents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiSpecContentsRequest()
+        request = registry_service.GetApiSpecContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, httpbody_pb2.HttpBody)
@@ -4930,7 +5633,8 @@ def test_create_api_spec(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiSpecRequest()
+        request = registry_service.CreateApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -4956,6 +5660,64 @@ def test_create_api_spec_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api_spec), "__call__") as call:
         client.create_api_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiSpecRequest()
+
+
+def test_create_api_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.CreateApiSpecRequest(
+        parent="parent_value",
+        api_spec_id="api_spec_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_api_spec), "__call__") as call:
+        client.create_api_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiSpecRequest(
+            parent="parent_value",
+            api_spec_id="api_spec_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_api_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_api_spec), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiSpec(
+                name="name_value",
+                filename="filename_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                source_uri="source_uri_value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.create_api_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.CreateApiSpecRequest()
@@ -4995,7 +5757,8 @@ async def test_create_api_spec_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiSpecRequest()
+        request = registry_service.CreateApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -5214,7 +5977,8 @@ def test_update_api_spec(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiSpecRequest()
+        request = registry_service.UpdateApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -5240,6 +6004,58 @@ def test_update_api_spec_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api_spec), "__call__") as call:
         client.update_api_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiSpecRequest()
+
+
+def test_update_api_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.UpdateApiSpecRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_api_spec), "__call__") as call:
+        client.update_api_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiSpecRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_api_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_api_spec), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiSpec(
+                name="name_value",
+                filename="filename_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                source_uri="source_uri_value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.update_api_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.UpdateApiSpecRequest()
@@ -5279,7 +6095,8 @@ async def test_update_api_spec_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiSpecRequest()
+        request = registry_service.UpdateApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -5478,7 +6295,8 @@ def test_delete_api_spec(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiSpecRequest()
+        request = registry_service.DeleteApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5495,6 +6313,50 @@ def test_delete_api_spec_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api_spec), "__call__") as call:
         client.delete_api_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiSpecRequest()
+
+
+def test_delete_api_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteApiSpecRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api_spec), "__call__") as call:
+        client.delete_api_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiSpecRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_api_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api_spec), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_api_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteApiSpecRequest()
@@ -5522,7 +6384,8 @@ async def test_delete_api_spec_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiSpecRequest()
+        request = registry_service.DeleteApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5710,7 +6573,8 @@ def test_tag_api_spec_revision(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.TagApiSpecRevisionRequest()
+        request = registry_service.TagApiSpecRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -5738,6 +6602,68 @@ def test_tag_api_spec_revision_empty_call():
         type(client.transport.tag_api_spec_revision), "__call__"
     ) as call:
         client.tag_api_spec_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.TagApiSpecRevisionRequest()
+
+
+def test_tag_api_spec_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.TagApiSpecRevisionRequest(
+        name="name_value",
+        tag="tag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tag_api_spec_revision), "__call__"
+    ) as call:
+        client.tag_api_spec_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.TagApiSpecRevisionRequest(
+            name="name_value",
+            tag="tag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_tag_api_spec_revision_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tag_api_spec_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiSpec(
+                name="name_value",
+                filename="filename_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                source_uri="source_uri_value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.tag_api_spec_revision()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.TagApiSpecRevisionRequest()
@@ -5780,7 +6706,8 @@ async def test_tag_api_spec_revision_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.TagApiSpecRevisionRequest()
+        request = registry_service.TagApiSpecRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -5895,7 +6822,8 @@ def test_list_api_spec_revisions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiSpecRevisionsRequest()
+        request = registry_service.ListApiSpecRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiSpecRevisionsPager)
@@ -5915,6 +6843,60 @@ def test_list_api_spec_revisions_empty_call():
         type(client.transport.list_api_spec_revisions), "__call__"
     ) as call:
         client.list_api_spec_revisions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiSpecRevisionsRequest()
+
+
+def test_list_api_spec_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListApiSpecRevisionsRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_spec_revisions), "__call__"
+    ) as call:
+        client.list_api_spec_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiSpecRevisionsRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_api_spec_revisions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_spec_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListApiSpecRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_api_spec_revisions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListApiSpecRevisionsRequest()
@@ -5949,7 +6931,8 @@ async def test_list_api_spec_revisions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiSpecRevisionsRequest()
+        request = registry_service.ListApiSpecRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiSpecRevisionsAsyncPager)
@@ -6262,7 +7245,8 @@ def test_rollback_api_spec(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.RollbackApiSpecRequest()
+        request = registry_service.RollbackApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -6290,6 +7274,68 @@ def test_rollback_api_spec_empty_call():
         type(client.transport.rollback_api_spec), "__call__"
     ) as call:
         client.rollback_api_spec()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.RollbackApiSpecRequest()
+
+
+def test_rollback_api_spec_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.RollbackApiSpecRequest(
+        name="name_value",
+        revision_id="revision_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_api_spec), "__call__"
+    ) as call:
+        client.rollback_api_spec(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.RollbackApiSpecRequest(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_api_spec_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_api_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiSpec(
+                name="name_value",
+                filename="filename_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                source_uri="source_uri_value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.rollback_api_spec()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.RollbackApiSpecRequest()
@@ -6332,7 +7378,8 @@ async def test_rollback_api_spec_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.RollbackApiSpecRequest()
+        request = registry_service.RollbackApiSpecRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -6455,7 +7502,8 @@ def test_delete_api_spec_revision(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiSpecRevisionRequest()
+        request = registry_service.DeleteApiSpecRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -6483,6 +7531,66 @@ def test_delete_api_spec_revision_empty_call():
         type(client.transport.delete_api_spec_revision), "__call__"
     ) as call:
         client.delete_api_spec_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiSpecRevisionRequest()
+
+
+def test_delete_api_spec_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteApiSpecRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_spec_revision), "__call__"
+    ) as call:
+        client.delete_api_spec_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiSpecRevisionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_api_spec_revision_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_spec_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiSpec(
+                name="name_value",
+                filename="filename_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                source_uri="source_uri_value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.delete_api_spec_revision()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteApiSpecRevisionRequest()
@@ -6525,7 +7633,8 @@ async def test_delete_api_spec_revision_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiSpecRevisionRequest()
+        request = registry_service.DeleteApiSpecRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiSpec)
@@ -6726,7 +7835,8 @@ def test_list_api_deployments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiDeploymentsRequest()
+        request = registry_service.ListApiDeploymentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiDeploymentsPager)
@@ -6746,6 +7856,62 @@ def test_list_api_deployments_empty_call():
         type(client.transport.list_api_deployments), "__call__"
     ) as call:
         client.list_api_deployments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiDeploymentsRequest()
+
+
+def test_list_api_deployments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListApiDeploymentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_deployments), "__call__"
+    ) as call:
+        client.list_api_deployments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiDeploymentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_api_deployments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_deployments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListApiDeploymentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_api_deployments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListApiDeploymentsRequest()
@@ -6780,7 +7946,8 @@ async def test_list_api_deployments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiDeploymentsRequest()
+        request = registry_service.ListApiDeploymentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiDeploymentsAsyncPager)
@@ -7179,7 +8346,8 @@ def test_get_api_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiDeploymentRequest()
+        request = registry_service.GetApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -7207,6 +8375,66 @@ def test_get_api_deployment_empty_call():
         type(client.transport.get_api_deployment), "__call__"
     ) as call:
         client.get_api_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiDeploymentRequest()
+
+
+def test_get_api_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetApiDeploymentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_api_deployment), "__call__"
+    ) as call:
+        client.get_api_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetApiDeploymentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_api_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_api_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiDeployment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                api_spec_revision="api_spec_revision_value",
+                endpoint_uri="endpoint_uri_value",
+                external_channel_uri="external_channel_uri_value",
+                intended_audience="intended_audience_value",
+                access_guidance="access_guidance_value",
+            )
+        )
+        response = await client.get_api_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetApiDeploymentRequest()
@@ -7249,7 +8477,8 @@ async def test_get_api_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiDeploymentRequest()
+        request = registry_service.GetApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -7458,7 +8687,8 @@ def test_create_api_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiDeploymentRequest()
+        request = registry_service.CreateApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -7486,6 +8716,68 @@ def test_create_api_deployment_empty_call():
         type(client.transport.create_api_deployment), "__call__"
     ) as call:
         client.create_api_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiDeploymentRequest()
+
+
+def test_create_api_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.CreateApiDeploymentRequest(
+        parent="parent_value",
+        api_deployment_id="api_deployment_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_deployment), "__call__"
+    ) as call:
+        client.create_api_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateApiDeploymentRequest(
+            parent="parent_value",
+            api_deployment_id="api_deployment_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_api_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiDeployment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                api_spec_revision="api_spec_revision_value",
+                endpoint_uri="endpoint_uri_value",
+                external_channel_uri="external_channel_uri_value",
+                intended_audience="intended_audience_value",
+                access_guidance="access_guidance_value",
+            )
+        )
+        response = await client.create_api_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.CreateApiDeploymentRequest()
@@ -7528,7 +8820,8 @@ async def test_create_api_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiDeploymentRequest()
+        request = registry_service.CreateApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -7757,7 +9050,8 @@ def test_update_api_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiDeploymentRequest()
+        request = registry_service.UpdateApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -7785,6 +9079,62 @@ def test_update_api_deployment_empty_call():
         type(client.transport.update_api_deployment), "__call__"
     ) as call:
         client.update_api_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiDeploymentRequest()
+
+
+def test_update_api_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.UpdateApiDeploymentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_deployment), "__call__"
+    ) as call:
+        client.update_api_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.UpdateApiDeploymentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_api_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiDeployment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                api_spec_revision="api_spec_revision_value",
+                endpoint_uri="endpoint_uri_value",
+                external_channel_uri="external_channel_uri_value",
+                intended_audience="intended_audience_value",
+                access_guidance="access_guidance_value",
+            )
+        )
+        response = await client.update_api_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.UpdateApiDeploymentRequest()
@@ -7827,7 +9177,8 @@ async def test_update_api_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiDeploymentRequest()
+        request = registry_service.UpdateApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -8036,7 +9387,8 @@ def test_delete_api_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiDeploymentRequest()
+        request = registry_service.DeleteApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8055,6 +9407,54 @@ def test_delete_api_deployment_empty_call():
         type(client.transport.delete_api_deployment), "__call__"
     ) as call:
         client.delete_api_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiDeploymentRequest()
+
+
+def test_delete_api_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteApiDeploymentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_deployment), "__call__"
+    ) as call:
+        client.delete_api_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiDeploymentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_api_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_api_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteApiDeploymentRequest()
@@ -8085,7 +9485,8 @@ async def test_delete_api_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiDeploymentRequest()
+        request = registry_service.DeleteApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8281,7 +9682,8 @@ def test_tag_api_deployment_revision(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.TagApiDeploymentRevisionRequest()
+        request = registry_service.TagApiDeploymentRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -8309,6 +9711,68 @@ def test_tag_api_deployment_revision_empty_call():
         type(client.transport.tag_api_deployment_revision), "__call__"
     ) as call:
         client.tag_api_deployment_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.TagApiDeploymentRevisionRequest()
+
+
+def test_tag_api_deployment_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.TagApiDeploymentRevisionRequest(
+        name="name_value",
+        tag="tag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tag_api_deployment_revision), "__call__"
+    ) as call:
+        client.tag_api_deployment_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.TagApiDeploymentRevisionRequest(
+            name="name_value",
+            tag="tag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_tag_api_deployment_revision_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tag_api_deployment_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiDeployment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                api_spec_revision="api_spec_revision_value",
+                endpoint_uri="endpoint_uri_value",
+                external_channel_uri="external_channel_uri_value",
+                intended_audience="intended_audience_value",
+                access_guidance="access_guidance_value",
+            )
+        )
+        response = await client.tag_api_deployment_revision()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.TagApiDeploymentRevisionRequest()
@@ -8351,7 +9815,8 @@ async def test_tag_api_deployment_revision_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.TagApiDeploymentRevisionRequest()
+        request = registry_service.TagApiDeploymentRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -8466,7 +9931,8 @@ def test_list_api_deployment_revisions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiDeploymentRevisionsRequest()
+        request = registry_service.ListApiDeploymentRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiDeploymentRevisionsPager)
@@ -8486,6 +9952,60 @@ def test_list_api_deployment_revisions_empty_call():
         type(client.transport.list_api_deployment_revisions), "__call__"
     ) as call:
         client.list_api_deployment_revisions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiDeploymentRevisionsRequest()
+
+
+def test_list_api_deployment_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListApiDeploymentRevisionsRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_deployment_revisions), "__call__"
+    ) as call:
+        client.list_api_deployment_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListApiDeploymentRevisionsRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_api_deployment_revisions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_deployment_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListApiDeploymentRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_api_deployment_revisions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListApiDeploymentRevisionsRequest()
@@ -8520,7 +10040,8 @@ async def test_list_api_deployment_revisions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiDeploymentRevisionsRequest()
+        request = registry_service.ListApiDeploymentRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiDeploymentRevisionsAsyncPager)
@@ -8833,7 +10354,8 @@ def test_rollback_api_deployment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.RollbackApiDeploymentRequest()
+        request = registry_service.RollbackApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -8861,6 +10383,68 @@ def test_rollback_api_deployment_empty_call():
         type(client.transport.rollback_api_deployment), "__call__"
     ) as call:
         client.rollback_api_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.RollbackApiDeploymentRequest()
+
+
+def test_rollback_api_deployment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.RollbackApiDeploymentRequest(
+        name="name_value",
+        revision_id="revision_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_api_deployment), "__call__"
+    ) as call:
+        client.rollback_api_deployment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.RollbackApiDeploymentRequest(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_api_deployment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_api_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiDeployment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                api_spec_revision="api_spec_revision_value",
+                endpoint_uri="endpoint_uri_value",
+                external_channel_uri="external_channel_uri_value",
+                intended_audience="intended_audience_value",
+                access_guidance="access_guidance_value",
+            )
+        )
+        response = await client.rollback_api_deployment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.RollbackApiDeploymentRequest()
@@ -8903,7 +10487,8 @@ async def test_rollback_api_deployment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.RollbackApiDeploymentRequest()
+        request = registry_service.RollbackApiDeploymentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -9026,7 +10611,8 @@ def test_delete_api_deployment_revision(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiDeploymentRevisionRequest()
+        request = registry_service.DeleteApiDeploymentRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -9054,6 +10640,66 @@ def test_delete_api_deployment_revision_empty_call():
         type(client.transport.delete_api_deployment_revision), "__call__"
     ) as call:
         client.delete_api_deployment_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiDeploymentRevisionRequest()
+
+
+def test_delete_api_deployment_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteApiDeploymentRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_deployment_revision), "__call__"
+    ) as call:
+        client.delete_api_deployment_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteApiDeploymentRevisionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_api_deployment_revision_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_deployment_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.ApiDeployment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                api_spec_revision="api_spec_revision_value",
+                endpoint_uri="endpoint_uri_value",
+                external_channel_uri="external_channel_uri_value",
+                intended_audience="intended_audience_value",
+                access_guidance="access_guidance_value",
+            )
+        )
+        response = await client.delete_api_deployment_revision()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteApiDeploymentRevisionRequest()
@@ -9096,7 +10742,8 @@ async def test_delete_api_deployment_revision_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiDeploymentRevisionRequest()
+        request = registry_service.DeleteApiDeploymentRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.ApiDeployment)
@@ -9295,7 +10942,8 @@ def test_list_artifacts(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListArtifactsRequest()
+        request = registry_service.ListArtifactsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListArtifactsPager)
@@ -9313,6 +10961,58 @@ def test_list_artifacts_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_artifacts), "__call__") as call:
         client.list_artifacts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListArtifactsRequest()
+
+
+def test_list_artifacts_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ListArtifactsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_artifacts), "__call__") as call:
+        client.list_artifacts(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ListArtifactsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_artifacts_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_artifacts), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_service.ListArtifactsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_artifacts()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ListArtifactsRequest()
@@ -9344,7 +11044,8 @@ async def test_list_artifacts_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListArtifactsRequest()
+        request = registry_service.ListArtifactsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListArtifactsAsyncPager)
@@ -9721,7 +11422,8 @@ def test_get_artifact(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetArtifactRequest()
+        request = registry_service.GetArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Artifact)
@@ -9743,6 +11445,58 @@ def test_get_artifact_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_artifact), "__call__") as call:
         client.get_artifact()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetArtifactRequest()
+
+
+def test_get_artifact_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetArtifactRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_artifact), "__call__") as call:
+        client.get_artifact(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetArtifactRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_artifact_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_artifact), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.Artifact(
+                name="name_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.get_artifact()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetArtifactRequest()
@@ -9778,7 +11532,8 @@ async def test_get_artifact_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetArtifactRequest()
+        request = registry_service.GetArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Artifact)
@@ -9968,7 +11723,8 @@ def test_get_artifact_contents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetArtifactContentsRequest()
+        request = registry_service.GetArtifactContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, httpbody_pb2.HttpBody)
@@ -9989,6 +11745,59 @@ def test_get_artifact_contents_empty_call():
         type(client.transport.get_artifact_contents), "__call__"
     ) as call:
         client.get_artifact_contents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetArtifactContentsRequest()
+
+
+def test_get_artifact_contents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.GetArtifactContentsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_artifact_contents), "__call__"
+    ) as call:
+        client.get_artifact_contents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.GetArtifactContentsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_artifact_contents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_artifact_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            httpbody_pb2.HttpBody(
+                content_type="content_type_value",
+                data=b"data_blob",
+            )
+        )
+        response = await client.get_artifact_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.GetArtifactContentsRequest()
@@ -10024,7 +11833,8 @@ async def test_get_artifact_contents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetArtifactContentsRequest()
+        request = registry_service.GetArtifactContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, httpbody_pb2.HttpBody)
@@ -10220,7 +12030,8 @@ def test_create_artifact(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateArtifactRequest()
+        request = registry_service.CreateArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Artifact)
@@ -10242,6 +12053,60 @@ def test_create_artifact_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_artifact), "__call__") as call:
         client.create_artifact()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateArtifactRequest()
+
+
+def test_create_artifact_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.CreateArtifactRequest(
+        parent="parent_value",
+        artifact_id="artifact_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_artifact), "__call__") as call:
+        client.create_artifact(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.CreateArtifactRequest(
+            parent="parent_value",
+            artifact_id="artifact_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_artifact_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_artifact), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.Artifact(
+                name="name_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.create_artifact()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.CreateArtifactRequest()
@@ -10277,7 +12142,8 @@ async def test_create_artifact_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateArtifactRequest()
+        request = registry_service.CreateArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Artifact)
@@ -10488,7 +12354,8 @@ def test_replace_artifact(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ReplaceArtifactRequest()
+        request = registry_service.ReplaceArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Artifact)
@@ -10510,6 +12377,54 @@ def test_replace_artifact_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.replace_artifact), "__call__") as call:
         client.replace_artifact()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ReplaceArtifactRequest()
+
+
+def test_replace_artifact_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.ReplaceArtifactRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_artifact), "__call__") as call:
+        client.replace_artifact(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.ReplaceArtifactRequest()
+
+
+@pytest.mark.asyncio
+async def test_replace_artifact_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_artifact), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            registry_models.Artifact(
+                name="name_value",
+                mime_type="mime_type_value",
+                size_bytes=1089,
+                hash_="hash__value",
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.replace_artifact()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.ReplaceArtifactRequest()
@@ -10546,7 +12461,8 @@ async def test_replace_artifact_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ReplaceArtifactRequest()
+        request = registry_service.ReplaceArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, registry_models.Artifact)
@@ -10731,7 +12647,8 @@ def test_delete_artifact(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteArtifactRequest()
+        request = registry_service.DeleteArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10748,6 +12665,50 @@ def test_delete_artifact_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_artifact), "__call__") as call:
         client.delete_artifact()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteArtifactRequest()
+
+
+def test_delete_artifact_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = registry_service.DeleteArtifactRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_artifact), "__call__") as call:
+        client.delete_artifact(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == registry_service.DeleteArtifactRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_artifact_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_artifact), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_artifact()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == registry_service.DeleteArtifactRequest()
@@ -10775,7 +12736,8 @@ async def test_delete_artifact_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteArtifactRequest()
+        request = registry_service.DeleteArtifactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

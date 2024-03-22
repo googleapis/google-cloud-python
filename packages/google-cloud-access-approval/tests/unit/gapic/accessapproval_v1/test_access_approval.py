@@ -1148,7 +1148,8 @@ def test_list_approval_requests(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.ListApprovalRequestsMessage()
+        request = accessapproval.ListApprovalRequestsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApprovalRequestsPager)
@@ -1168,6 +1169,62 @@ def test_list_approval_requests_empty_call():
         type(client.transport.list_approval_requests), "__call__"
     ) as call:
         client.list_approval_requests()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.ListApprovalRequestsMessage()
+
+
+def test_list_approval_requests_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.ListApprovalRequestsMessage(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_approval_requests), "__call__"
+    ) as call:
+        client.list_approval_requests(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.ListApprovalRequestsMessage(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_approval_requests_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_approval_requests), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ListApprovalRequestsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_approval_requests()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.ListApprovalRequestsMessage()
@@ -1202,7 +1259,8 @@ async def test_list_approval_requests_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.ListApprovalRequestsMessage()
+        request = accessapproval.ListApprovalRequestsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApprovalRequestsAsyncPager)
@@ -1594,7 +1652,8 @@ def test_get_approval_request(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetApprovalRequestMessage()
+        request = accessapproval.GetApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -1615,6 +1674,59 @@ def test_get_approval_request_empty_call():
         type(client.transport.get_approval_request), "__call__"
     ) as call:
         client.get_approval_request()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetApprovalRequestMessage()
+
+
+def test_get_approval_request_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.GetApprovalRequestMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_approval_request), "__call__"
+    ) as call:
+        client.get_approval_request(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetApprovalRequestMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_approval_request_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_approval_request), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ApprovalRequest(
+                name="name_value",
+                requested_resource_name="requested_resource_name_value",
+            )
+        )
+        response = await client.get_approval_request()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.GetApprovalRequestMessage()
@@ -1650,7 +1762,8 @@ async def test_get_approval_request_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetApprovalRequestMessage()
+        request = accessapproval.GetApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -1845,7 +1958,8 @@ def test_approve_approval_request(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.ApproveApprovalRequestMessage()
+        request = accessapproval.ApproveApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -1866,6 +1980,59 @@ def test_approve_approval_request_empty_call():
         type(client.transport.approve_approval_request), "__call__"
     ) as call:
         client.approve_approval_request()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.ApproveApprovalRequestMessage()
+
+
+def test_approve_approval_request_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.ApproveApprovalRequestMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.approve_approval_request), "__call__"
+    ) as call:
+        client.approve_approval_request(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.ApproveApprovalRequestMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_approve_approval_request_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.approve_approval_request), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ApprovalRequest(
+                name="name_value",
+                requested_resource_name="requested_resource_name_value",
+            )
+        )
+        response = await client.approve_approval_request()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.ApproveApprovalRequestMessage()
@@ -1901,7 +2068,8 @@ async def test_approve_approval_request_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.ApproveApprovalRequestMessage()
+        request = accessapproval.ApproveApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -2010,7 +2178,8 @@ def test_dismiss_approval_request(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.DismissApprovalRequestMessage()
+        request = accessapproval.DismissApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -2031,6 +2200,59 @@ def test_dismiss_approval_request_empty_call():
         type(client.transport.dismiss_approval_request), "__call__"
     ) as call:
         client.dismiss_approval_request()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.DismissApprovalRequestMessage()
+
+
+def test_dismiss_approval_request_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.DismissApprovalRequestMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.dismiss_approval_request), "__call__"
+    ) as call:
+        client.dismiss_approval_request(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.DismissApprovalRequestMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_dismiss_approval_request_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.dismiss_approval_request), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ApprovalRequest(
+                name="name_value",
+                requested_resource_name="requested_resource_name_value",
+            )
+        )
+        response = await client.dismiss_approval_request()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.DismissApprovalRequestMessage()
@@ -2066,7 +2288,8 @@ async def test_dismiss_approval_request_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.DismissApprovalRequestMessage()
+        request = accessapproval.DismissApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -2175,7 +2398,8 @@ def test_invalidate_approval_request(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
+        request = accessapproval.InvalidateApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -2196,6 +2420,59 @@ def test_invalidate_approval_request_empty_call():
         type(client.transport.invalidate_approval_request), "__call__"
     ) as call:
         client.invalidate_approval_request()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
+
+
+def test_invalidate_approval_request_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.InvalidateApprovalRequestMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        client.invalidate_approval_request(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.InvalidateApprovalRequestMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_invalidate_approval_request_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ApprovalRequest(
+                name="name_value",
+                requested_resource_name="requested_resource_name_value",
+            )
+        )
+        response = await client.invalidate_approval_request()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
@@ -2231,7 +2508,8 @@ async def test_invalidate_approval_request_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
+        request = accessapproval.InvalidateApprovalRequestMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.ApprovalRequest)
@@ -2344,7 +2622,8 @@ def test_get_access_approval_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetAccessApprovalSettingsMessage()
+        request = accessapproval.GetAccessApprovalSettingsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.AccessApprovalSettings)
@@ -2369,6 +2648,63 @@ def test_get_access_approval_settings_empty_call():
         type(client.transport.get_access_approval_settings), "__call__"
     ) as call:
         client.get_access_approval_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalSettingsMessage()
+
+
+def test_get_access_approval_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.GetAccessApprovalSettingsMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_settings), "__call__"
+    ) as call:
+        client.get_access_approval_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalSettingsMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.AccessApprovalSettings(
+                name="name_value",
+                notification_emails=["notification_emails_value"],
+                enrolled_ancestor=True,
+                active_key_version="active_key_version_value",
+                ancestor_has_active_key_version=True,
+                invalid_key_version=True,
+            )
+        )
+        response = await client.get_access_approval_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.GetAccessApprovalSettingsMessage()
@@ -2408,7 +2744,8 @@ async def test_get_access_approval_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetAccessApprovalSettingsMessage()
+        request = accessapproval.GetAccessApprovalSettingsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.AccessApprovalSettings)
@@ -2611,7 +2948,8 @@ def test_update_access_approval_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.UpdateAccessApprovalSettingsMessage()
+        request = accessapproval.UpdateAccessApprovalSettingsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.AccessApprovalSettings)
@@ -2636,6 +2974,59 @@ def test_update_access_approval_settings_empty_call():
         type(client.transport.update_access_approval_settings), "__call__"
     ) as call:
         client.update_access_approval_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.UpdateAccessApprovalSettingsMessage()
+
+
+def test_update_access_approval_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.UpdateAccessApprovalSettingsMessage()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_access_approval_settings), "__call__"
+    ) as call:
+        client.update_access_approval_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.UpdateAccessApprovalSettingsMessage()
+
+
+@pytest.mark.asyncio
+async def test_update_access_approval_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_access_approval_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.AccessApprovalSettings(
+                name="name_value",
+                notification_emails=["notification_emails_value"],
+                enrolled_ancestor=True,
+                active_key_version="active_key_version_value",
+                ancestor_has_active_key_version=True,
+                invalid_key_version=True,
+            )
+        )
+        response = await client.update_access_approval_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.UpdateAccessApprovalSettingsMessage()
@@ -2675,7 +3066,8 @@ async def test_update_access_approval_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.UpdateAccessApprovalSettingsMessage()
+        request = accessapproval.UpdateAccessApprovalSettingsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.AccessApprovalSettings)
@@ -2881,7 +3273,8 @@ def test_delete_access_approval_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.DeleteAccessApprovalSettingsMessage()
+        request = accessapproval.DeleteAccessApprovalSettingsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2900,6 +3293,54 @@ def test_delete_access_approval_settings_empty_call():
         type(client.transport.delete_access_approval_settings), "__call__"
     ) as call:
         client.delete_access_approval_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.DeleteAccessApprovalSettingsMessage()
+
+
+def test_delete_access_approval_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.DeleteAccessApprovalSettingsMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_access_approval_settings), "__call__"
+    ) as call:
+        client.delete_access_approval_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.DeleteAccessApprovalSettingsMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_access_approval_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_access_approval_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_access_approval_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.DeleteAccessApprovalSettingsMessage()
@@ -2930,7 +3371,8 @@ async def test_delete_access_approval_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.DeleteAccessApprovalSettingsMessage()
+        request = accessapproval.DeleteAccessApprovalSettingsMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3119,7 +3561,8 @@ def test_get_access_approval_service_account(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
+        request = accessapproval.GetAccessApprovalServiceAccountMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.AccessApprovalServiceAccount)
@@ -3140,6 +3583,59 @@ def test_get_access_approval_service_account_empty_call():
         type(client.transport.get_access_approval_service_account), "__call__"
     ) as call:
         client.get_access_approval_service_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
+
+
+def test_get_access_approval_service_account_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accessapproval.GetAccessApprovalServiceAccountMessage(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        client.get_access_approval_service_account(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_service_account_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.AccessApprovalServiceAccount(
+                name="name_value",
+                account_email="account_email_value",
+            )
+        )
+        response = await client.get_access_approval_service_account()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
@@ -3175,7 +3671,8 @@ async def test_get_access_approval_service_account_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
+        request = accessapproval.GetAccessApprovalServiceAccountMessage()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accessapproval.AccessApprovalServiceAccount)

@@ -1191,7 +1191,8 @@ def test_create_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.CreatePermissionRequest()
+        request = permission_service.CreatePermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gag_permission.Permission)
@@ -1214,6 +1215,61 @@ def test_create_permission_empty_call():
         type(client.transport.create_permission), "__call__"
     ) as call:
         client.create_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.CreatePermissionRequest()
+
+
+def test_create_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = permission_service.CreatePermissionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_permission), "__call__"
+    ) as call:
+        client.create_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.CreatePermissionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PermissionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_permission.Permission(
+                name="name_value",
+                grantee_type=gag_permission.Permission.GranteeType.USER,
+                email_address="email_address_value",
+                role=gag_permission.Permission.Role.OWNER,
+            )
+        )
+        response = await client.create_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == permission_service.CreatePermissionRequest()
@@ -1251,7 +1307,8 @@ async def test_create_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.CreatePermissionRequest()
+        request = permission_service.CreatePermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gag_permission.Permission)
@@ -1458,7 +1515,8 @@ def test_get_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.GetPermissionRequest()
+        request = permission_service.GetPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, permission.Permission)
@@ -1479,6 +1537,57 @@ def test_get_permission_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
         client.get_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.GetPermissionRequest()
+
+
+def test_get_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = permission_service.GetPermissionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
+        client.get_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.GetPermissionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PermissionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            permission.Permission(
+                name="name_value",
+                grantee_type=permission.Permission.GranteeType.USER,
+                email_address="email_address_value",
+                role=permission.Permission.Role.OWNER,
+            )
+        )
+        response = await client.get_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == permission_service.GetPermissionRequest()
@@ -1514,7 +1623,8 @@ async def test_get_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.GetPermissionRequest()
+        request = permission_service.GetPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, permission.Permission)
@@ -1700,7 +1810,8 @@ def test_list_permissions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.ListPermissionsRequest()
+        request = permission_service.ListPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPermissionsPager)
@@ -1718,6 +1829,56 @@ def test_list_permissions_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
         client.list_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.ListPermissionsRequest()
+
+
+def test_list_permissions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = permission_service.ListPermissionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
+        client.list_permissions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.ListPermissionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_permissions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PermissionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            permission_service.ListPermissionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_permissions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == permission_service.ListPermissionsRequest()
@@ -1750,7 +1911,8 @@ async def test_list_permissions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.ListPermissionsRequest()
+        request = permission_service.ListPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPermissionsAsyncPager)
@@ -2128,7 +2290,8 @@ def test_update_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.UpdatePermissionRequest()
+        request = permission_service.UpdatePermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gag_permission.Permission)
@@ -2151,6 +2314,57 @@ def test_update_permission_empty_call():
         type(client.transport.update_permission), "__call__"
     ) as call:
         client.update_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.UpdatePermissionRequest()
+
+
+def test_update_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = permission_service.UpdatePermissionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_permission), "__call__"
+    ) as call:
+        client.update_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.UpdatePermissionRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PermissionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_permission.Permission(
+                name="name_value",
+                grantee_type=gag_permission.Permission.GranteeType.USER,
+                email_address="email_address_value",
+                role=gag_permission.Permission.Role.OWNER,
+            )
+        )
+        response = await client.update_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == permission_service.UpdatePermissionRequest()
@@ -2188,7 +2402,8 @@ async def test_update_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.UpdatePermissionRequest()
+        request = permission_service.UpdatePermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gag_permission.Permission)
@@ -2392,7 +2607,8 @@ def test_delete_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.DeletePermissionRequest()
+        request = permission_service.DeletePermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2411,6 +2627,54 @@ def test_delete_permission_empty_call():
         type(client.transport.delete_permission), "__call__"
     ) as call:
         client.delete_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.DeletePermissionRequest()
+
+
+def test_delete_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = permission_service.DeletePermissionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_permission), "__call__"
+    ) as call:
+        client.delete_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.DeletePermissionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PermissionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == permission_service.DeletePermissionRequest()
@@ -2441,7 +2705,8 @@ async def test_delete_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.DeletePermissionRequest()
+        request = permission_service.DeletePermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2627,7 +2892,8 @@ def test_transfer_ownership(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.TransferOwnershipRequest()
+        request = permission_service.TransferOwnershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, permission_service.TransferOwnershipResponse)
@@ -2646,6 +2912,58 @@ def test_transfer_ownership_empty_call():
         type(client.transport.transfer_ownership), "__call__"
     ) as call:
         client.transfer_ownership()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.TransferOwnershipRequest()
+
+
+def test_transfer_ownership_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = permission_service.TransferOwnershipRequest(
+        name="name_value",
+        email_address="email_address_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_ownership), "__call__"
+    ) as call:
+        client.transfer_ownership(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == permission_service.TransferOwnershipRequest(
+            name="name_value",
+            email_address="email_address_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_transfer_ownership_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PermissionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_ownership), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            permission_service.TransferOwnershipResponse()
+        )
+        response = await client.transfer_ownership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == permission_service.TransferOwnershipRequest()
@@ -2678,7 +2996,8 @@ async def test_transfer_ownership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.TransferOwnershipRequest()
+        request = permission_service.TransferOwnershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, permission_service.TransferOwnershipResponse)

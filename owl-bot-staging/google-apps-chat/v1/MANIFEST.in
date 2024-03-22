@@ -1,2 +1,0 @@
-recursive-include google/apps/chat *.py
-recursive-include google/apps/chat_v1 *.py

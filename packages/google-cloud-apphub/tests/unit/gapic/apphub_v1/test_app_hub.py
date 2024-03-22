@@ -1104,7 +1104,8 @@ def test_lookup_service_project_attachment(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupServiceProjectAttachmentRequest()
+        request = apphub_service.LookupServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupServiceProjectAttachmentResponse)
@@ -1123,6 +1124,56 @@ def test_lookup_service_project_attachment_empty_call():
         type(client.transport.lookup_service_project_attachment), "__call__"
     ) as call:
         client.lookup_service_project_attachment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.LookupServiceProjectAttachmentRequest()
+
+
+def test_lookup_service_project_attachment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.LookupServiceProjectAttachmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_service_project_attachment), "__call__"
+    ) as call:
+        client.lookup_service_project_attachment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.LookupServiceProjectAttachmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_service_project_attachment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_service_project_attachment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.LookupServiceProjectAttachmentResponse()
+        )
+        response = await client.lookup_service_project_attachment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.LookupServiceProjectAttachmentRequest()
@@ -1155,7 +1206,8 @@ async def test_lookup_service_project_attachment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupServiceProjectAttachmentRequest()
+        request = apphub_service.LookupServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupServiceProjectAttachmentResponse)
@@ -1348,7 +1400,8 @@ def test_list_service_project_attachments(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListServiceProjectAttachmentsRequest()
+        request = apphub_service.ListServiceProjectAttachmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceProjectAttachmentsPager)
@@ -1369,6 +1422,65 @@ def test_list_service_project_attachments_empty_call():
         type(client.transport.list_service_project_attachments), "__call__"
     ) as call:
         client.list_service_project_attachments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListServiceProjectAttachmentsRequest()
+
+
+def test_list_service_project_attachments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.ListServiceProjectAttachmentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_project_attachments), "__call__"
+    ) as call:
+        client.list_service_project_attachments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListServiceProjectAttachmentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_service_project_attachments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_project_attachments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.ListServiceProjectAttachmentsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_service_project_attachments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.ListServiceProjectAttachmentsRequest()
@@ -1404,7 +1516,8 @@ async def test_list_service_project_attachments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListServiceProjectAttachmentsRequest()
+        request = apphub_service.ListServiceProjectAttachmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceProjectAttachmentsAsyncPager)
@@ -1800,7 +1913,8 @@ def test_create_service_project_attachment(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateServiceProjectAttachmentRequest()
+        request = apphub_service.CreateServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1819,6 +1933,60 @@ def test_create_service_project_attachment_empty_call():
         type(client.transport.create_service_project_attachment), "__call__"
     ) as call:
         client.create_service_project_attachment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateServiceProjectAttachmentRequest()
+
+
+def test_create_service_project_attachment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.CreateServiceProjectAttachmentRequest(
+        parent="parent_value",
+        service_project_attachment_id="service_project_attachment_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_project_attachment), "__call__"
+    ) as call:
+        client.create_service_project_attachment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateServiceProjectAttachmentRequest(
+            parent="parent_value",
+            service_project_attachment_id="service_project_attachment_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_service_project_attachment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_project_attachment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_service_project_attachment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.CreateServiceProjectAttachmentRequest()
@@ -1851,7 +2019,8 @@ async def test_create_service_project_attachment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateServiceProjectAttachmentRequest()
+        request = apphub_service.CreateServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2078,7 +2247,8 @@ def test_get_service_project_attachment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetServiceProjectAttachmentRequest()
+        request = apphub_service.GetServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service_project_attachment.ServiceProjectAttachment)
@@ -2104,6 +2274,61 @@ def test_get_service_project_attachment_empty_call():
         type(client.transport.get_service_project_attachment), "__call__"
     ) as call:
         client.get_service_project_attachment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetServiceProjectAttachmentRequest()
+
+
+def test_get_service_project_attachment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.GetServiceProjectAttachmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_project_attachment), "__call__"
+    ) as call:
+        client.get_service_project_attachment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetServiceProjectAttachmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_service_project_attachment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_project_attachment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_project_attachment.ServiceProjectAttachment(
+                name="name_value",
+                service_project="service_project_value",
+                uid="uid_value",
+                state=service_project_attachment.ServiceProjectAttachment.State.CREATING,
+            )
+        )
+        response = await client.get_service_project_attachment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.GetServiceProjectAttachmentRequest()
@@ -2141,7 +2366,8 @@ async def test_get_service_project_attachment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetServiceProjectAttachmentRequest()
+        request = apphub_service.GetServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service_project_attachment.ServiceProjectAttachment)
@@ -2338,7 +2564,8 @@ def test_delete_service_project_attachment(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteServiceProjectAttachmentRequest()
+        request = apphub_service.DeleteServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2357,6 +2584,58 @@ def test_delete_service_project_attachment_empty_call():
         type(client.transport.delete_service_project_attachment), "__call__"
     ) as call:
         client.delete_service_project_attachment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteServiceProjectAttachmentRequest()
+
+
+def test_delete_service_project_attachment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.DeleteServiceProjectAttachmentRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_service_project_attachment), "__call__"
+    ) as call:
+        client.delete_service_project_attachment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteServiceProjectAttachmentRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_service_project_attachment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_service_project_attachment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_service_project_attachment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.DeleteServiceProjectAttachmentRequest()
@@ -2389,7 +2668,8 @@ async def test_delete_service_project_attachment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteServiceProjectAttachmentRequest()
+        request = apphub_service.DeleteServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2579,7 +2859,8 @@ def test_detach_service_project_attachment(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DetachServiceProjectAttachmentRequest()
+        request = apphub_service.DetachServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.DetachServiceProjectAttachmentResponse)
@@ -2598,6 +2879,56 @@ def test_detach_service_project_attachment_empty_call():
         type(client.transport.detach_service_project_attachment), "__call__"
     ) as call:
         client.detach_service_project_attachment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DetachServiceProjectAttachmentRequest()
+
+
+def test_detach_service_project_attachment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.DetachServiceProjectAttachmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.detach_service_project_attachment), "__call__"
+    ) as call:
+        client.detach_service_project_attachment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DetachServiceProjectAttachmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_detach_service_project_attachment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.detach_service_project_attachment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.DetachServiceProjectAttachmentResponse()
+        )
+        response = await client.detach_service_project_attachment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.DetachServiceProjectAttachmentRequest()
@@ -2630,7 +2961,8 @@ async def test_detach_service_project_attachment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DetachServiceProjectAttachmentRequest()
+        request = apphub_service.DetachServiceProjectAttachmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.DetachServiceProjectAttachmentResponse)
@@ -2823,7 +3155,8 @@ def test_list_discovered_services(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListDiscoveredServicesRequest()
+        request = apphub_service.ListDiscoveredServicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveredServicesPager)
@@ -2844,6 +3177,65 @@ def test_list_discovered_services_empty_call():
         type(client.transport.list_discovered_services), "__call__"
     ) as call:
         client.list_discovered_services()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListDiscoveredServicesRequest()
+
+
+def test_list_discovered_services_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.ListDiscoveredServicesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovered_services), "__call__"
+    ) as call:
+        client.list_discovered_services(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListDiscoveredServicesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_discovered_services_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovered_services), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.ListDiscoveredServicesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_discovered_services()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.ListDiscoveredServicesRequest()
@@ -2879,7 +3271,8 @@ async def test_list_discovered_services_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListDiscoveredServicesRequest()
+        request = apphub_service.ListDiscoveredServicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveredServicesAsyncPager)
@@ -3271,7 +3664,8 @@ def test_get_discovered_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetDiscoveredServiceRequest()
+        request = apphub_service.GetDiscoveredServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.DiscoveredService)
@@ -3291,6 +3685,58 @@ def test_get_discovered_service_empty_call():
         type(client.transport.get_discovered_service), "__call__"
     ) as call:
         client.get_discovered_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetDiscoveredServiceRequest()
+
+
+def test_get_discovered_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.GetDiscoveredServiceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovered_service), "__call__"
+    ) as call:
+        client.get_discovered_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetDiscoveredServiceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_discovered_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovered_service), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.DiscoveredService(
+                name="name_value",
+            )
+        )
+        response = await client.get_discovered_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.GetDiscoveredServiceRequest()
@@ -3325,7 +3771,8 @@ async def test_get_discovered_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetDiscoveredServiceRequest()
+        request = apphub_service.GetDiscoveredServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.DiscoveredService)
@@ -3516,7 +3963,8 @@ def test_lookup_discovered_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupDiscoveredServiceRequest()
+        request = apphub_service.LookupDiscoveredServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupDiscoveredServiceResponse)
@@ -3535,6 +3983,58 @@ def test_lookup_discovered_service_empty_call():
         type(client.transport.lookup_discovered_service), "__call__"
     ) as call:
         client.lookup_discovered_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.LookupDiscoveredServiceRequest()
+
+
+def test_lookup_discovered_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.LookupDiscoveredServiceRequest(
+        parent="parent_value",
+        uri="uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_discovered_service), "__call__"
+    ) as call:
+        client.lookup_discovered_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.LookupDiscoveredServiceRequest(
+            parent="parent_value",
+            uri="uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_discovered_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_discovered_service), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.LookupDiscoveredServiceResponse()
+        )
+        response = await client.lookup_discovered_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.LookupDiscoveredServiceRequest()
@@ -3567,7 +4067,8 @@ async def test_lookup_discovered_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupDiscoveredServiceRequest()
+        request = apphub_service.LookupDiscoveredServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupDiscoveredServiceResponse)
@@ -3768,7 +4269,8 @@ def test_list_services(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListServicesRequest()
+        request = apphub_service.ListServicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
@@ -3787,6 +4289,61 @@ def test_list_services_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         client.list_services()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListServicesRequest()
+
+
+def test_list_services_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.ListServicesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        client.list_services(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListServicesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_services_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.ListServicesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_services()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.ListServicesRequest()
@@ -3819,7 +4376,8 @@ async def test_list_services_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListServicesRequest()
+        request = apphub_service.ListServicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
@@ -4191,7 +4749,8 @@ def test_create_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateServiceRequest()
+        request = apphub_service.CreateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4208,6 +4767,56 @@ def test_create_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         client.create_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateServiceRequest()
+
+
+def test_create_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.CreateServiceRequest(
+        parent="parent_value",
+        service_id="service_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        client.create_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateServiceRequest(
+            parent="parent_value",
+            service_id="service_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.CreateServiceRequest()
@@ -4237,7 +4846,8 @@ async def test_create_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateServiceRequest()
+        request = apphub_service.CreateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4444,7 +5054,8 @@ def test_get_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetServiceRequest()
+        request = apphub_service.GetServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
@@ -4467,6 +5078,59 @@ def test_get_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         client.get_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetServiceRequest()
+
+
+def test_get_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.GetServiceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        client.get_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetServiceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Service(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                discovered_service="discovered_service_value",
+                uid="uid_value",
+                state=service.Service.State.CREATING,
+            )
+        )
+        response = await client.get_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.GetServiceRequest()
@@ -4503,7 +5167,8 @@ async def test_get_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetServiceRequest()
+        request = apphub_service.GetServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
@@ -4685,7 +5350,8 @@ def test_update_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateServiceRequest()
+        request = apphub_service.UpdateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4702,6 +5368,52 @@ def test_update_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         client.update_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.UpdateServiceRequest()
+
+
+def test_update_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.UpdateServiceRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        client.update_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.UpdateServiceRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.UpdateServiceRequest()
@@ -4731,7 +5443,8 @@ async def test_update_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateServiceRequest()
+        request = apphub_service.UpdateServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4921,7 +5634,8 @@ def test_delete_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteServiceRequest()
+        request = apphub_service.DeleteServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4938,6 +5652,54 @@ def test_delete_service_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         client.delete_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteServiceRequest()
+
+
+def test_delete_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.DeleteServiceRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        client.delete_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteServiceRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.DeleteServiceRequest()
@@ -4967,7 +5729,8 @@ async def test_delete_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteServiceRequest()
+        request = apphub_service.DeleteServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5152,7 +5915,8 @@ def test_list_discovered_workloads(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListDiscoveredWorkloadsRequest()
+        request = apphub_service.ListDiscoveredWorkloadsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveredWorkloadsPager)
@@ -5173,6 +5937,65 @@ def test_list_discovered_workloads_empty_call():
         type(client.transport.list_discovered_workloads), "__call__"
     ) as call:
         client.list_discovered_workloads()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListDiscoveredWorkloadsRequest()
+
+
+def test_list_discovered_workloads_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.ListDiscoveredWorkloadsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovered_workloads), "__call__"
+    ) as call:
+        client.list_discovered_workloads(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListDiscoveredWorkloadsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_discovered_workloads_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovered_workloads), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.ListDiscoveredWorkloadsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_discovered_workloads()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.ListDiscoveredWorkloadsRequest()
@@ -5208,7 +6031,8 @@ async def test_list_discovered_workloads_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListDiscoveredWorkloadsRequest()
+        request = apphub_service.ListDiscoveredWorkloadsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveredWorkloadsAsyncPager)
@@ -5600,7 +6424,8 @@ def test_get_discovered_workload(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetDiscoveredWorkloadRequest()
+        request = apphub_service.GetDiscoveredWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, workload.DiscoveredWorkload)
@@ -5620,6 +6445,58 @@ def test_get_discovered_workload_empty_call():
         type(client.transport.get_discovered_workload), "__call__"
     ) as call:
         client.get_discovered_workload()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetDiscoveredWorkloadRequest()
+
+
+def test_get_discovered_workload_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.GetDiscoveredWorkloadRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovered_workload), "__call__"
+    ) as call:
+        client.get_discovered_workload(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetDiscoveredWorkloadRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_discovered_workload_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovered_workload), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workload.DiscoveredWorkload(
+                name="name_value",
+            )
+        )
+        response = await client.get_discovered_workload()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.GetDiscoveredWorkloadRequest()
@@ -5654,7 +6531,8 @@ async def test_get_discovered_workload_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetDiscoveredWorkloadRequest()
+        request = apphub_service.GetDiscoveredWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, workload.DiscoveredWorkload)
@@ -5845,7 +6723,8 @@ def test_lookup_discovered_workload(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupDiscoveredWorkloadRequest()
+        request = apphub_service.LookupDiscoveredWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupDiscoveredWorkloadResponse)
@@ -5864,6 +6743,58 @@ def test_lookup_discovered_workload_empty_call():
         type(client.transport.lookup_discovered_workload), "__call__"
     ) as call:
         client.lookup_discovered_workload()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.LookupDiscoveredWorkloadRequest()
+
+
+def test_lookup_discovered_workload_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.LookupDiscoveredWorkloadRequest(
+        parent="parent_value",
+        uri="uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_discovered_workload), "__call__"
+    ) as call:
+        client.lookup_discovered_workload(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.LookupDiscoveredWorkloadRequest(
+            parent="parent_value",
+            uri="uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_discovered_workload_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_discovered_workload), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.LookupDiscoveredWorkloadResponse()
+        )
+        response = await client.lookup_discovered_workload()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.LookupDiscoveredWorkloadRequest()
@@ -5896,7 +6827,8 @@ async def test_lookup_discovered_workload_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupDiscoveredWorkloadRequest()
+        request = apphub_service.LookupDiscoveredWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupDiscoveredWorkloadResponse)
@@ -6097,7 +7029,8 @@ def test_list_workloads(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListWorkloadsRequest()
+        request = apphub_service.ListWorkloadsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkloadsPager)
@@ -6116,6 +7049,61 @@ def test_list_workloads_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         client.list_workloads()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListWorkloadsRequest()
+
+
+def test_list_workloads_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.ListWorkloadsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
+        client.list_workloads(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListWorkloadsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workloads_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.ListWorkloadsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_workloads()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.ListWorkloadsRequest()
@@ -6148,7 +7136,8 @@ async def test_list_workloads_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListWorkloadsRequest()
+        request = apphub_service.ListWorkloadsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkloadsAsyncPager)
@@ -6520,7 +7509,8 @@ def test_create_workload(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateWorkloadRequest()
+        request = apphub_service.CreateWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6537,6 +7527,56 @@ def test_create_workload_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         client.create_workload()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateWorkloadRequest()
+
+
+def test_create_workload_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.CreateWorkloadRequest(
+        parent="parent_value",
+        workload_id="workload_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
+        client.create_workload(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateWorkloadRequest(
+            parent="parent_value",
+            workload_id="workload_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_workload_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_workload()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.CreateWorkloadRequest()
@@ -6566,7 +7606,8 @@ async def test_create_workload_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateWorkloadRequest()
+        request = apphub_service.CreateWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6773,7 +7814,8 @@ def test_get_workload(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetWorkloadRequest()
+        request = apphub_service.GetWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, workload.Workload)
@@ -6796,6 +7838,59 @@ def test_get_workload_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
         client.get_workload()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetWorkloadRequest()
+
+
+def test_get_workload_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.GetWorkloadRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
+        client.get_workload(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetWorkloadRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workload_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workload.Workload(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                discovered_workload="discovered_workload_value",
+                uid="uid_value",
+                state=workload.Workload.State.CREATING,
+            )
+        )
+        response = await client.get_workload()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.GetWorkloadRequest()
@@ -6832,7 +7927,8 @@ async def test_get_workload_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetWorkloadRequest()
+        request = apphub_service.GetWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, workload.Workload)
@@ -7014,7 +8110,8 @@ def test_update_workload(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateWorkloadRequest()
+        request = apphub_service.UpdateWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7031,6 +8128,52 @@ def test_update_workload_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
         client.update_workload()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.UpdateWorkloadRequest()
+
+
+def test_update_workload_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.UpdateWorkloadRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
+        client.update_workload(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.UpdateWorkloadRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_workload_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_workload()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.UpdateWorkloadRequest()
@@ -7060,7 +8203,8 @@ async def test_update_workload_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateWorkloadRequest()
+        request = apphub_service.UpdateWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7250,7 +8394,8 @@ def test_delete_workload(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteWorkloadRequest()
+        request = apphub_service.DeleteWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7267,6 +8412,54 @@ def test_delete_workload_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         client.delete_workload()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteWorkloadRequest()
+
+
+def test_delete_workload_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.DeleteWorkloadRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
+        client.delete_workload(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteWorkloadRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_workload_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_workload()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.DeleteWorkloadRequest()
@@ -7296,7 +8489,8 @@ async def test_delete_workload_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteWorkloadRequest()
+        request = apphub_service.DeleteWorkloadRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7481,7 +8675,8 @@ def test_list_applications(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListApplicationsRequest()
+        request = apphub_service.ListApplicationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApplicationsPager)
@@ -7502,6 +8697,65 @@ def test_list_applications_empty_call():
         type(client.transport.list_applications), "__call__"
     ) as call:
         client.list_applications()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListApplicationsRequest()
+
+
+def test_list_applications_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.ListApplicationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_applications), "__call__"
+    ) as call:
+        client.list_applications(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.ListApplicationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_applications_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_applications), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apphub_service.ListApplicationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_applications()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.ListApplicationsRequest()
@@ -7536,7 +8790,8 @@ async def test_list_applications_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListApplicationsRequest()
+        request = apphub_service.ListApplicationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApplicationsAsyncPager)
@@ -7926,7 +9181,8 @@ def test_create_application(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateApplicationRequest()
+        request = apphub_service.CreateApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7945,6 +9201,60 @@ def test_create_application_empty_call():
         type(client.transport.create_application), "__call__"
     ) as call:
         client.create_application()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateApplicationRequest()
+
+
+def test_create_application_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.CreateApplicationRequest(
+        parent="parent_value",
+        application_id="application_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_application), "__call__"
+    ) as call:
+        client.create_application(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.CreateApplicationRequest(
+            parent="parent_value",
+            application_id="application_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_application_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_application), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_application()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.CreateApplicationRequest()
@@ -7977,7 +9287,8 @@ async def test_create_application_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateApplicationRequest()
+        request = apphub_service.CreateApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8191,7 +9502,8 @@ def test_get_application(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetApplicationRequest()
+        request = apphub_service.GetApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, application.Application)
@@ -8213,6 +9525,58 @@ def test_get_application_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         client.get_application()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetApplicationRequest()
+
+
+def test_get_application_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.GetApplicationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
+        client.get_application(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.GetApplicationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_application_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            application.Application(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                uid="uid_value",
+                state=application.Application.State.CREATING,
+            )
+        )
+        response = await client.get_application()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.GetApplicationRequest()
@@ -8248,7 +9612,8 @@ async def test_get_application_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetApplicationRequest()
+        request = apphub_service.GetApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, application.Application)
@@ -8435,7 +9800,8 @@ def test_update_application(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateApplicationRequest()
+        request = apphub_service.UpdateApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8454,6 +9820,56 @@ def test_update_application_empty_call():
         type(client.transport.update_application), "__call__"
     ) as call:
         client.update_application()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.UpdateApplicationRequest()
+
+
+def test_update_application_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.UpdateApplicationRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_application), "__call__"
+    ) as call:
+        client.update_application(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.UpdateApplicationRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_application_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_application), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_application()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.UpdateApplicationRequest()
@@ -8486,7 +9902,8 @@ async def test_update_application_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateApplicationRequest()
+        request = apphub_service.UpdateApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8686,7 +10103,8 @@ def test_delete_application(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteApplicationRequest()
+        request = apphub_service.DeleteApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8705,6 +10123,58 @@ def test_delete_application_empty_call():
         type(client.transport.delete_application), "__call__"
     ) as call:
         client.delete_application()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteApplicationRequest()
+
+
+def test_delete_application_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = apphub_service.DeleteApplicationRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_application), "__call__"
+    ) as call:
+        client.delete_application(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apphub_service.DeleteApplicationRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_application_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_application), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_application()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == apphub_service.DeleteApplicationRequest()
@@ -8737,7 +10207,8 @@ async def test_delete_application_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteApplicationRequest()
+        request = apphub_service.DeleteApplicationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

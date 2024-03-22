@@ -1132,7 +1132,8 @@ def test_get_model(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == model_service.GetModelRequest()
+        request = model_service.GetModelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, model.Model)
@@ -1162,6 +1163,64 @@ def test_get_model_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_model), "__call__") as call:
         client.get_model()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == model_service.GetModelRequest()
+
+
+def test_get_model_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ModelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = model_service.GetModelRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        client.get_model(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == model_service.GetModelRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_model_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ModelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            model.Model(
+                name="name_value",
+                base_model_id="base_model_id_value",
+                version="version_value",
+                display_name="display_name_value",
+                description="description_value",
+                input_token_limit=1838,
+                output_token_limit=1967,
+                supported_generation_methods=["supported_generation_methods_value"],
+                temperature=0.1198,
+                top_p=0.546,
+                top_k=541,
+            )
+        )
+        response = await client.get_model()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == model_service.GetModelRequest()
@@ -1203,7 +1262,8 @@ async def test_get_model_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == model_service.GetModelRequest()
+        request = model_service.GetModelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, model.Model)
@@ -1394,7 +1454,8 @@ def test_list_models(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == model_service.ListModelsRequest()
+        request = model_service.ListModelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListModelsPager)
@@ -1412,6 +1473,54 @@ def test_list_models_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_models), "__call__") as call:
         client.list_models()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == model_service.ListModelsRequest()
+
+
+def test_list_models_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ModelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = model_service.ListModelsRequest(
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        client.list_models(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == model_service.ListModelsRequest(
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_models_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ModelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            model_service.ListModelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_models()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == model_service.ListModelsRequest()
@@ -1443,7 +1552,8 @@ async def test_list_models_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == model_service.ListModelsRequest()
+        request = model_service.ListModelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListModelsAsyncPager)

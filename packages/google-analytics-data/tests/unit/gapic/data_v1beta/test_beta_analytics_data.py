@@ -1197,7 +1197,8 @@ def test_run_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunReportRequest()
+        request = analytics_data_api.RunReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunReportResponse)
@@ -1216,6 +1217,57 @@ def test_run_report_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
         client.run_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.RunReportRequest()
+
+
+def test_run_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.RunReportRequest(
+        property="property_value",
+        currency_code="currency_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_report), "__call__") as call:
+        client.run_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.RunReportRequest(
+            property="property_value",
+            currency_code="currency_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_report), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.RunReportResponse(
+                row_count=992,
+                kind="kind_value",
+            )
+        )
+        response = await client.run_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.RunReportRequest()
@@ -1248,7 +1300,8 @@ async def test_run_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunReportRequest()
+        request = analytics_data_api.RunReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunReportResponse)
@@ -1350,7 +1403,8 @@ def test_run_pivot_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunPivotReportRequest()
+        request = analytics_data_api.RunPivotReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunPivotReportResponse)
@@ -1368,6 +1422,56 @@ def test_run_pivot_report_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_pivot_report), "__call__") as call:
         client.run_pivot_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.RunPivotReportRequest()
+
+
+def test_run_pivot_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.RunPivotReportRequest(
+        property="property_value",
+        currency_code="currency_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_pivot_report), "__call__") as call:
+        client.run_pivot_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.RunPivotReportRequest(
+            property="property_value",
+            currency_code="currency_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_pivot_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_pivot_report), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.RunPivotReportResponse(
+                kind="kind_value",
+            )
+        )
+        response = await client.run_pivot_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.RunPivotReportRequest()
@@ -1400,7 +1504,8 @@ async def test_run_pivot_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunPivotReportRequest()
+        request = analytics_data_api.RunPivotReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunPivotReportResponse)
@@ -1503,7 +1608,8 @@ def test_batch_run_reports(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.BatchRunReportsRequest()
+        request = analytics_data_api.BatchRunReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunReportsResponse)
@@ -1523,6 +1629,58 @@ def test_batch_run_reports_empty_call():
         type(client.transport.batch_run_reports), "__call__"
     ) as call:
         client.batch_run_reports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.BatchRunReportsRequest()
+
+
+def test_batch_run_reports_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.BatchRunReportsRequest(
+        property="property_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_run_reports), "__call__"
+    ) as call:
+        client.batch_run_reports(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.BatchRunReportsRequest(
+            property="property_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_run_reports_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_run_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.BatchRunReportsResponse(
+                kind="kind_value",
+            )
+        )
+        response = await client.batch_run_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.BatchRunReportsRequest()
@@ -1557,7 +1715,8 @@ async def test_batch_run_reports_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.BatchRunReportsRequest()
+        request = analytics_data_api.BatchRunReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunReportsResponse)
@@ -1664,7 +1823,8 @@ def test_batch_run_pivot_reports(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
+        request = analytics_data_api.BatchRunPivotReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunPivotReportsResponse)
@@ -1684,6 +1844,58 @@ def test_batch_run_pivot_reports_empty_call():
         type(client.transport.batch_run_pivot_reports), "__call__"
     ) as call:
         client.batch_run_pivot_reports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
+
+
+def test_batch_run_pivot_reports_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.BatchRunPivotReportsRequest(
+        property="property_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_run_pivot_reports), "__call__"
+    ) as call:
+        client.batch_run_pivot_reports(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.BatchRunPivotReportsRequest(
+            property="property_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_run_pivot_reports_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_run_pivot_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.BatchRunPivotReportsResponse(
+                kind="kind_value",
+            )
+        )
+        response = await client.batch_run_pivot_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
@@ -1718,7 +1930,8 @@ async def test_batch_run_pivot_reports_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
+        request = analytics_data_api.BatchRunPivotReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunPivotReportsResponse)
@@ -1823,7 +2036,8 @@ def test_get_metadata(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetMetadataRequest()
+        request = analytics_data_api.GetMetadataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.Metadata)
@@ -1841,6 +2055,54 @@ def test_get_metadata_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
         client.get_metadata()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetMetadataRequest()
+
+
+def test_get_metadata_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.GetMetadataRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
+        client.get_metadata(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetMetadataRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_metadata_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.Metadata(
+                name="name_value",
+            )
+        )
+        response = await client.get_metadata()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.GetMetadataRequest()
@@ -1872,7 +2134,8 @@ async def test_get_metadata_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetMetadataRequest()
+        request = analytics_data_api.GetMetadataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.Metadata)
@@ -2058,7 +2321,8 @@ def test_run_realtime_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunRealtimeReportRequest()
+        request = analytics_data_api.RunRealtimeReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
@@ -2079,6 +2343,59 @@ def test_run_realtime_report_empty_call():
         type(client.transport.run_realtime_report), "__call__"
     ) as call:
         client.run_realtime_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.RunRealtimeReportRequest()
+
+
+def test_run_realtime_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.RunRealtimeReportRequest(
+        property="property_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_realtime_report), "__call__"
+    ) as call:
+        client.run_realtime_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.RunRealtimeReportRequest(
+            property="property_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_realtime_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_realtime_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.RunRealtimeReportResponse(
+                row_count=992,
+                kind="kind_value",
+            )
+        )
+        response = await client.run_realtime_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.RunRealtimeReportRequest()
@@ -2114,7 +2431,8 @@ async def test_run_realtime_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunRealtimeReportRequest()
+        request = analytics_data_api.RunRealtimeReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
@@ -2220,7 +2538,8 @@ def test_check_compatibility(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CheckCompatibilityRequest()
+        request = analytics_data_api.CheckCompatibilityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.CheckCompatibilityResponse)
@@ -2239,6 +2558,56 @@ def test_check_compatibility_empty_call():
         type(client.transport.check_compatibility), "__call__"
     ) as call:
         client.check_compatibility()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.CheckCompatibilityRequest()
+
+
+def test_check_compatibility_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.CheckCompatibilityRequest(
+        property="property_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_compatibility), "__call__"
+    ) as call:
+        client.check_compatibility(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.CheckCompatibilityRequest(
+            property="property_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_check_compatibility_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_compatibility), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.CheckCompatibilityResponse()
+        )
+        response = await client.check_compatibility()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.CheckCompatibilityRequest()
@@ -2271,7 +2640,8 @@ async def test_check_compatibility_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CheckCompatibilityRequest()
+        request = analytics_data_api.CheckCompatibilityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.CheckCompatibilityResponse)
@@ -2375,7 +2745,8 @@ def test_create_audience_export(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CreateAudienceExportRequest()
+        request = analytics_data_api.CreateAudienceExportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2394,6 +2765,56 @@ def test_create_audience_export_empty_call():
         type(client.transport.create_audience_export), "__call__"
     ) as call:
         client.create_audience_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.CreateAudienceExportRequest()
+
+
+def test_create_audience_export_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.CreateAudienceExportRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_audience_export), "__call__"
+    ) as call:
+        client.create_audience_export(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.CreateAudienceExportRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_audience_export_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_audience_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_audience_export()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.CreateAudienceExportRequest()
@@ -2426,7 +2847,8 @@ async def test_create_audience_export_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CreateAudienceExportRequest()
+        request = analytics_data_api.CreateAudienceExportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2628,7 +3050,8 @@ def test_query_audience_export(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.QueryAudienceExportRequest()
+        request = analytics_data_api.QueryAudienceExportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.QueryAudienceExportResponse)
@@ -2648,6 +3071,58 @@ def test_query_audience_export_empty_call():
         type(client.transport.query_audience_export), "__call__"
     ) as call:
         client.query_audience_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.QueryAudienceExportRequest()
+
+
+def test_query_audience_export_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.QueryAudienceExportRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_audience_export), "__call__"
+    ) as call:
+        client.query_audience_export(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.QueryAudienceExportRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_audience_export_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_audience_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.QueryAudienceExportResponse(
+                row_count=992,
+            )
+        )
+        response = await client.query_audience_export()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.QueryAudienceExportRequest()
@@ -2682,7 +3157,8 @@ async def test_query_audience_export_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.QueryAudienceExportRequest()
+        request = analytics_data_api.QueryAudienceExportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.QueryAudienceExportResponse)
@@ -2882,7 +3358,8 @@ def test_get_audience_export(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetAudienceExportRequest()
+        request = analytics_data_api.GetAudienceExportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.AudienceExport)
@@ -2909,6 +3386,65 @@ def test_get_audience_export_empty_call():
         type(client.transport.get_audience_export), "__call__"
     ) as call:
         client.get_audience_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetAudienceExportRequest()
+
+
+def test_get_audience_export_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.GetAudienceExportRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_audience_export), "__call__"
+    ) as call:
+        client.get_audience_export(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.GetAudienceExportRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_audience_export_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_audience_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.AudienceExport(
+                name="name_value",
+                audience="audience_value",
+                audience_display_name="audience_display_name_value",
+                state=analytics_data_api.AudienceExport.State.CREATING,
+                creation_quota_tokens_charged=3070,
+                row_count=992,
+                error_message="error_message_value",
+                percentage_completed=0.2106,
+            )
+        )
+        response = await client.get_audience_export()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.GetAudienceExportRequest()
@@ -2950,7 +3486,8 @@ async def test_get_audience_export_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetAudienceExportRequest()
+        request = analytics_data_api.GetAudienceExportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.AudienceExport)
@@ -3150,7 +3687,8 @@ def test_list_audience_exports(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.ListAudienceExportsRequest()
+        request = analytics_data_api.ListAudienceExportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAudienceExportsPager)
@@ -3170,6 +3708,60 @@ def test_list_audience_exports_empty_call():
         type(client.transport.list_audience_exports), "__call__"
     ) as call:
         client.list_audience_exports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.ListAudienceExportsRequest()
+
+
+def test_list_audience_exports_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BetaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = analytics_data_api.ListAudienceExportsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_audience_exports), "__call__"
+    ) as call:
+        client.list_audience_exports(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.ListAudienceExportsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_audience_exports_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BetaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_audience_exports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.ListAudienceExportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_audience_exports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == analytics_data_api.ListAudienceExportsRequest()
@@ -3204,7 +3796,8 @@ async def test_list_audience_exports_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.ListAudienceExportsRequest()
+        request = analytics_data_api.ListAudienceExportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAudienceExportsAsyncPager)
