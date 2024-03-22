@@ -220,6 +220,7 @@ def start_query_with_client(
     sql: str,
     job_config: bigquery.job.QueryJobConfig,
     max_results: Optional[int] = None,
+    timeout: Optional[float] = None,
 ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
     """
     Starts query job and waits for results.
@@ -230,7 +231,7 @@ def start_query_with_client(
     )
 
     try:
-        query_job = bq_client.query(sql, job_config=job_config)
+        query_job = bq_client.query(sql, job_config=job_config, timeout=timeout)
     except google.api_core.exceptions.Forbidden as ex:
         if "Drive credentials" in ex.message:
             ex.message += "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
