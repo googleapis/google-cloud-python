@@ -1153,7 +1153,8 @@ def test_list_knowledge_bases(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.ListKnowledgeBasesRequest()
+        request = knowledge_base.ListKnowledgeBasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKnowledgeBasesPager)
@@ -1173,6 +1174,62 @@ def test_list_knowledge_bases_empty_call():
         type(client.transport.list_knowledge_bases), "__call__"
     ) as call:
         client.list_knowledge_bases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == knowledge_base.ListKnowledgeBasesRequest()
+
+
+def test_list_knowledge_bases_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KnowledgeBasesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = knowledge_base.ListKnowledgeBasesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_knowledge_bases), "__call__"
+    ) as call:
+        client.list_knowledge_bases(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == knowledge_base.ListKnowledgeBasesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_knowledge_bases_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KnowledgeBasesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_knowledge_bases), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            knowledge_base.ListKnowledgeBasesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_knowledge_bases()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == knowledge_base.ListKnowledgeBasesRequest()
@@ -1207,7 +1264,8 @@ async def test_list_knowledge_bases_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.ListKnowledgeBasesRequest()
+        request = knowledge_base.ListKnowledgeBasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKnowledgeBasesAsyncPager)
@@ -1600,7 +1658,8 @@ def test_get_knowledge_base(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.GetKnowledgeBaseRequest()
+        request = knowledge_base.GetKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, knowledge_base.KnowledgeBase)
@@ -1622,6 +1681,60 @@ def test_get_knowledge_base_empty_call():
         type(client.transport.get_knowledge_base), "__call__"
     ) as call:
         client.get_knowledge_base()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == knowledge_base.GetKnowledgeBaseRequest()
+
+
+def test_get_knowledge_base_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KnowledgeBasesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = knowledge_base.GetKnowledgeBaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_knowledge_base), "__call__"
+    ) as call:
+        client.get_knowledge_base(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == knowledge_base.GetKnowledgeBaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_knowledge_base_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KnowledgeBasesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_knowledge_base), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            knowledge_base.KnowledgeBase(
+                name="name_value",
+                display_name="display_name_value",
+                language_code="language_code_value",
+            )
+        )
+        response = await client.get_knowledge_base()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == knowledge_base.GetKnowledgeBaseRequest()
@@ -1657,7 +1770,8 @@ async def test_get_knowledge_base_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.GetKnowledgeBaseRequest()
+        request = knowledge_base.GetKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, knowledge_base.KnowledgeBase)
@@ -1854,7 +1968,8 @@ def test_create_knowledge_base(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_knowledge_base.CreateKnowledgeBaseRequest()
+        request = gcd_knowledge_base.CreateKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_knowledge_base.KnowledgeBase)
@@ -1876,6 +1991,60 @@ def test_create_knowledge_base_empty_call():
         type(client.transport.create_knowledge_base), "__call__"
     ) as call:
         client.create_knowledge_base()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_knowledge_base.CreateKnowledgeBaseRequest()
+
+
+def test_create_knowledge_base_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KnowledgeBasesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_knowledge_base.CreateKnowledgeBaseRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_knowledge_base), "__call__"
+    ) as call:
+        client.create_knowledge_base(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_knowledge_base.CreateKnowledgeBaseRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_knowledge_base_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KnowledgeBasesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_knowledge_base), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_knowledge_base.KnowledgeBase(
+                name="name_value",
+                display_name="display_name_value",
+                language_code="language_code_value",
+            )
+        )
+        response = await client.create_knowledge_base()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_knowledge_base.CreateKnowledgeBaseRequest()
@@ -1912,7 +2081,8 @@ async def test_create_knowledge_base_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_knowledge_base.CreateKnowledgeBaseRequest()
+        request = gcd_knowledge_base.CreateKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_knowledge_base.KnowledgeBase)
@@ -2115,7 +2285,8 @@ def test_delete_knowledge_base(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.DeleteKnowledgeBaseRequest()
+        request = knowledge_base.DeleteKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2134,6 +2305,54 @@ def test_delete_knowledge_base_empty_call():
         type(client.transport.delete_knowledge_base), "__call__"
     ) as call:
         client.delete_knowledge_base()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == knowledge_base.DeleteKnowledgeBaseRequest()
+
+
+def test_delete_knowledge_base_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KnowledgeBasesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = knowledge_base.DeleteKnowledgeBaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_knowledge_base), "__call__"
+    ) as call:
+        client.delete_knowledge_base(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == knowledge_base.DeleteKnowledgeBaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_knowledge_base_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KnowledgeBasesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_knowledge_base), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_knowledge_base()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == knowledge_base.DeleteKnowledgeBaseRequest()
@@ -2164,7 +2383,8 @@ async def test_delete_knowledge_base_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.DeleteKnowledgeBaseRequest()
+        request = knowledge_base.DeleteKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2354,7 +2574,8 @@ def test_update_knowledge_base(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+        request = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_knowledge_base.KnowledgeBase)
@@ -2376,6 +2597,56 @@ def test_update_knowledge_base_empty_call():
         type(client.transport.update_knowledge_base), "__call__"
     ) as call:
         client.update_knowledge_base()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+
+
+def test_update_knowledge_base_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KnowledgeBasesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_knowledge_base), "__call__"
+    ) as call:
+        client.update_knowledge_base(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_knowledge_base_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KnowledgeBasesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_knowledge_base), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_knowledge_base.KnowledgeBase(
+                name="name_value",
+                display_name="display_name_value",
+                language_code="language_code_value",
+            )
+        )
+        response = await client.update_knowledge_base()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_knowledge_base.UpdateKnowledgeBaseRequest()
@@ -2412,7 +2683,8 @@ async def test_update_knowledge_base_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+        request = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_knowledge_base.KnowledgeBase)

@@ -1232,7 +1232,8 @@ def test_create_conversation_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_dataset.CreateConversationDatasetRequest()
+        request = gcd_conversation_dataset.CreateConversationDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1251,6 +1252,56 @@ def test_create_conversation_dataset_empty_call():
         type(client.transport.create_conversation_dataset), "__call__"
     ) as call:
         client.create_conversation_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_conversation_dataset.CreateConversationDatasetRequest()
+
+
+def test_create_conversation_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_conversation_dataset.CreateConversationDatasetRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversation_dataset), "__call__"
+    ) as call:
+        client.create_conversation_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_conversation_dataset.CreateConversationDatasetRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_conversation_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversation_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_conversation_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_conversation_dataset.CreateConversationDatasetRequest()
@@ -1283,7 +1334,8 @@ async def test_create_conversation_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_dataset.CreateConversationDatasetRequest()
+        request = gcd_conversation_dataset.CreateConversationDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1496,7 +1548,8 @@ def test_get_conversation_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.GetConversationDatasetRequest()
+        request = conversation_dataset.GetConversationDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation_dataset.ConversationDataset)
@@ -1519,6 +1572,61 @@ def test_get_conversation_dataset_empty_call():
         type(client.transport.get_conversation_dataset), "__call__"
     ) as call:
         client.get_conversation_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.GetConversationDatasetRequest()
+
+
+def test_get_conversation_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversation_dataset.GetConversationDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_conversation_dataset), "__call__"
+    ) as call:
+        client.get_conversation_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.GetConversationDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_conversation_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_conversation_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation_dataset.ConversationDataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                conversation_count=1955,
+            )
+        )
+        response = await client.get_conversation_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == conversation_dataset.GetConversationDatasetRequest()
@@ -1556,7 +1664,8 @@ async def test_get_conversation_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.GetConversationDatasetRequest()
+        request = conversation_dataset.GetConversationDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation_dataset.ConversationDataset)
@@ -1752,7 +1861,8 @@ def test_list_conversation_datasets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.ListConversationDatasetsRequest()
+        request = conversation_dataset.ListConversationDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationDatasetsPager)
@@ -1772,6 +1882,60 @@ def test_list_conversation_datasets_empty_call():
         type(client.transport.list_conversation_datasets), "__call__"
     ) as call:
         client.list_conversation_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.ListConversationDatasetsRequest()
+
+
+def test_list_conversation_datasets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversation_dataset.ListConversationDatasetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversation_datasets), "__call__"
+    ) as call:
+        client.list_conversation_datasets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.ListConversationDatasetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_conversation_datasets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversation_datasets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation_dataset.ListConversationDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_conversation_datasets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == conversation_dataset.ListConversationDatasetsRequest()
@@ -1806,7 +1970,8 @@ async def test_list_conversation_datasets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.ListConversationDatasetsRequest()
+        request = conversation_dataset.ListConversationDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationDatasetsAsyncPager)
@@ -2199,7 +2364,8 @@ def test_delete_conversation_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.DeleteConversationDatasetRequest()
+        request = conversation_dataset.DeleteConversationDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2218,6 +2384,56 @@ def test_delete_conversation_dataset_empty_call():
         type(client.transport.delete_conversation_dataset), "__call__"
     ) as call:
         client.delete_conversation_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.DeleteConversationDatasetRequest()
+
+
+def test_delete_conversation_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversation_dataset.DeleteConversationDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_conversation_dataset), "__call__"
+    ) as call:
+        client.delete_conversation_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.DeleteConversationDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_conversation_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_conversation_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_conversation_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == conversation_dataset.DeleteConversationDatasetRequest()
@@ -2250,7 +2466,8 @@ async def test_delete_conversation_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.DeleteConversationDatasetRequest()
+        request = conversation_dataset.DeleteConversationDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2440,7 +2657,8 @@ def test_import_conversation_data(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.ImportConversationDataRequest()
+        request = conversation_dataset.ImportConversationDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2459,6 +2677,56 @@ def test_import_conversation_data_empty_call():
         type(client.transport.import_conversation_data), "__call__"
     ) as call:
         client.import_conversation_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.ImportConversationDataRequest()
+
+
+def test_import_conversation_data_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversation_dataset.ImportConversationDataRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_conversation_data), "__call__"
+    ) as call:
+        client.import_conversation_data(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation_dataset.ImportConversationDataRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_conversation_data_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_conversation_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_conversation_data()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == conversation_dataset.ImportConversationDataRequest()
@@ -2491,7 +2759,8 @@ async def test_import_conversation_data_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.ImportConversationDataRequest()
+        request = conversation_dataset.ImportConversationDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

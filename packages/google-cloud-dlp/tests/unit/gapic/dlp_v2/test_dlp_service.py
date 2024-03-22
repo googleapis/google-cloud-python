@@ -1111,7 +1111,8 @@ def test_inspect_content(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.InspectContentRequest()
+        request = dlp.InspectContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectContentResponse)
@@ -1128,6 +1129,56 @@ def test_inspect_content_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
         client.inspect_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.InspectContentRequest()
+
+
+def test_inspect_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.InspectContentRequest(
+        parent="parent_value",
+        inspect_template_name="inspect_template_name_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
+        client.inspect_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.InspectContentRequest(
+            parent="parent_value",
+            inspect_template_name="inspect_template_name_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_inspect_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectContentResponse()
+        )
+        response = await client.inspect_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.InspectContentRequest()
@@ -1157,7 +1208,8 @@ async def test_inspect_content_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.InspectContentRequest()
+        request = dlp.InspectContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectContentResponse)
@@ -1258,7 +1310,8 @@ def test_redact_image(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.RedactImageRequest()
+        request = dlp.RedactImageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.RedactImageResponse)
@@ -1277,6 +1330,57 @@ def test_redact_image_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
         client.redact_image()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.RedactImageRequest()
+
+
+def test_redact_image_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.RedactImageRequest(
+        parent="parent_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
+        client.redact_image(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.RedactImageRequest(
+            parent="parent_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_redact_image_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.RedactImageResponse(
+                redacted_image=b"redacted_image_blob",
+                extracted_text="extracted_text_value",
+            )
+        )
+        response = await client.redact_image()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.RedactImageRequest()
@@ -1309,7 +1413,8 @@ async def test_redact_image_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.RedactImageRequest()
+        request = dlp.RedactImageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.RedactImageResponse)
@@ -1411,7 +1516,8 @@ def test_deidentify_content(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeidentifyContentRequest()
+        request = dlp.DeidentifyContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyContentResponse)
@@ -1430,6 +1536,62 @@ def test_deidentify_content_empty_call():
         type(client.transport.deidentify_content), "__call__"
     ) as call:
         client.deidentify_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeidentifyContentRequest()
+
+
+def test_deidentify_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeidentifyContentRequest(
+        parent="parent_value",
+        inspect_template_name="inspect_template_name_value",
+        deidentify_template_name="deidentify_template_name_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deidentify_content), "__call__"
+    ) as call:
+        client.deidentify_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeidentifyContentRequest(
+            parent="parent_value",
+            inspect_template_name="inspect_template_name_value",
+            deidentify_template_name="deidentify_template_name_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_deidentify_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deidentify_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyContentResponse()
+        )
+        response = await client.deidentify_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeidentifyContentRequest()
@@ -1461,7 +1623,8 @@ async def test_deidentify_content_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeidentifyContentRequest()
+        request = dlp.DeidentifyContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyContentResponse)
@@ -1565,7 +1728,8 @@ def test_reidentify_content(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ReidentifyContentRequest()
+        request = dlp.ReidentifyContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ReidentifyContentResponse)
@@ -1584,6 +1748,62 @@ def test_reidentify_content_empty_call():
         type(client.transport.reidentify_content), "__call__"
     ) as call:
         client.reidentify_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ReidentifyContentRequest()
+
+
+def test_reidentify_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ReidentifyContentRequest(
+        parent="parent_value",
+        inspect_template_name="inspect_template_name_value",
+        reidentify_template_name="reidentify_template_name_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reidentify_content), "__call__"
+    ) as call:
+        client.reidentify_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ReidentifyContentRequest(
+            parent="parent_value",
+            inspect_template_name="inspect_template_name_value",
+            reidentify_template_name="reidentify_template_name_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reidentify_content_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reidentify_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ReidentifyContentResponse()
+        )
+        response = await client.reidentify_content()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ReidentifyContentRequest()
@@ -1615,7 +1835,8 @@ async def test_reidentify_content_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ReidentifyContentRequest()
+        request = dlp.ReidentifyContentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ReidentifyContentResponse)
@@ -1717,7 +1938,8 @@ def test_list_info_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInfoTypesRequest()
+        request = dlp.ListInfoTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ListInfoTypesResponse)
@@ -1734,6 +1956,58 @@ def test_list_info_types_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
         client.list_info_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListInfoTypesRequest()
+
+
+def test_list_info_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListInfoTypesRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+        filter="filter_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
+        client.list_info_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListInfoTypesRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+            filter="filter_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_info_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListInfoTypesResponse()
+        )
+        response = await client.list_info_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListInfoTypesRequest()
@@ -1763,7 +2037,8 @@ async def test_list_info_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInfoTypesRequest()
+        request = dlp.ListInfoTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ListInfoTypesResponse)
@@ -1888,7 +2163,8 @@ def test_create_inspect_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateInspectTemplateRequest()
+        request = dlp.CreateInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectTemplate)
@@ -1910,6 +2186,64 @@ def test_create_inspect_template_empty_call():
         type(client.transport.create_inspect_template), "__call__"
     ) as call:
         client.create_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateInspectTemplateRequest()
+
+
+def test_create_inspect_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateInspectTemplateRequest(
+        parent="parent_value",
+        template_id="template_id_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_inspect_template), "__call__"
+    ) as call:
+        client.create_inspect_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateInspectTemplateRequest(
+            parent="parent_value",
+            template_id="template_id_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_inspect_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_inspect_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CreateInspectTemplateRequest()
@@ -1945,7 +2279,8 @@ async def test_create_inspect_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateInspectTemplateRequest()
+        request = dlp.CreateInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectTemplate)
@@ -2148,7 +2483,8 @@ def test_update_inspect_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateInspectTemplateRequest()
+        request = dlp.UpdateInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectTemplate)
@@ -2170,6 +2506,60 @@ def test_update_inspect_template_empty_call():
         type(client.transport.update_inspect_template), "__call__"
     ) as call:
         client.update_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateInspectTemplateRequest()
+
+
+def test_update_inspect_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.UpdateInspectTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_inspect_template), "__call__"
+    ) as call:
+        client.update_inspect_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateInspectTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_inspect_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_inspect_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.UpdateInspectTemplateRequest()
@@ -2205,7 +2595,8 @@ async def test_update_inspect_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateInspectTemplateRequest()
+        request = dlp.UpdateInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectTemplate)
@@ -2418,7 +2809,8 @@ def test_get_inspect_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetInspectTemplateRequest()
+        request = dlp.GetInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectTemplate)
@@ -2440,6 +2832,60 @@ def test_get_inspect_template_empty_call():
         type(client.transport.get_inspect_template), "__call__"
     ) as call:
         client.get_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetInspectTemplateRequest()
+
+
+def test_get_inspect_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetInspectTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_inspect_template), "__call__"
+    ) as call:
+        client.get_inspect_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetInspectTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_inspect_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_inspect_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetInspectTemplateRequest()
@@ -2475,7 +2921,8 @@ async def test_get_inspect_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetInspectTemplateRequest()
+        request = dlp.GetInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectTemplate)
@@ -2666,7 +3113,8 @@ def test_list_inspect_templates(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInspectTemplatesRequest()
+        request = dlp.ListInspectTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInspectTemplatesPager)
@@ -2686,6 +3134,64 @@ def test_list_inspect_templates_empty_call():
         type(client.transport.list_inspect_templates), "__call__"
     ) as call:
         client.list_inspect_templates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListInspectTemplatesRequest()
+
+
+def test_list_inspect_templates_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListInspectTemplatesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_inspect_templates), "__call__"
+    ) as call:
+        client.list_inspect_templates(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListInspectTemplatesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_inspect_templates_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_inspect_templates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListInspectTemplatesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_inspect_templates()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListInspectTemplatesRequest()
@@ -2719,7 +3225,8 @@ async def test_list_inspect_templates_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInspectTemplatesRequest()
+        request = dlp.ListInspectTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInspectTemplatesAsyncPager)
@@ -3108,7 +3615,8 @@ def test_delete_inspect_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteInspectTemplateRequest()
+        request = dlp.DeleteInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3127,6 +3635,54 @@ def test_delete_inspect_template_empty_call():
         type(client.transport.delete_inspect_template), "__call__"
     ) as call:
         client.delete_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteInspectTemplateRequest()
+
+
+def test_delete_inspect_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteInspectTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_inspect_template), "__call__"
+    ) as call:
+        client.delete_inspect_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteInspectTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_inspect_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_inspect_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeleteInspectTemplateRequest()
@@ -3156,7 +3712,8 @@ async def test_delete_inspect_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteInspectTemplateRequest()
+        request = dlp.DeleteInspectTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3346,7 +3903,8 @@ def test_create_deidentify_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDeidentifyTemplateRequest()
+        request = dlp.CreateDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyTemplate)
@@ -3368,6 +3926,64 @@ def test_create_deidentify_template_empty_call():
         type(client.transport.create_deidentify_template), "__call__"
     ) as call:
         client.create_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateDeidentifyTemplateRequest()
+
+
+def test_create_deidentify_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateDeidentifyTemplateRequest(
+        parent="parent_value",
+        template_id="template_id_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deidentify_template), "__call__"
+    ) as call:
+        client.create_deidentify_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateDeidentifyTemplateRequest(
+            parent="parent_value",
+            template_id="template_id_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_deidentify_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_deidentify_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CreateDeidentifyTemplateRequest()
@@ -3403,7 +4019,8 @@ async def test_create_deidentify_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDeidentifyTemplateRequest()
+        request = dlp.CreateDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyTemplate)
@@ -3610,7 +4227,8 @@ def test_update_deidentify_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
+        request = dlp.UpdateDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyTemplate)
@@ -3632,6 +4250,60 @@ def test_update_deidentify_template_empty_call():
         type(client.transport.update_deidentify_template), "__call__"
     ) as call:
         client.update_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
+
+
+def test_update_deidentify_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.UpdateDeidentifyTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deidentify_template), "__call__"
+    ) as call:
+        client.update_deidentify_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateDeidentifyTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_deidentify_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_deidentify_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
@@ -3667,7 +4339,8 @@ async def test_update_deidentify_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
+        request = dlp.UpdateDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyTemplate)
@@ -3884,7 +4557,8 @@ def test_get_deidentify_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDeidentifyTemplateRequest()
+        request = dlp.GetDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyTemplate)
@@ -3906,6 +4580,60 @@ def test_get_deidentify_template_empty_call():
         type(client.transport.get_deidentify_template), "__call__"
     ) as call:
         client.get_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetDeidentifyTemplateRequest()
+
+
+def test_get_deidentify_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetDeidentifyTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_deidentify_template), "__call__"
+    ) as call:
+        client.get_deidentify_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetDeidentifyTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_deidentify_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_deidentify_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetDeidentifyTemplateRequest()
@@ -3941,7 +4669,8 @@ async def test_get_deidentify_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDeidentifyTemplateRequest()
+        request = dlp.GetDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyTemplate)
@@ -4136,7 +4865,8 @@ def test_list_deidentify_templates(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDeidentifyTemplatesRequest()
+        request = dlp.ListDeidentifyTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeidentifyTemplatesPager)
@@ -4156,6 +4886,64 @@ def test_list_deidentify_templates_empty_call():
         type(client.transport.list_deidentify_templates), "__call__"
     ) as call:
         client.list_deidentify_templates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListDeidentifyTemplatesRequest()
+
+
+def test_list_deidentify_templates_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListDeidentifyTemplatesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deidentify_templates), "__call__"
+    ) as call:
+        client.list_deidentify_templates(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListDeidentifyTemplatesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_deidentify_templates_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deidentify_templates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListDeidentifyTemplatesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_deidentify_templates()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListDeidentifyTemplatesRequest()
@@ -4189,7 +4977,8 @@ async def test_list_deidentify_templates_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDeidentifyTemplatesRequest()
+        request = dlp.ListDeidentifyTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeidentifyTemplatesAsyncPager)
@@ -4578,7 +5367,8 @@ def test_delete_deidentify_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
+        request = dlp.DeleteDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4597,6 +5387,54 @@ def test_delete_deidentify_template_empty_call():
         type(client.transport.delete_deidentify_template), "__call__"
     ) as call:
         client.delete_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
+
+
+def test_delete_deidentify_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteDeidentifyTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deidentify_template), "__call__"
+    ) as call:
+        client.delete_deidentify_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteDeidentifyTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_deidentify_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_deidentify_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
@@ -4626,7 +5464,8 @@ async def test_delete_deidentify_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
+        request = dlp.DeleteDeidentifyTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4817,7 +5656,8 @@ def test_create_job_trigger(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateJobTriggerRequest()
+        request = dlp.CreateJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.JobTrigger)
@@ -4840,6 +5680,65 @@ def test_create_job_trigger_empty_call():
         type(client.transport.create_job_trigger), "__call__"
     ) as call:
         client.create_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateJobTriggerRequest()
+
+
+def test_create_job_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateJobTriggerRequest(
+        parent="parent_value",
+        trigger_id="trigger_id_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_trigger), "__call__"
+    ) as call:
+        client.create_job_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateJobTriggerRequest(
+            parent="parent_value",
+            trigger_id="trigger_id_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_job_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.JobTrigger(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                status=dlp.JobTrigger.Status.HEALTHY,
+            )
+        )
+        response = await client.create_job_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CreateJobTriggerRequest()
@@ -4876,7 +5775,8 @@ async def test_create_job_trigger_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateJobTriggerRequest()
+        request = dlp.CreateJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.JobTrigger)
@@ -5081,7 +5981,8 @@ def test_update_job_trigger(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateJobTriggerRequest()
+        request = dlp.UpdateJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.JobTrigger)
@@ -5104,6 +6005,61 @@ def test_update_job_trigger_empty_call():
         type(client.transport.update_job_trigger), "__call__"
     ) as call:
         client.update_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateJobTriggerRequest()
+
+
+def test_update_job_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.UpdateJobTriggerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_job_trigger), "__call__"
+    ) as call:
+        client.update_job_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateJobTriggerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_job_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.JobTrigger(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                status=dlp.JobTrigger.Status.HEALTHY,
+            )
+        )
+        response = await client.update_job_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.UpdateJobTriggerRequest()
@@ -5140,7 +6096,8 @@ async def test_update_job_trigger_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateJobTriggerRequest()
+        request = dlp.UpdateJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.JobTrigger)
@@ -5350,7 +6307,8 @@ def test_hybrid_inspect_job_trigger(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectJobTriggerRequest()
+        request = dlp.HybridInspectJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
@@ -5369,6 +6327,56 @@ def test_hybrid_inspect_job_trigger_empty_call():
         type(client.transport.hybrid_inspect_job_trigger), "__call__"
     ) as call:
         client.hybrid_inspect_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.HybridInspectJobTriggerRequest()
+
+
+def test_hybrid_inspect_job_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.HybridInspectJobTriggerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_job_trigger), "__call__"
+    ) as call:
+        client.hybrid_inspect_job_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.HybridInspectJobTriggerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_hybrid_inspect_job_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.HybridInspectResponse()
+        )
+        response = await client.hybrid_inspect_job_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.HybridInspectJobTriggerRequest()
@@ -5400,7 +6408,8 @@ async def test_hybrid_inspect_job_trigger_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectJobTriggerRequest()
+        request = dlp.HybridInspectJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
@@ -5593,7 +6602,8 @@ def test_get_job_trigger(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetJobTriggerRequest()
+        request = dlp.GetJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.JobTrigger)
@@ -5614,6 +6624,57 @@ def test_get_job_trigger_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
         client.get_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetJobTriggerRequest()
+
+
+def test_get_job_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetJobTriggerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
+        client.get_job_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetJobTriggerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_job_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.JobTrigger(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                status=dlp.JobTrigger.Status.HEALTHY,
+            )
+        )
+        response = await client.get_job_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetJobTriggerRequest()
@@ -5648,7 +6709,8 @@ async def test_get_job_trigger_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetJobTriggerRequest()
+        request = dlp.GetJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.JobTrigger)
@@ -5832,7 +6894,8 @@ def test_list_job_triggers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListJobTriggersRequest()
+        request = dlp.ListJobTriggersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTriggersPager)
@@ -5852,6 +6915,66 @@ def test_list_job_triggers_empty_call():
         type(client.transport.list_job_triggers), "__call__"
     ) as call:
         client.list_job_triggers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListJobTriggersRequest()
+
+
+def test_list_job_triggers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListJobTriggersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_triggers), "__call__"
+    ) as call:
+        client.list_job_triggers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListJobTriggersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_job_triggers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_triggers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListJobTriggersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_job_triggers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListJobTriggersRequest()
@@ -5885,7 +7008,8 @@ async def test_list_job_triggers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListJobTriggersRequest()
+        request = dlp.ListJobTriggersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTriggersAsyncPager)
@@ -6274,7 +7398,8 @@ def test_delete_job_trigger(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteJobTriggerRequest()
+        request = dlp.DeleteJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6293,6 +7418,54 @@ def test_delete_job_trigger_empty_call():
         type(client.transport.delete_job_trigger), "__call__"
     ) as call:
         client.delete_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteJobTriggerRequest()
+
+
+def test_delete_job_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteJobTriggerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_trigger), "__call__"
+    ) as call:
+        client.delete_job_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteJobTriggerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_job_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_job_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeleteJobTriggerRequest()
@@ -6322,7 +7495,8 @@ async def test_delete_job_trigger_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteJobTriggerRequest()
+        request = dlp.DeleteJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6513,7 +7687,8 @@ def test_activate_job_trigger(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ActivateJobTriggerRequest()
+        request = dlp.ActivateJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DlpJob)
@@ -6536,6 +7711,61 @@ def test_activate_job_trigger_empty_call():
         type(client.transport.activate_job_trigger), "__call__"
     ) as call:
         client.activate_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ActivateJobTriggerRequest()
+
+
+def test_activate_job_trigger_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ActivateJobTriggerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_job_trigger), "__call__"
+    ) as call:
+        client.activate_job_trigger(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ActivateJobTriggerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_activate_job_trigger_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DlpJob(
+                name="name_value",
+                type_=dlp.DlpJobType.INSPECT_JOB,
+                state=dlp.DlpJob.JobState.PENDING,
+                job_trigger_name="job_trigger_name_value",
+            )
+        )
+        response = await client.activate_job_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ActivateJobTriggerRequest()
@@ -6572,7 +7802,8 @@ async def test_activate_job_trigger_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ActivateJobTriggerRequest()
+        request = dlp.ActivateJobTriggerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DlpJob)
@@ -6683,7 +7914,8 @@ def test_create_discovery_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDiscoveryConfigRequest()
+        request = dlp.CreateDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DiscoveryConfig)
@@ -6706,6 +7938,63 @@ def test_create_discovery_config_empty_call():
         type(client.transport.create_discovery_config), "__call__"
     ) as call:
         client.create_discovery_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateDiscoveryConfigRequest()
+
+
+def test_create_discovery_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateDiscoveryConfigRequest(
+        parent="parent_value",
+        config_id="config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_discovery_config), "__call__"
+    ) as call:
+        client.create_discovery_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateDiscoveryConfigRequest(
+            parent="parent_value",
+            config_id="config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_discovery_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DiscoveryConfig(
+                name="name_value",
+                display_name="display_name_value",
+                inspect_templates=["inspect_templates_value"],
+                status=dlp.DiscoveryConfig.Status.RUNNING,
+            )
+        )
+        response = await client.create_discovery_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CreateDiscoveryConfigRequest()
@@ -6742,7 +8031,8 @@ async def test_create_discovery_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDiscoveryConfigRequest()
+        request = dlp.CreateDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DiscoveryConfig)
@@ -6947,7 +8237,8 @@ def test_update_discovery_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDiscoveryConfigRequest()
+        request = dlp.UpdateDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DiscoveryConfig)
@@ -6970,6 +8261,61 @@ def test_update_discovery_config_empty_call():
         type(client.transport.update_discovery_config), "__call__"
     ) as call:
         client.update_discovery_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateDiscoveryConfigRequest()
+
+
+def test_update_discovery_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.UpdateDiscoveryConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_discovery_config), "__call__"
+    ) as call:
+        client.update_discovery_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateDiscoveryConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_discovery_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DiscoveryConfig(
+                name="name_value",
+                display_name="display_name_value",
+                inspect_templates=["inspect_templates_value"],
+                status=dlp.DiscoveryConfig.Status.RUNNING,
+            )
+        )
+        response = await client.update_discovery_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.UpdateDiscoveryConfigRequest()
@@ -7006,7 +8352,8 @@ async def test_update_discovery_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDiscoveryConfigRequest()
+        request = dlp.UpdateDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DiscoveryConfig)
@@ -7221,7 +8568,8 @@ def test_get_discovery_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDiscoveryConfigRequest()
+        request = dlp.GetDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DiscoveryConfig)
@@ -7244,6 +8592,61 @@ def test_get_discovery_config_empty_call():
         type(client.transport.get_discovery_config), "__call__"
     ) as call:
         client.get_discovery_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetDiscoveryConfigRequest()
+
+
+def test_get_discovery_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetDiscoveryConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovery_config), "__call__"
+    ) as call:
+        client.get_discovery_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetDiscoveryConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_discovery_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DiscoveryConfig(
+                name="name_value",
+                display_name="display_name_value",
+                inspect_templates=["inspect_templates_value"],
+                status=dlp.DiscoveryConfig.Status.RUNNING,
+            )
+        )
+        response = await client.get_discovery_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetDiscoveryConfigRequest()
@@ -7280,7 +8683,8 @@ async def test_get_discovery_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDiscoveryConfigRequest()
+        request = dlp.GetDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DiscoveryConfig)
@@ -7472,7 +8876,8 @@ def test_list_discovery_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDiscoveryConfigsRequest()
+        request = dlp.ListDiscoveryConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveryConfigsPager)
@@ -7492,6 +8897,62 @@ def test_list_discovery_configs_empty_call():
         type(client.transport.list_discovery_configs), "__call__"
     ) as call:
         client.list_discovery_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListDiscoveryConfigsRequest()
+
+
+def test_list_discovery_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListDiscoveryConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovery_configs), "__call__"
+    ) as call:
+        client.list_discovery_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListDiscoveryConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_discovery_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovery_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListDiscoveryConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_discovery_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListDiscoveryConfigsRequest()
@@ -7525,7 +8986,8 @@ async def test_list_discovery_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDiscoveryConfigsRequest()
+        request = dlp.ListDiscoveryConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveryConfigsAsyncPager)
@@ -7914,7 +9376,8 @@ def test_delete_discovery_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDiscoveryConfigRequest()
+        request = dlp.DeleteDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7933,6 +9396,54 @@ def test_delete_discovery_config_empty_call():
         type(client.transport.delete_discovery_config), "__call__"
     ) as call:
         client.delete_discovery_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteDiscoveryConfigRequest()
+
+
+def test_delete_discovery_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteDiscoveryConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_discovery_config), "__call__"
+    ) as call:
+        client.delete_discovery_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteDiscoveryConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_discovery_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_discovery_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeleteDiscoveryConfigRequest()
@@ -7962,7 +9473,8 @@ async def test_delete_discovery_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDiscoveryConfigRequest()
+        request = dlp.DeleteDiscoveryConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8151,7 +9663,8 @@ def test_create_dlp_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDlpJobRequest()
+        request = dlp.CreateDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DlpJob)
@@ -8172,6 +9685,61 @@ def test_create_dlp_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
         client.create_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateDlpJobRequest()
+
+
+def test_create_dlp_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateDlpJobRequest(
+        parent="parent_value",
+        job_id="job_id_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
+        client.create_dlp_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateDlpJobRequest(
+            parent="parent_value",
+            job_id="job_id_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_dlp_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DlpJob(
+                name="name_value",
+                type_=dlp.DlpJobType.INSPECT_JOB,
+                state=dlp.DlpJob.JobState.PENDING,
+                job_trigger_name="job_trigger_name_value",
+            )
+        )
+        response = await client.create_dlp_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CreateDlpJobRequest()
@@ -8206,7 +9774,8 @@ async def test_create_dlp_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDlpJobRequest()
+        request = dlp.CreateDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DlpJob)
@@ -8458,7 +10027,8 @@ def test_list_dlp_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDlpJobsRequest()
+        request = dlp.ListDlpJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDlpJobsPager)
@@ -8476,6 +10046,62 @@ def test_list_dlp_jobs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
         client.list_dlp_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListDlpJobsRequest()
+
+
+def test_list_dlp_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListDlpJobsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
+        client.list_dlp_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListDlpJobsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_dlp_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListDlpJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_dlp_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListDlpJobsRequest()
@@ -8507,7 +10133,8 @@ async def test_list_dlp_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDlpJobsRequest()
+        request = dlp.ListDlpJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDlpJobsAsyncPager)
@@ -8883,7 +10510,8 @@ def test_get_dlp_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDlpJobRequest()
+        request = dlp.GetDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DlpJob)
@@ -8904,6 +10532,57 @@ def test_get_dlp_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
         client.get_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetDlpJobRequest()
+
+
+def test_get_dlp_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetDlpJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
+        client.get_dlp_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetDlpJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dlp_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DlpJob(
+                name="name_value",
+                type_=dlp.DlpJobType.INSPECT_JOB,
+                state=dlp.DlpJob.JobState.PENDING,
+                job_trigger_name="job_trigger_name_value",
+            )
+        )
+        response = await client.get_dlp_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetDlpJobRequest()
@@ -8938,7 +10617,8 @@ async def test_get_dlp_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDlpJobRequest()
+        request = dlp.GetDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DlpJob)
@@ -9118,7 +10798,8 @@ def test_delete_dlp_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDlpJobRequest()
+        request = dlp.DeleteDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9135,6 +10816,50 @@ def test_delete_dlp_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
         client.delete_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteDlpJobRequest()
+
+
+def test_delete_dlp_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteDlpJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
+        client.delete_dlp_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteDlpJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_dlp_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_dlp_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeleteDlpJobRequest()
@@ -9162,7 +10887,8 @@ async def test_delete_dlp_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDlpJobRequest()
+        request = dlp.DeleteDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9338,7 +11064,8 @@ def test_cancel_dlp_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CancelDlpJobRequest()
+        request = dlp.CancelDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9355,6 +11082,50 @@ def test_cancel_dlp_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
         client.cancel_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CancelDlpJobRequest()
+
+
+def test_cancel_dlp_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CancelDlpJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
+        client.cancel_dlp_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CancelDlpJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_dlp_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_dlp_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CancelDlpJobRequest()
@@ -9382,7 +11153,8 @@ async def test_cancel_dlp_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CancelDlpJobRequest()
+        request = dlp.CancelDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9482,7 +11254,8 @@ def test_create_stored_info_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateStoredInfoTypeRequest()
+        request = dlp.CreateStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
@@ -9502,6 +11275,62 @@ def test_create_stored_info_type_empty_call():
         type(client.transport.create_stored_info_type), "__call__"
     ) as call:
         client.create_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateStoredInfoTypeRequest()
+
+
+def test_create_stored_info_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateStoredInfoTypeRequest(
+        parent="parent_value",
+        stored_info_type_id="stored_info_type_id_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_stored_info_type), "__call__"
+    ) as call:
+        client.create_stored_info_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.CreateStoredInfoTypeRequest(
+            parent="parent_value",
+            stored_info_type_id="stored_info_type_id_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_stored_info_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.StoredInfoType(
+                name="name_value",
+            )
+        )
+        response = await client.create_stored_info_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.CreateStoredInfoTypeRequest()
@@ -9535,7 +11364,8 @@ async def test_create_stored_info_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateStoredInfoTypeRequest()
+        request = dlp.CreateStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
@@ -9734,7 +11564,8 @@ def test_update_stored_info_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateStoredInfoTypeRequest()
+        request = dlp.UpdateStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
@@ -9754,6 +11585,58 @@ def test_update_stored_info_type_empty_call():
         type(client.transport.update_stored_info_type), "__call__"
     ) as call:
         client.update_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateStoredInfoTypeRequest()
+
+
+def test_update_stored_info_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.UpdateStoredInfoTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_stored_info_type), "__call__"
+    ) as call:
+        client.update_stored_info_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.UpdateStoredInfoTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_stored_info_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.StoredInfoType(
+                name="name_value",
+            )
+        )
+        response = await client.update_stored_info_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.UpdateStoredInfoTypeRequest()
@@ -9787,7 +11670,8 @@ async def test_update_stored_info_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateStoredInfoTypeRequest()
+        request = dlp.UpdateStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
@@ -9996,7 +11880,8 @@ def test_get_stored_info_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetStoredInfoTypeRequest()
+        request = dlp.GetStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
@@ -10016,6 +11901,58 @@ def test_get_stored_info_type_empty_call():
         type(client.transport.get_stored_info_type), "__call__"
     ) as call:
         client.get_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetStoredInfoTypeRequest()
+
+
+def test_get_stored_info_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetStoredInfoTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stored_info_type), "__call__"
+    ) as call:
+        client.get_stored_info_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetStoredInfoTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_stored_info_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.StoredInfoType(
+                name="name_value",
+            )
+        )
+        response = await client.get_stored_info_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetStoredInfoTypeRequest()
@@ -10049,7 +11986,8 @@ async def test_get_stored_info_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetStoredInfoTypeRequest()
+        request = dlp.GetStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
@@ -10238,7 +12176,8 @@ def test_list_stored_info_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListStoredInfoTypesRequest()
+        request = dlp.ListStoredInfoTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoredInfoTypesPager)
@@ -10258,6 +12197,64 @@ def test_list_stored_info_types_empty_call():
         type(client.transport.list_stored_info_types), "__call__"
     ) as call:
         client.list_stored_info_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListStoredInfoTypesRequest()
+
+
+def test_list_stored_info_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListStoredInfoTypesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        location_id="location_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stored_info_types), "__call__"
+    ) as call:
+        client.list_stored_info_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListStoredInfoTypesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            location_id="location_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_stored_info_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stored_info_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListStoredInfoTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_stored_info_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListStoredInfoTypesRequest()
@@ -10291,7 +12288,8 @@ async def test_list_stored_info_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListStoredInfoTypesRequest()
+        request = dlp.ListStoredInfoTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoredInfoTypesAsyncPager)
@@ -10680,7 +12678,8 @@ def test_delete_stored_info_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteStoredInfoTypeRequest()
+        request = dlp.DeleteStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10699,6 +12698,54 @@ def test_delete_stored_info_type_empty_call():
         type(client.transport.delete_stored_info_type), "__call__"
     ) as call:
         client.delete_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteStoredInfoTypeRequest()
+
+
+def test_delete_stored_info_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteStoredInfoTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_stored_info_type), "__call__"
+    ) as call:
+        client.delete_stored_info_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.DeleteStoredInfoTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_stored_info_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_stored_info_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.DeleteStoredInfoTypeRequest()
@@ -10728,7 +12775,8 @@ async def test_delete_stored_info_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteStoredInfoTypeRequest()
+        request = dlp.DeleteStoredInfoTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10916,7 +12964,8 @@ def test_list_project_data_profiles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListProjectDataProfilesRequest()
+        request = dlp.ListProjectDataProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProjectDataProfilesPager)
@@ -10936,6 +12985,64 @@ def test_list_project_data_profiles_empty_call():
         type(client.transport.list_project_data_profiles), "__call__"
     ) as call:
         client.list_project_data_profiles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListProjectDataProfilesRequest()
+
+
+def test_list_project_data_profiles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListProjectDataProfilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_data_profiles), "__call__"
+    ) as call:
+        client.list_project_data_profiles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListProjectDataProfilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_project_data_profiles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListProjectDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_project_data_profiles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListProjectDataProfilesRequest()
@@ -10969,7 +13076,8 @@ async def test_list_project_data_profiles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListProjectDataProfilesRequest()
+        request = dlp.ListProjectDataProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProjectDataProfilesAsyncPager)
@@ -11360,7 +13468,8 @@ def test_list_table_data_profiles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListTableDataProfilesRequest()
+        request = dlp.ListTableDataProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTableDataProfilesPager)
@@ -11380,6 +13489,64 @@ def test_list_table_data_profiles_empty_call():
         type(client.transport.list_table_data_profiles), "__call__"
     ) as call:
         client.list_table_data_profiles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListTableDataProfilesRequest()
+
+
+def test_list_table_data_profiles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListTableDataProfilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_table_data_profiles), "__call__"
+    ) as call:
+        client.list_table_data_profiles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListTableDataProfilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_table_data_profiles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_table_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListTableDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_table_data_profiles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListTableDataProfilesRequest()
@@ -11413,7 +13580,8 @@ async def test_list_table_data_profiles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListTableDataProfilesRequest()
+        request = dlp.ListTableDataProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTableDataProfilesAsyncPager)
@@ -11804,7 +13972,8 @@ def test_list_column_data_profiles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListColumnDataProfilesRequest()
+        request = dlp.ListColumnDataProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListColumnDataProfilesPager)
@@ -11824,6 +13993,64 @@ def test_list_column_data_profiles_empty_call():
         type(client.transport.list_column_data_profiles), "__call__"
     ) as call:
         client.list_column_data_profiles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListColumnDataProfilesRequest()
+
+
+def test_list_column_data_profiles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListColumnDataProfilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_data_profiles), "__call__"
+    ) as call:
+        client.list_column_data_profiles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.ListColumnDataProfilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_column_data_profiles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListColumnDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_column_data_profiles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.ListColumnDataProfilesRequest()
@@ -11857,7 +14084,8 @@ async def test_list_column_data_profiles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListColumnDataProfilesRequest()
+        request = dlp.ListColumnDataProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListColumnDataProfilesAsyncPager)
@@ -12249,7 +14477,8 @@ def test_get_project_data_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetProjectDataProfileRequest()
+        request = dlp.GetProjectDataProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ProjectDataProfile)
@@ -12270,6 +14499,59 @@ def test_get_project_data_profile_empty_call():
         type(client.transport.get_project_data_profile), "__call__"
     ) as call:
         client.get_project_data_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetProjectDataProfileRequest()
+
+
+def test_get_project_data_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetProjectDataProfileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_data_profile), "__call__"
+    ) as call:
+        client.get_project_data_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetProjectDataProfileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_project_data_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ProjectDataProfile(
+                name="name_value",
+                project_id="project_id_value",
+            )
+        )
+        response = await client.get_project_data_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetProjectDataProfileRequest()
@@ -12304,7 +14586,8 @@ async def test_get_project_data_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetProjectDataProfileRequest()
+        request = dlp.GetProjectDataProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ProjectDataProfile)
@@ -12511,7 +14794,8 @@ def test_get_table_data_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetTableDataProfileRequest()
+        request = dlp.GetTableDataProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.TableDataProfile)
@@ -12547,6 +14831,71 @@ def test_get_table_data_profile_empty_call():
         type(client.transport.get_table_data_profile), "__call__"
     ) as call:
         client.get_table_data_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetTableDataProfileRequest()
+
+
+def test_get_table_data_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetTableDataProfileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_table_data_profile), "__call__"
+    ) as call:
+        client.get_table_data_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetTableDataProfileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_table_data_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_table_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.TableDataProfile(
+                name="name_value",
+                project_data_profile="project_data_profile_value",
+                dataset_project_id="dataset_project_id_value",
+                dataset_location="dataset_location_value",
+                dataset_id="dataset_id_value",
+                table_id="table_id_value",
+                full_resource="full_resource_value",
+                state=dlp.TableDataProfile.State.RUNNING,
+                scanned_column_count=2129,
+                failed_column_count=2010,
+                table_size_bytes=1704,
+                row_count=992,
+                encryption_status=dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED,
+                resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
+            )
+        )
+        response = await client.get_table_data_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.GetTableDataProfileRequest()
@@ -12593,7 +14942,8 @@ async def test_get_table_data_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetTableDataProfileRequest()
+        request = dlp.GetTableDataProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.TableDataProfile)
@@ -12815,7 +15165,8 @@ def test_get_column_data_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetColumnDataProfileRequest()
+        request = dlp.GetColumnDataProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ColumnDataProfile)
@@ -12862,6 +15213,71 @@ def test_get_column_data_profile_empty_call():
         assert args[0] == dlp.GetColumnDataProfileRequest()
 
 
+def test_get_column_data_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetColumnDataProfileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_column_data_profile), "__call__"
+    ) as call:
+        client.get_column_data_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetColumnDataProfileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_column_data_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_column_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ColumnDataProfile(
+                name="name_value",
+                state=dlp.ColumnDataProfile.State.RUNNING,
+                table_data_profile="table_data_profile_value",
+                table_full_resource="table_full_resource_value",
+                dataset_project_id="dataset_project_id_value",
+                dataset_location="dataset_location_value",
+                dataset_id="dataset_id_value",
+                table_id="table_id_value",
+                column="column_value",
+                estimated_null_percentage=dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW,
+                estimated_uniqueness_score=dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW,
+                free_text_score=0.16010000000000002,
+                column_type=dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64,
+                policy_state=dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED,
+            )
+        )
+        response = await client.get_column_data_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.GetColumnDataProfileRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_column_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetColumnDataProfileRequest
@@ -12903,7 +15319,8 @@ async def test_get_column_data_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetColumnDataProfileRequest()
+        request = dlp.GetColumnDataProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ColumnDataProfile)
@@ -13116,7 +15533,8 @@ def test_hybrid_inspect_dlp_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectDlpJobRequest()
+        request = dlp.HybridInspectDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
@@ -13135,6 +15553,56 @@ def test_hybrid_inspect_dlp_job_empty_call():
         type(client.transport.hybrid_inspect_dlp_job), "__call__"
     ) as call:
         client.hybrid_inspect_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.HybridInspectDlpJobRequest()
+
+
+def test_hybrid_inspect_dlp_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.HybridInspectDlpJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_dlp_job), "__call__"
+    ) as call:
+        client.hybrid_inspect_dlp_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.HybridInspectDlpJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_hybrid_inspect_dlp_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_dlp_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.HybridInspectResponse()
+        )
+        response = await client.hybrid_inspect_dlp_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.HybridInspectDlpJobRequest()
@@ -13166,7 +15634,8 @@ async def test_hybrid_inspect_dlp_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectDlpJobRequest()
+        request = dlp.HybridInspectDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
@@ -13354,7 +15823,8 @@ def test_finish_dlp_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.FinishDlpJobRequest()
+        request = dlp.FinishDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -13371,6 +15841,50 @@ def test_finish_dlp_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
         client.finish_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.FinishDlpJobRequest()
+
+
+def test_finish_dlp_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.FinishDlpJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
+        client.finish_dlp_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dlp.FinishDlpJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_finish_dlp_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.finish_dlp_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dlp.FinishDlpJobRequest()
@@ -13398,7 +15912,8 @@ async def test_finish_dlp_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.FinishDlpJobRequest()
+        request = dlp.FinishDlpJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

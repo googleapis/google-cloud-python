@@ -1096,7 +1096,8 @@ def test_list_webhooks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.ListWebhooksRequest()
+        request = webhook.ListWebhooksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWebhooksPager)
@@ -1114,6 +1115,56 @@ def test_list_webhooks_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_webhooks), "__call__") as call:
         client.list_webhooks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webhook.ListWebhooksRequest()
+
+
+def test_list_webhooks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebhooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = webhook.ListWebhooksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_webhooks), "__call__") as call:
+        client.list_webhooks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webhook.ListWebhooksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_webhooks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebhooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_webhooks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            webhook.ListWebhooksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_webhooks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == webhook.ListWebhooksRequest()
@@ -1145,7 +1196,8 @@ async def test_list_webhooks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.ListWebhooksRequest()
+        request = webhook.ListWebhooksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWebhooksAsyncPager)
@@ -1520,7 +1572,8 @@ def test_get_webhook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.GetWebhookRequest()
+        request = webhook.GetWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webhook.Webhook)
@@ -1540,6 +1593,56 @@ def test_get_webhook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_webhook), "__call__") as call:
         client.get_webhook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webhook.GetWebhookRequest()
+
+
+def test_get_webhook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebhooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = webhook.GetWebhookRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_webhook), "__call__") as call:
+        client.get_webhook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webhook.GetWebhookRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_webhook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebhooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_webhook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            webhook.Webhook(
+                name="name_value",
+                display_name="display_name_value",
+                disabled=True,
+            )
+        )
+        response = await client.get_webhook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == webhook.GetWebhookRequest()
@@ -1573,7 +1676,8 @@ async def test_get_webhook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.GetWebhookRequest()
+        request = webhook.GetWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webhook.Webhook)
@@ -1756,7 +1860,8 @@ def test_create_webhook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_webhook.CreateWebhookRequest()
+        request = gcdc_webhook.CreateWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_webhook.Webhook)
@@ -1776,6 +1881,56 @@ def test_create_webhook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_webhook), "__call__") as call:
         client.create_webhook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_webhook.CreateWebhookRequest()
+
+
+def test_create_webhook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebhooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_webhook.CreateWebhookRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_webhook), "__call__") as call:
+        client.create_webhook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_webhook.CreateWebhookRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_webhook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebhooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_webhook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_webhook.Webhook(
+                name="name_value",
+                display_name="display_name_value",
+                disabled=True,
+            )
+        )
+        response = await client.create_webhook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_webhook.CreateWebhookRequest()
@@ -1809,7 +1964,8 @@ async def test_create_webhook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_webhook.CreateWebhookRequest()
+        request = gcdc_webhook.CreateWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_webhook.Webhook)
@@ -2006,7 +2162,8 @@ def test_update_webhook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_webhook.UpdateWebhookRequest()
+        request = gcdc_webhook.UpdateWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_webhook.Webhook)
@@ -2026,6 +2183,52 @@ def test_update_webhook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_webhook), "__call__") as call:
         client.update_webhook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_webhook.UpdateWebhookRequest()
+
+
+def test_update_webhook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebhooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_webhook.UpdateWebhookRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_webhook), "__call__") as call:
+        client.update_webhook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_webhook.UpdateWebhookRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_webhook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebhooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_webhook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_webhook.Webhook(
+                name="name_value",
+                display_name="display_name_value",
+                disabled=True,
+            )
+        )
+        response = await client.update_webhook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_webhook.UpdateWebhookRequest()
@@ -2059,7 +2262,8 @@ async def test_update_webhook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_webhook.UpdateWebhookRequest()
+        request = gcdc_webhook.UpdateWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_webhook.Webhook)
@@ -2252,7 +2456,8 @@ def test_delete_webhook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.DeleteWebhookRequest()
+        request = webhook.DeleteWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2269,6 +2474,50 @@ def test_delete_webhook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_webhook), "__call__") as call:
         client.delete_webhook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webhook.DeleteWebhookRequest()
+
+
+def test_delete_webhook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebhooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = webhook.DeleteWebhookRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_webhook), "__call__") as call:
+        client.delete_webhook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webhook.DeleteWebhookRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_webhook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebhooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_webhook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_webhook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == webhook.DeleteWebhookRequest()
@@ -2296,7 +2545,8 @@ async def test_delete_webhook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.DeleteWebhookRequest()
+        request = webhook.DeleteWebhookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

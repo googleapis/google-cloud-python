@@ -405,6 +405,8 @@ class GatewayServiceAsyncClient:
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
+        elif not request:
+            request = httpbody_pb2.HttpBody()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -577,6 +579,8 @@ class GatewayServiceAsyncClient:
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
+        elif not request:
+            request = httpbody_pb2.HttpBody()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -749,6 +753,8 @@ class GatewayServiceAsyncClient:
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
+        elif not request:
+            request = httpbody_pb2.HttpBody()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -921,6 +927,8 @@ class GatewayServiceAsyncClient:
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
+        elif not request:
+            request = httpbody_pb2.HttpBody()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1093,6 +1101,8 @@ class GatewayServiceAsyncClient:
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = httpbody_pb2.HttpBody(**request)
+        elif not request:
+            request = httpbody_pb2.HttpBody()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

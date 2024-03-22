@@ -1235,7 +1235,8 @@ def test_list_memberships(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ListMembershipsRequest()
+        request = membership.ListMembershipsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMembershipsPager)
@@ -1254,6 +1255,61 @@ def test_list_memberships_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         client.list_memberships()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.ListMembershipsRequest()
+
+
+def test_list_memberships_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.ListMembershipsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
+        client.list_memberships(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.ListMembershipsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_memberships_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            membership.ListMembershipsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_memberships()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.ListMembershipsRequest()
@@ -1286,7 +1342,8 @@ async def test_list_memberships_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ListMembershipsRequest()
+        request = membership.ListMembershipsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMembershipsAsyncPager)
@@ -1664,7 +1721,8 @@ def test_get_membership(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GetMembershipRequest()
+        request = membership.GetMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.Membership)
@@ -1688,6 +1746,58 @@ def test_get_membership_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
         client.get_membership()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.GetMembershipRequest()
+
+
+def test_get_membership_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.GetMembershipRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
+        client.get_membership(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.GetMembershipRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_membership_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            membership.Membership(
+                name="name_value",
+                description="description_value",
+                external_id="external_id_value",
+                unique_id="unique_id_value",
+                infrastructure_type=membership.Membership.InfrastructureType.ON_PREM,
+            )
+        )
+        response = await client.get_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.GetMembershipRequest()
@@ -1723,7 +1833,8 @@ async def test_get_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GetMembershipRequest()
+        request = membership.GetMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.Membership)
@@ -1912,7 +2023,8 @@ def test_create_membership(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.CreateMembershipRequest()
+        request = membership.CreateMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1931,6 +2043,60 @@ def test_create_membership_empty_call():
         type(client.transport.create_membership), "__call__"
     ) as call:
         client.create_membership()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.CreateMembershipRequest()
+
+
+def test_create_membership_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.CreateMembershipRequest(
+        parent="parent_value",
+        membership_id="membership_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_membership), "__call__"
+    ) as call:
+        client.create_membership(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.CreateMembershipRequest(
+            parent="parent_value",
+            membership_id="membership_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_membership_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_membership), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.CreateMembershipRequest()
@@ -1962,7 +2128,8 @@ async def test_create_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.CreateMembershipRequest()
+        request = membership.CreateMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2172,7 +2339,8 @@ def test_delete_membership(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.DeleteMembershipRequest()
+        request = membership.DeleteMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2191,6 +2359,58 @@ def test_delete_membership_empty_call():
         type(client.transport.delete_membership), "__call__"
     ) as call:
         client.delete_membership()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.DeleteMembershipRequest()
+
+
+def test_delete_membership_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.DeleteMembershipRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_membership), "__call__"
+    ) as call:
+        client.delete_membership(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.DeleteMembershipRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_membership_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_membership), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.DeleteMembershipRequest()
@@ -2222,7 +2442,8 @@ async def test_delete_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.DeleteMembershipRequest()
+        request = membership.DeleteMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2412,7 +2633,8 @@ def test_update_membership(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.UpdateMembershipRequest()
+        request = membership.UpdateMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2431,6 +2653,58 @@ def test_update_membership_empty_call():
         type(client.transport.update_membership), "__call__"
     ) as call:
         client.update_membership()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.UpdateMembershipRequest()
+
+
+def test_update_membership_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.UpdateMembershipRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_membership), "__call__"
+    ) as call:
+        client.update_membership(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.UpdateMembershipRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_membership_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_membership), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.UpdateMembershipRequest()
@@ -2462,7 +2736,8 @@ async def test_update_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.UpdateMembershipRequest()
+        request = membership.UpdateMembershipRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2672,7 +2947,8 @@ def test_generate_connect_manifest(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateConnectManifestRequest()
+        request = membership.GenerateConnectManifestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.GenerateConnectManifestResponse)
@@ -2691,6 +2967,60 @@ def test_generate_connect_manifest_empty_call():
         type(client.transport.generate_connect_manifest), "__call__"
     ) as call:
         client.generate_connect_manifest()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.GenerateConnectManifestRequest()
+
+
+def test_generate_connect_manifest_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.GenerateConnectManifestRequest(
+        name="name_value",
+        version="version_value",
+        registry="registry_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_connect_manifest), "__call__"
+    ) as call:
+        client.generate_connect_manifest(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.GenerateConnectManifestRequest(
+            name="name_value",
+            version="version_value",
+            registry="registry_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_connect_manifest_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_connect_manifest), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            membership.GenerateConnectManifestResponse()
+        )
+        response = await client.generate_connect_manifest()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.GenerateConnectManifestRequest()
@@ -2723,7 +3053,8 @@ async def test_generate_connect_manifest_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateConnectManifestRequest()
+        request = membership.GenerateConnectManifestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.GenerateConnectManifestResponse)
@@ -2827,7 +3158,8 @@ def test_validate_exclusivity(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ValidateExclusivityRequest()
+        request = membership.ValidateExclusivityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.ValidateExclusivityResponse)
@@ -2846,6 +3178,60 @@ def test_validate_exclusivity_empty_call():
         type(client.transport.validate_exclusivity), "__call__"
     ) as call:
         client.validate_exclusivity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.ValidateExclusivityRequest()
+
+
+def test_validate_exclusivity_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.ValidateExclusivityRequest(
+        parent="parent_value",
+        cr_manifest="cr_manifest_value",
+        intended_membership="intended_membership_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_exclusivity), "__call__"
+    ) as call:
+        client.validate_exclusivity(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.ValidateExclusivityRequest(
+            parent="parent_value",
+            cr_manifest="cr_manifest_value",
+            intended_membership="intended_membership_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_validate_exclusivity_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_exclusivity), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            membership.ValidateExclusivityResponse()
+        )
+        response = await client.validate_exclusivity()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.ValidateExclusivityRequest()
@@ -2877,7 +3263,8 @@ async def test_validate_exclusivity_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ValidateExclusivityRequest()
+        request = membership.ValidateExclusivityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.ValidateExclusivityResponse)
@@ -2984,7 +3371,8 @@ def test_generate_exclusivity_manifest(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateExclusivityManifestRequest()
+        request = membership.GenerateExclusivityManifestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.GenerateExclusivityManifestResponse)
@@ -3005,6 +3393,63 @@ def test_generate_exclusivity_manifest_empty_call():
         type(client.transport.generate_exclusivity_manifest), "__call__"
     ) as call:
         client.generate_exclusivity_manifest()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.GenerateExclusivityManifestRequest()
+
+
+def test_generate_exclusivity_manifest_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GkeHubMembershipServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = membership.GenerateExclusivityManifestRequest(
+        name="name_value",
+        crd_manifest="crd_manifest_value",
+        cr_manifest="cr_manifest_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_exclusivity_manifest), "__call__"
+    ) as call:
+        client.generate_exclusivity_manifest(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == membership.GenerateExclusivityManifestRequest(
+            name="name_value",
+            crd_manifest="crd_manifest_value",
+            cr_manifest="cr_manifest_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_exclusivity_manifest_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubMembershipServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_exclusivity_manifest), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            membership.GenerateExclusivityManifestResponse(
+                crd_manifest="crd_manifest_value",
+                cr_manifest="cr_manifest_value",
+            )
+        )
+        response = await client.generate_exclusivity_manifest()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == membership.GenerateExclusivityManifestRequest()
@@ -3040,7 +3485,8 @@ async def test_generate_exclusivity_manifest_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateExclusivityManifestRequest()
+        request = membership.GenerateExclusivityManifestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.GenerateExclusivityManifestResponse)

@@ -1197,7 +1197,8 @@ def test_create_data_store(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.CreateDataStoreRequest()
+        request = data_store_service.CreateDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1216,6 +1217,58 @@ def test_create_data_store_empty_call():
         type(client.transport.create_data_store), "__call__"
     ) as call:
         client.create_data_store()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.CreateDataStoreRequest()
+
+
+def test_create_data_store_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.CreateDataStoreRequest(
+        parent="parent_value",
+        data_store_id="data_store_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_store), "__call__"
+    ) as call:
+        client.create_data_store(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.CreateDataStoreRequest(
+            parent="parent_value",
+            data_store_id="data_store_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_data_store_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_store), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_data_store()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.CreateDataStoreRequest()
@@ -1248,7 +1301,8 @@ async def test_create_data_store_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.CreateDataStoreRequest()
+        request = data_store_service.CreateDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1464,7 +1518,8 @@ def test_get_data_store(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.GetDataStoreRequest()
+        request = data_store_service.GetDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_store.DataStore)
@@ -1488,6 +1543,60 @@ def test_get_data_store_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_store), "__call__") as call:
         client.get_data_store()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.GetDataStoreRequest()
+
+
+def test_get_data_store_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.GetDataStoreRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_store), "__call__") as call:
+        client.get_data_store(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.GetDataStoreRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_store_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_store), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_store.DataStore(
+                name="name_value",
+                display_name="display_name_value",
+                industry_vertical=common.IndustryVertical.GENERIC,
+                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                default_schema_id="default_schema_id_value",
+                content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+                acl_enabled=True,
+            )
+        )
+        response = await client.get_data_store()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.GetDataStoreRequest()
@@ -1525,7 +1634,8 @@ async def test_get_data_store_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.GetDataStoreRequest()
+        request = data_store_service.GetDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_store.DataStore)
@@ -1714,7 +1824,8 @@ def test_list_data_stores(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.ListDataStoresRequest()
+        request = data_store_service.ListDataStoresRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataStoresPager)
@@ -1732,6 +1843,58 @@ def test_list_data_stores_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_stores), "__call__") as call:
         client.list_data_stores()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.ListDataStoresRequest()
+
+
+def test_list_data_stores_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.ListDataStoresRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_stores), "__call__") as call:
+        client.list_data_stores(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.ListDataStoresRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_stores_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_stores), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_store_service.ListDataStoresResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_data_stores()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.ListDataStoresRequest()
@@ -1764,7 +1927,8 @@ async def test_list_data_stores_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.ListDataStoresRequest()
+        request = data_store_service.ListDataStoresRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataStoresAsyncPager)
@@ -2137,7 +2301,8 @@ def test_delete_data_store(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.DeleteDataStoreRequest()
+        request = data_store_service.DeleteDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2156,6 +2321,56 @@ def test_delete_data_store_empty_call():
         type(client.transport.delete_data_store), "__call__"
     ) as call:
         client.delete_data_store()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.DeleteDataStoreRequest()
+
+
+def test_delete_data_store_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.DeleteDataStoreRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_store), "__call__"
+    ) as call:
+        client.delete_data_store(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.DeleteDataStoreRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_data_store_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_store), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_data_store()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.DeleteDataStoreRequest()
@@ -2188,7 +2403,8 @@ async def test_delete_data_store_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.DeleteDataStoreRequest()
+        request = data_store_service.DeleteDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2386,7 +2602,8 @@ def test_update_data_store(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.UpdateDataStoreRequest()
+        request = data_store_service.UpdateDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_data_store.DataStore)
@@ -2412,6 +2629,60 @@ def test_update_data_store_empty_call():
         type(client.transport.update_data_store), "__call__"
     ) as call:
         client.update_data_store()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.UpdateDataStoreRequest()
+
+
+def test_update_data_store_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.UpdateDataStoreRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_store), "__call__"
+    ) as call:
+        client.update_data_store(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.UpdateDataStoreRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_data_store_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_store), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_data_store.DataStore(
+                name="name_value",
+                display_name="display_name_value",
+                industry_vertical=common.IndustryVertical.GENERIC,
+                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                default_schema_id="default_schema_id_value",
+                content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+                acl_enabled=True,
+            )
+        )
+        response = await client.update_data_store()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.UpdateDataStoreRequest()
@@ -2452,7 +2723,8 @@ async def test_update_data_store_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.UpdateDataStoreRequest()
+        request = data_store_service.UpdateDataStoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_data_store.DataStore)
@@ -2661,7 +2933,8 @@ def test_get_document_processing_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.GetDocumentProcessingConfigRequest()
+        request = data_store_service.GetDocumentProcessingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processing_config.DocumentProcessingConfig)
@@ -2681,6 +2954,58 @@ def test_get_document_processing_config_empty_call():
         type(client.transport.get_document_processing_config), "__call__"
     ) as call:
         client.get_document_processing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.GetDocumentProcessingConfigRequest()
+
+
+def test_get_document_processing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.GetDocumentProcessingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_document_processing_config), "__call__"
+    ) as call:
+        client.get_document_processing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.GetDocumentProcessingConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_document_processing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_document_processing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processing_config.DocumentProcessingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_document_processing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.GetDocumentProcessingConfigRequest()
@@ -2715,7 +3040,8 @@ async def test_get_document_processing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.GetDocumentProcessingConfigRequest()
+        request = data_store_service.GetDocumentProcessingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processing_config.DocumentProcessingConfig)
@@ -2908,7 +3234,8 @@ def test_update_document_processing_config(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.UpdateDocumentProcessingConfigRequest()
+        request = data_store_service.UpdateDocumentProcessingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_document_processing_config.DocumentProcessingConfig)
@@ -2928,6 +3255,54 @@ def test_update_document_processing_config_empty_call():
         type(client.transport.update_document_processing_config), "__call__"
     ) as call:
         client.update_document_processing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.UpdateDocumentProcessingConfigRequest()
+
+
+def test_update_document_processing_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_store_service.UpdateDocumentProcessingConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_document_processing_config), "__call__"
+    ) as call:
+        client.update_document_processing_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_store_service.UpdateDocumentProcessingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_document_processing_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataStoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_document_processing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_document_processing_config.DocumentProcessingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_document_processing_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_store_service.UpdateDocumentProcessingConfigRequest()
@@ -2962,7 +3337,8 @@ async def test_update_document_processing_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.UpdateDocumentProcessingConfigRequest()
+        request = data_store_service.UpdateDocumentProcessingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_document_processing_config.DocumentProcessingConfig)

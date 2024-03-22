@@ -1119,7 +1119,8 @@ def test_create_playbook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_playbook.CreatePlaybookRequest()
+        request = gcdc_playbook.CreatePlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_playbook.Playbook)
@@ -1143,6 +1144,60 @@ def test_create_playbook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_playbook), "__call__") as call:
         client.create_playbook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_playbook.CreatePlaybookRequest()
+
+
+def test_create_playbook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_playbook.CreatePlaybookRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_playbook), "__call__") as call:
+        client.create_playbook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_playbook.CreatePlaybookRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_playbook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_playbook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_playbook.Playbook(
+                name="name_value",
+                display_name="display_name_value",
+                goal="goal_value",
+                token_count=1193,
+                referenced_playbooks=["referenced_playbooks_value"],
+                referenced_flows=["referenced_flows_value"],
+                referenced_tools=["referenced_tools_value"],
+            )
+        )
+        response = await client.create_playbook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_playbook.CreatePlaybookRequest()
@@ -1180,7 +1235,8 @@ async def test_create_playbook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_playbook.CreatePlaybookRequest()
+        request = gcdc_playbook.CreatePlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_playbook.Playbook)
@@ -1377,7 +1433,8 @@ def test_delete_playbook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.DeletePlaybookRequest()
+        request = playbook.DeletePlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1394,6 +1451,50 @@ def test_delete_playbook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_playbook), "__call__") as call:
         client.delete_playbook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.DeletePlaybookRequest()
+
+
+def test_delete_playbook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.DeletePlaybookRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_playbook), "__call__") as call:
+        client.delete_playbook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.DeletePlaybookRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_playbook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_playbook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_playbook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.DeletePlaybookRequest()
@@ -1421,7 +1522,8 @@ async def test_delete_playbook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.DeletePlaybookRequest()
+        request = playbook.DeletePlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1599,7 +1701,8 @@ def test_list_playbooks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ListPlaybooksRequest()
+        request = playbook.ListPlaybooksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPlaybooksPager)
@@ -1617,6 +1720,56 @@ def test_list_playbooks_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_playbooks), "__call__") as call:
         client.list_playbooks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.ListPlaybooksRequest()
+
+
+def test_list_playbooks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.ListPlaybooksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_playbooks), "__call__") as call:
+        client.list_playbooks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.ListPlaybooksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_playbooks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_playbooks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            playbook.ListPlaybooksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_playbooks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.ListPlaybooksRequest()
@@ -1648,7 +1801,8 @@ async def test_list_playbooks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ListPlaybooksRequest()
+        request = playbook.ListPlaybooksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPlaybooksAsyncPager)
@@ -2027,7 +2181,8 @@ def test_get_playbook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.GetPlaybookRequest()
+        request = playbook.GetPlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.Playbook)
@@ -2051,6 +2206,60 @@ def test_get_playbook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_playbook), "__call__") as call:
         client.get_playbook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.GetPlaybookRequest()
+
+
+def test_get_playbook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.GetPlaybookRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_playbook), "__call__") as call:
+        client.get_playbook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.GetPlaybookRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_playbook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_playbook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            playbook.Playbook(
+                name="name_value",
+                display_name="display_name_value",
+                goal="goal_value",
+                token_count=1193,
+                referenced_playbooks=["referenced_playbooks_value"],
+                referenced_flows=["referenced_flows_value"],
+                referenced_tools=["referenced_tools_value"],
+            )
+        )
+        response = await client.get_playbook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.GetPlaybookRequest()
@@ -2088,7 +2297,8 @@ async def test_get_playbook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.GetPlaybookRequest()
+        request = playbook.GetPlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.Playbook)
@@ -2279,7 +2489,8 @@ def test_update_playbook(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_playbook.UpdatePlaybookRequest()
+        request = gcdc_playbook.UpdatePlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_playbook.Playbook)
@@ -2303,6 +2514,56 @@ def test_update_playbook_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_playbook), "__call__") as call:
         client.update_playbook()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_playbook.UpdatePlaybookRequest()
+
+
+def test_update_playbook_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_playbook.UpdatePlaybookRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_playbook), "__call__") as call:
+        client.update_playbook(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_playbook.UpdatePlaybookRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_playbook_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_playbook), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_playbook.Playbook(
+                name="name_value",
+                display_name="display_name_value",
+                goal="goal_value",
+                token_count=1193,
+                referenced_playbooks=["referenced_playbooks_value"],
+                referenced_flows=["referenced_flows_value"],
+                referenced_tools=["referenced_tools_value"],
+            )
+        )
+        response = await client.update_playbook()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_playbook.UpdatePlaybookRequest()
@@ -2340,7 +2601,8 @@ async def test_update_playbook_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_playbook.UpdatePlaybookRequest()
+        request = gcdc_playbook.UpdatePlaybookRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_playbook.Playbook)
@@ -2542,7 +2804,8 @@ def test_create_playbook_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.CreatePlaybookVersionRequest()
+        request = playbook.CreatePlaybookVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.PlaybookVersion)
@@ -2563,6 +2826,59 @@ def test_create_playbook_version_empty_call():
         type(client.transport.create_playbook_version), "__call__"
     ) as call:
         client.create_playbook_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.CreatePlaybookVersionRequest()
+
+
+def test_create_playbook_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.CreatePlaybookVersionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_playbook_version), "__call__"
+    ) as call:
+        client.create_playbook_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.CreatePlaybookVersionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_playbook_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_playbook_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            playbook.PlaybookVersion(
+                name="name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_playbook_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.CreatePlaybookVersionRequest()
@@ -2597,7 +2913,8 @@ async def test_create_playbook_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.CreatePlaybookVersionRequest()
+        request = playbook.CreatePlaybookVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.PlaybookVersion)
@@ -2802,7 +3119,8 @@ def test_get_playbook_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.GetPlaybookVersionRequest()
+        request = playbook.GetPlaybookVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.PlaybookVersion)
@@ -2823,6 +3141,59 @@ def test_get_playbook_version_empty_call():
         type(client.transport.get_playbook_version), "__call__"
     ) as call:
         client.get_playbook_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.GetPlaybookVersionRequest()
+
+
+def test_get_playbook_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.GetPlaybookVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_playbook_version), "__call__"
+    ) as call:
+        client.get_playbook_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.GetPlaybookVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_playbook_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_playbook_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            playbook.PlaybookVersion(
+                name="name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_playbook_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.GetPlaybookVersionRequest()
@@ -2857,7 +3228,8 @@ async def test_get_playbook_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.GetPlaybookVersionRequest()
+        request = playbook.GetPlaybookVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.PlaybookVersion)
@@ -3051,7 +3423,8 @@ def test_list_playbook_versions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ListPlaybookVersionsRequest()
+        request = playbook.ListPlaybookVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPlaybookVersionsPager)
@@ -3071,6 +3444,60 @@ def test_list_playbook_versions_empty_call():
         type(client.transport.list_playbook_versions), "__call__"
     ) as call:
         client.list_playbook_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.ListPlaybookVersionsRequest()
+
+
+def test_list_playbook_versions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.ListPlaybookVersionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_playbook_versions), "__call__"
+    ) as call:
+        client.list_playbook_versions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.ListPlaybookVersionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_playbook_versions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_playbook_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            playbook.ListPlaybookVersionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_playbook_versions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.ListPlaybookVersionsRequest()
@@ -3104,7 +3531,8 @@ async def test_list_playbook_versions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ListPlaybookVersionsRequest()
+        request = playbook.ListPlaybookVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPlaybookVersionsAsyncPager)
@@ -3493,7 +3921,8 @@ def test_delete_playbook_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.DeletePlaybookVersionRequest()
+        request = playbook.DeletePlaybookVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3512,6 +3941,54 @@ def test_delete_playbook_version_empty_call():
         type(client.transport.delete_playbook_version), "__call__"
     ) as call:
         client.delete_playbook_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.DeletePlaybookVersionRequest()
+
+
+def test_delete_playbook_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlaybooksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = playbook.DeletePlaybookVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_playbook_version), "__call__"
+    ) as call:
+        client.delete_playbook_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == playbook.DeletePlaybookVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_playbook_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlaybooksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_playbook_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_playbook_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == playbook.DeletePlaybookVersionRequest()
@@ -3541,7 +4018,8 @@ async def test_delete_playbook_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.DeletePlaybookVersionRequest()
+        request = playbook.DeletePlaybookVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

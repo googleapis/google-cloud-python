@@ -1143,7 +1143,8 @@ def test_list_environments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.ListEnvironmentsRequest()
+        request = environment.ListEnvironmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnvironmentsPager)
@@ -1163,6 +1164,60 @@ def test_list_environments_empty_call():
         type(client.transport.list_environments), "__call__"
     ) as call:
         client.list_environments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListEnvironmentsRequest()
+
+
+def test_list_environments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.ListEnvironmentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_environments), "__call__"
+    ) as call:
+        client.list_environments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListEnvironmentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_environments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_environments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.ListEnvironmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_environments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.ListEnvironmentsRequest()
@@ -1196,7 +1251,8 @@ async def test_list_environments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.ListEnvironmentsRequest()
+        request = environment.ListEnvironmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnvironmentsAsyncPager)
@@ -1587,7 +1643,8 @@ def test_get_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.GetEnvironmentRequest()
+        request = environment.GetEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, environment.Environment)
@@ -1607,6 +1664,56 @@ def test_get_environment_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
         client.get_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.GetEnvironmentRequest()
+
+
+def test_get_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.GetEnvironmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
+        client.get_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.GetEnvironmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.Environment(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.GetEnvironmentRequest()
@@ -1640,7 +1747,8 @@ async def test_get_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.GetEnvironmentRequest()
+        request = environment.GetEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, environment.Environment)
@@ -1825,7 +1933,8 @@ def test_create_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_environment.CreateEnvironmentRequest()
+        request = gcdc_environment.CreateEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1844,6 +1953,56 @@ def test_create_environment_empty_call():
         type(client.transport.create_environment), "__call__"
     ) as call:
         client.create_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_environment.CreateEnvironmentRequest()
+
+
+def test_create_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_environment.CreateEnvironmentRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_environment), "__call__"
+    ) as call:
+        client.create_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_environment.CreateEnvironmentRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_environment.CreateEnvironmentRequest()
@@ -1876,7 +2035,8 @@ async def test_create_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_environment.CreateEnvironmentRequest()
+        request = gcdc_environment.CreateEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2076,7 +2236,8 @@ def test_update_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_environment.UpdateEnvironmentRequest()
+        request = gcdc_environment.UpdateEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2095,6 +2256,52 @@ def test_update_environment_empty_call():
         type(client.transport.update_environment), "__call__"
     ) as call:
         client.update_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_environment.UpdateEnvironmentRequest()
+
+
+def test_update_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_environment.UpdateEnvironmentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_environment), "__call__"
+    ) as call:
+        client.update_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_environment.UpdateEnvironmentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_environment.UpdateEnvironmentRequest()
@@ -2127,7 +2334,8 @@ async def test_update_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_environment.UpdateEnvironmentRequest()
+        request = gcdc_environment.UpdateEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2327,7 +2535,8 @@ def test_delete_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.DeleteEnvironmentRequest()
+        request = environment.DeleteEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2346,6 +2555,54 @@ def test_delete_environment_empty_call():
         type(client.transport.delete_environment), "__call__"
     ) as call:
         client.delete_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeleteEnvironmentRequest()
+
+
+def test_delete_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.DeleteEnvironmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_environment), "__call__"
+    ) as call:
+        client.delete_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeleteEnvironmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.DeleteEnvironmentRequest()
@@ -2375,7 +2632,8 @@ async def test_delete_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.DeleteEnvironmentRequest()
+        request = environment.DeleteEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2563,7 +2821,8 @@ def test_lookup_environment_history(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.LookupEnvironmentHistoryRequest()
+        request = environment.LookupEnvironmentHistoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.LookupEnvironmentHistoryPager)
@@ -2583,6 +2842,60 @@ def test_lookup_environment_history_empty_call():
         type(client.transport.lookup_environment_history), "__call__"
     ) as call:
         client.lookup_environment_history()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.LookupEnvironmentHistoryRequest()
+
+
+def test_lookup_environment_history_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.LookupEnvironmentHistoryRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_environment_history), "__call__"
+    ) as call:
+        client.lookup_environment_history(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.LookupEnvironmentHistoryRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_environment_history_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_environment_history), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.LookupEnvironmentHistoryResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.lookup_environment_history()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.LookupEnvironmentHistoryRequest()
@@ -2617,7 +2930,8 @@ async def test_lookup_environment_history_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.LookupEnvironmentHistoryRequest()
+        request = environment.LookupEnvironmentHistoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.LookupEnvironmentHistoryAsyncPager)
@@ -3006,7 +3320,8 @@ def test_run_continuous_test(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.RunContinuousTestRequest()
+        request = environment.RunContinuousTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3025,6 +3340,56 @@ def test_run_continuous_test_empty_call():
         type(client.transport.run_continuous_test), "__call__"
     ) as call:
         client.run_continuous_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.RunContinuousTestRequest()
+
+
+def test_run_continuous_test_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.RunContinuousTestRequest(
+        environment="environment_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        client.run_continuous_test(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.RunContinuousTestRequest(
+            environment="environment_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_continuous_test_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.run_continuous_test()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.RunContinuousTestRequest()
@@ -3056,7 +3421,8 @@ async def test_run_continuous_test_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.RunContinuousTestRequest()
+        request = environment.RunContinuousTestRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3162,7 +3528,8 @@ def test_list_continuous_test_results(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.ListContinuousTestResultsRequest()
+        request = environment.ListContinuousTestResultsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListContinuousTestResultsPager)
@@ -3182,6 +3549,60 @@ def test_list_continuous_test_results_empty_call():
         type(client.transport.list_continuous_test_results), "__call__"
     ) as call:
         client.list_continuous_test_results()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListContinuousTestResultsRequest()
+
+
+def test_list_continuous_test_results_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.ListContinuousTestResultsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        client.list_continuous_test_results(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListContinuousTestResultsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.ListContinuousTestResultsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_continuous_test_results()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.ListContinuousTestResultsRequest()
@@ -3216,7 +3637,8 @@ async def test_list_continuous_test_results_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.ListContinuousTestResultsRequest()
+        request = environment.ListContinuousTestResultsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListContinuousTestResultsAsyncPager)
@@ -3603,7 +4025,8 @@ def test_deploy_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.DeployFlowRequest()
+        request = environment.DeployFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3620,6 +4043,54 @@ def test_deploy_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
         client.deploy_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeployFlowRequest()
+
+
+def test_deploy_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = environment.DeployFlowRequest(
+        environment="environment_value",
+        flow_version="flow_version_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        client.deploy_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeployFlowRequest(
+            environment="environment_value",
+            flow_version="flow_version_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_deploy_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.deploy_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == environment.DeployFlowRequest()
@@ -3649,7 +4120,8 @@ async def test_deploy_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == environment.DeployFlowRequest()
+        request = environment.DeployFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
