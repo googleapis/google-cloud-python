@@ -2523,6 +2523,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-storage-control": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-storage-control",
+            "extra-files": [
+                "google/cloud/storage_control/gapic_version.py",
+                "google/cloud/storage_control_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.storage.control.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storage-transfer": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -3128,6 +3143,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.inventories.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-shopping-merchant-quota": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-quota",
+            "extra-files": [
+                "google/shopping/merchant_quota/gapic_version.py",
+                "google/shopping/merchant_quota_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.quota.v1beta.json",
                     "type": "json"
                 }
             ],
