@@ -1236,7 +1236,8 @@ def test_create_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.CreateCollectorRequest()
+        request = rapidmigrationassessment.CreateCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1253,6 +1254,56 @@ def test_create_collector_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_collector), "__call__") as call:
         client.create_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.CreateCollectorRequest()
+
+
+def test_create_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.CreateCollectorRequest(
+        parent="parent_value",
+        collector_id="collector_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_collector), "__call__") as call:
+        client.create_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.CreateCollectorRequest(
+            parent="parent_value",
+            collector_id="collector_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_collector), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.CreateCollectorRequest()
@@ -1283,7 +1334,8 @@ async def test_create_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.CreateCollectorRequest()
+        request = rapidmigrationassessment.CreateCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1485,7 +1537,8 @@ def test_create_annotation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.CreateAnnotationRequest()
+        request = rapidmigrationassessment.CreateAnnotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1504,6 +1557,58 @@ def test_create_annotation_empty_call():
         type(client.transport.create_annotation), "__call__"
     ) as call:
         client.create_annotation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.CreateAnnotationRequest()
+
+
+def test_create_annotation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.CreateAnnotationRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation), "__call__"
+    ) as call:
+        client.create_annotation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.CreateAnnotationRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_annotation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_annotation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.CreateAnnotationRequest()
@@ -1536,7 +1641,8 @@ async def test_create_annotation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.CreateAnnotationRequest()
+        request = rapidmigrationassessment.CreateAnnotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1737,7 +1843,8 @@ def test_get_annotation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.GetAnnotationRequest()
+        request = rapidmigrationassessment.GetAnnotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, api_entities.Annotation)
@@ -1756,6 +1863,55 @@ def test_get_annotation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
         client.get_annotation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.GetAnnotationRequest()
+
+
+def test_get_annotation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.GetAnnotationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
+        client.get_annotation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.GetAnnotationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_annotation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            api_entities.Annotation(
+                name="name_value",
+                type_=api_entities.Annotation.Type.TYPE_LEGACY_EXPORT_CONSENT,
+            )
+        )
+        response = await client.get_annotation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.GetAnnotationRequest()
@@ -1789,7 +1945,8 @@ async def test_get_annotation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.GetAnnotationRequest()
+        request = rapidmigrationassessment.GetAnnotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, api_entities.Annotation)
@@ -1974,7 +2131,8 @@ def test_list_collectors(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.ListCollectorsRequest()
+        request = rapidmigrationassessment.ListCollectorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCollectorsPager)
@@ -1993,6 +2151,61 @@ def test_list_collectors_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_collectors), "__call__") as call:
         client.list_collectors()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.ListCollectorsRequest()
+
+
+def test_list_collectors_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.ListCollectorsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_collectors), "__call__") as call:
+        client.list_collectors(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.ListCollectorsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_collectors_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_collectors), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            rapidmigrationassessment.ListCollectorsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_collectors()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.ListCollectorsRequest()
@@ -2026,7 +2239,8 @@ async def test_list_collectors_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.ListCollectorsRequest()
+        request = rapidmigrationassessment.ListCollectorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCollectorsAsyncPager)
@@ -2409,7 +2623,8 @@ def test_get_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.GetCollectorRequest()
+        request = rapidmigrationassessment.GetCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, api_entities.Collector)
@@ -2436,6 +2651,63 @@ def test_get_collector_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_collector), "__call__") as call:
         client.get_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.GetCollectorRequest()
+
+
+def test_get_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.GetCollectorRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_collector), "__call__") as call:
+        client.get_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.GetCollectorRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_collector), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            api_entities.Collector(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                service_account="service_account_value",
+                bucket="bucket_value",
+                expected_asset_count=2137,
+                state=api_entities.Collector.State.STATE_INITIALIZING,
+                client_version="client_version_value",
+                collection_days=1596,
+                eula_uri="eula_uri_value",
+            )
+        )
+        response = await client.get_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.GetCollectorRequest()
@@ -2477,7 +2749,8 @@ async def test_get_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.GetCollectorRequest()
+        request = rapidmigrationassessment.GetCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, api_entities.Collector)
@@ -2667,7 +2940,8 @@ def test_update_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.UpdateCollectorRequest()
+        request = rapidmigrationassessment.UpdateCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2684,6 +2958,52 @@ def test_update_collector_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_collector), "__call__") as call:
         client.update_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.UpdateCollectorRequest()
+
+
+def test_update_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.UpdateCollectorRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_collector), "__call__") as call:
+        client.update_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.UpdateCollectorRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_collector), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.UpdateCollectorRequest()
@@ -2714,7 +3034,8 @@ async def test_update_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.UpdateCollectorRequest()
+        request = rapidmigrationassessment.UpdateCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2904,7 +3225,8 @@ def test_delete_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.DeleteCollectorRequest()
+        request = rapidmigrationassessment.DeleteCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2921,6 +3243,54 @@ def test_delete_collector_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_collector), "__call__") as call:
         client.delete_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.DeleteCollectorRequest()
+
+
+def test_delete_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.DeleteCollectorRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_collector), "__call__") as call:
+        client.delete_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.DeleteCollectorRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_collector), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.DeleteCollectorRequest()
@@ -2951,7 +3321,8 @@ async def test_delete_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.DeleteCollectorRequest()
+        request = rapidmigrationassessment.DeleteCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3131,7 +3502,8 @@ def test_resume_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.ResumeCollectorRequest()
+        request = rapidmigrationassessment.ResumeCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3148,6 +3520,54 @@ def test_resume_collector_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_collector), "__call__") as call:
         client.resume_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.ResumeCollectorRequest()
+
+
+def test_resume_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.ResumeCollectorRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_collector), "__call__") as call:
+        client.resume_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.ResumeCollectorRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_collector), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.resume_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.ResumeCollectorRequest()
@@ -3178,7 +3598,8 @@ async def test_resume_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.ResumeCollectorRequest()
+        request = rapidmigrationassessment.ResumeCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3360,7 +3781,8 @@ def test_register_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.RegisterCollectorRequest()
+        request = rapidmigrationassessment.RegisterCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3379,6 +3801,58 @@ def test_register_collector_empty_call():
         type(client.transport.register_collector), "__call__"
     ) as call:
         client.register_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.RegisterCollectorRequest()
+
+
+def test_register_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.RegisterCollectorRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.register_collector), "__call__"
+    ) as call:
+        client.register_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.RegisterCollectorRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_register_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.register_collector), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.register_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.RegisterCollectorRequest()
@@ -3411,7 +3885,8 @@ async def test_register_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.RegisterCollectorRequest()
+        request = rapidmigrationassessment.RegisterCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3599,7 +4074,8 @@ def test_pause_collector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.PauseCollectorRequest()
+        request = rapidmigrationassessment.PauseCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3616,6 +4092,54 @@ def test_pause_collector_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_collector), "__call__") as call:
         client.pause_collector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.PauseCollectorRequest()
+
+
+def test_pause_collector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RapidMigrationAssessmentClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = rapidmigrationassessment.PauseCollectorRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_collector), "__call__") as call:
+        client.pause_collector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == rapidmigrationassessment.PauseCollectorRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_collector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RapidMigrationAssessmentAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_collector), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.pause_collector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == rapidmigrationassessment.PauseCollectorRequest()
@@ -3646,7 +4170,8 @@ async def test_pause_collector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.PauseCollectorRequest()
+        request = rapidmigrationassessment.PauseCollectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

@@ -1235,7 +1235,8 @@ def test_create_os_policy_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest()
+        request = os_policy_assignments.CreateOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1254,6 +1255,58 @@ def test_create_os_policy_assignment_empty_call():
         type(client.transport.create_os_policy_assignment), "__call__"
     ) as call:
         client.create_os_policy_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest()
+
+
+def test_create_os_policy_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignments.CreateOSPolicyAssignmentRequest(
+        parent="parent_value",
+        os_policy_assignment_id="os_policy_assignment_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_os_policy_assignment), "__call__"
+    ) as call:
+        client.create_os_policy_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest(
+            parent="parent_value",
+            os_policy_assignment_id="os_policy_assignment_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_os_policy_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_os_policy_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest()
@@ -1286,7 +1339,8 @@ async def test_create_os_policy_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest()
+        request = os_policy_assignments.CreateOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1504,7 +1558,8 @@ def test_update_os_policy_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+        request = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1523,6 +1578,52 @@ def test_update_os_policy_assignment_empty_call():
         type(client.transport.update_os_policy_assignment), "__call__"
     ) as call:
         client.update_os_policy_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+
+
+def test_update_os_policy_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_os_policy_assignment), "__call__"
+    ) as call:
+        client.update_os_policy_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_os_policy_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_os_policy_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
@@ -1555,7 +1656,8 @@ async def test_update_os_policy_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+        request = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1773,7 +1875,8 @@ def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest()
+        request = os_policy_assignments.GetOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, os_policy_assignments.OSPolicyAssignment)
@@ -1804,6 +1907,66 @@ def test_get_os_policy_assignment_empty_call():
         type(client.transport.get_os_policy_assignment), "__call__"
     ) as call:
         client.get_os_policy_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest()
+
+
+def test_get_os_policy_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignments.GetOSPolicyAssignmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment), "__call__"
+    ) as call:
+        client.get_os_policy_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignments.OSPolicyAssignment(
+                name="name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                etag="etag_value",
+                rollout_state=os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS,
+                baseline=True,
+                deleted=True,
+                reconciling=True,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_os_policy_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest()
@@ -1846,7 +2009,8 @@ async def test_get_os_policy_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest()
+        request = os_policy_assignments.GetOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, os_policy_assignments.OSPolicyAssignment)
@@ -2050,7 +2214,8 @@ def test_list_os_policy_assignments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest()
+        request = os_policy_assignments.ListOSPolicyAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentsPager)
@@ -2070,6 +2235,60 @@ def test_list_os_policy_assignments_empty_call():
         type(client.transport.list_os_policy_assignments), "__call__"
     ) as call:
         client.list_os_policy_assignments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest()
+
+
+def test_list_os_policy_assignments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignments.ListOSPolicyAssignmentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignments), "__call__"
+    ) as call:
+        client.list_os_policy_assignments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignments.ListOSPolicyAssignmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_os_policy_assignments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest()
@@ -2104,7 +2323,8 @@ async def test_list_os_policy_assignments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest()
+        request = os_policy_assignments.ListOSPolicyAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentsAsyncPager)
@@ -2501,7 +2721,8 @@ def test_list_os_policy_assignment_revisions(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+        request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentRevisionsPager)
@@ -2521,6 +2742,60 @@ def test_list_os_policy_assignment_revisions_empty_call():
         type(client.transport.list_os_policy_assignment_revisions), "__call__"
     ) as call:
         client.list_os_policy_assignment_revisions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+
+
+def test_list_os_policy_assignment_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_revisions), "__call__"
+    ) as call:
+        client.list_os_policy_assignment_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_revisions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_os_policy_assignment_revisions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
@@ -2555,7 +2830,8 @@ async def test_list_os_policy_assignment_revisions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+        request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentRevisionsAsyncPager)
@@ -2954,7 +3230,8 @@ def test_delete_os_policy_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+        request = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2973,6 +3250,56 @@ def test_delete_os_policy_assignment_empty_call():
         type(client.transport.delete_os_policy_assignment), "__call__"
     ) as call:
         client.delete_os_policy_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+
+
+def test_delete_os_policy_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignments.DeleteOSPolicyAssignmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_os_policy_assignment), "__call__"
+    ) as call:
+        client.delete_os_policy_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_os_policy_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_os_policy_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest()
@@ -3005,7 +3332,8 @@ async def test_delete_os_policy_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+        request = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3204,10 +3532,10 @@ def test_get_instance_os_policies_compliance(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
+        request = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3234,6 +3562,68 @@ def test_get_instance_os_policies_compliance_empty_call():
         type(client.transport.get_instance_os_policies_compliance), "__call__"
     ) as call:
         client.get_instance_os_policies_compliance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
+        )
+
+
+def test_get_instance_os_policies_compliance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_os_policies_compliance), "__call__"
+    ) as call:
+        client.get_instance_os_policies_compliance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_instance_os_policies_compliance_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_os_policies_compliance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            instance_os_policies_compliance.InstanceOSPoliciesCompliance(
+                name="name_value",
+                instance="instance_value",
+                state=config_common.OSPolicyComplianceState.COMPLIANT,
+                detailed_state="detailed_state_value",
+                detailed_state_reason="detailed_state_reason_value",
+                last_compliance_run_id="last_compliance_run_id_value",
+            )
+        )
+        response = await client.get_instance_os_policies_compliance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -3276,10 +3666,10 @@ async def test_get_instance_os_policies_compliance_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
+        request = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3487,10 +3877,10 @@ def test_list_instance_os_policies_compliances(request_type, transport: str = "g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
+        request = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceOSPoliciesCompliancesPager)
@@ -3510,6 +3900,67 @@ def test_list_instance_os_policies_compliances_empty_call():
         type(client.transport.list_instance_os_policies_compliances), "__call__"
     ) as call:
         client.list_instance_os_policies_compliances()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
+        )
+
+
+def test_list_instance_os_policies_compliances_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instance_os_policies_compliances), "__call__"
+    ) as call:
+        client.list_instance_os_policies_compliances(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_instance_os_policies_compliances_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instance_os_policies_compliances), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_instance_os_policies_compliances()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -3547,10 +3998,10 @@ async def test_list_instance_os_policies_compliances_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
+        request = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceOSPoliciesCompliancesAsyncPager)
@@ -3956,9 +4407,8 @@ def test_get_os_policy_assignment_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-        )
+        request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, os_policy_assignment_reports.OSPolicyAssignmentReport)
@@ -3981,6 +4431,65 @@ def test_get_os_policy_assignment_report_empty_call():
         type(client.transport.get_os_policy_assignment_report), "__call__"
     ) as call:
         client.get_os_policy_assignment_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+        )
+
+
+def test_get_os_policy_assignment_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        client.get_os_policy_assignment_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.OSPolicyAssignmentReport(
+                name="name_value",
+                instance="instance_value",
+                os_policy_assignment="os_policy_assignment_value",
+                last_run_id="last_run_id_value",
+            )
+        )
+        response = await client.get_os_policy_assignment_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -4020,9 +4529,8 @@ async def test_get_os_policy_assignment_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-        )
+        request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, os_policy_assignment_reports.OSPolicyAssignmentReport)
@@ -4220,10 +4728,8 @@ def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
-        )
+        request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentReportsPager)
@@ -4243,6 +4749,67 @@ def test_list_os_policy_assignment_reports_empty_call():
         type(client.transport.list_os_policy_assignment_reports), "__call__"
     ) as call:
         client.list_os_policy_assignment_reports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+
+def test_list_os_policy_assignment_reports_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        client.list_os_policy_assignment_reports(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_os_policy_assignment_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -4280,10 +4847,8 @@ async def test_list_os_policy_assignment_reports_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
-        )
+        request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentReportsAsyncPager)
@@ -4684,7 +5249,8 @@ def test_get_inventory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.GetInventoryRequest()
+        request = inventory.GetInventoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, inventory.Inventory)
@@ -4702,6 +5268,54 @@ def test_get_inventory_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
         client.get_inventory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == inventory.GetInventoryRequest()
+
+
+def test_get_inventory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = inventory.GetInventoryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
+        client.get_inventory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == inventory.GetInventoryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_inventory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            inventory.Inventory(
+                name="name_value",
+            )
+        )
+        response = await client.get_inventory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == inventory.GetInventoryRequest()
@@ -4733,7 +5347,8 @@ async def test_get_inventory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.GetInventoryRequest()
+        request = inventory.GetInventoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, inventory.Inventory)
@@ -4912,7 +5527,8 @@ def test_list_inventories(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.ListInventoriesRequest()
+        request = inventory.ListInventoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInventoriesPager)
@@ -4930,6 +5546,58 @@ def test_list_inventories_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
         client.list_inventories()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == inventory.ListInventoriesRequest()
+
+
+def test_list_inventories_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = inventory.ListInventoriesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
+        client.list_inventories(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == inventory.ListInventoriesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_inventories_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            inventory.ListInventoriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_inventories()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == inventory.ListInventoriesRequest()
@@ -4961,7 +5629,8 @@ async def test_list_inventories_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.ListInventoriesRequest()
+        request = inventory.ListInventoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInventoriesAsyncPager)
@@ -5336,7 +6005,8 @@ def test_get_vulnerability_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.GetVulnerabilityReportRequest()
+        request = vulnerability.GetVulnerabilityReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
@@ -5356,6 +6026,58 @@ def test_get_vulnerability_report_empty_call():
         type(client.transport.get_vulnerability_report), "__call__"
     ) as call:
         client.get_vulnerability_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vulnerability.GetVulnerabilityReportRequest()
+
+
+def test_get_vulnerability_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vulnerability.GetVulnerabilityReportRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vulnerability_report), "__call__"
+    ) as call:
+        client.get_vulnerability_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vulnerability.GetVulnerabilityReportRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vulnerability_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vulnerability_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vulnerability.VulnerabilityReport(
+                name="name_value",
+            )
+        )
+        response = await client.get_vulnerability_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vulnerability.GetVulnerabilityReportRequest()
@@ -5390,7 +6112,8 @@ async def test_get_vulnerability_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.GetVulnerabilityReportRequest()
+        request = vulnerability.GetVulnerabilityReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
@@ -5583,7 +6306,8 @@ def test_list_vulnerability_reports(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.ListVulnerabilityReportsRequest()
+        request = vulnerability.ListVulnerabilityReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVulnerabilityReportsPager)
@@ -5603,6 +6327,62 @@ def test_list_vulnerability_reports_empty_call():
         type(client.transport.list_vulnerability_reports), "__call__"
     ) as call:
         client.list_vulnerability_reports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vulnerability.ListVulnerabilityReportsRequest()
+
+
+def test_list_vulnerability_reports_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vulnerability.ListVulnerabilityReportsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vulnerability_reports), "__call__"
+    ) as call:
+        client.list_vulnerability_reports(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vulnerability.ListVulnerabilityReportsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_vulnerability_reports_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vulnerability_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vulnerability.ListVulnerabilityReportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_vulnerability_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vulnerability.ListVulnerabilityReportsRequest()
@@ -5637,7 +6417,8 @@ async def test_list_vulnerability_reports_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.ListVulnerabilityReportsRequest()
+        request = vulnerability.ListVulnerabilityReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVulnerabilityReportsAsyncPager)

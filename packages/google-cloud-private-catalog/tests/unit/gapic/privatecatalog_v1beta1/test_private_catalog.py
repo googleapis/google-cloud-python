@@ -1144,7 +1144,8 @@ def test_search_catalogs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchCatalogsRequest()
+        request = private_catalog.SearchCatalogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogsPager)
@@ -1162,6 +1163,58 @@ def test_search_catalogs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
         client.search_catalogs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == private_catalog.SearchCatalogsRequest()
+
+
+def test_search_catalogs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = private_catalog.SearchCatalogsRequest(
+        resource="resource_value",
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
+        client.search_catalogs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == private_catalog.SearchCatalogsRequest(
+            resource="resource_value",
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_catalogs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            private_catalog.SearchCatalogsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_catalogs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == private_catalog.SearchCatalogsRequest()
@@ -1193,7 +1246,8 @@ async def test_search_catalogs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchCatalogsRequest()
+        request = private_catalog.SearchCatalogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogsAsyncPager)
@@ -1484,7 +1538,8 @@ def test_search_products(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchProductsRequest()
+        request = private_catalog.SearchProductsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchProductsPager)
@@ -1502,6 +1557,58 @@ def test_search_products_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_products), "__call__") as call:
         client.search_products()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == private_catalog.SearchProductsRequest()
+
+
+def test_search_products_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = private_catalog.SearchProductsRequest(
+        resource="resource_value",
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_products), "__call__") as call:
+        client.search_products(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == private_catalog.SearchProductsRequest(
+            resource="resource_value",
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_products_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_products), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            private_catalog.SearchProductsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_products()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == private_catalog.SearchProductsRequest()
@@ -1533,7 +1640,8 @@ async def test_search_products_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchProductsRequest()
+        request = private_catalog.SearchProductsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchProductsAsyncPager)
@@ -1824,7 +1932,8 @@ def test_search_versions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchVersionsRequest()
+        request = private_catalog.SearchVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchVersionsPager)
@@ -1842,6 +1951,58 @@ def test_search_versions_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
         client.search_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == private_catalog.SearchVersionsRequest()
+
+
+def test_search_versions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = private_catalog.SearchVersionsRequest(
+        resource="resource_value",
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
+        client.search_versions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == private_catalog.SearchVersionsRequest(
+            resource="resource_value",
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_versions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            private_catalog.SearchVersionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_versions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == private_catalog.SearchVersionsRequest()
@@ -1873,7 +2034,8 @@ async def test_search_versions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchVersionsRequest()
+        request = private_catalog.SearchVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchVersionsAsyncPager)

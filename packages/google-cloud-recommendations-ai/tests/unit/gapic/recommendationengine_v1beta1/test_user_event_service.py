@@ -1191,7 +1191,8 @@ def test_write_user_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        request = user_event_service.WriteUserEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_user_event.UserEvent)
@@ -1210,6 +1211,55 @@ def test_write_user_event_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
         client.write_user_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.WriteUserEventRequest()
+
+
+def test_write_user_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = user_event_service.WriteUserEventRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+        client.write_user_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.WriteUserEventRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_write_user_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_user_event.UserEvent(
+                event_type="event_type_value",
+                event_source=gcr_user_event.UserEvent.EventSource.AUTOML,
+            )
+        )
+        response = await client.write_user_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == user_event_service.WriteUserEventRequest()
@@ -1243,7 +1293,8 @@ async def test_write_user_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        request = user_event_service.WriteUserEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_user_event.UserEvent)
@@ -1440,7 +1491,8 @@ def test_collect_user_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
+        request = user_event_service.CollectUserEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, httpbody_pb2.HttpBody)
@@ -1461,6 +1513,63 @@ def test_collect_user_event_empty_call():
         type(client.transport.collect_user_event), "__call__"
     ) as call:
         client.collect_user_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.CollectUserEventRequest()
+
+
+def test_collect_user_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = user_event_service.CollectUserEventRequest(
+        parent="parent_value",
+        user_event="user_event_value",
+        uri="uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.collect_user_event), "__call__"
+    ) as call:
+        client.collect_user_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.CollectUserEventRequest(
+            parent="parent_value",
+            user_event="user_event_value",
+            uri="uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_collect_user_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.collect_user_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            httpbody_pb2.HttpBody(
+                content_type="content_type_value",
+                data=b"data_blob",
+            )
+        )
+        response = await client.collect_user_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == user_event_service.CollectUserEventRequest()
@@ -1496,7 +1605,8 @@ async def test_collect_user_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
+        request = user_event_service.CollectUserEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, httpbody_pb2.HttpBody)
@@ -1718,7 +1828,8 @@ def test_list_user_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.ListUserEventsRequest()
+        request = user_event_service.ListUserEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUserEventsPager)
@@ -1736,6 +1847,58 @@ def test_list_user_events_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_user_events), "__call__") as call:
         client.list_user_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.ListUserEventsRequest()
+
+
+def test_list_user_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = user_event_service.ListUserEventsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_user_events), "__call__") as call:
+        client.list_user_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.ListUserEventsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_user_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_user_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            user_event_service.ListUserEventsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_user_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == user_event_service.ListUserEventsRequest()
@@ -1768,7 +1931,8 @@ async def test_list_user_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.ListUserEventsRequest()
+        request = user_event_service.ListUserEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUserEventsAsyncPager)
@@ -2151,7 +2315,8 @@ def test_purge_user_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.PurgeUserEventsRequest()
+        request = user_event_service.PurgeUserEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2170,6 +2335,58 @@ def test_purge_user_events_empty_call():
         type(client.transport.purge_user_events), "__call__"
     ) as call:
         client.purge_user_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.PurgeUserEventsRequest()
+
+
+def test_purge_user_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = user_event_service.PurgeUserEventsRequest(
+        parent="parent_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.purge_user_events), "__call__"
+    ) as call:
+        client.purge_user_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == user_event_service.PurgeUserEventsRequest(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_purge_user_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.purge_user_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.purge_user_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == user_event_service.PurgeUserEventsRequest()
@@ -2202,7 +2419,8 @@ async def test_purge_user_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.PurgeUserEventsRequest()
+        request = user_event_service.PurgeUserEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2412,7 +2630,8 @@ def test_import_user_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_.ImportUserEventsRequest()
+        request = import_.ImportUserEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2431,6 +2650,58 @@ def test_import_user_events_empty_call():
         type(client.transport.import_user_events), "__call__"
     ) as call:
         client.import_user_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == import_.ImportUserEventsRequest()
+
+
+def test_import_user_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = import_.ImportUserEventsRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_user_events), "__call__"
+    ) as call:
+        client.import_user_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == import_.ImportUserEventsRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_user_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = UserEventServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_user_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_user_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == import_.ImportUserEventsRequest()
@@ -2462,7 +2733,8 @@ async def test_import_user_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_.ImportUserEventsRequest()
+        request = import_.ImportUserEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
