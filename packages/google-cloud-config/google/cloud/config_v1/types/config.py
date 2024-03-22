@@ -26,6 +26,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.config.v1",
     manifest={
+        "QuotaValidation",
         "Deployment",
         "TerraformBlueprint",
         "TerraformVariable",
@@ -71,8 +72,36 @@ __protobuf__ = proto.module(
         "ExportPreviewResultRequest",
         "ExportPreviewResultResponse",
         "PreviewResult",
+        "GetTerraformVersionRequest",
+        "ListTerraformVersionsRequest",
+        "ListTerraformVersionsResponse",
+        "TerraformVersion",
     },
 )
+
+
+class QuotaValidation(proto.Enum):
+    r"""Enum values to control quota checks for resources in
+    terraform configuration files.
+
+    Values:
+        QUOTA_VALIDATION_UNSPECIFIED (0):
+            The default value.
+            QuotaValidation on terraform configuration files
+            will be disabled in this case.
+        ENABLED (1):
+            Enable computing quotas for resources in
+            terraform configuration files to get visibility
+            on resources with insufficient quotas.
+        ENFORCED (2):
+            Enforce quota checks so deployment fails if
+            there isn't sufficient quotas available to
+            deploy resources in terraform configuration
+            files.
+    """
+    QUOTA_VALIDATION_UNSPECIFIED = 0
+    ENABLED = 1
+    ENFORCED = 2
 
 
 class Deployment(proto.Message):
@@ -176,6 +205,20 @@ class Deployment(proto.Message):
         lock_state (google.cloud.config_v1.types.Deployment.LockState):
             Output only. Current lock state of the
             deployment.
+        tf_version_constraint (str):
+            Optional. The user-specified Terraform
+            version constraint. Example: "=1.3.10".
+
+            This field is a member of `oneof`_ ``_tf_version_constraint``.
+        tf_version (str):
+            Output only. The current Terraform version
+            set on the deployment. It is in the format of
+            "Major.Minor.Patch", for example, "1.3.10".
+        quota_validation (google.cloud.config_v1.types.QuotaValidation):
+            Optional. Input to control quota checks for
+            resources in terraform configuration files.
+            There are limited resources on which quota
+            validation applies.
     """
 
     class State(proto.Enum):
@@ -362,6 +405,20 @@ class Deployment(proto.Message):
         number=20,
         enum=LockState,
     )
+    tf_version_constraint: str = proto.Field(
+        proto.STRING,
+        number=21,
+        optional=True,
+    )
+    tf_version: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    quota_validation: "QuotaValidation" = proto.Field(
+        proto.ENUM,
+        number=23,
+        enum="QuotaValidation",
+    )
 
 
 class TerraformBlueprint(proto.Message):
@@ -489,8 +546,8 @@ class ListDeploymentsRequest(proto.Message):
             'projects/{project_id}/locations/{location}'.
         page_size (int):
             When requesting a page of resources, 'page_size' specifies
-            number of resources to return. If unspecified or set to 0,
-            all resources will be returned.
+            number of resources to return. If unspecified, at most 500
+            will be returned. The maximum value is 1000.
         page_token (str):
             Token returned by previous call to
             'ListDeployments' which specifies the position
@@ -603,8 +660,8 @@ class ListRevisionsRequest(proto.Message):
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         page_size (int):
             When requesting a page of resources, ``page_size`` specifies
-            number of resources to return. If unspecified or set to 0,
-            all resources will be returned.
+            number of resources to return. If unspecified, at most 500
+            will be returned. The maximum value is 1000.
         page_token (str):
             Token returned by previous call to
             'ListRevisions' which specifies the position in
@@ -1061,6 +1118,23 @@ class Revision(proto.Message):
             ``projects/{project}/locations/{location}/workerPools/{workerPoolId}``.
             If this field is unspecified, the default Cloud Build worker
             pool will be used.
+        tf_version_constraint (str):
+            Output only. The user-specified Terraform
+            version constraint. Example: "=1.3.10".
+        tf_version (str):
+            Output only. The version of Terraform used to
+            create the Revision. It is in the format of
+            "Major.Minor.Patch", for example, "1.3.10".
+        quota_validation_results (str):
+            Output only. Cloud Storage path containing quota validation
+            results. This field is set when a user sets
+            Deployment.quota_validation field to ENABLED or ENFORCED.
+            Format: ``gs://{bucket}/{object}``.
+        quota_validation (google.cloud.config_v1.types.QuotaValidation):
+            Optional. Input to control quota checks for
+            resources in terraform configuration files.
+            There are limited resources on which quota
+            validation applies.
     """
 
     class Action(proto.Enum):
@@ -1119,11 +1193,15 @@ class Revision(proto.Message):
             APPLY_BUILD_RUN_FAILED (5):
                 Cloud Build job associated with creating or
                 updating a deployment was started but failed.
+            QUOTA_VALIDATION_FAILED (7):
+                quota validation failed for one or more
+                resources in terraform configuration files.
         """
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
         APPLY_BUILD_API_FAILED = 4
         APPLY_BUILD_RUN_FAILED = 5
+        QUOTA_VALIDATION_FAILED = 7
 
     terraform_blueprint: "TerraformBlueprint" = proto.Field(
         proto.MESSAGE,
@@ -1197,6 +1275,23 @@ class Revision(proto.Message):
     worker_pool: str = proto.Field(
         proto.STRING,
         number=17,
+    )
+    tf_version_constraint: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    tf_version: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    quota_validation_results: str = proto.Field(
+        proto.STRING,
+        number=29,
+    )
+    quota_validation: "QuotaValidation" = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum="QuotaValidation",
     )
 
 
@@ -1329,6 +1424,10 @@ class DeploymentOperationMetadata(proto.Message):
                 Operation was successful
             FAILED (10):
                 Operation failed
+            VALIDATING_REPOSITORY (11):
+                Validating the provided repository.
+            RUNNING_QUOTA_VALIDATION (12):
+                Running quota validation
         """
         DEPLOYMENT_STEP_UNSPECIFIED = 0
         PREPARING_STORAGE_BUCKET = 1
@@ -1341,6 +1440,8 @@ class DeploymentOperationMetadata(proto.Message):
         UNLOCKING_DEPLOYMENT = 8
         SUCCEEDED = 9
         FAILED = 10
+        VALIDATING_REPOSITORY = 11
+        RUNNING_QUOTA_VALIDATION = 12
 
     step: DeploymentStep = proto.Field(
         proto.ENUM,
@@ -1528,8 +1629,8 @@ class ListResourcesRequest(proto.Message):
             'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
         page_size (int):
             When requesting a page of resources, 'page_size' specifies
-            number of resources to return. If unspecified or set to 0,
-            all resources will be returned.
+            number of resources to return. If unspecified, at most 500
+            will be returned. The maximum value is 1000.
         page_token (str):
             Token returned by previous call to
             'ListResources' which specifies the position in
@@ -1861,10 +1962,9 @@ class Preview(proto.Message):
         preview_mode (google.cloud.config_v1.types.Preview.PreviewMode):
             Optional. Current mode of preview.
         service_account (str):
-            Optional. Optional service account. If
-            omitted, the deployment resource reference must
-            be provided, and the service account attached to
-            the deployment will be used.
+            Optional. User-specified Service Account (SA) credentials to
+            be used when previewing resources. Format:
+            ``projects/{projectID}/serviceAccounts/{serviceAccount}``
         artifacts_gcs_bucket (str):
             Optional. User-defined location of Cloud Build logs,
             artifacts, and in Google Cloud Storage. Format:
@@ -2129,6 +2229,8 @@ class PreviewOperationMetadata(proto.Message):
                 Operation was successful.
             FAILED (9):
                 Operation failed.
+            VALIDATING_REPOSITORY (10):
+                Validating the provided repository.
         """
         PREVIEW_STEP_UNSPECIFIED = 0
         PREPARING_STORAGE_BUCKET = 1
@@ -2140,6 +2242,7 @@ class PreviewOperationMetadata(proto.Message):
         UNLOCKING_DEPLOYMENT = 7
         SUCCEEDED = 8
         FAILED = 9
+        VALIDATING_REPOSITORY = 10
 
     step: PreviewStep = proto.Field(
         proto.ENUM,
@@ -2263,8 +2366,8 @@ class ListPreviewsRequest(proto.Message):
             'projects/{project_id}/locations/{location}'.
         page_size (int):
             Optional. When requesting a page of resources, 'page_size'
-            specifies number of resources to return. If unspecified or
-            set to 0, all resources will be returned.
+            specifies number of resources to return. If unspecified, at
+            most 500 will be returned. The maximum value is 1000.
         page_token (str):
             Optional. Token returned by previous call to
             'ListDeployments' which specifies the position
@@ -2441,6 +2544,180 @@ class PreviewResult(proto.Message):
     json_signed_uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GetTerraformVersionRequest(proto.Message):
+    r"""The request message for the GetTerraformVersion method.
+
+    Attributes:
+        name (str):
+            Required. The name of the TerraformVersion. Format:
+            'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListTerraformVersionsRequest(proto.Message):
+    r"""The request message for the ListTerraformVersions method.
+
+    Attributes:
+        parent (str):
+            Required. The parent in whose context the TerraformVersions
+            are listed. The parent value is in the format:
+            'projects/{project_id}/locations/{location}'.
+        page_size (int):
+            Optional. When requesting a page of resources, 'page_size'
+            specifies number of resources to return. If unspecified, at
+            most 500 will be returned. The maximum value is 1000.
+        page_token (str):
+            Optional. Token returned by previous call to
+            'ListTerraformVersions' which specifies the
+            position in the list from where to continue
+            listing the resources.
+        filter (str):
+            Optional. Lists the TerraformVersions that match the filter
+            expression. A filter expression filters the resources listed
+            in the response. The expression must be of the form '{field}
+            {operator} {value}' where operators: '<', '>', '<=', '>=',
+            '!=', '=', ':' are supported (colon ':' represents a HAS
+            operator which is roughly synonymous with equality). {field}
+            can refer to a proto or JSON field, or a synthetic field.
+            Field names can be camelCase or snake_case.
+        order_by (str):
+            Optional. Field to use to sort the list.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListTerraformVersionsResponse(proto.Message):
+    r"""The response message for the ``ListTerraformVersions`` method.
+
+    Attributes:
+        terraform_versions (MutableSequence[google.cloud.config_v1.types.TerraformVersion]):
+            List of
+            [TerraformVersion][google.cloud.config.v1.TerraformVersion]s.
+        next_page_token (str):
+            Token to be supplied to the next ListTerraformVersions
+            request via ``page_token`` to obtain the next set of
+            results.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    terraform_versions: MutableSequence["TerraformVersion"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TerraformVersion",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class TerraformVersion(proto.Message):
+    r"""A TerraformVersion represents the support state the
+    corresponding Terraform version.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The version name is in the format:
+            'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'.
+        state (google.cloud.config_v1.types.TerraformVersion.State):
+            Output only. The state of the version,
+            ACTIVE, DEPRECATED or OBSOLETE.
+        support_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. When the version is supported.
+        deprecate_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. When the version is deprecated.
+
+            This field is a member of `oneof`_ ``_deprecate_time``.
+        obsolete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. When the version is obsolete.
+
+            This field is a member of `oneof`_ ``_obsolete_time``.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of a TerraformVersion.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            ACTIVE (1):
+                The version is actively supported.
+            DEPRECATED (2):
+                The version is deprecated.
+            OBSOLETE (3):
+                The version is obsolete.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        DEPRECATED = 2
+        OBSOLETE = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    support_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    deprecate_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
+    )
+    obsolete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
     )
 
 

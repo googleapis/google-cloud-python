@@ -15,6 +15,7 @@
 #
 from .resources import (
     Authorization,
+    ChannelConfig,
     Cluster,
     ClusterNetworking,
     ClusterUser,
@@ -27,7 +28,9 @@ from .resources import (
     NodePool,
     Quota,
     RecurringTimeWindow,
+    ServerConfig,
     TimeWindow,
+    Version,
     VpnConnection,
     ZoneMetadata,
 )
@@ -40,9 +43,12 @@ from .service import (
     DeleteVpnConnectionRequest,
     GenerateAccessTokenRequest,
     GenerateAccessTokenResponse,
+    GenerateOfflineCredentialRequest,
+    GenerateOfflineCredentialResponse,
     GetClusterRequest,
     GetMachineRequest,
     GetNodePoolRequest,
+    GetServerConfigRequest,
     GetVpnConnectionRequest,
     ListClustersRequest,
     ListClustersResponse,
@@ -55,10 +61,12 @@ from .service import (
     OperationMetadata,
     UpdateClusterRequest,
     UpdateNodePoolRequest,
+    UpgradeClusterRequest,
 )
 
 __all__ = (
     "Authorization",
+    "ChannelConfig",
     "Cluster",
     "ClusterNetworking",
     "ClusterUser",
@@ -70,7 +78,9 @@ __all__ = (
     "NodePool",
     "Quota",
     "RecurringTimeWindow",
+    "ServerConfig",
     "TimeWindow",
+    "Version",
     "VpnConnection",
     "ZoneMetadata",
     "KmsKeyState",
@@ -82,9 +92,12 @@ __all__ = (
     "DeleteVpnConnectionRequest",
     "GenerateAccessTokenRequest",
     "GenerateAccessTokenResponse",
+    "GenerateOfflineCredentialRequest",
+    "GenerateOfflineCredentialResponse",
     "GetClusterRequest",
     "GetMachineRequest",
     "GetNodePoolRequest",
+    "GetServerConfigRequest",
     "GetVpnConnectionRequest",
     "ListClustersRequest",
     "ListClustersResponse",
@@ -97,4 +110,5 @@ __all__ = (
     "OperationMetadata",
     "UpdateClusterRequest",
     "UpdateNodePoolRequest",
+    "UpgradeClusterRequest",
 )

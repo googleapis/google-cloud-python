@@ -128,6 +128,14 @@ class EdgeContainerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_generate_offline_credential(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_generate_offline_credential(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -149,6 +157,14 @@ class EdgeContainerRestInterceptor:
                 return request, metadata
 
             def post_get_node_pool(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_server_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_server_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -205,6 +221,14 @@ class EdgeContainerRestInterceptor:
                 return request, metadata
 
             def post_update_node_pool(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_upgrade_cluster(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_upgrade_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -371,6 +395,29 @@ class EdgeContainerRestInterceptor:
         """
         return response
 
+    def pre_generate_offline_credential(
+        self,
+        request: service.GenerateOfflineCredentialRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.GenerateOfflineCredentialRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for generate_offline_credential
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EdgeContainer server.
+        """
+        return request, metadata
+
+    def post_generate_offline_credential(
+        self, response: service.GenerateOfflineCredentialResponse
+    ) -> service.GenerateOfflineCredentialResponse:
+        """Post-rpc interceptor for generate_offline_credential
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EdgeContainer server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_cluster(
         self, request: service.GetClusterRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.GetClusterRequest, Sequence[Tuple[str, str]]]:
@@ -421,6 +468,29 @@ class EdgeContainerRestInterceptor:
 
     def post_get_node_pool(self, response: resources.NodePool) -> resources.NodePool:
         """Post-rpc interceptor for get_node_pool
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EdgeContainer server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_server_config(
+        self,
+        request: service.GetServerConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.GetServerConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_server_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EdgeContainer server.
+        """
+        return request, metadata
+
+    def post_get_server_config(
+        self, response: resources.ServerConfig
+    ) -> resources.ServerConfig:
+        """Post-rpc interceptor for get_server_config
 
         Override in a subclass to manipulate the response
         after it is returned by the EdgeContainer server but before
@@ -574,6 +644,29 @@ class EdgeContainerRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_node_pool
+
+        Override in a subclass to manipulate the response
+        after it is returned by the EdgeContainer server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_upgrade_cluster(
+        self,
+        request: service.UpgradeClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.UpgradeClusterRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for upgrade_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EdgeContainer server.
+        """
+        return request, metadata
+
+    def post_upgrade_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for upgrade_cluster
 
         Override in a subclass to manipulate the response
         after it is returned by the EdgeContainer server but before
@@ -1506,6 +1599,95 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
             resp = self._interceptor.post_generate_access_token(resp)
             return resp
 
+    class _GenerateOfflineCredential(EdgeContainerRestStub):
+        def __hash__(self):
+            return hash("GenerateOfflineCredential")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GenerateOfflineCredentialRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.GenerateOfflineCredentialResponse:
+            r"""Call the generate offline
+            credential method over HTTP.
+
+                Args:
+                    request (~.service.GenerateOfflineCredentialRequest):
+                        The request object. Generates an offline
+                    credential(offline) for a cluster.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.service.GenerateOfflineCredentialResponse:
+                        An offline credential for a cluster.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{cluster=projects/*/locations/*/clusters/*}:generateOfflineCredential",
+                },
+            ]
+            request, metadata = self._interceptor.pre_generate_offline_credential(
+                request, metadata
+            )
+            pb_request = service.GenerateOfflineCredentialRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.GenerateOfflineCredentialResponse()
+            pb_resp = service.GenerateOfflineCredentialResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_generate_offline_credential(resp)
+            return resp
+
     class _GetCluster(EdgeContainerRestStub):
         def __hash__(self):
             return hash("GetCluster")
@@ -1767,6 +1949,95 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_node_pool(resp)
+            return resp
+
+    class _GetServerConfig(EdgeContainerRestStub):
+        def __hash__(self):
+            return hash("GetServerConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GetServerConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.ServerConfig:
+            r"""Call the get server config method over HTTP.
+
+            Args:
+                request (~.service.GetServerConfigRequest):
+                    The request object. Gets the server config.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.ServerConfig:
+                    Server configuration for supported
+                versions and release channels.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}/serverConfig",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_server_config(
+                request, metadata
+            )
+            pb_request = service.GetServerConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.ServerConfig()
+            pb_resp = resources.ServerConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_server_config(resp)
             return resp
 
     class _GetVpnConnection(EdgeContainerRestStub):
@@ -2366,6 +2637,99 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
             resp = self._interceptor.post_update_node_pool(resp)
             return resp
 
+    class _UpgradeCluster(EdgeContainerRestStub):
+        def __hash__(self):
+            return hash("UpgradeCluster")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.UpgradeClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the upgrade cluster method over HTTP.
+
+            Args:
+                request (~.service.UpgradeClusterRequest):
+                    The request object. Upgrades a cluster.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:upgrade",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_upgrade_cluster(request, metadata)
+            pb_request = service.UpgradeClusterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_upgrade_cluster(resp)
+            return resp
+
     @property
     def create_cluster(
         self,
@@ -2425,6 +2789,17 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         return self._GenerateAccessToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def generate_offline_credential(
+        self,
+    ) -> Callable[
+        [service.GenerateOfflineCredentialRequest],
+        service.GenerateOfflineCredentialResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GenerateOfflineCredential(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_cluster(self) -> Callable[[service.GetClusterRequest], resources.Cluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -2443,6 +2818,14 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNodePool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_server_config(
+        self,
+    ) -> Callable[[service.GetServerConfigRequest], resources.ServerConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_vpn_connection(
@@ -2501,6 +2884,14 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNodePool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpgradeCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

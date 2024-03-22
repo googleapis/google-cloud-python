@@ -27,6 +27,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -388,7 +389,8 @@ class EdgeNetworkAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListZonesAsyncPager:
-        r"""Lists Zones in a given project and location.
+        r"""Deprecated: not implemented.
+        Lists Zones in a given project and location.
 
         .. code-block:: python
 
@@ -419,7 +421,8 @@ class EdgeNetworkAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.edgenetwork_v1.types.ListZonesRequest, dict]]):
-                The request object. Message for requesting list of Zones
+                The request object. Deprecated: not implemented.
+                Message for requesting list of Zones
             parent (:class:`str`):
                 Required. Parent value for
                 ListZonesRequest
@@ -435,6 +438,7 @@ class EdgeNetworkAsyncClient:
 
         Returns:
             google.cloud.edgenetwork_v1.services.edge_network.pagers.ListZonesAsyncPager:
+                Deprecated: not implemented.
                 Message for response to listing Zones
 
                 Iterating over this object will yield
@@ -442,6 +446,10 @@ class EdgeNetworkAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "EdgeNetworkAsyncClient.list_zones is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -505,7 +513,8 @@ class EdgeNetworkAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Zone:
-        r"""Gets details of a single Zone.
+        r"""Deprecated: not implemented.
+        Gets details of a single Zone.
 
         .. code-block:: python
 
@@ -535,7 +544,8 @@ class EdgeNetworkAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.edgenetwork_v1.types.GetZoneRequest, dict]]):
-                The request object. Message for getting a Zone
+                The request object. Deprecated: not implemented.
+                Message for getting a Zone
             name (:class:`str`):
                 Required. Name of the resource
                 This corresponds to the ``name`` field
@@ -551,6 +561,10 @@ class EdgeNetworkAsyncClient:
             google.cloud.edgenetwork_v1.types.Zone:
                 A Google Edge Cloud zone.
         """
+        warnings.warn(
+            "EdgeNetworkAsyncClient.get_zone is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.

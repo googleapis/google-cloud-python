@@ -32,9 +32,12 @@ __protobuf__ = proto.module(
         "GetClusterRequest",
         "CreateClusterRequest",
         "UpdateClusterRequest",
+        "UpgradeClusterRequest",
         "DeleteClusterRequest",
         "GenerateAccessTokenRequest",
         "GenerateAccessTokenResponse",
+        "GenerateOfflineCredentialRequest",
+        "GenerateOfflineCredentialResponse",
         "ListNodePoolsRequest",
         "ListNodePoolsResponse",
         "GetNodePoolRequest",
@@ -49,6 +52,7 @@ __protobuf__ = proto.module(
         "GetVpnConnectionRequest",
         "CreateVpnConnectionRequest",
         "DeleteVpnConnectionRequest",
+        "GetServerConfigRequest",
     },
 )
 
@@ -78,6 +82,10 @@ class OperationMetadata(proto.Message):
             corresponding to ``Code.CANCELLED``.
         api_version (str):
             API version used to start the operation.
+        warnings (MutableSequence[str]):
+            Warnings that do not block the operation, but
+            still hold relevant information for the end user
+            to receive.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -109,6 +117,10 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    warnings: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -272,6 +284,58 @@ class UpdateClusterRequest(proto.Message):
     )
 
 
+class UpgradeClusterRequest(proto.Message):
+    r"""Upgrades a cluster.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the cluster.
+        target_version (str):
+            Required. The version the cluster is going to
+            be upgraded to.
+        schedule (google.cloud.edgecontainer_v1.types.UpgradeClusterRequest.Schedule):
+            The schedule for the upgrade.
+        request_id (str):
+            A unique identifier for this request. Restricted to 36 ASCII
+            characters. A random UUID is recommended. This request is
+            only idempotent if ``request_id`` is provided.
+    """
+
+    class Schedule(proto.Enum):
+        r"""Represents the schedule about when the cluster is going to be
+        upgraded.
+
+        Values:
+            SCHEDULE_UNSPECIFIED (0):
+                Unspecified. The default is to upgrade the
+                cluster immediately which is the only option
+                today.
+            IMMEDIATELY (1):
+                The cluster is going to be upgraded
+                immediately after receiving the request.
+        """
+        SCHEDULE_UNSPECIFIED = 0
+        IMMEDIATELY = 1
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    schedule: Schedule = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Schedule,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
 class DeleteClusterRequest(proto.Message):
     r"""Deletes a cluster.
 
@@ -327,6 +391,56 @@ class GenerateAccessTokenResponse(proto.Message):
     expire_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GenerateOfflineCredentialRequest(proto.Message):
+    r"""Generates an offline credential(offline) for a cluster.
+
+    Attributes:
+        cluster (str):
+            Required. The resource name of the cluster.
+    """
+
+    cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GenerateOfflineCredentialResponse(proto.Message):
+    r"""An offline credential for a cluster.
+
+    Attributes:
+        client_certificate (str):
+            Output only. Client certificate to
+            authenticate to k8s api-server.
+        client_key (str):
+            Output only. Client private key to
+            authenticate to k8s api-server.
+        user_id (str):
+            Output only. Client's identity.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp at which this
+            credential will expire.
+    """
+
+    client_certificate: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    client_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
         message=timestamp_pb2.Timestamp,
     )
 
@@ -743,6 +857,22 @@ class DeleteVpnConnectionRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GetServerConfigRequest(proto.Message):
+    r"""Gets the server config.
+
+    Attributes:
+        name (str):
+            Required. The name (project and location) of the server
+            config to get, specified in the format
+            ``projects/*/locations/*``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

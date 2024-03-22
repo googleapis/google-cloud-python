@@ -350,6 +350,32 @@ class EdgeContainerGrpcTransport(EdgeContainerTransport):
         return self._stubs["update_cluster"]
 
     @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the upgrade cluster method over gRPC.
+
+        Upgrades a single cluster.
+
+        Returns:
+            Callable[[~.UpgradeClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "upgrade_cluster" not in self._stubs:
+            self._stubs["upgrade_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.edgecontainer.v1.EdgeContainer/UpgradeCluster",
+                request_serializer=service.UpgradeClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["upgrade_cluster"]
+
+    @property
     def delete_cluster(
         self,
     ) -> Callable[[service.DeleteClusterRequest], operations_pb2.Operation]:
@@ -402,6 +428,35 @@ class EdgeContainerGrpcTransport(EdgeContainerTransport):
                 response_deserializer=service.GenerateAccessTokenResponse.deserialize,
             )
         return self._stubs["generate_access_token"]
+
+    @property
+    def generate_offline_credential(
+        self,
+    ) -> Callable[
+        [service.GenerateOfflineCredentialRequest],
+        service.GenerateOfflineCredentialResponse,
+    ]:
+        r"""Return a callable for the generate offline credential method over gRPC.
+
+        Generates an offline credential for a Cluster.
+
+        Returns:
+            Callable[[~.GenerateOfflineCredentialRequest],
+                    ~.GenerateOfflineCredentialResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_offline_credential" not in self._stubs:
+            self._stubs["generate_offline_credential"] = self.grpc_channel.unary_unary(
+                "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
+                request_serializer=service.GenerateOfflineCredentialRequest.serialize,
+                response_deserializer=service.GenerateOfflineCredentialResponse.deserialize,
+            )
+        return self._stubs["generate_offline_credential"]
 
     @property
     def list_node_pools(
@@ -691,6 +746,32 @@ class EdgeContainerGrpcTransport(EdgeContainerTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_vpn_connection"]
+
+    @property
+    def get_server_config(
+        self,
+    ) -> Callable[[service.GetServerConfigRequest], resources.ServerConfig]:
+        r"""Return a callable for the get server config method over gRPC.
+
+        Gets the server config.
+
+        Returns:
+            Callable[[~.GetServerConfigRequest],
+                    ~.ServerConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_server_config" not in self._stubs:
+            self._stubs["get_server_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.edgecontainer.v1.EdgeContainer/GetServerConfig",
+                request_serializer=service.GetServerConfigRequest.serialize,
+                response_deserializer=resources.ServerConfig.deserialize,
+            )
+        return self._stubs["get_server_config"]
 
     def close(self):
         self.grpc_channel.close()

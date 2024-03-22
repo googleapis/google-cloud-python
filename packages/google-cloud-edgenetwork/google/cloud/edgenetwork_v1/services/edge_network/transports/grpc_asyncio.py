@@ -289,6 +289,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
     ) -> Callable[[service.ListZonesRequest], Awaitable[service.ListZonesResponse]]:
         r"""Return a callable for the list zones method over gRPC.
 
+        Deprecated: not implemented.
         Lists Zones in a given project and location.
 
         Returns:
@@ -313,6 +314,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
     def get_zone(self) -> Callable[[service.GetZoneRequest], Awaitable[resources.Zone]]:
         r"""Return a callable for the get zone method over gRPC.
 
+        Deprecated: not implemented.
         Gets details of a single Zone.
 
         Returns:

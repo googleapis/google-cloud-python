@@ -68,7 +68,8 @@ __protobuf__ = proto.module(
 
 
 class ListZonesRequest(proto.Message):
-    r"""Message for requesting list of Zones
+    r"""Deprecated: not implemented.
+    Message for requesting list of Zones
 
     Attributes:
         parent (str):
@@ -109,7 +110,8 @@ class ListZonesRequest(proto.Message):
 
 
 class ListZonesResponse(proto.Message):
-    r"""Message for response to listing Zones
+    r"""Deprecated: not implemented.
+    Message for response to listing Zones
 
     Attributes:
         zones (MutableSequence[google.cloud.edgenetwork_v1.types.Zone]):
@@ -141,7 +143,8 @@ class ListZonesResponse(proto.Message):
 
 
 class GetZoneRequest(proto.Message):
-    r"""Message for getting a Zone
+    r"""Deprecated: not implemented.
+    Message for getting a Zone
 
     Attributes:
         name (str):

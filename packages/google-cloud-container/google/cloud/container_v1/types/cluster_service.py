@@ -194,6 +194,7 @@ __protobuf__ = proto.module(
         "ResourceManagerTags",
         "EnterpriseConfig",
         "SecondaryBootDisk",
+        "SecondaryBootDiskUpdateStrategy",
     },
 )
 
@@ -721,6 +722,10 @@ class NodeConfig(proto.Message):
         secondary_boot_disks (MutableSequence[google.cloud.container_v1.types.SecondaryBootDisk]):
             List of secondary boot disks attached to the
             nodes.
+        secondary_boot_disk_update_strategy (google.cloud.container_v1.types.SecondaryBootDiskUpdateStrategy):
+            Secondary boot disk update strategy.
+
+            This field is a member of `oneof`_ ``_secondary_boot_disk_update_strategy``.
     """
 
     machine_type: str = proto.Field(
@@ -894,6 +899,14 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=48,
         message="SecondaryBootDisk",
+    )
+    secondary_boot_disk_update_strategy: "SecondaryBootDiskUpdateStrategy" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=50,
+            optional=True,
+            message="SecondaryBootDiskUpdateStrategy",
+        )
     )
 
 
@@ -3460,6 +3473,11 @@ class ClusterUpdate(proto.Message):
             the autopilot cluster.
         desired_k8s_beta_apis (google.cloud.container_v1.types.K8sBetaAPIConfig):
             Desired Beta APIs to be enabled for cluster.
+        desired_enable_multi_networking (bool):
+            Enable/Disable Multi-Networking for the
+            cluster
+
+            This field is a member of `oneof`_ ``_desired_enable_multi_networking``.
         desired_node_pool_auto_config_resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
             The desired resource manager tags that apply
             to all auto-provisioned node pools in autopilot
@@ -3714,6 +3732,11 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=131,
         message="K8sBetaAPIConfig",
+    )
+    desired_enable_multi_networking: bool = proto.Field(
+        proto.BOOL,
+        number=135,
+        optional=True,
     )
     desired_node_pool_auto_config_resource_manager_tags: "ResourceManagerTags" = (
         proto.Field(
@@ -9393,6 +9416,14 @@ class SecondaryBootDisk(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class SecondaryBootDiskUpdateStrategy(proto.Message):
+    r"""SecondaryBootDiskUpdateStrategy is a placeholder which will
+    be extended in the future to define different options for
+    updating secondary boot disks.
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

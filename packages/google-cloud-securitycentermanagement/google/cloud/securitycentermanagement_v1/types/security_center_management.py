@@ -80,7 +80,7 @@ class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the custom module. Its
+            Identifier. The resource name of the custom module. Its
             format is
             "organizations/{organization}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}",
             or
@@ -233,7 +233,7 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the custom module. Its
+            Identifier. The resource name of the custom module. Its
             format is
             "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
             or
@@ -687,10 +687,9 @@ class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to update the
-                module.
+            module could still fail because:
+            1. the state could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to update the module.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -730,10 +729,9 @@ class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually delete the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to delete the
-                module.
+            module could still fail because:
+            1. the state could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to delete the module.
     """
 
     name: str = proto.Field(
@@ -1129,7 +1127,7 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the ETD custom module.
+            Identifier. The resource name of the ETD custom module.
 
             Its format is:
 
@@ -1288,7 +1286,7 @@ class EventThreatDetectionCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the ETD custom module.
+            Identifier. The resource name of the ETD custom module.
 
             Its format is:
 
@@ -1570,10 +1568,9 @@ class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually create the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred during creation of the
-                module.
+            module could still fail because:
+            1. the state could have changed (e.g. IAM permission lost) or
+            2. A failure occurred during creation of the module.
     """
 
     parent: str = proto.Field(
@@ -1613,10 +1610,9 @@ class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually update the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to update the
-                module.
+            module could still fail because:
+            1. the state could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to update the module.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1656,10 +1652,9 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
             indicates the request is valid while an error
             response indicates the request is invalid. Note
             that a subsequent request to actually delete the
-            module could still fail because 1. the state
-            could have changed (e.g. IAM permission lost) or
-            2. A failure occurred while trying to delete the
-                module.
+            module could still fail because:
+            1. the state could have changed (e.g. IAM permission lost) or
+            2. A failure occurred while trying to delete the module.
     """
 
     name: str = proto.Field(
