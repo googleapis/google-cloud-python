@@ -1103,7 +1103,8 @@ def test_search_catalog(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.SearchCatalogRequest()
+        request = datacatalog.SearchCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogPager)
@@ -1123,6 +1124,60 @@ def test_search_catalog_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         client.search_catalog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.SearchCatalogRequest()
+
+
+def test_search_catalog_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.SearchCatalogRequest(
+        query="query_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
+        client.search_catalog(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.SearchCatalogRequest(
+            query="query_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_catalog_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.SearchCatalogResponse(
+                total_size=1086,
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.search_catalog()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.SearchCatalogRequest()
@@ -1156,7 +1211,8 @@ async def test_search_catalog_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.SearchCatalogRequest()
+        request = datacatalog.SearchCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogAsyncPager)
@@ -1493,7 +1549,8 @@ def test_create_entry_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateEntryGroupRequest()
+        request = datacatalog.CreateEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -1515,6 +1572,62 @@ def test_create_entry_group_empty_call():
         type(client.transport.create_entry_group), "__call__"
     ) as call:
         client.create_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateEntryGroupRequest()
+
+
+def test_create_entry_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.CreateEntryGroupRequest(
+        parent="parent_value",
+        entry_group_id="entry_group_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_group), "__call__"
+    ) as call:
+        client.create_entry_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateEntryGroupRequest(
+            parent="parent_value",
+            entry_group_id="entry_group_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entry_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.EntryGroup(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_entry_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.CreateEntryGroupRequest()
@@ -1550,7 +1663,8 @@ async def test_create_entry_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateEntryGroupRequest()
+        request = datacatalog.CreateEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -1767,7 +1881,8 @@ def test_update_entry_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateEntryGroupRequest()
+        request = datacatalog.UpdateEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -1789,6 +1904,56 @@ def test_update_entry_group_empty_call():
         type(client.transport.update_entry_group), "__call__"
     ) as call:
         client.update_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateEntryGroupRequest()
+
+
+def test_update_entry_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.UpdateEntryGroupRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_group), "__call__"
+    ) as call:
+        client.update_entry_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateEntryGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_entry_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.EntryGroup(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_entry_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.UpdateEntryGroupRequest()
@@ -1824,7 +1989,8 @@ async def test_update_entry_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateEntryGroupRequest()
+        request = datacatalog.UpdateEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -2029,7 +2195,8 @@ def test_get_entry_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.GetEntryGroupRequest()
+        request = datacatalog.GetEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -2049,6 +2216,56 @@ def test_get_entry_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         client.get_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.GetEntryGroupRequest()
+
+
+def test_get_entry_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.GetEntryGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
+        client.get_entry_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.GetEntryGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_entry_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.EntryGroup(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_entry_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.GetEntryGroupRequest()
@@ -2082,7 +2299,8 @@ async def test_get_entry_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.GetEntryGroupRequest()
+        request = datacatalog.GetEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -2277,7 +2495,8 @@ def test_delete_entry_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteEntryGroupRequest()
+        request = datacatalog.DeleteEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2296,6 +2515,54 @@ def test_delete_entry_group_empty_call():
         type(client.transport.delete_entry_group), "__call__"
     ) as call:
         client.delete_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteEntryGroupRequest()
+
+
+def test_delete_entry_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.DeleteEntryGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_group), "__call__"
+    ) as call:
+        client.delete_entry_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteEntryGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_entry_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.DeleteEntryGroupRequest()
@@ -2325,7 +2592,8 @@ async def test_delete_entry_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteEntryGroupRequest()
+        request = datacatalog.DeleteEntryGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2513,7 +2781,8 @@ def test_list_entry_groups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.ListEntryGroupsRequest()
+        request = datacatalog.ListEntryGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntryGroupsPager)
@@ -2533,6 +2802,60 @@ def test_list_entry_groups_empty_call():
         type(client.transport.list_entry_groups), "__call__"
     ) as call:
         client.list_entry_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ListEntryGroupsRequest()
+
+
+def test_list_entry_groups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.ListEntryGroupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entry_groups), "__call__"
+    ) as call:
+        client.list_entry_groups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ListEntryGroupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entry_groups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entry_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.ListEntryGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entry_groups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.ListEntryGroupsRequest()
@@ -2566,7 +2889,8 @@ async def test_list_entry_groups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.ListEntryGroupsRequest()
+        request = datacatalog.ListEntryGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntryGroupsAsyncPager)
@@ -2960,7 +3284,8 @@ def test_create_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateEntryRequest()
+        request = datacatalog.CreateEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -2981,6 +3306,59 @@ def test_create_entry_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         client.create_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateEntryRequest()
+
+
+def test_create_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.CreateEntryRequest(
+        parent="parent_value",
+        entry_id="entry_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
+        client.create_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateEntryRequest(
+            parent="parent_value",
+            entry_id="entry_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.Entry(
+                name="name_value",
+                linked_resource="linked_resource_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.CreateEntryRequest()
@@ -3015,7 +3393,8 @@ async def test_create_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateEntryRequest()
+        request = datacatalog.CreateEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -3222,7 +3601,8 @@ def test_update_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateEntryRequest()
+        request = datacatalog.UpdateEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -3243,6 +3623,53 @@ def test_update_entry_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         client.update_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateEntryRequest()
+
+
+def test_update_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.UpdateEntryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
+        client.update_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateEntryRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.Entry(
+                name="name_value",
+                linked_resource="linked_resource_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.UpdateEntryRequest()
@@ -3277,7 +3704,8 @@ async def test_update_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateEntryRequest()
+        request = datacatalog.UpdateEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -3467,7 +3895,8 @@ def test_delete_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteEntryRequest()
+        request = datacatalog.DeleteEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3484,6 +3913,50 @@ def test_delete_entry_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         client.delete_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteEntryRequest()
+
+
+def test_delete_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.DeleteEntryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
+        client.delete_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteEntryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.DeleteEntryRequest()
@@ -3511,7 +3984,8 @@ async def test_delete_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteEntryRequest()
+        request = datacatalog.DeleteEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3694,7 +4168,8 @@ def test_get_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.GetEntryRequest()
+        request = datacatalog.GetEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -3715,6 +4190,57 @@ def test_get_entry_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         client.get_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.GetEntryRequest()
+
+
+def test_get_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.GetEntryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
+        client.get_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.GetEntryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.Entry(
+                name="name_value",
+                linked_resource="linked_resource_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.GetEntryRequest()
@@ -3749,7 +4275,8 @@ async def test_get_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.GetEntryRequest()
+        request = datacatalog.GetEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -3936,7 +4463,8 @@ def test_lookup_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.LookupEntryRequest()
+        request = datacatalog.LookupEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -3957,6 +4485,59 @@ def test_lookup_entry_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
         client.lookup_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.LookupEntryRequest()
+
+
+def test_lookup_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.LookupEntryRequest(
+        linked_resource="linked_resource_value",
+        sql_resource="sql_resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
+        client.lookup_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.LookupEntryRequest(
+            linked_resource="linked_resource_value",
+            sql_resource="sql_resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.Entry(
+                name="name_value",
+                linked_resource="linked_resource_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.lookup_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.LookupEntryRequest()
@@ -3991,7 +4572,8 @@ async def test_lookup_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.LookupEntryRequest()
+        request = datacatalog.LookupEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -4034,7 +4616,8 @@ def test_list_entries(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.ListEntriesRequest()
+        request = datacatalog.ListEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntriesPager)
@@ -4052,6 +4635,56 @@ def test_list_entries_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         client.list_entries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ListEntriesRequest()
+
+
+def test_list_entries_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.ListEntriesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
+        client.list_entries(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ListEntriesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entries_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.ListEntriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entries()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.ListEntriesRequest()
@@ -4083,7 +4716,8 @@ async def test_list_entries_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.ListEntriesRequest()
+        request = datacatalog.ListEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntriesAsyncPager)
@@ -4459,7 +5093,8 @@ def test_create_tag_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateTagTemplateRequest()
+        request = datacatalog.CreateTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -4480,6 +5115,61 @@ def test_create_tag_template_empty_call():
         type(client.transport.create_tag_template), "__call__"
     ) as call:
         client.create_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateTagTemplateRequest()
+
+
+def test_create_tag_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.CreateTagTemplateRequest(
+        parent="parent_value",
+        tag_template_id="tag_template_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_template), "__call__"
+    ) as call:
+        client.create_tag_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateTagTemplateRequest(
+            parent="parent_value",
+            tag_template_id="tag_template_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_tag_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplate(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_tag_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.CreateTagTemplateRequest()
@@ -4514,7 +5204,8 @@ async def test_create_tag_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateTagTemplateRequest()
+        request = datacatalog.CreateTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -4723,7 +5414,8 @@ def test_get_tag_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.GetTagTemplateRequest()
+        request = datacatalog.GetTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -4742,6 +5434,55 @@ def test_get_tag_template_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         client.get_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.GetTagTemplateRequest()
+
+
+def test_get_tag_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.GetTagTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
+        client.get_tag_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.GetTagTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_tag_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplate(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_tag_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.GetTagTemplateRequest()
@@ -4774,7 +5515,8 @@ async def test_get_tag_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.GetTagTemplateRequest()
+        request = datacatalog.GetTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -4957,7 +5699,8 @@ def test_update_tag_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateTagTemplateRequest()
+        request = datacatalog.UpdateTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -4978,6 +5721,55 @@ def test_update_tag_template_empty_call():
         type(client.transport.update_tag_template), "__call__"
     ) as call:
         client.update_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateTagTemplateRequest()
+
+
+def test_update_tag_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.UpdateTagTemplateRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tag_template), "__call__"
+    ) as call:
+        client.update_tag_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateTagTemplateRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_tag_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tag_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplate(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_tag_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.UpdateTagTemplateRequest()
@@ -5012,7 +5804,8 @@ async def test_update_tag_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateTagTemplateRequest()
+        request = datacatalog.UpdateTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -5210,7 +6003,8 @@ def test_delete_tag_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteTagTemplateRequest()
+        request = datacatalog.DeleteTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5229,6 +6023,54 @@ def test_delete_tag_template_empty_call():
         type(client.transport.delete_tag_template), "__call__"
     ) as call:
         client.delete_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteTagTemplateRequest()
+
+
+def test_delete_tag_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.DeleteTagTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_template), "__call__"
+    ) as call:
+        client.delete_tag_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteTagTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_tag_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.DeleteTagTemplateRequest()
@@ -5258,7 +6100,8 @@ async def test_delete_tag_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteTagTemplateRequest()
+        request = datacatalog.DeleteTagTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5460,7 +6303,8 @@ def test_create_tag_template_field(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
+        request = datacatalog.CreateTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -5484,6 +6328,64 @@ def test_create_tag_template_field_empty_call():
         type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         client.create_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
+
+
+def test_create_tag_template_field_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.CreateTagTemplateFieldRequest(
+        parent="parent_value",
+        tag_template_field_id="tag_template_field_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_template_field), "__call__"
+    ) as call:
+        client.create_tag_template_field(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateTagTemplateFieldRequest(
+            parent="parent_value",
+            tag_template_field_id="tag_template_field_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_tag_template_field_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_template_field), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplateField(
+                name="name_value",
+                display_name="display_name_value",
+                is_required=True,
+                description="description_value",
+                order=540,
+            )
+        )
+        response = await client.create_tag_template_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
@@ -5522,7 +6424,8 @@ async def test_create_tag_template_field_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
+        request = datacatalog.CreateTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -5743,7 +6646,8 @@ def test_update_tag_template_field(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
+        request = datacatalog.UpdateTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -5767,6 +6671,62 @@ def test_update_tag_template_field_empty_call():
         type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         client.update_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
+
+
+def test_update_tag_template_field_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.UpdateTagTemplateFieldRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tag_template_field), "__call__"
+    ) as call:
+        client.update_tag_template_field(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateTagTemplateFieldRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_tag_template_field_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tag_template_field), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplateField(
+                name="name_value",
+                display_name="display_name_value",
+                is_required=True,
+                description="description_value",
+                order=540,
+            )
+        )
+        response = await client.update_tag_template_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
@@ -5805,7 +6765,8 @@ async def test_update_tag_template_field_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
+        request = datacatalog.UpdateTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -6026,7 +6987,8 @@ def test_rename_tag_template_field(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
+        request = datacatalog.RenameTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -6050,6 +7012,64 @@ def test_rename_tag_template_field_empty_call():
         type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         client.rename_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
+
+
+def test_rename_tag_template_field_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.RenameTagTemplateFieldRequest(
+        name="name_value",
+        new_tag_template_field_id="new_tag_template_field_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rename_tag_template_field), "__call__"
+    ) as call:
+        client.rename_tag_template_field(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.RenameTagTemplateFieldRequest(
+            name="name_value",
+            new_tag_template_field_id="new_tag_template_field_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_tag_template_field_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rename_tag_template_field), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplateField(
+                name="name_value",
+                display_name="display_name_value",
+                is_required=True,
+                description="description_value",
+                order=540,
+            )
+        )
+        response = await client.rename_tag_template_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
@@ -6088,7 +7108,8 @@ async def test_rename_tag_template_field_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
+        request = datacatalog.RenameTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -6299,7 +7320,8 @@ def test_rename_tag_template_field_enum_value(request_type, transport: str = "gr
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.RenameTagTemplateFieldEnumValueRequest()
+        request = datacatalog.RenameTagTemplateFieldEnumValueRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -6323,6 +7345,64 @@ def test_rename_tag_template_field_enum_value_empty_call():
         type(client.transport.rename_tag_template_field_enum_value), "__call__"
     ) as call:
         client.rename_tag_template_field_enum_value()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.RenameTagTemplateFieldEnumValueRequest()
+
+
+def test_rename_tag_template_field_enum_value_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.RenameTagTemplateFieldEnumValueRequest(
+        name="name_value",
+        new_enum_value_display_name="new_enum_value_display_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rename_tag_template_field_enum_value), "__call__"
+    ) as call:
+        client.rename_tag_template_field_enum_value(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.RenameTagTemplateFieldEnumValueRequest(
+            name="name_value",
+            new_enum_value_display_name="new_enum_value_display_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_tag_template_field_enum_value_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rename_tag_template_field_enum_value), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.TagTemplateField(
+                name="name_value",
+                display_name="display_name_value",
+                is_required=True,
+                description="description_value",
+                order=540,
+            )
+        )
+        response = await client.rename_tag_template_field_enum_value()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.RenameTagTemplateFieldEnumValueRequest()
@@ -6361,7 +7441,8 @@ async def test_rename_tag_template_field_enum_value_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.RenameTagTemplateFieldEnumValueRequest()
+        request = datacatalog.RenameTagTemplateFieldEnumValueRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -6566,7 +7647,8 @@ def test_delete_tag_template_field(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteTagTemplateFieldRequest()
+        request = datacatalog.DeleteTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6585,6 +7667,54 @@ def test_delete_tag_template_field_empty_call():
         type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         client.delete_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteTagTemplateFieldRequest()
+
+
+def test_delete_tag_template_field_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.DeleteTagTemplateFieldRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_template_field), "__call__"
+    ) as call:
+        client.delete_tag_template_field(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteTagTemplateFieldRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_template_field_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_template_field), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_tag_template_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.DeleteTagTemplateFieldRequest()
@@ -6615,7 +7745,8 @@ async def test_delete_tag_template_field_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteTagTemplateFieldRequest()
+        request = datacatalog.DeleteTagTemplateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6814,7 +7945,8 @@ def test_create_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateTagRequest()
+        request = datacatalog.CreateTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.Tag)
@@ -6834,6 +7966,56 @@ def test_create_tag_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         client.create_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateTagRequest()
+
+
+def test_create_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.CreateTagRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
+        client.create_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.CreateTagRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.Tag(
+                name="name_value",
+                template="template_value",
+                template_display_name="template_display_name_value",
+            )
+        )
+        response = await client.create_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.CreateTagRequest()
@@ -6867,7 +8049,8 @@ async def test_create_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.CreateTagRequest()
+        request = datacatalog.CreateTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.Tag)
@@ -7061,7 +8244,8 @@ def test_update_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateTagRequest()
+        request = datacatalog.UpdateTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.Tag)
@@ -7081,6 +8265,52 @@ def test_update_tag_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         client.update_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateTagRequest()
+
+
+def test_update_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.UpdateTagRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
+        client.update_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UpdateTagRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tags.Tag(
+                name="name_value",
+                template="template_value",
+                template_display_name="template_display_name_value",
+            )
+        )
+        response = await client.update_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.UpdateTagRequest()
@@ -7114,7 +8344,8 @@ async def test_update_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.UpdateTagRequest()
+        request = datacatalog.UpdateTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.Tag)
@@ -7303,7 +8534,8 @@ def test_delete_tag(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteTagRequest()
+        request = datacatalog.DeleteTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7320,6 +8552,50 @@ def test_delete_tag_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         client.delete_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteTagRequest()
+
+
+def test_delete_tag_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.DeleteTagRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
+        client.delete_tag(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.DeleteTagRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_tag()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.DeleteTagRequest()
@@ -7347,7 +8623,8 @@ async def test_delete_tag_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.DeleteTagRequest()
+        request = datacatalog.DeleteTagRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7525,7 +8802,8 @@ def test_list_tags(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.ListTagsRequest()
+        request = datacatalog.ListTagsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTagsPager)
@@ -7543,6 +8821,56 @@ def test_list_tags_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         client.list_tags()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ListTagsRequest()
+
+
+def test_list_tags_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.ListTagsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
+        client.list_tags(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ListTagsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tags_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.ListTagsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tags()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datacatalog.ListTagsRequest()
@@ -7574,7 +8902,8 @@ async def test_list_tags_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datacatalog.ListTagsRequest()
+        request = datacatalog.ListTagsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTagsAsyncPager)
@@ -7948,7 +9277,8 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -7967,6 +9297,55 @@ def test_set_iam_policy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+def test_set_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.SetIamPolicyRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
@@ -7999,7 +9378,8 @@ async def test_set_iam_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -8198,7 +9578,8 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -8217,6 +9598,55 @@ def test_get_iam_policy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+def test_get_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.GetIamPolicyRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.get_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
@@ -8249,7 +9679,8 @@ async def test_get_iam_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -8448,7 +9879,8 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
@@ -8468,6 +9900,58 @@ def test_test_iam_permissions_empty_call():
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.TestIamPermissionsRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        response = await client.test_iam_permissions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
@@ -8502,7 +9986,8 @@ async def test_test_iam_permissions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)

@@ -1110,7 +1110,8 @@ def test_list_quota_infos(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaInfosRequest()
+        request = cloudquotas.ListQuotaInfosRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQuotaInfosPager)
@@ -1128,6 +1129,56 @@ def test_list_quota_infos_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
         client.list_quota_infos()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.ListQuotaInfosRequest()
+
+
+def test_list_quota_infos_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudquotas.ListQuotaInfosRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
+        client.list_quota_infos(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.ListQuotaInfosRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_quota_infos_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudQuotasAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudquotas.ListQuotaInfosResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_quota_infos()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudquotas.ListQuotaInfosRequest()
@@ -1159,7 +1210,8 @@ async def test_list_quota_infos_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaInfosRequest()
+        request = cloudquotas.ListQuotaInfosRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQuotaInfosAsyncPager)
@@ -1545,7 +1597,8 @@ def test_get_quota_info(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaInfoRequest()
+        request = cloudquotas.GetQuotaInfoRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaInfo)
@@ -1576,6 +1629,67 @@ def test_get_quota_info_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
         client.get_quota_info()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.GetQuotaInfoRequest()
+
+
+def test_get_quota_info_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudquotas.GetQuotaInfoRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
+        client.get_quota_info(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.GetQuotaInfoRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_quota_info_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudQuotasAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaInfo(
+                name="name_value",
+                quota_id="quota_id_value",
+                metric="metric_value",
+                service="service_value",
+                is_precise=True,
+                refresh_interval="refresh_interval_value",
+                container_type=resources.QuotaInfo.ContainerType.PROJECT,
+                dimensions=["dimensions_value"],
+                metric_display_name="metric_display_name_value",
+                quota_display_name="quota_display_name_value",
+                metric_unit="metric_unit_value",
+                is_fixed=True,
+                is_concurrent=True,
+                service_request_quota_uri="service_request_quota_uri_value",
+            )
+        )
+        response = await client.get_quota_info()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudquotas.GetQuotaInfoRequest()
@@ -1620,7 +1734,8 @@ async def test_get_quota_info_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaInfoRequest()
+        request = cloudquotas.GetQuotaInfoRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaInfo)
@@ -1815,7 +1930,8 @@ def test_list_quota_preferences(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaPreferencesRequest()
+        request = cloudquotas.ListQuotaPreferencesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQuotaPreferencesPager)
@@ -1836,6 +1952,65 @@ def test_list_quota_preferences_empty_call():
         type(client.transport.list_quota_preferences), "__call__"
     ) as call:
         client.list_quota_preferences()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.ListQuotaPreferencesRequest()
+
+
+def test_list_quota_preferences_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudquotas.ListQuotaPreferencesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_quota_preferences), "__call__"
+    ) as call:
+        client.list_quota_preferences(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.ListQuotaPreferencesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_quota_preferences_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudQuotasAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_quota_preferences), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudquotas.ListQuotaPreferencesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_quota_preferences()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudquotas.ListQuotaPreferencesRequest()
@@ -1871,7 +2046,8 @@ async def test_list_quota_preferences_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaPreferencesRequest()
+        request = cloudquotas.ListQuotaPreferencesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQuotaPreferencesAsyncPager)
@@ -2269,7 +2445,8 @@ def test_get_quota_preference(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaPreferenceRequest()
+        request = cloudquotas.GetQuotaPreferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaPreference)
@@ -2295,6 +2472,64 @@ def test_get_quota_preference_empty_call():
         type(client.transport.get_quota_preference), "__call__"
     ) as call:
         client.get_quota_preference()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.GetQuotaPreferenceRequest()
+
+
+def test_get_quota_preference_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudquotas.GetQuotaPreferenceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_quota_preference), "__call__"
+    ) as call:
+        client.get_quota_preference(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.GetQuotaPreferenceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_quota_preference_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudQuotasAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_quota_preference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaPreference(
+                name="name_value",
+                etag="etag_value",
+                service="service_value",
+                quota_id="quota_id_value",
+                reconciling=True,
+                justification="justification_value",
+                contact_email="contact_email_value",
+            )
+        )
+        response = await client.get_quota_preference()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudquotas.GetQuotaPreferenceRequest()
@@ -2334,7 +2569,8 @@ async def test_get_quota_preference_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaPreferenceRequest()
+        request = cloudquotas.GetQuotaPreferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaPreference)
@@ -2539,7 +2775,8 @@ def test_create_quota_preference(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest()
+        request = cloudquotas.CreateQuotaPreferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaPreference)
@@ -2565,6 +2802,66 @@ def test_create_quota_preference_empty_call():
         type(client.transport.create_quota_preference), "__call__"
     ) as call:
         client.create_quota_preference()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest()
+
+
+def test_create_quota_preference_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudquotas.CreateQuotaPreferenceRequest(
+        parent="parent_value",
+        quota_preference_id="quota_preference_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_quota_preference), "__call__"
+    ) as call:
+        client.create_quota_preference(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest(
+            parent="parent_value",
+            quota_preference_id="quota_preference_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_quota_preference_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudQuotasAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_quota_preference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaPreference(
+                name="name_value",
+                etag="etag_value",
+                service="service_value",
+                quota_id="quota_id_value",
+                reconciling=True,
+                justification="justification_value",
+                contact_email="contact_email_value",
+            )
+        )
+        response = await client.create_quota_preference()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudquotas.CreateQuotaPreferenceRequest()
@@ -2605,7 +2902,8 @@ async def test_create_quota_preference_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest()
+        request = cloudquotas.CreateQuotaPreferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaPreference)
@@ -2830,7 +3128,8 @@ def test_update_quota_preference(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
+        request = cloudquotas.UpdateQuotaPreferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaPreference)
@@ -2856,6 +3155,60 @@ def test_update_quota_preference_empty_call():
         type(client.transport.update_quota_preference), "__call__"
     ) as call:
         client.update_quota_preference()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
+
+
+def test_update_quota_preference_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudquotas.UpdateQuotaPreferenceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_quota_preference), "__call__"
+    ) as call:
+        client.update_quota_preference(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_quota_preference_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudQuotasAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_quota_preference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaPreference(
+                name="name_value",
+                etag="etag_value",
+                service="service_value",
+                quota_id="quota_id_value",
+                reconciling=True,
+                justification="justification_value",
+                contact_email="contact_email_value",
+            )
+        )
+        response = await client.update_quota_preference()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
@@ -2896,7 +3249,8 @@ async def test_update_quota_preference_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
+        request = cloudquotas.UpdateQuotaPreferenceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.QuotaPreference)

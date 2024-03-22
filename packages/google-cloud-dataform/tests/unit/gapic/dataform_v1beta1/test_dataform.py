@@ -1100,7 +1100,8 @@ def test_list_repositories(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListRepositoriesRequest()
+        request = dataform.ListRepositoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRepositoriesPager)
@@ -1121,6 +1122,65 @@ def test_list_repositories_empty_call():
         type(client.transport.list_repositories), "__call__"
     ) as call:
         client.list_repositories()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListRepositoriesRequest()
+
+
+def test_list_repositories_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ListRepositoriesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_repositories), "__call__"
+    ) as call:
+        client.list_repositories(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListRepositoriesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_repositories_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_repositories), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListRepositoriesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_repositories()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ListRepositoriesRequest()
@@ -1155,7 +1215,8 @@ async def test_list_repositories_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListRepositoriesRequest()
+        request = dataform.ListRepositoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRepositoriesAsyncPager)
@@ -1549,7 +1610,8 @@ def test_get_repository(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetRepositoryRequest()
+        request = dataform.GetRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
@@ -1574,6 +1636,58 @@ def test_get_repository_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
         client.get_repository()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetRepositoryRequest()
+
+
+def test_get_repository_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.GetRepositoryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
+        client.get_repository(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetRepositoryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_repository_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.Repository(
+                name="name_value",
+                display_name="display_name_value",
+                npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+                set_authenticated_user_admin=True,
+                service_account="service_account_value",
+            )
+        )
+        response = await client.get_repository()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.GetRepositoryRequest()
@@ -1609,7 +1723,8 @@ async def test_get_repository_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetRepositoryRequest()
+        request = dataform.GetRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
@@ -1801,7 +1916,8 @@ def test_create_repository(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateRepositoryRequest()
+        request = dataform.CreateRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
@@ -1828,6 +1944,64 @@ def test_create_repository_empty_call():
         type(client.transport.create_repository), "__call__"
     ) as call:
         client.create_repository()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateRepositoryRequest()
+
+
+def test_create_repository_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CreateRepositoryRequest(
+        parent="parent_value",
+        repository_id="repository_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_repository), "__call__"
+    ) as call:
+        client.create_repository(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateRepositoryRequest(
+            parent="parent_value",
+            repository_id="repository_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_repository_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_repository), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.Repository(
+                name="name_value",
+                display_name="display_name_value",
+                npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+                set_authenticated_user_admin=True,
+                service_account="service_account_value",
+            )
+        )
+        response = await client.create_repository()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CreateRepositoryRequest()
@@ -1865,7 +2039,8 @@ async def test_create_repository_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateRepositoryRequest()
+        request = dataform.CreateRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
@@ -2085,7 +2260,8 @@ def test_update_repository(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateRepositoryRequest()
+        request = dataform.UpdateRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
@@ -2112,6 +2288,58 @@ def test_update_repository_empty_call():
         type(client.transport.update_repository), "__call__"
     ) as call:
         client.update_repository()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateRepositoryRequest()
+
+
+def test_update_repository_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.UpdateRepositoryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_repository), "__call__"
+    ) as call:
+        client.update_repository(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateRepositoryRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_repository_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_repository), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.Repository(
+                name="name_value",
+                display_name="display_name_value",
+                npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+                set_authenticated_user_admin=True,
+                service_account="service_account_value",
+            )
+        )
+        response = await client.update_repository()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.UpdateRepositoryRequest()
@@ -2149,7 +2377,8 @@ async def test_update_repository_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateRepositoryRequest()
+        request = dataform.UpdateRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
@@ -2353,7 +2582,8 @@ def test_delete_repository(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteRepositoryRequest()
+        request = dataform.DeleteRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2372,6 +2602,54 @@ def test_delete_repository_empty_call():
         type(client.transport.delete_repository), "__call__"
     ) as call:
         client.delete_repository()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteRepositoryRequest()
+
+
+def test_delete_repository_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.DeleteRepositoryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_repository), "__call__"
+    ) as call:
+        client.delete_repository(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteRepositoryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_repository_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_repository), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_repository()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.DeleteRepositoryRequest()
@@ -2401,7 +2679,8 @@ async def test_delete_repository_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteRepositoryRequest()
+        request = dataform.DeleteRepositoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2587,7 +2866,8 @@ def test_commit_repository_changes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CommitRepositoryChangesRequest()
+        request = dataform.CommitRepositoryChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2606,6 +2886,56 @@ def test_commit_repository_changes_empty_call():
         type(client.transport.commit_repository_changes), "__call__"
     ) as call:
         client.commit_repository_changes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitRepositoryChangesRequest()
+
+
+def test_commit_repository_changes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CommitRepositoryChangesRequest(
+        name="name_value",
+        required_head_commit_sha="required_head_commit_sha_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        client.commit_repository_changes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitRepositoryChangesRequest(
+            name="name_value",
+            required_head_commit_sha="required_head_commit_sha_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_commit_repository_changes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.commit_repository_changes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CommitRepositoryChangesRequest()
@@ -2636,7 +2966,8 @@ async def test_commit_repository_changes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CommitRepositoryChangesRequest()
+        request = dataform.CommitRepositoryChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2740,7 +3071,8 @@ def test_read_repository_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ReadRepositoryFileRequest()
+        request = dataform.ReadRepositoryFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReadRepositoryFileResponse)
@@ -2760,6 +3092,62 @@ def test_read_repository_file_empty_call():
         type(client.transport.read_repository_file), "__call__"
     ) as call:
         client.read_repository_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadRepositoryFileRequest()
+
+
+def test_read_repository_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ReadRepositoryFileRequest(
+        name="name_value",
+        commit_sha="commit_sha_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        client.read_repository_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadRepositoryFileRequest(
+            name="name_value",
+            commit_sha="commit_sha_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_read_repository_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReadRepositoryFileResponse(
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.read_repository_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ReadRepositoryFileRequest()
@@ -2793,7 +3181,8 @@ async def test_read_repository_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ReadRepositoryFileRequest()
+        request = dataform.ReadRepositoryFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReadRepositoryFileResponse)
@@ -2900,7 +3289,8 @@ def test_query_repository_directory_contents(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
+        request = dataform.QueryRepositoryDirectoryContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryRepositoryDirectoryContentsPager)
@@ -2920,6 +3310,64 @@ def test_query_repository_directory_contents_empty_call():
         type(client.transport.query_repository_directory_contents), "__call__"
     ) as call:
         client.query_repository_directory_contents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
+
+
+def test_query_repository_directory_contents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.QueryRepositoryDirectoryContentsRequest(
+        name="name_value",
+        commit_sha="commit_sha_value",
+        path="path_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        client.query_repository_directory_contents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest(
+            name="name_value",
+            commit_sha="commit_sha_value",
+            path="path_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_repository_directory_contents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.query_repository_directory_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
@@ -2954,7 +3402,8 @@ async def test_query_repository_directory_contents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
+        request = dataform.QueryRepositoryDirectoryContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryRepositoryDirectoryContentsAsyncPager)
@@ -3259,7 +3708,8 @@ def test_fetch_repository_history(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchRepositoryHistoryRequest()
+        request = dataform.FetchRepositoryHistoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchRepositoryHistoryPager)
@@ -3279,6 +3729,60 @@ def test_fetch_repository_history_empty_call():
         type(client.transport.fetch_repository_history), "__call__"
     ) as call:
         client.fetch_repository_history()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRepositoryHistoryRequest()
+
+
+def test_fetch_repository_history_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.FetchRepositoryHistoryRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        client.fetch_repository_history(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRepositoryHistoryRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_repository_history_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchRepositoryHistoryResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.fetch_repository_history()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.FetchRepositoryHistoryRequest()
@@ -3312,7 +3816,8 @@ async def test_fetch_repository_history_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchRepositoryHistoryRequest()
+        request = dataform.FetchRepositoryHistoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchRepositoryHistoryAsyncPager)
@@ -3617,7 +4122,8 @@ def test_compute_repository_access_token_status(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
+        request = dataform.ComputeRepositoryAccessTokenStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ComputeRepositoryAccessTokenStatusResponse)
@@ -3640,6 +4146,58 @@ def test_compute_repository_access_token_status_empty_call():
         type(client.transport.compute_repository_access_token_status), "__call__"
     ) as call:
         client.compute_repository_access_token_status()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
+
+
+def test_compute_repository_access_token_status_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ComputeRepositoryAccessTokenStatusRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        client.compute_repository_access_token_status(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_compute_repository_access_token_status_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ComputeRepositoryAccessTokenStatusResponse(
+                token_status=dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND,
+            )
+        )
+        response = await client.compute_repository_access_token_status()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
@@ -3674,7 +4232,8 @@ async def test_compute_repository_access_token_status_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
+        request = dataform.ComputeRepositoryAccessTokenStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ComputeRepositoryAccessTokenStatusResponse)
@@ -3784,7 +4343,8 @@ def test_fetch_remote_branches(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchRemoteBranchesRequest()
+        request = dataform.FetchRemoteBranchesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchRemoteBranchesResponse)
@@ -3804,6 +4364,58 @@ def test_fetch_remote_branches_empty_call():
         type(client.transport.fetch_remote_branches), "__call__"
     ) as call:
         client.fetch_remote_branches()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRemoteBranchesRequest()
+
+
+def test_fetch_remote_branches_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.FetchRemoteBranchesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_remote_branches), "__call__"
+    ) as call:
+        client.fetch_remote_branches(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRemoteBranchesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_remote_branches_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_remote_branches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchRemoteBranchesResponse(
+                branches=["branches_value"],
+            )
+        )
+        response = await client.fetch_remote_branches()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.FetchRemoteBranchesRequest()
@@ -3837,7 +4449,8 @@ async def test_fetch_remote_branches_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchRemoteBranchesRequest()
+        request = dataform.FetchRemoteBranchesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchRemoteBranchesResponse)
@@ -3943,7 +4556,8 @@ def test_list_workspaces(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkspacesRequest()
+        request = dataform.ListWorkspacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesPager)
@@ -3962,6 +4576,61 @@ def test_list_workspaces_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
         client.list_workspaces()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkspacesRequest()
+
+
+def test_list_workspaces_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ListWorkspacesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
+        client.list_workspaces(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkspacesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workspaces_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListWorkspacesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_workspaces()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ListWorkspacesRequest()
@@ -3994,7 +4663,8 @@ async def test_list_workspaces_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkspacesRequest()
+        request = dataform.ListWorkspacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesAsyncPager)
@@ -4368,7 +5038,8 @@ def test_get_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkspaceRequest()
+        request = dataform.GetWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Workspace)
@@ -4386,6 +5057,54 @@ def test_get_workspace_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
         client.get_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkspaceRequest()
+
+
+def test_get_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.GetWorkspaceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
+        client.get_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkspaceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.Workspace(
+                name="name_value",
+            )
+        )
+        response = await client.get_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.GetWorkspaceRequest()
@@ -4417,7 +5136,8 @@ async def test_get_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkspaceRequest()
+        request = dataform.GetWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Workspace)
@@ -4596,7 +5316,8 @@ def test_create_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkspaceRequest()
+        request = dataform.CreateWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Workspace)
@@ -4614,6 +5335,56 @@ def test_create_workspace_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workspace), "__call__") as call:
         client.create_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkspaceRequest()
+
+
+def test_create_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CreateWorkspaceRequest(
+        parent="parent_value",
+        workspace_id="workspace_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_workspace), "__call__") as call:
+        client.create_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkspaceRequest(
+            parent="parent_value",
+            workspace_id="workspace_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_workspace), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.Workspace(
+                name="name_value",
+            )
+        )
+        response = await client.create_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CreateWorkspaceRequest()
@@ -4645,7 +5416,8 @@ async def test_create_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkspaceRequest()
+        request = dataform.CreateWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Workspace)
@@ -4842,7 +5614,8 @@ def test_delete_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkspaceRequest()
+        request = dataform.DeleteWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4859,6 +5632,50 @@ def test_delete_workspace_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workspace), "__call__") as call:
         client.delete_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkspaceRequest()
+
+
+def test_delete_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.DeleteWorkspaceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_workspace), "__call__") as call:
+        client.delete_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkspaceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_workspace), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.DeleteWorkspaceRequest()
@@ -4886,7 +5703,8 @@ async def test_delete_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkspaceRequest()
+        request = dataform.DeleteWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5064,7 +5882,8 @@ def test_install_npm_packages(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.InstallNpmPackagesRequest()
+        request = dataform.InstallNpmPackagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.InstallNpmPackagesResponse)
@@ -5083,6 +5902,56 @@ def test_install_npm_packages_empty_call():
         type(client.transport.install_npm_packages), "__call__"
     ) as call:
         client.install_npm_packages()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.InstallNpmPackagesRequest()
+
+
+def test_install_npm_packages_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.InstallNpmPackagesRequest(
+        workspace="workspace_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.install_npm_packages), "__call__"
+    ) as call:
+        client.install_npm_packages(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.InstallNpmPackagesRequest(
+            workspace="workspace_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_install_npm_packages_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.install_npm_packages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.InstallNpmPackagesResponse()
+        )
+        response = await client.install_npm_packages()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.InstallNpmPackagesRequest()
@@ -5114,7 +5983,8 @@ async def test_install_npm_packages_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.InstallNpmPackagesRequest()
+        request = dataform.InstallNpmPackagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.InstallNpmPackagesResponse)
@@ -5216,7 +6086,8 @@ def test_pull_git_commits(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.PullGitCommitsRequest()
+        request = dataform.PullGitCommitsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5233,6 +6104,52 @@ def test_pull_git_commits_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull_git_commits), "__call__") as call:
         client.pull_git_commits()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.PullGitCommitsRequest()
+
+
+def test_pull_git_commits_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.PullGitCommitsRequest(
+        name="name_value",
+        remote_branch="remote_branch_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pull_git_commits), "__call__") as call:
+        client.pull_git_commits(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.PullGitCommitsRequest(
+            name="name_value",
+            remote_branch="remote_branch_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pull_git_commits_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pull_git_commits), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.pull_git_commits()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.PullGitCommitsRequest()
@@ -5260,7 +6177,8 @@ async def test_pull_git_commits_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.PullGitCommitsRequest()
+        request = dataform.PullGitCommitsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5356,7 +6274,8 @@ def test_push_git_commits(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.PushGitCommitsRequest()
+        request = dataform.PushGitCommitsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5373,6 +6292,52 @@ def test_push_git_commits_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.push_git_commits), "__call__") as call:
         client.push_git_commits()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.PushGitCommitsRequest()
+
+
+def test_push_git_commits_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.PushGitCommitsRequest(
+        name="name_value",
+        remote_branch="remote_branch_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.push_git_commits), "__call__") as call:
+        client.push_git_commits(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.PushGitCommitsRequest(
+            name="name_value",
+            remote_branch="remote_branch_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_push_git_commits_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.push_git_commits), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.push_git_commits()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.PushGitCommitsRequest()
@@ -5400,7 +6365,8 @@ async def test_push_git_commits_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.PushGitCommitsRequest()
+        request = dataform.PushGitCommitsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5498,7 +6464,8 @@ def test_fetch_file_git_statuses(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchFileGitStatusesRequest()
+        request = dataform.FetchFileGitStatusesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchFileGitStatusesResponse)
@@ -5517,6 +6484,56 @@ def test_fetch_file_git_statuses_empty_call():
         type(client.transport.fetch_file_git_statuses), "__call__"
     ) as call:
         client.fetch_file_git_statuses()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchFileGitStatusesRequest()
+
+
+def test_fetch_file_git_statuses_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.FetchFileGitStatusesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_file_git_statuses), "__call__"
+    ) as call:
+        client.fetch_file_git_statuses(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchFileGitStatusesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_file_git_statuses_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_file_git_statuses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchFileGitStatusesResponse()
+        )
+        response = await client.fetch_file_git_statuses()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.FetchFileGitStatusesRequest()
@@ -5548,7 +6565,8 @@ async def test_fetch_file_git_statuses_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchFileGitStatusesRequest()
+        request = dataform.FetchFileGitStatusesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchFileGitStatusesResponse)
@@ -5655,7 +6673,8 @@ def test_fetch_git_ahead_behind(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchGitAheadBehindRequest()
+        request = dataform.FetchGitAheadBehindRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchGitAheadBehindResponse)
@@ -5676,6 +6695,61 @@ def test_fetch_git_ahead_behind_empty_call():
         type(client.transport.fetch_git_ahead_behind), "__call__"
     ) as call:
         client.fetch_git_ahead_behind()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchGitAheadBehindRequest()
+
+
+def test_fetch_git_ahead_behind_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.FetchGitAheadBehindRequest(
+        name="name_value",
+        remote_branch="remote_branch_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_git_ahead_behind), "__call__"
+    ) as call:
+        client.fetch_git_ahead_behind(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchGitAheadBehindRequest(
+            name="name_value",
+            remote_branch="remote_branch_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_git_ahead_behind_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_git_ahead_behind), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchGitAheadBehindResponse(
+                commits_ahead=1358,
+                commits_behind=1477,
+            )
+        )
+        response = await client.fetch_git_ahead_behind()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.FetchGitAheadBehindRequest()
@@ -5710,7 +6784,8 @@ async def test_fetch_git_ahead_behind_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchGitAheadBehindRequest()
+        request = dataform.FetchGitAheadBehindRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchGitAheadBehindResponse)
@@ -5816,7 +6891,8 @@ def test_commit_workspace_changes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CommitWorkspaceChangesRequest()
+        request = dataform.CommitWorkspaceChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5835,6 +6911,56 @@ def test_commit_workspace_changes_empty_call():
         type(client.transport.commit_workspace_changes), "__call__"
     ) as call:
         client.commit_workspace_changes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitWorkspaceChangesRequest()
+
+
+def test_commit_workspace_changes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CommitWorkspaceChangesRequest(
+        name="name_value",
+        commit_message="commit_message_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_workspace_changes), "__call__"
+    ) as call:
+        client.commit_workspace_changes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitWorkspaceChangesRequest(
+            name="name_value",
+            commit_message="commit_message_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_commit_workspace_changes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_workspace_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.commit_workspace_changes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CommitWorkspaceChangesRequest()
@@ -5864,7 +6990,8 @@ async def test_commit_workspace_changes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CommitWorkspaceChangesRequest()
+        request = dataform.CommitWorkspaceChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5966,7 +7093,8 @@ def test_reset_workspace_changes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ResetWorkspaceChangesRequest()
+        request = dataform.ResetWorkspaceChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5985,6 +7113,54 @@ def test_reset_workspace_changes_empty_call():
         type(client.transport.reset_workspace_changes), "__call__"
     ) as call:
         client.reset_workspace_changes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ResetWorkspaceChangesRequest()
+
+
+def test_reset_workspace_changes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ResetWorkspaceChangesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_workspace_changes), "__call__"
+    ) as call:
+        client.reset_workspace_changes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ResetWorkspaceChangesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_workspace_changes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_workspace_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.reset_workspace_changes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ResetWorkspaceChangesRequest()
@@ -6014,7 +7190,8 @@ async def test_reset_workspace_changes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ResetWorkspaceChangesRequest()
+        request = dataform.ResetWorkspaceChangesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6116,7 +7293,8 @@ def test_fetch_file_diff(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchFileDiffRequest()
+        request = dataform.FetchFileDiffRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchFileDiffResponse)
@@ -6134,6 +7312,56 @@ def test_fetch_file_diff_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_file_diff), "__call__") as call:
         client.fetch_file_diff()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchFileDiffRequest()
+
+
+def test_fetch_file_diff_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.FetchFileDiffRequest(
+        workspace="workspace_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_file_diff), "__call__") as call:
+        client.fetch_file_diff(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchFileDiffRequest(
+            workspace="workspace_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_file_diff_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_file_diff), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchFileDiffResponse(
+                formatted_diff="formatted_diff_value",
+            )
+        )
+        response = await client.fetch_file_diff()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.FetchFileDiffRequest()
@@ -6165,7 +7393,8 @@ async def test_fetch_file_diff_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchFileDiffRequest()
+        request = dataform.FetchFileDiffRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchFileDiffResponse)
@@ -6268,7 +7497,8 @@ def test_query_directory_contents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryDirectoryContentsRequest()
+        request = dataform.QueryDirectoryContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryDirectoryContentsPager)
@@ -6288,6 +7518,62 @@ def test_query_directory_contents_empty_call():
         type(client.transport.query_directory_contents), "__call__"
     ) as call:
         client.query_directory_contents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryDirectoryContentsRequest()
+
+
+def test_query_directory_contents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.QueryDirectoryContentsRequest(
+        workspace="workspace_value",
+        path="path_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_directory_contents), "__call__"
+    ) as call:
+        client.query_directory_contents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryDirectoryContentsRequest(
+            workspace="workspace_value",
+            path="path_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_directory_contents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_directory_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.QueryDirectoryContentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.query_directory_contents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.QueryDirectoryContentsRequest()
@@ -6321,7 +7607,8 @@ async def test_query_directory_contents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryDirectoryContentsRequest()
+        request = dataform.QueryDirectoryContentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryDirectoryContentsAsyncPager)
@@ -6622,7 +7909,8 @@ def test_make_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MakeDirectoryRequest()
+        request = dataform.MakeDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MakeDirectoryResponse)
@@ -6639,6 +7927,54 @@ def test_make_directory_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.make_directory), "__call__") as call:
         client.make_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.MakeDirectoryRequest()
+
+
+def test_make_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.MakeDirectoryRequest(
+        workspace="workspace_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.make_directory), "__call__") as call:
+        client.make_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.MakeDirectoryRequest(
+            workspace="workspace_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_make_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.make_directory), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.MakeDirectoryResponse()
+        )
+        response = await client.make_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.MakeDirectoryRequest()
@@ -6668,7 +8004,8 @@ async def test_make_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MakeDirectoryRequest()
+        request = dataform.MakeDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MakeDirectoryResponse)
@@ -6766,7 +8103,8 @@ def test_remove_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.RemoveDirectoryRequest()
+        request = dataform.RemoveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6783,6 +8121,52 @@ def test_remove_directory_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_directory), "__call__") as call:
         client.remove_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.RemoveDirectoryRequest()
+
+
+def test_remove_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.RemoveDirectoryRequest(
+        workspace="workspace_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.remove_directory), "__call__") as call:
+        client.remove_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.RemoveDirectoryRequest(
+            workspace="workspace_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_remove_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.remove_directory), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.remove_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.RemoveDirectoryRequest()
@@ -6810,7 +8194,8 @@ async def test_remove_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.RemoveDirectoryRequest()
+        request = dataform.RemoveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6906,7 +8291,8 @@ def test_move_directory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveDirectoryRequest()
+        request = dataform.MoveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MoveDirectoryResponse)
@@ -6923,6 +8309,56 @@ def test_move_directory_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_directory), "__call__") as call:
         client.move_directory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.MoveDirectoryRequest()
+
+
+def test_move_directory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.MoveDirectoryRequest(
+        workspace="workspace_value",
+        path="path_value",
+        new_path="new_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_directory), "__call__") as call:
+        client.move_directory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.MoveDirectoryRequest(
+            workspace="workspace_value",
+            path="path_value",
+            new_path="new_path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_move_directory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_directory), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.MoveDirectoryResponse()
+        )
+        response = await client.move_directory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.MoveDirectoryRequest()
@@ -6952,7 +8388,8 @@ async def test_move_directory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveDirectoryRequest()
+        request = dataform.MoveDirectoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MoveDirectoryResponse)
@@ -7052,7 +8489,8 @@ def test_read_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ReadFileRequest()
+        request = dataform.ReadFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReadFileResponse)
@@ -7070,6 +8508,56 @@ def test_read_file_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_file), "__call__") as call:
         client.read_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadFileRequest()
+
+
+def test_read_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ReadFileRequest(
+        workspace="workspace_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.read_file), "__call__") as call:
+        client.read_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadFileRequest(
+            workspace="workspace_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_read_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.read_file), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReadFileResponse(
+                file_contents=b"file_contents_blob",
+            )
+        )
+        response = await client.read_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ReadFileRequest()
@@ -7101,7 +8589,8 @@ async def test_read_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ReadFileRequest()
+        request = dataform.ReadFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReadFileResponse)
@@ -7200,7 +8689,8 @@ def test_remove_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.RemoveFileRequest()
+        request = dataform.RemoveFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7217,6 +8707,52 @@ def test_remove_file_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_file), "__call__") as call:
         client.remove_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.RemoveFileRequest()
+
+
+def test_remove_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.RemoveFileRequest(
+        workspace="workspace_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.remove_file), "__call__") as call:
+        client.remove_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.RemoveFileRequest(
+            workspace="workspace_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_remove_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.remove_file), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.remove_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.RemoveFileRequest()
@@ -7244,7 +8780,8 @@ async def test_remove_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.RemoveFileRequest()
+        request = dataform.RemoveFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7340,7 +8877,8 @@ def test_move_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveFileRequest()
+        request = dataform.MoveFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MoveFileResponse)
@@ -7357,6 +8895,56 @@ def test_move_file_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_file), "__call__") as call:
         client.move_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.MoveFileRequest()
+
+
+def test_move_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.MoveFileRequest(
+        workspace="workspace_value",
+        path="path_value",
+        new_path="new_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_file), "__call__") as call:
+        client.move_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.MoveFileRequest(
+            workspace="workspace_value",
+            path="path_value",
+            new_path="new_path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_move_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_file), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.MoveFileResponse()
+        )
+        response = await client.move_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.MoveFileRequest()
@@ -7386,7 +8974,8 @@ async def test_move_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveFileRequest()
+        request = dataform.MoveFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MoveFileResponse)
@@ -7484,7 +9073,8 @@ def test_write_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.WriteFileRequest()
+        request = dataform.WriteFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WriteFileResponse)
@@ -7501,6 +9091,54 @@ def test_write_file_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_file), "__call__") as call:
         client.write_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.WriteFileRequest()
+
+
+def test_write_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.WriteFileRequest(
+        workspace="workspace_value",
+        path="path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.write_file), "__call__") as call:
+        client.write_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.WriteFileRequest(
+            workspace="workspace_value",
+            path="path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_write_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.write_file), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WriteFileResponse()
+        )
+        response = await client.write_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.WriteFileRequest()
@@ -7530,7 +9168,8 @@ async def test_write_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.WriteFileRequest()
+        request = dataform.WriteFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WriteFileResponse)
@@ -7633,7 +9272,8 @@ def test_list_release_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListReleaseConfigsRequest()
+        request = dataform.ListReleaseConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReleaseConfigsPager)
@@ -7654,6 +9294,61 @@ def test_list_release_configs_empty_call():
         type(client.transport.list_release_configs), "__call__"
     ) as call:
         client.list_release_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListReleaseConfigsRequest()
+
+
+def test_list_release_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ListReleaseConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        client.list_release_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListReleaseConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListReleaseConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_release_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ListReleaseConfigsRequest()
@@ -7688,7 +9383,8 @@ async def test_list_release_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListReleaseConfigsRequest()
+        request = dataform.ListReleaseConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReleaseConfigsAsyncPager)
@@ -8084,7 +9780,8 @@ def test_get_release_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetReleaseConfigRequest()
+        request = dataform.GetReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReleaseConfig)
@@ -8108,6 +9805,62 @@ def test_get_release_config_empty_call():
         type(client.transport.get_release_config), "__call__"
     ) as call:
         client.get_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetReleaseConfigRequest()
+
+
+def test_get_release_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.GetReleaseConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        client.get_release_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetReleaseConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_release_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig(
+                name="name_value",
+                git_commitish="git_commitish_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+                release_compilation_result="release_compilation_result_value",
+            )
+        )
+        response = await client.get_release_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.GetReleaseConfigRequest()
@@ -8145,7 +9898,8 @@ async def test_get_release_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetReleaseConfigRequest()
+        request = dataform.GetReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReleaseConfig)
@@ -8346,7 +10100,8 @@ def test_create_release_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateReleaseConfigRequest()
+        request = dataform.CreateReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReleaseConfig)
@@ -8370,6 +10125,64 @@ def test_create_release_config_empty_call():
         type(client.transport.create_release_config), "__call__"
     ) as call:
         client.create_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateReleaseConfigRequest()
+
+
+def test_create_release_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CreateReleaseConfigRequest(
+        parent="parent_value",
+        release_config_id="release_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        client.create_release_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateReleaseConfigRequest(
+            parent="parent_value",
+            release_config_id="release_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_release_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig(
+                name="name_value",
+                git_commitish="git_commitish_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+                release_compilation_result="release_compilation_result_value",
+            )
+        )
+        response = await client.create_release_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CreateReleaseConfigRequest()
@@ -8407,7 +10220,8 @@ async def test_create_release_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateReleaseConfigRequest()
+        request = dataform.CreateReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReleaseConfig)
@@ -8628,7 +10442,8 @@ def test_update_release_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateReleaseConfigRequest()
+        request = dataform.UpdateReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReleaseConfig)
@@ -8652,6 +10467,58 @@ def test_update_release_config_empty_call():
         type(client.transport.update_release_config), "__call__"
     ) as call:
         client.update_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateReleaseConfigRequest()
+
+
+def test_update_release_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.UpdateReleaseConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        client.update_release_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateReleaseConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_release_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig(
+                name="name_value",
+                git_commitish="git_commitish_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+                release_compilation_result="release_compilation_result_value",
+            )
+        )
+        response = await client.update_release_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.UpdateReleaseConfigRequest()
@@ -8689,7 +10556,8 @@ async def test_update_release_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateReleaseConfigRequest()
+        request = dataform.UpdateReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReleaseConfig)
@@ -8894,7 +10762,8 @@ def test_delete_release_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteReleaseConfigRequest()
+        request = dataform.DeleteReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8913,6 +10782,54 @@ def test_delete_release_config_empty_call():
         type(client.transport.delete_release_config), "__call__"
     ) as call:
         client.delete_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteReleaseConfigRequest()
+
+
+def test_delete_release_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.DeleteReleaseConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        client.delete_release_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteReleaseConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_release_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_release_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.DeleteReleaseConfigRequest()
@@ -8942,7 +10859,8 @@ async def test_delete_release_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteReleaseConfigRequest()
+        request = dataform.DeleteReleaseConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -9131,7 +11049,8 @@ def test_list_compilation_results(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListCompilationResultsRequest()
+        request = dataform.ListCompilationResultsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompilationResultsPager)
@@ -9152,6 +11071,61 @@ def test_list_compilation_results_empty_call():
         type(client.transport.list_compilation_results), "__call__"
     ) as call:
         client.list_compilation_results()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListCompilationResultsRequest()
+
+
+def test_list_compilation_results_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ListCompilationResultsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_compilation_results), "__call__"
+    ) as call:
+        client.list_compilation_results(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListCompilationResultsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_compilation_results_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_compilation_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListCompilationResultsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_compilation_results()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ListCompilationResultsRequest()
@@ -9186,7 +11160,8 @@ async def test_list_compilation_results_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListCompilationResultsRequest()
+        request = dataform.ListCompilationResultsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompilationResultsAsyncPager)
@@ -9581,7 +11556,8 @@ def test_get_compilation_result(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetCompilationResultRequest()
+        request = dataform.GetCompilationResultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
@@ -9603,6 +11579,60 @@ def test_get_compilation_result_empty_call():
         type(client.transport.get_compilation_result), "__call__"
     ) as call:
         client.get_compilation_result()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetCompilationResultRequest()
+
+
+def test_get_compilation_result_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.GetCompilationResultRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_compilation_result), "__call__"
+    ) as call:
+        client.get_compilation_result(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetCompilationResultRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_compilation_result_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_compilation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.CompilationResult(
+                name="name_value",
+                resolved_git_commit_sha="resolved_git_commit_sha_value",
+                dataform_core_version="dataform_core_version_value",
+            )
+        )
+        response = await client.get_compilation_result()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.GetCompilationResultRequest()
@@ -9638,7 +11668,8 @@ async def test_get_compilation_result_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetCompilationResultRequest()
+        request = dataform.GetCompilationResultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
@@ -9836,7 +11867,8 @@ def test_create_compilation_result(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateCompilationResultRequest()
+        request = dataform.CreateCompilationResultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
@@ -9858,6 +11890,60 @@ def test_create_compilation_result_empty_call():
         type(client.transport.create_compilation_result), "__call__"
     ) as call:
         client.create_compilation_result()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateCompilationResultRequest()
+
+
+def test_create_compilation_result_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CreateCompilationResultRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_compilation_result), "__call__"
+    ) as call:
+        client.create_compilation_result(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateCompilationResultRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_compilation_result_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_compilation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.CompilationResult(
+                name="name_value",
+                resolved_git_commit_sha="resolved_git_commit_sha_value",
+                dataform_core_version="dataform_core_version_value",
+            )
+        )
+        response = await client.create_compilation_result()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CreateCompilationResultRequest()
@@ -9894,7 +11980,8 @@ async def test_create_compilation_result_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateCompilationResultRequest()
+        request = dataform.CreateCompilationResultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
@@ -10099,7 +12186,8 @@ def test_query_compilation_result_actions(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryCompilationResultActionsRequest()
+        request = dataform.QueryCompilationResultActionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryCompilationResultActionsPager)
@@ -10119,6 +12207,62 @@ def test_query_compilation_result_actions_empty_call():
         type(client.transport.query_compilation_result_actions), "__call__"
     ) as call:
         client.query_compilation_result_actions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryCompilationResultActionsRequest()
+
+
+def test_query_compilation_result_actions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.QueryCompilationResultActionsRequest(
+        name="name_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_compilation_result_actions), "__call__"
+    ) as call:
+        client.query_compilation_result_actions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryCompilationResultActionsRequest(
+            name="name_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_compilation_result_actions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_compilation_result_actions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.QueryCompilationResultActionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.query_compilation_result_actions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.QueryCompilationResultActionsRequest()
@@ -10153,7 +12297,8 @@ async def test_query_compilation_result_actions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryCompilationResultActionsRequest()
+        request = dataform.QueryCompilationResultActionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryCompilationResultActionsAsyncPager)
@@ -10459,7 +12604,8 @@ def test_list_workflow_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkflowConfigsRequest()
+        request = dataform.ListWorkflowConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowConfigsPager)
@@ -10480,6 +12626,61 @@ def test_list_workflow_configs_empty_call():
         type(client.transport.list_workflow_configs), "__call__"
     ) as call:
         client.list_workflow_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowConfigsRequest()
+
+
+def test_list_workflow_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ListWorkflowConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        client.list_workflow_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListWorkflowConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_workflow_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ListWorkflowConfigsRequest()
@@ -10514,7 +12715,8 @@ async def test_list_workflow_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkflowConfigsRequest()
+        request = dataform.ListWorkflowConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowConfigsAsyncPager)
@@ -10909,7 +13111,8 @@ def test_get_workflow_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkflowConfigRequest()
+        request = dataform.GetWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowConfig)
@@ -10932,6 +13135,61 @@ def test_get_workflow_config_empty_call():
         type(client.transport.get_workflow_config), "__call__"
     ) as call:
         client.get_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowConfigRequest()
+
+
+def test_get_workflow_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.GetWorkflowConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        client.get_workflow_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig(
+                name="name_value",
+                release_config="release_config_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+            )
+        )
+        response = await client.get_workflow_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.GetWorkflowConfigRequest()
@@ -10968,7 +13226,8 @@ async def test_get_workflow_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkflowConfigRequest()
+        request = dataform.GetWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowConfig)
@@ -11167,7 +13426,8 @@ def test_create_workflow_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkflowConfigRequest()
+        request = dataform.CreateWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowConfig)
@@ -11190,6 +13450,63 @@ def test_create_workflow_config_empty_call():
         type(client.transport.create_workflow_config), "__call__"
     ) as call:
         client.create_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowConfigRequest()
+
+
+def test_create_workflow_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CreateWorkflowConfigRequest(
+        parent="parent_value",
+        workflow_config_id="workflow_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        client.create_workflow_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowConfigRequest(
+            parent="parent_value",
+            workflow_config_id="workflow_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig(
+                name="name_value",
+                release_config="release_config_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+            )
+        )
+        response = await client.create_workflow_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CreateWorkflowConfigRequest()
@@ -11226,7 +13543,8 @@ async def test_create_workflow_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkflowConfigRequest()
+        request = dataform.CreateWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowConfig)
@@ -11445,7 +13763,8 @@ def test_update_workflow_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+        request = dataform.UpdateWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowConfig)
@@ -11468,6 +13787,57 @@ def test_update_workflow_config_empty_call():
         type(client.transport.update_workflow_config), "__call__"
     ) as call:
         client.update_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+
+
+def test_update_workflow_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.UpdateWorkflowConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        client.update_workflow_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig(
+                name="name_value",
+                release_config="release_config_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+            )
+        )
+        response = await client.update_workflow_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.UpdateWorkflowConfigRequest()
@@ -11504,7 +13874,8 @@ async def test_update_workflow_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+        request = dataform.UpdateWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowConfig)
@@ -11708,7 +14079,8 @@ def test_delete_workflow_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkflowConfigRequest()
+        request = dataform.DeleteWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -11727,6 +14099,54 @@ def test_delete_workflow_config_empty_call():
         type(client.transport.delete_workflow_config), "__call__"
     ) as call:
         client.delete_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowConfigRequest()
+
+
+def test_delete_workflow_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.DeleteWorkflowConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        client.delete_workflow_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_workflow_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.DeleteWorkflowConfigRequest()
@@ -11756,7 +14176,8 @@ async def test_delete_workflow_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkflowConfigRequest()
+        request = dataform.DeleteWorkflowConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -11945,7 +14366,8 @@ def test_list_workflow_invocations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkflowInvocationsRequest()
+        request = dataform.ListWorkflowInvocationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowInvocationsPager)
@@ -11966,6 +14388,65 @@ def test_list_workflow_invocations_empty_call():
         type(client.transport.list_workflow_invocations), "__call__"
     ) as call:
         client.list_workflow_invocations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowInvocationsRequest()
+
+
+def test_list_workflow_invocations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.ListWorkflowInvocationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_invocations), "__call__"
+    ) as call:
+        client.list_workflow_invocations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowInvocationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_invocations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_invocations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListWorkflowInvocationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_workflow_invocations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.ListWorkflowInvocationsRequest()
@@ -12001,7 +14482,8 @@ async def test_list_workflow_invocations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkflowInvocationsRequest()
+        request = dataform.ListWorkflowInvocationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowInvocationsAsyncPager)
@@ -12395,7 +14877,8 @@ def test_get_workflow_invocation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkflowInvocationRequest()
+        request = dataform.GetWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
@@ -12416,6 +14899,59 @@ def test_get_workflow_invocation_empty_call():
         type(client.transport.get_workflow_invocation), "__call__"
     ) as call:
         client.get_workflow_invocation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowInvocationRequest()
+
+
+def test_get_workflow_invocation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.GetWorkflowInvocationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_invocation), "__call__"
+    ) as call:
+        client.get_workflow_invocation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowInvocationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_invocation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_invocation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowInvocation(
+                name="name_value",
+                state=dataform.WorkflowInvocation.State.RUNNING,
+            )
+        )
+        response = await client.get_workflow_invocation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.GetWorkflowInvocationRequest()
@@ -12450,7 +14986,8 @@ async def test_get_workflow_invocation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkflowInvocationRequest()
+        request = dataform.GetWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
@@ -12646,7 +15183,8 @@ def test_create_workflow_invocation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkflowInvocationRequest()
+        request = dataform.CreateWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
@@ -12667,6 +15205,59 @@ def test_create_workflow_invocation_empty_call():
         type(client.transport.create_workflow_invocation), "__call__"
     ) as call:
         client.create_workflow_invocation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowInvocationRequest()
+
+
+def test_create_workflow_invocation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CreateWorkflowInvocationRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_invocation), "__call__"
+    ) as call:
+        client.create_workflow_invocation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowInvocationRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_invocation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_invocation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowInvocation(
+                name="name_value",
+                state=dataform.WorkflowInvocation.State.RUNNING,
+            )
+        )
+        response = await client.create_workflow_invocation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CreateWorkflowInvocationRequest()
@@ -12702,7 +15293,8 @@ async def test_create_workflow_invocation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkflowInvocationRequest()
+        request = dataform.CreateWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
@@ -12904,7 +15496,8 @@ def test_delete_workflow_invocation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkflowInvocationRequest()
+        request = dataform.DeleteWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -12923,6 +15516,54 @@ def test_delete_workflow_invocation_empty_call():
         type(client.transport.delete_workflow_invocation), "__call__"
     ) as call:
         client.delete_workflow_invocation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowInvocationRequest()
+
+
+def test_delete_workflow_invocation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.DeleteWorkflowInvocationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_invocation), "__call__"
+    ) as call:
+        client.delete_workflow_invocation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowInvocationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_invocation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_invocation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_workflow_invocation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.DeleteWorkflowInvocationRequest()
@@ -12953,7 +15594,8 @@ async def test_delete_workflow_invocation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkflowInvocationRequest()
+        request = dataform.DeleteWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -13139,7 +15781,8 @@ def test_cancel_workflow_invocation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CancelWorkflowInvocationRequest()
+        request = dataform.CancelWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -13158,6 +15801,54 @@ def test_cancel_workflow_invocation_empty_call():
         type(client.transport.cancel_workflow_invocation), "__call__"
     ) as call:
         client.cancel_workflow_invocation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CancelWorkflowInvocationRequest()
+
+
+def test_cancel_workflow_invocation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.CancelWorkflowInvocationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_workflow_invocation), "__call__"
+    ) as call:
+        client.cancel_workflow_invocation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CancelWorkflowInvocationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_workflow_invocation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_workflow_invocation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_workflow_invocation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.CancelWorkflowInvocationRequest()
@@ -13188,7 +15879,8 @@ async def test_cancel_workflow_invocation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CancelWorkflowInvocationRequest()
+        request = dataform.CancelWorkflowInvocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -13292,7 +15984,8 @@ def test_query_workflow_invocation_actions(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryWorkflowInvocationActionsRequest()
+        request = dataform.QueryWorkflowInvocationActionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryWorkflowInvocationActionsPager)
@@ -13312,6 +16005,60 @@ def test_query_workflow_invocation_actions_empty_call():
         type(client.transport.query_workflow_invocation_actions), "__call__"
     ) as call:
         client.query_workflow_invocation_actions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryWorkflowInvocationActionsRequest()
+
+
+def test_query_workflow_invocation_actions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dataform.QueryWorkflowInvocationActionsRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_workflow_invocation_actions), "__call__"
+    ) as call:
+        client.query_workflow_invocation_actions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryWorkflowInvocationActionsRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_workflow_invocation_actions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_workflow_invocation_actions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.QueryWorkflowInvocationActionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.query_workflow_invocation_actions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == dataform.QueryWorkflowInvocationActionsRequest()
@@ -13346,7 +16093,8 @@ async def test_query_workflow_invocation_actions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryWorkflowInvocationActionsRequest()
+        request = dataform.QueryWorkflowInvocationActionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryWorkflowInvocationActionsAsyncPager)

@@ -1095,7 +1095,8 @@ def test_process_open_lineage_run_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ProcessOpenLineageRunEventRequest()
+        request = lineage.ProcessOpenLineageRunEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.ProcessOpenLineageRunEventResponse)
@@ -1117,6 +1118,62 @@ def test_process_open_lineage_run_event_empty_call():
         type(client.transport.process_open_lineage_run_event), "__call__"
     ) as call:
         client.process_open_lineage_run_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ProcessOpenLineageRunEventRequest()
+
+
+def test_process_open_lineage_run_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.ProcessOpenLineageRunEventRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.process_open_lineage_run_event), "__call__"
+    ) as call:
+        client.process_open_lineage_run_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ProcessOpenLineageRunEventRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_process_open_lineage_run_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.process_open_lineage_run_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ProcessOpenLineageRunEventResponse(
+                process="process_value",
+                run="run_value",
+                lineage_events=["lineage_events_value"],
+            )
+        )
+        response = await client.process_open_lineage_run_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.ProcessOpenLineageRunEventRequest()
@@ -1153,7 +1210,8 @@ async def test_process_open_lineage_run_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ProcessOpenLineageRunEventRequest()
+        request = lineage.ProcessOpenLineageRunEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.ProcessOpenLineageRunEventResponse)
@@ -1393,7 +1451,8 @@ def test_create_process(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateProcessRequest()
+        request = lineage.CreateProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Process)
@@ -1412,6 +1471,57 @@ def test_create_process_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_process), "__call__") as call:
         client.create_process()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.CreateProcessRequest()
+
+
+def test_create_process_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.CreateProcessRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
+        client.create_process(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.CreateProcessRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_process_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Process(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_process()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.CreateProcessRequest()
@@ -1444,7 +1554,8 @@ async def test_create_process_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateProcessRequest()
+        request = lineage.CreateProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Process)
@@ -1635,7 +1746,8 @@ def test_update_process(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateProcessRequest()
+        request = lineage.UpdateProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Process)
@@ -1654,6 +1766,51 @@ def test_update_process_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_process), "__call__") as call:
         client.update_process()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.UpdateProcessRequest()
+
+
+def test_update_process_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.UpdateProcessRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
+        client.update_process(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.UpdateProcessRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_process_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Process(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_process()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.UpdateProcessRequest()
@@ -1686,7 +1843,8 @@ async def test_update_process_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateProcessRequest()
+        request = lineage.UpdateProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Process)
@@ -1877,7 +2035,8 @@ def test_get_process(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetProcessRequest()
+        request = lineage.GetProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Process)
@@ -1896,6 +2055,55 @@ def test_get_process_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_process), "__call__") as call:
         client.get_process()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.GetProcessRequest()
+
+
+def test_get_process_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.GetProcessRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
+        client.get_process(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.GetProcessRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_process_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Process(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_process()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.GetProcessRequest()
@@ -1928,7 +2136,8 @@ async def test_get_process_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetProcessRequest()
+        request = lineage.GetProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Process)
@@ -2108,7 +2317,8 @@ def test_list_processes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListProcessesRequest()
+        request = lineage.ListProcessesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessesPager)
@@ -2126,6 +2336,56 @@ def test_list_processes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
         client.list_processes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ListProcessesRequest()
+
+
+def test_list_processes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.ListProcessesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
+        client.list_processes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ListProcessesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_processes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ListProcessesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_processes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.ListProcessesRequest()
@@ -2157,7 +2417,8 @@ async def test_list_processes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListProcessesRequest()
+        request = lineage.ListProcessesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessesAsyncPager)
@@ -2528,7 +2789,8 @@ def test_delete_process(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteProcessRequest()
+        request = lineage.DeleteProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2545,6 +2807,52 @@ def test_delete_process_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
         client.delete_process()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.DeleteProcessRequest()
+
+
+def test_delete_process_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.DeleteProcessRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
+        client.delete_process(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.DeleteProcessRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_process_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_process()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.DeleteProcessRequest()
@@ -2574,7 +2882,8 @@ async def test_delete_process_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteProcessRequest()
+        request = lineage.DeleteProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2758,7 +3067,8 @@ def test_create_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateRunRequest()
+        request = lineage.CreateRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Run)
@@ -2778,6 +3088,58 @@ def test_create_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_run), "__call__") as call:
         client.create_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.CreateRunRequest()
+
+
+def test_create_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.CreateRunRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
+        client.create_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.CreateRunRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Run(
+                name="name_value",
+                display_name="display_name_value",
+                state=lineage.Run.State.STARTED,
+            )
+        )
+        response = await client.create_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.CreateRunRequest()
@@ -2811,7 +3173,8 @@ async def test_create_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateRunRequest()
+        request = lineage.CreateRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Run)
@@ -3004,7 +3367,8 @@ def test_update_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateRunRequest()
+        request = lineage.UpdateRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Run)
@@ -3024,6 +3388,52 @@ def test_update_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_run), "__call__") as call:
         client.update_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.UpdateRunRequest()
+
+
+def test_update_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.UpdateRunRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
+        client.update_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.UpdateRunRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Run(
+                name="name_value",
+                display_name="display_name_value",
+                state=lineage.Run.State.STARTED,
+            )
+        )
+        response = await client.update_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.UpdateRunRequest()
@@ -3057,7 +3467,8 @@ async def test_update_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateRunRequest()
+        request = lineage.UpdateRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Run)
@@ -3250,7 +3661,8 @@ def test_get_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetRunRequest()
+        request = lineage.GetRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Run)
@@ -3270,6 +3682,56 @@ def test_get_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_run), "__call__") as call:
         client.get_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.GetRunRequest()
+
+
+def test_get_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.GetRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
+        client.get_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.GetRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Run(
+                name="name_value",
+                display_name="display_name_value",
+                state=lineage.Run.State.STARTED,
+            )
+        )
+        response = await client.get_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.GetRunRequest()
@@ -3303,7 +3765,8 @@ async def test_get_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetRunRequest()
+        request = lineage.GetRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.Run)
@@ -3484,7 +3947,8 @@ def test_list_runs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListRunsRequest()
+        request = lineage.ListRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRunsPager)
@@ -3502,6 +3966,56 @@ def test_list_runs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
         client.list_runs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ListRunsRequest()
+
+
+def test_list_runs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.ListRunsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
+        client.list_runs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ListRunsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_runs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ListRunsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_runs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.ListRunsRequest()
@@ -3533,7 +4047,8 @@ async def test_list_runs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListRunsRequest()
+        request = lineage.ListRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRunsAsyncPager)
@@ -3904,7 +4419,8 @@ def test_delete_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteRunRequest()
+        request = lineage.DeleteRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3921,6 +4437,52 @@ def test_delete_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
         client.delete_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.DeleteRunRequest()
+
+
+def test_delete_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.DeleteRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
+        client.delete_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.DeleteRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.DeleteRunRequest()
@@ -3950,7 +4512,8 @@ async def test_delete_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteRunRequest()
+        request = lineage.DeleteRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4134,7 +4697,8 @@ def test_create_lineage_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateLineageEventRequest()
+        request = lineage.CreateLineageEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.LineageEvent)
@@ -4154,6 +4718,60 @@ def test_create_lineage_event_empty_call():
         type(client.transport.create_lineage_event), "__call__"
     ) as call:
         client.create_lineage_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.CreateLineageEventRequest()
+
+
+def test_create_lineage_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.CreateLineageEventRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_lineage_event), "__call__"
+    ) as call:
+        client.create_lineage_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.CreateLineageEventRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_lineage_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_lineage_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.LineageEvent(
+                name="name_value",
+            )
+        )
+        response = await client.create_lineage_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.CreateLineageEventRequest()
@@ -4187,7 +4805,8 @@ async def test_create_lineage_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateLineageEventRequest()
+        request = lineage.CreateLineageEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.LineageEvent)
@@ -4390,7 +5009,8 @@ def test_get_lineage_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetLineageEventRequest()
+        request = lineage.GetLineageEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.LineageEvent)
@@ -4410,6 +5030,58 @@ def test_get_lineage_event_empty_call():
         type(client.transport.get_lineage_event), "__call__"
     ) as call:
         client.get_lineage_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.GetLineageEventRequest()
+
+
+def test_get_lineage_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.GetLineageEventRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_lineage_event), "__call__"
+    ) as call:
+        client.get_lineage_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.GetLineageEventRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_lineage_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_lineage_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.LineageEvent(
+                name="name_value",
+            )
+        )
+        response = await client.get_lineage_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.GetLineageEventRequest()
@@ -4443,7 +5115,8 @@ async def test_get_lineage_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetLineageEventRequest()
+        request = lineage.GetLineageEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.LineageEvent)
@@ -4636,7 +5309,8 @@ def test_list_lineage_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListLineageEventsRequest()
+        request = lineage.ListLineageEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLineageEventsPager)
@@ -4656,6 +5330,60 @@ def test_list_lineage_events_empty_call():
         type(client.transport.list_lineage_events), "__call__"
     ) as call:
         client.list_lineage_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ListLineageEventsRequest()
+
+
+def test_list_lineage_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.ListLineageEventsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lineage_events), "__call__"
+    ) as call:
+        client.list_lineage_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.ListLineageEventsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_lineage_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lineage_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ListLineageEventsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_lineage_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.ListLineageEventsRequest()
@@ -4689,7 +5417,8 @@ async def test_list_lineage_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListLineageEventsRequest()
+        request = lineage.ListLineageEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLineageEventsAsyncPager)
@@ -5078,7 +5807,8 @@ def test_delete_lineage_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteLineageEventRequest()
+        request = lineage.DeleteLineageEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5097,6 +5827,54 @@ def test_delete_lineage_event_empty_call():
         type(client.transport.delete_lineage_event), "__call__"
     ) as call:
         client.delete_lineage_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.DeleteLineageEventRequest()
+
+
+def test_delete_lineage_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.DeleteLineageEventRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_lineage_event), "__call__"
+    ) as call:
+        client.delete_lineage_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.DeleteLineageEventRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_lineage_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_lineage_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_lineage_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.DeleteLineageEventRequest()
@@ -5126,7 +5904,8 @@ async def test_delete_lineage_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteLineageEventRequest()
+        request = lineage.DeleteLineageEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5312,7 +6091,8 @@ def test_search_links(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.SearchLinksRequest()
+        request = lineage.SearchLinksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchLinksPager)
@@ -5330,6 +6110,56 @@ def test_search_links_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_links), "__call__") as call:
         client.search_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.SearchLinksRequest()
+
+
+def test_search_links_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.SearchLinksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
+        client.search_links(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.SearchLinksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_links_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.SearchLinksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_links()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.SearchLinksRequest()
@@ -5361,7 +6191,8 @@ async def test_search_links_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.SearchLinksRequest()
+        request = lineage.SearchLinksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchLinksAsyncPager)
@@ -5654,7 +6485,8 @@ def test_batch_search_link_processes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.BatchSearchLinkProcessesRequest()
+        request = lineage.BatchSearchLinkProcessesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.BatchSearchLinkProcessesPager)
@@ -5674,6 +6506,60 @@ def test_batch_search_link_processes_empty_call():
         type(client.transport.batch_search_link_processes), "__call__"
     ) as call:
         client.batch_search_link_processes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.BatchSearchLinkProcessesRequest()
+
+
+def test_batch_search_link_processes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = lineage.BatchSearchLinkProcessesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_search_link_processes), "__call__"
+    ) as call:
+        client.batch_search_link_processes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lineage.BatchSearchLinkProcessesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_search_link_processes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LineageAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_search_link_processes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.BatchSearchLinkProcessesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.batch_search_link_processes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == lineage.BatchSearchLinkProcessesRequest()
@@ -5708,7 +6594,8 @@ async def test_batch_search_link_processes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.BatchSearchLinkProcessesRequest()
+        request = lineage.BatchSearchLinkProcessesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.BatchSearchLinkProcessesAsyncPager)

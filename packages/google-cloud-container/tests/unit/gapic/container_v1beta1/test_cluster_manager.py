@@ -1126,7 +1126,8 @@ def test_list_clusters(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListClustersRequest()
+        request = cluster_service.ListClustersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListClustersResponse)
@@ -1144,6 +1145,58 @@ def test_list_clusters_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
         client.list_clusters()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListClustersRequest()
+
+
+def test_list_clusters_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.ListClustersRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
+        client.list_clusters(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListClustersRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_clusters_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.ListClustersResponse(
+                missing_zones=["missing_zones_value"],
+            )
+        )
+        response = await client.list_clusters()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.ListClustersRequest()
@@ -1175,7 +1228,8 @@ async def test_list_clusters_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListClustersRequest()
+        request = cluster_service.ListClustersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListClustersResponse)
@@ -1399,7 +1453,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetClusterRequest()
+        request = cluster_service.GetClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Cluster)
@@ -1448,6 +1503,91 @@ def test_get_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         client.get_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetClusterRequest()
+
+
+def test_get_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.GetClusterRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
+        client.get_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetClusterRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Cluster(
+                name="name_value",
+                description="description_value",
+                initial_node_count=1911,
+                logging_service="logging_service_value",
+                monitoring_service="monitoring_service_value",
+                network="network_value",
+                cluster_ipv4_cidr="cluster_ipv4_cidr_value",
+                subnetwork="subnetwork_value",
+                locations=["locations_value"],
+                enable_kubernetes_alpha=True,
+                label_fingerprint="label_fingerprint_value",
+                private_cluster=True,
+                master_ipv4_cidr_block="master_ipv4_cidr_block_value",
+                self_link="self_link_value",
+                zone="zone_value",
+                endpoint="endpoint_value",
+                initial_cluster_version="initial_cluster_version_value",
+                current_master_version="current_master_version_value",
+                current_node_version="current_node_version_value",
+                create_time="create_time_value",
+                status=cluster_service.Cluster.Status.PROVISIONING,
+                status_message="status_message_value",
+                node_ipv4_cidr_size=1955,
+                services_ipv4_cidr="services_ipv4_cidr_value",
+                instance_group_urls=["instance_group_urls_value"],
+                current_node_count=1936,
+                expire_time="expire_time_value",
+                location="location_value",
+                enable_tpu=True,
+                tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
+                id="id_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.GetClusterRequest()
@@ -1510,7 +1650,8 @@ async def test_get_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetClusterRequest()
+        request = cluster_service.GetClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Cluster)
@@ -1754,7 +1895,8 @@ def test_create_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CreateClusterRequest()
+        request = cluster_service.CreateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -1782,6 +1924,68 @@ def test_create_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
         client.create_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CreateClusterRequest()
+
+
+def test_create_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CreateClusterRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
+        client.create_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CreateClusterRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.create_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.CreateClusterRequest()
@@ -1823,7 +2027,8 @@ async def test_create_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CreateClusterRequest()
+        request = cluster_service.CreateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2046,7 +2251,8 @@ def test_update_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.UpdateClusterRequest()
+        request = cluster_service.UpdateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2074,6 +2280,70 @@ def test_update_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
         client.update_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.UpdateClusterRequest()
+
+
+def test_update_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.UpdateClusterRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
+        client.update_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.UpdateClusterRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.update_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.UpdateClusterRequest()
@@ -2115,7 +2385,8 @@ async def test_update_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.UpdateClusterRequest()
+        request = cluster_service.UpdateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2360,7 +2631,8 @@ def test_update_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.UpdateNodePoolRequest()
+        request = cluster_service.UpdateNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2388,6 +2660,82 @@ def test_update_node_pool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_node_pool), "__call__") as call:
         client.update_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.UpdateNodePoolRequest()
+
+
+def test_update_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.UpdateNodePoolRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        node_version="node_version_value",
+        image_type="image_type_value",
+        name="name_value",
+        etag="etag_value",
+        machine_type="machine_type_value",
+        disk_type="disk_type_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_node_pool), "__call__") as call:
+        client.update_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.UpdateNodePoolRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            node_version="node_version_value",
+            image_type="image_type_value",
+            name="name_value",
+            etag="etag_value",
+            machine_type="machine_type_value",
+            disk_type="disk_type_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_node_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.update_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.UpdateNodePoolRequest()
@@ -2429,7 +2777,8 @@ async def test_update_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.UpdateNodePoolRequest()
+        request = cluster_service.UpdateNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2552,7 +2901,8 @@ def test_set_node_pool_autoscaling(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNodePoolAutoscalingRequest()
+        request = cluster_service.SetNodePoolAutoscalingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2582,6 +2932,76 @@ def test_set_node_pool_autoscaling_empty_call():
         type(client.transport.set_node_pool_autoscaling), "__call__"
     ) as call:
         client.set_node_pool_autoscaling()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNodePoolAutoscalingRequest()
+
+
+def test_set_node_pool_autoscaling_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetNodePoolAutoscalingRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_autoscaling), "__call__"
+    ) as call:
+        client.set_node_pool_autoscaling(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNodePoolAutoscalingRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_node_pool_autoscaling_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_autoscaling), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_node_pool_autoscaling()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetNodePoolAutoscalingRequest()
@@ -2626,7 +3046,8 @@ async def test_set_node_pool_autoscaling_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNodePoolAutoscalingRequest()
+        request = cluster_service.SetNodePoolAutoscalingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2753,7 +3174,8 @@ def test_set_logging_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLoggingServiceRequest()
+        request = cluster_service.SetLoggingServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -2783,6 +3205,76 @@ def test_set_logging_service_empty_call():
         type(client.transport.set_logging_service), "__call__"
     ) as call:
         client.set_logging_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLoggingServiceRequest()
+
+
+def test_set_logging_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetLoggingServiceRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        logging_service="logging_service_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_logging_service), "__call__"
+    ) as call:
+        client.set_logging_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLoggingServiceRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            logging_service="logging_service_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_logging_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_logging_service), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_logging_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetLoggingServiceRequest()
@@ -2827,7 +3319,8 @@ async def test_set_logging_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLoggingServiceRequest()
+        request = cluster_service.SetLoggingServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -3070,7 +3563,8 @@ def test_set_monitoring_service(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetMonitoringServiceRequest()
+        request = cluster_service.SetMonitoringServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -3100,6 +3594,76 @@ def test_set_monitoring_service_empty_call():
         type(client.transport.set_monitoring_service), "__call__"
     ) as call:
         client.set_monitoring_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetMonitoringServiceRequest()
+
+
+def test_set_monitoring_service_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetMonitoringServiceRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        monitoring_service="monitoring_service_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_monitoring_service), "__call__"
+    ) as call:
+        client.set_monitoring_service(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetMonitoringServiceRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            monitoring_service="monitoring_service_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_monitoring_service_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_monitoring_service), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_monitoring_service()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetMonitoringServiceRequest()
@@ -3144,7 +3708,8 @@ async def test_set_monitoring_service_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetMonitoringServiceRequest()
+        request = cluster_service.SetMonitoringServiceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -3387,7 +3952,8 @@ def test_set_addons_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetAddonsConfigRequest()
+        request = cluster_service.SetAddonsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -3417,6 +3983,74 @@ def test_set_addons_config_empty_call():
         type(client.transport.set_addons_config), "__call__"
     ) as call:
         client.set_addons_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetAddonsConfigRequest()
+
+
+def test_set_addons_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetAddonsConfigRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_addons_config), "__call__"
+    ) as call:
+        client.set_addons_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetAddonsConfigRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_addons_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_addons_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_addons_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetAddonsConfigRequest()
@@ -3460,7 +4094,8 @@ async def test_set_addons_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetAddonsConfigRequest()
+        request = cluster_service.SetAddonsConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -3713,7 +4348,8 @@ def test_set_locations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLocationsRequest()
+        request = cluster_service.SetLocationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -3741,6 +4377,70 @@ def test_set_locations_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_locations), "__call__") as call:
         client.set_locations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLocationsRequest()
+
+
+def test_set_locations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetLocationsRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_locations), "__call__") as call:
+        client.set_locations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLocationsRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_locations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_locations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetLocationsRequest()
@@ -3782,7 +4482,8 @@ async def test_set_locations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLocationsRequest()
+        request = cluster_service.SetLocationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4015,7 +4716,8 @@ def test_update_master(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.UpdateMasterRequest()
+        request = cluster_service.UpdateMasterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4043,6 +4745,72 @@ def test_update_master_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_master), "__call__") as call:
         client.update_master()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.UpdateMasterRequest()
+
+
+def test_update_master_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.UpdateMasterRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        master_version="master_version_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_master), "__call__") as call:
+        client.update_master(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.UpdateMasterRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            master_version="master_version_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_master_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_master), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.update_master()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.UpdateMasterRequest()
@@ -4084,7 +4852,8 @@ async def test_update_master_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.UpdateMasterRequest()
+        request = cluster_service.UpdateMasterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4317,7 +5086,8 @@ def test_set_master_auth(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetMasterAuthRequest()
+        request = cluster_service.SetMasterAuthRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4345,6 +5115,70 @@ def test_set_master_auth_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_master_auth), "__call__") as call:
         client.set_master_auth()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetMasterAuthRequest()
+
+
+def test_set_master_auth_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetMasterAuthRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_master_auth), "__call__") as call:
+        client.set_master_auth(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetMasterAuthRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_master_auth_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_master_auth), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_master_auth()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetMasterAuthRequest()
@@ -4386,7 +5220,8 @@ async def test_set_master_auth_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetMasterAuthRequest()
+        request = cluster_service.SetMasterAuthRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4507,7 +5342,8 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.DeleteClusterRequest()
+        request = cluster_service.DeleteClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4535,6 +5371,70 @@ def test_delete_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
         client.delete_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.DeleteClusterRequest()
+
+
+def test_delete_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.DeleteClusterRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
+        client.delete_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.DeleteClusterRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.delete_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.DeleteClusterRequest()
@@ -4576,7 +5476,8 @@ async def test_delete_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.DeleteClusterRequest()
+        request = cluster_service.DeleteClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -4789,7 +5690,8 @@ def test_list_operations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListOperationsRequest()
+        request = cluster_service.ListOperationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListOperationsResponse)
@@ -4807,6 +5709,58 @@ def test_list_operations_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         client.list_operations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListOperationsRequest()
+
+
+def test_list_operations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.ListOperationsRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        client.list_operations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListOperationsRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_operations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.ListOperationsResponse(
+                missing_zones=["missing_zones_value"],
+            )
+        )
+        response = await client.list_operations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.ListOperationsRequest()
@@ -4838,7 +5792,8 @@ async def test_list_operations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListOperationsRequest()
+        request = cluster_service.ListOperationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListOperationsResponse)
@@ -5041,7 +5996,8 @@ def test_get_operation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetOperationRequest()
+        request = cluster_service.GetOperationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -5069,6 +6025,70 @@ def test_get_operation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         client.get_operation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetOperationRequest()
+
+
+def test_get_operation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.GetOperationRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        operation_id="operation_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        client.get_operation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetOperationRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            operation_id="operation_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_operation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.get_operation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.GetOperationRequest()
@@ -5110,7 +6130,8 @@ async def test_get_operation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetOperationRequest()
+        request = cluster_service.GetOperationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -5321,7 +6342,8 @@ def test_cancel_operation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CancelOperationRequest()
+        request = cluster_service.CancelOperationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5338,6 +6360,56 @@ def test_cancel_operation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
         client.cancel_operation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CancelOperationRequest()
+
+
+def test_cancel_operation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CancelOperationRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        operation_id="operation_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        client.cancel_operation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CancelOperationRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            operation_id="operation_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_operation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.CancelOperationRequest()
@@ -5365,7 +6437,8 @@ async def test_cancel_operation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CancelOperationRequest()
+        request = cluster_service.CancelOperationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5569,7 +6642,8 @@ def test_get_server_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetServerConfigRequest()
+        request = cluster_service.GetServerConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ServerConfig)
@@ -5593,6 +6667,66 @@ def test_get_server_config_empty_call():
         type(client.transport.get_server_config), "__call__"
     ) as call:
         client.get_server_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetServerConfigRequest()
+
+
+def test_get_server_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.GetServerConfigRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_server_config), "__call__"
+    ) as call:
+        client.get_server_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetServerConfigRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_server_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_server_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.ServerConfig(
+                default_cluster_version="default_cluster_version_value",
+                valid_node_versions=["valid_node_versions_value"],
+                default_image_type="default_image_type_value",
+                valid_image_types=["valid_image_types_value"],
+                valid_master_versions=["valid_master_versions_value"],
+            )
+        )
+        response = await client.get_server_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.GetServerConfigRequest()
@@ -5630,7 +6764,8 @@ async def test_get_server_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetServerConfigRequest()
+        request = cluster_service.GetServerConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ServerConfig)
@@ -5835,7 +6970,8 @@ def test_get_json_web_keys(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+        request = cluster_service.GetJSONWebKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
@@ -5854,6 +6990,56 @@ def test_get_json_web_keys_empty_call():
         type(client.transport.get_json_web_keys), "__call__"
     ) as call:
         client.get_json_web_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+
+def test_get_json_web_keys_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.GetJSONWebKeysRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        client.get_json_web_keys(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetJSONWebKeysRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.GetJSONWebKeysResponse()
+        )
+        response = await client.get_json_web_keys()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.GetJSONWebKeysRequest()
@@ -5885,7 +7071,8 @@ async def test_get_json_web_keys_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+        request = cluster_service.GetJSONWebKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
@@ -5987,7 +7174,8 @@ def test_list_node_pools(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListNodePoolsRequest()
+        request = cluster_service.ListNodePoolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListNodePoolsResponse)
@@ -6004,6 +7192,58 @@ def test_list_node_pools_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
         client.list_node_pools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListNodePoolsRequest()
+
+
+def test_list_node_pools_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.ListNodePoolsRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
+        client.list_node_pools(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListNodePoolsRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_node_pools_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.ListNodePoolsResponse()
+        )
+        response = await client.list_node_pools()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.ListNodePoolsRequest()
@@ -6033,7 +7273,8 @@ async def test_list_node_pools_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListNodePoolsRequest()
+        request = cluster_service.ListNodePoolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListNodePoolsResponse)
@@ -6244,7 +7485,8 @@ def test_get_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetNodePoolRequest()
+        request = cluster_service.GetNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.NodePool)
@@ -6271,6 +7513,71 @@ def test_get_node_pool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
         client.get_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetNodePoolRequest()
+
+
+def test_get_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.GetNodePoolRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
+        client.get_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.GetNodePoolRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.NodePool(
+                name="name_value",
+                initial_node_count=1911,
+                locations=["locations_value"],
+                self_link="self_link_value",
+                version="version_value",
+                instance_group_urls=["instance_group_urls_value"],
+                status=cluster_service.NodePool.Status.PROVISIONING,
+                status_message="status_message_value",
+                pod_ipv4_cidr_size=1856,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.GetNodePoolRequest()
@@ -6311,7 +7618,8 @@ async def test_get_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.GetNodePoolRequest()
+        request = cluster_service.GetNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.NodePool)
@@ -6543,7 +7851,8 @@ def test_create_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CreateNodePoolRequest()
+        request = cluster_service.CreateNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -6571,6 +7880,70 @@ def test_create_node_pool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
         client.create_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CreateNodePoolRequest()
+
+
+def test_create_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CreateNodePoolRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
+        client.create_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CreateNodePoolRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.create_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.CreateNodePoolRequest()
@@ -6612,7 +7985,8 @@ async def test_create_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CreateNodePoolRequest()
+        request = cluster_service.CreateNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -6845,7 +8219,8 @@ def test_delete_node_pool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.DeleteNodePoolRequest()
+        request = cluster_service.DeleteNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -6873,6 +8248,72 @@ def test_delete_node_pool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
         client.delete_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.DeleteNodePoolRequest()
+
+
+def test_delete_node_pool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.DeleteNodePoolRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
+        client.delete_node_pool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.DeleteNodePoolRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_node_pool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.delete_node_pool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.DeleteNodePoolRequest()
@@ -6914,7 +8355,8 @@ async def test_delete_node_pool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.DeleteNodePoolRequest()
+        request = cluster_service.DeleteNodePoolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -7137,7 +8579,8 @@ def test_complete_node_pool_upgrade(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CompleteNodePoolUpgradeRequest()
+        request = cluster_service.CompleteNodePoolUpgradeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7156,6 +8599,54 @@ def test_complete_node_pool_upgrade_empty_call():
         type(client.transport.complete_node_pool_upgrade), "__call__"
     ) as call:
         client.complete_node_pool_upgrade()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CompleteNodePoolUpgradeRequest()
+
+
+def test_complete_node_pool_upgrade_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CompleteNodePoolUpgradeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_node_pool_upgrade), "__call__"
+    ) as call:
+        client.complete_node_pool_upgrade(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CompleteNodePoolUpgradeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_complete_node_pool_upgrade_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_node_pool_upgrade), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.complete_node_pool_upgrade()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.CompleteNodePoolUpgradeRequest()
@@ -7186,7 +8677,8 @@ async def test_complete_node_pool_upgrade_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CompleteNodePoolUpgradeRequest()
+        request = cluster_service.CompleteNodePoolUpgradeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7300,7 +8792,8 @@ def test_rollback_node_pool_upgrade(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.RollbackNodePoolUpgradeRequest()
+        request = cluster_service.RollbackNodePoolUpgradeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -7330,6 +8823,76 @@ def test_rollback_node_pool_upgrade_empty_call():
         type(client.transport.rollback_node_pool_upgrade), "__call__"
     ) as call:
         client.rollback_node_pool_upgrade()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.RollbackNodePoolUpgradeRequest()
+
+
+def test_rollback_node_pool_upgrade_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.RollbackNodePoolUpgradeRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_node_pool_upgrade), "__call__"
+    ) as call:
+        client.rollback_node_pool_upgrade(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.RollbackNodePoolUpgradeRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_node_pool_upgrade_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_node_pool_upgrade), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.rollback_node_pool_upgrade()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.RollbackNodePoolUpgradeRequest()
@@ -7374,7 +8937,8 @@ async def test_rollback_node_pool_upgrade_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.RollbackNodePoolUpgradeRequest()
+        request = cluster_service.RollbackNodePoolUpgradeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -7617,7 +9181,8 @@ def test_set_node_pool_management(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNodePoolManagementRequest()
+        request = cluster_service.SetNodePoolManagementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -7647,6 +9212,76 @@ def test_set_node_pool_management_empty_call():
         type(client.transport.set_node_pool_management), "__call__"
     ) as call:
         client.set_node_pool_management()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNodePoolManagementRequest()
+
+
+def test_set_node_pool_management_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetNodePoolManagementRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_management), "__call__"
+    ) as call:
+        client.set_node_pool_management(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNodePoolManagementRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_node_pool_management_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_management), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_node_pool_management()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetNodePoolManagementRequest()
@@ -7691,7 +9326,8 @@ async def test_set_node_pool_management_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNodePoolManagementRequest()
+        request = cluster_service.SetNodePoolManagementRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -7942,7 +9578,8 @@ def test_set_labels(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLabelsRequest()
+        request = cluster_service.SetLabelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -7970,6 +9607,72 @@ def test_set_labels_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_labels), "__call__") as call:
         client.set_labels()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLabelsRequest()
+
+
+def test_set_labels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetLabelsRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        label_fingerprint="label_fingerprint_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_labels), "__call__") as call:
+        client.set_labels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLabelsRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            label_fingerprint="label_fingerprint_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_labels_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_labels), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_labels()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetLabelsRequest()
@@ -8011,7 +9714,8 @@ async def test_set_labels_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLabelsRequest()
+        request = cluster_service.SetLabelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -8254,7 +9958,8 @@ def test_set_legacy_abac(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLegacyAbacRequest()
+        request = cluster_service.SetLegacyAbacRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -8282,6 +9987,70 @@ def test_set_legacy_abac_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_legacy_abac), "__call__") as call:
         client.set_legacy_abac()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLegacyAbacRequest()
+
+
+def test_set_legacy_abac_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetLegacyAbacRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_legacy_abac), "__call__") as call:
+        client.set_legacy_abac(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetLegacyAbacRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_legacy_abac_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_legacy_abac), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_legacy_abac()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetLegacyAbacRequest()
@@ -8323,7 +10092,8 @@ async def test_set_legacy_abac_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetLegacyAbacRequest()
+        request = cluster_service.SetLegacyAbacRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -8558,7 +10328,8 @@ def test_start_ip_rotation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.StartIPRotationRequest()
+        request = cluster_service.StartIPRotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -8588,6 +10359,74 @@ def test_start_ip_rotation_empty_call():
         type(client.transport.start_ip_rotation), "__call__"
     ) as call:
         client.start_ip_rotation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.StartIPRotationRequest()
+
+
+def test_start_ip_rotation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.StartIPRotationRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_ip_rotation), "__call__"
+    ) as call:
+        client.start_ip_rotation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.StartIPRotationRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_ip_rotation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_ip_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.start_ip_rotation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.StartIPRotationRequest()
@@ -8631,7 +10470,8 @@ async def test_start_ip_rotation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.StartIPRotationRequest()
+        request = cluster_service.StartIPRotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -8864,7 +10704,8 @@ def test_complete_ip_rotation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CompleteIPRotationRequest()
+        request = cluster_service.CompleteIPRotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -8894,6 +10735,74 @@ def test_complete_ip_rotation_empty_call():
         type(client.transport.complete_ip_rotation), "__call__"
     ) as call:
         client.complete_ip_rotation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CompleteIPRotationRequest()
+
+
+def test_complete_ip_rotation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CompleteIPRotationRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_ip_rotation), "__call__"
+    ) as call:
+        client.complete_ip_rotation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CompleteIPRotationRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_complete_ip_rotation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_ip_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.complete_ip_rotation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.CompleteIPRotationRequest()
@@ -8938,7 +10847,8 @@ async def test_complete_ip_rotation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CompleteIPRotationRequest()
+        request = cluster_service.CompleteIPRotationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -9171,7 +11081,8 @@ def test_set_node_pool_size(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNodePoolSizeRequest()
+        request = cluster_service.SetNodePoolSizeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -9201,6 +11112,76 @@ def test_set_node_pool_size_empty_call():
         type(client.transport.set_node_pool_size), "__call__"
     ) as call:
         client.set_node_pool_size()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNodePoolSizeRequest()
+
+
+def test_set_node_pool_size_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetNodePoolSizeRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        node_pool_id="node_pool_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_size), "__call__"
+    ) as call:
+        client.set_node_pool_size(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNodePoolSizeRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            node_pool_id="node_pool_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_node_pool_size_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_size), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_node_pool_size()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetNodePoolSizeRequest()
@@ -9244,7 +11225,8 @@ async def test_set_node_pool_size_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNodePoolSizeRequest()
+        request = cluster_service.SetNodePoolSizeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -9371,7 +11353,8 @@ def test_set_network_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNetworkPolicyRequest()
+        request = cluster_service.SetNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -9401,6 +11384,74 @@ def test_set_network_policy_empty_call():
         type(client.transport.set_network_policy), "__call__"
     ) as call:
         client.set_network_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNetworkPolicyRequest()
+
+
+def test_set_network_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetNetworkPolicyRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_network_policy), "__call__"
+    ) as call:
+        client.set_network_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetNetworkPolicyRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_network_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_network_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_network_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetNetworkPolicyRequest()
@@ -9445,7 +11496,8 @@ async def test_set_network_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetNetworkPolicyRequest()
+        request = cluster_service.SetNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -9700,7 +11752,8 @@ def test_set_maintenance_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetMaintenancePolicyRequest()
+        request = cluster_service.SetMaintenancePolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -9730,6 +11783,74 @@ def test_set_maintenance_policy_empty_call():
         type(client.transport.set_maintenance_policy), "__call__"
     ) as call:
         client.set_maintenance_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetMaintenancePolicyRequest()
+
+
+def test_set_maintenance_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.SetMaintenancePolicyRequest(
+        project_id="project_id_value",
+        zone="zone_value",
+        cluster_id="cluster_id_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_maintenance_policy), "__call__"
+    ) as call:
+        client.set_maintenance_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.SetMaintenancePolicyRequest(
+            project_id="project_id_value",
+            zone="zone_value",
+            cluster_id="cluster_id_value",
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_maintenance_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_maintenance_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.set_maintenance_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.SetMaintenancePolicyRequest()
@@ -9774,7 +11895,8 @@ async def test_set_maintenance_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.SetMaintenancePolicyRequest()
+        request = cluster_service.SetMaintenancePolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.Operation)
@@ -10043,7 +12165,8 @@ def test_list_usable_subnetworks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListUsableSubnetworksRequest()
+        request = cluster_service.ListUsableSubnetworksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUsableSubnetworksPager)
@@ -10063,6 +12186,62 @@ def test_list_usable_subnetworks_empty_call():
         type(client.transport.list_usable_subnetworks), "__call__"
     ) as call:
         client.list_usable_subnetworks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListUsableSubnetworksRequest()
+
+
+def test_list_usable_subnetworks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.ListUsableSubnetworksRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_subnetworks), "__call__"
+    ) as call:
+        client.list_usable_subnetworks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListUsableSubnetworksRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_usable_subnetworks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_subnetworks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.ListUsableSubnetworksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_usable_subnetworks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.ListUsableSubnetworksRequest()
@@ -10097,7 +12276,8 @@ async def test_list_usable_subnetworks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListUsableSubnetworksRequest()
+        request = cluster_service.ListUsableSubnetworksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUsableSubnetworksAsyncPager)
@@ -10488,7 +12668,8 @@ def test_check_autopilot_compatibility(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
+        request = cluster_service.CheckAutopilotCompatibilityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.CheckAutopilotCompatibilityResponse)
@@ -10508,6 +12689,58 @@ def test_check_autopilot_compatibility_empty_call():
         type(client.transport.check_autopilot_compatibility), "__call__"
     ) as call:
         client.check_autopilot_compatibility()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
+
+
+def test_check_autopilot_compatibility_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CheckAutopilotCompatibilityRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        client.check_autopilot_compatibility(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_check_autopilot_compatibility_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.CheckAutopilotCompatibilityResponse(
+                summary="summary_value",
+            )
+        )
+        response = await client.check_autopilot_compatibility()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
@@ -10542,7 +12775,8 @@ async def test_check_autopilot_compatibility_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
+        request = cluster_service.CheckAutopilotCompatibilityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.CheckAutopilotCompatibilityResponse)
@@ -10647,7 +12881,8 @@ def test_list_locations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListLocationsRequest()
+        request = cluster_service.ListLocationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response.raw_page is response
@@ -10666,6 +12901,54 @@ def test_list_locations_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         client.list_locations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListLocationsRequest()
+
+
+def test_list_locations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.ListLocationsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        client.list_locations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.ListLocationsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_locations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.ListLocationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_locations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cluster_service.ListLocationsRequest()
@@ -10697,7 +12980,8 @@ async def test_list_locations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cluster_service.ListLocationsRequest()
+        request = cluster_service.ListLocationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListLocationsResponse)
