@@ -268,33 +268,57 @@ class TuningTask(proto.Message):
 
 
 class Hyperparameters(proto.Message):
-    r"""Hyperparameters controlling the tuning process.
+    r"""Hyperparameters controlling the tuning process. Read more at
+    https://ai.google.dev/docs/model_tuning_guidance
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        learning_rate (float):
+            Optional. Immutable. The learning rate
+            hyperparameter for tuning. If not set, a default
+            of 0.001 or 0.0002 will be calculated based on
+            the number of training examples.
+
+            This field is a member of `oneof`_ ``learning_rate_option``.
+        learning_rate_multiplier (float):
+            Optional. Immutable. The learning rate multiplier is used to
+            calculate a final learning_rate based on the default
+            (recommended) value. Actual learning rate :=
+            learning_rate_multiplier \* default learning rate Default
+            learning rate is dependent on base model and dataset size.
+            If not set, a default of 1.0 will be used.
+
+            This field is a member of `oneof`_ ``learning_rate_option``.
         epoch_count (int):
             Immutable. The number of training epochs. An
             epoch is one pass through the training data. If
-            not set, a default of 10 will be used.
+            not set, a default of 5 will be used.
 
             This field is a member of `oneof`_ ``_epoch_count``.
         batch_size (int):
             Immutable. The batch size hyperparameter for
-            tuning. If not set, a default of 16 or 64 will
-            be used based on the number of training
-            examples.
+            tuning. If not set, a default of 4 or 16 will be
+            used based on the number of training examples.
 
             This field is a member of `oneof`_ ``_batch_size``.
-        learning_rate (float):
-            Immutable. The learning rate hyperparameter
-            for tuning. If not set, a default of 0.0002 or
-            0.002 will be calculated based on the number of
-            training examples.
-
-            This field is a member of `oneof`_ ``_learning_rate``.
     """
 
+    learning_rate: float = proto.Field(
+        proto.FLOAT,
+        number=16,
+        oneof="learning_rate_option",
+    )
+    learning_rate_multiplier: float = proto.Field(
+        proto.FLOAT,
+        number=17,
+        oneof="learning_rate_option",
+    )
     epoch_count: int = proto.Field(
         proto.INT32,
         number=14,
@@ -303,11 +327,6 @@ class Hyperparameters(proto.Message):
     batch_size: int = proto.Field(
         proto.INT32,
         number=15,
-        optional=True,
-    )
-    learning_rate: float = proto.Field(
-        proto.FLOAT,
-        number=16,
         optional=True,
     )
 

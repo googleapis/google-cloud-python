@@ -4221,9 +4221,10 @@ def test_create_tuned_model_rest(request_type):
                 }
             },
             "hyperparameters": {
+                "learning_rate": 0.1371,
+                "learning_rate_multiplier": 0.2561,
                 "epoch_count": 1175,
                 "batch_size": 1052,
-                "learning_rate": 0.1371,
             },
         },
     }
@@ -4588,9 +4589,10 @@ def test_update_tuned_model_rest(request_type):
                 }
             },
             "hyperparameters": {
+                "learning_rate": 0.1371,
+                "learning_rate_multiplier": 0.2561,
                 "epoch_count": 1175,
                 "batch_size": 1052,
-                "learning_rate": 0.1371,
             },
         },
     }
