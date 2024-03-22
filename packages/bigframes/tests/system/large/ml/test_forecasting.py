@@ -77,3 +77,44 @@ def test_arima_plus_model_fit_summary(time_series_df_default_index, dataset_id):
     assert (
         f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
     )
+
+
+def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):
+    model = forecasting.ARIMAPlus(
+        horizon=100,
+        auto_arima=True,
+        auto_arima_max_order=4,
+        auto_arima_min_order=1,
+        data_frequency="daily",
+        holiday_region="US",
+        clean_spikes_and_dips=False,
+        adjust_step_changes=False,
+        time_series_length_fraction=0.5,
+        min_time_series_length=10,
+        trend_smoothing_window_size=5,
+        decompose_time_series=False,
+    )
+
+    X_train = time_series_df_default_index[["parsed_date"]]
+    y_train = time_series_df_default_index[["total_visits"]]
+    model.fit(X_train, y_train)
+
+    # save, load to ensure configuration was kept
+    reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
+    assert (
+        f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
+    )
+
+    assert reloaded_model.horizon == 100
+    assert reloaded_model.auto_arima is True
+    assert reloaded_model.auto_arima_max_order == 4
+    # TODO(garrettwu): now BQML doesn't populate auto_arima_min_order
+    # assert reloaded_model.auto_arima_min_order == 1
+    assert reloaded_model.data_frequency == "DAILY"
+    assert reloaded_model.holiday_region == "US"
+    assert reloaded_model.clean_spikes_and_dips is False
+    assert reloaded_model.adjust_step_changes is False
+    assert reloaded_model.time_series_length_fraction == 0.5
+    assert reloaded_model.min_time_series_length == 10
+    assert reloaded_model.trend_smoothing_window_size == 5
+    assert reloaded_model.decompose_time_series is False
