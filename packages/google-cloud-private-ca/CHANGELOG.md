@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.10.3...google-cloud-private-ca-v1.11.0) (2024-03-22)
+
+
+### Features
+
+* Add custom subject key identifier field ([3700b53](https://github.com/googleapis/google-cloud-python/commit/3700b53d5bda00fcd1273ad3ec04c5d44178aae1))
+* Add support for fine-grained maximum certificate lifetime controls ([3700b53](https://github.com/googleapis/google-cloud-python/commit/3700b53d5bda00fcd1273ad3ec04c5d44178aae1))
+
+
+### Documentation
+
+* A comment for field `ca_certs` in message `.google.cloud.security.privateca.v1.FetchCaCertsResponse` is changed ([3700b53](https://github.com/googleapis/google-cloud-python/commit/3700b53d5bda00fcd1273ad3ec04c5d44178aae1))
+* A comment for field `subject` in message `.google.cloud.security.privateca.v1.CertificateConfig` is changed ([3700b53](https://github.com/googleapis/google-cloud-python/commit/3700b53d5bda00fcd1273ad3ec04c5d44178aae1))
+* A comment for method `FetchCaCerts` in service `CertificateAuthorityService` is changed ([3700b53](https://github.com/googleapis/google-cloud-python/commit/3700b53d5bda00fcd1273ad3ec04c5d44178aae1))
+
 ## [1.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.10.2...google-cloud-private-ca-v1.10.3) (2024-03-05)
 
 

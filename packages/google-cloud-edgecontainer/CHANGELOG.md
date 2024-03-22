@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.8...google-cloud-edgecontainer-v0.5.9) (2024-03-22)
+
+
+### Features
+
+* add GetServerConfig rpc and message ([d7cc4ae](https://github.com/googleapis/google-cloud-python/commit/d7cc4ae8fed8aaa29f85ba57dbc22f72463d290a))
+* add UpgradeCluster ([d7cc4ae](https://github.com/googleapis/google-cloud-python/commit/d7cc4ae8fed8aaa29f85ba57dbc22f72463d290a))
+
 ## [0.5.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.7...google-cloud-edgecontainer-v0.5.8) (2024-03-05)
 
 
