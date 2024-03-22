@@ -3,4 +3,4 @@ google-cloud-bigquery==3.19.0
 pandas-gbq==0.22.0
 pandas===2.0.3; python_version == '3.8'
 pandas==2.2.1; python_version >= '3.9'
-pyarrow==15.0.1; python_version >= '3.8'
+pyarrow==15.0.2; python_version >= '3.8'
