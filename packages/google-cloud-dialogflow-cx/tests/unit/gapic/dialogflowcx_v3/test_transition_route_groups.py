@@ -1233,7 +1233,8 @@ def test_list_transition_route_groups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest()
+        request = transition_route_group.ListTransitionRouteGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransitionRouteGroupsPager)
@@ -1253,6 +1254,62 @@ def test_list_transition_route_groups_empty_call():
         type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         client.list_transition_route_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest()
+
+
+def test_list_transition_route_groups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransitionRouteGroupsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = transition_route_group.ListTransitionRouteGroupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transition_route_groups), "__call__"
+    ) as call:
+        client.list_transition_route_groups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_transition_route_groups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TransitionRouteGroupsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transition_route_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transition_route_group.ListTransitionRouteGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_transition_route_groups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest()
@@ -1287,7 +1344,8 @@ async def test_list_transition_route_groups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest()
+        request = transition_route_group.ListTransitionRouteGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransitionRouteGroupsAsyncPager)
@@ -1684,7 +1742,8 @@ def test_get_transition_route_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transition_route_group.GetTransitionRouteGroupRequest()
+        request = transition_route_group.GetTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transition_route_group.TransitionRouteGroup)
@@ -1705,6 +1764,61 @@ def test_get_transition_route_group_empty_call():
         type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         client.get_transition_route_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transition_route_group.GetTransitionRouteGroupRequest()
+
+
+def test_get_transition_route_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransitionRouteGroupsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = transition_route_group.GetTransitionRouteGroupRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_transition_route_group), "__call__"
+    ) as call:
+        client.get_transition_route_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transition_route_group.GetTransitionRouteGroupRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_transition_route_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TransitionRouteGroupsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_transition_route_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transition_route_group.TransitionRouteGroup(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_transition_route_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == transition_route_group.GetTransitionRouteGroupRequest()
@@ -1740,7 +1854,8 @@ async def test_get_transition_route_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transition_route_group.GetTransitionRouteGroupRequest()
+        request = transition_route_group.GetTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transition_route_group.TransitionRouteGroup)
@@ -1935,9 +2050,8 @@ def test_create_transition_route_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
-        )
+        request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
@@ -1958,6 +2072,63 @@ def test_create_transition_route_group_empty_call():
         type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         client.create_transition_route_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        )
+
+
+def test_create_transition_route_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransitionRouteGroupsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_transition_route_group), "__call__"
+    ) as call:
+        client.create_transition_route_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_transition_route_group.CreateTransitionRouteGroupRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_transition_route_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TransitionRouteGroupsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_transition_route_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_transition_route_group.TransitionRouteGroup(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_transition_route_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1995,9 +2166,8 @@ async def test_create_transition_route_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
-        )
+        request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
@@ -2210,9 +2380,8 @@ def test_update_transition_route_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
-        )
+        request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
@@ -2233,6 +2402,61 @@ def test_update_transition_route_group_empty_call():
         type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         client.update_transition_route_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        )
+
+
+def test_update_transition_route_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransitionRouteGroupsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_transition_route_group), "__call__"
+    ) as call:
+        client.update_transition_route_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_transition_route_group.UpdateTransitionRouteGroupRequest(
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_transition_route_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TransitionRouteGroupsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_transition_route_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_transition_route_group.TransitionRouteGroup(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_transition_route_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -2270,9 +2494,8 @@ async def test_update_transition_route_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
-        )
+        request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
@@ -2482,7 +2705,8 @@ def test_delete_transition_route_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transition_route_group.DeleteTransitionRouteGroupRequest()
+        request = transition_route_group.DeleteTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2501,6 +2725,54 @@ def test_delete_transition_route_group_empty_call():
         type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         client.delete_transition_route_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transition_route_group.DeleteTransitionRouteGroupRequest()
+
+
+def test_delete_transition_route_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransitionRouteGroupsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = transition_route_group.DeleteTransitionRouteGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transition_route_group), "__call__"
+    ) as call:
+        client.delete_transition_route_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transition_route_group.DeleteTransitionRouteGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_transition_route_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TransitionRouteGroupsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transition_route_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_transition_route_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == transition_route_group.DeleteTransitionRouteGroupRequest()
@@ -2531,7 +2803,8 @@ async def test_delete_transition_route_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transition_route_group.DeleteTransitionRouteGroupRequest()
+        request = transition_route_group.DeleteTransitionRouteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

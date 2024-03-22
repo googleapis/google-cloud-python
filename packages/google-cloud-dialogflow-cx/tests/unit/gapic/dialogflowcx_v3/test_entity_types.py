@@ -1129,7 +1129,8 @@ def test_get_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.GetEntityTypeRequest()
+        request = entity_type.GetEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, entity_type.EntityType)
@@ -1155,6 +1156,61 @@ def test_get_entity_type_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
         client.get_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.GetEntityTypeRequest()
+
+
+def test_get_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = entity_type.GetEntityTypeRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
+        client.get_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.GetEntityTypeRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            entity_type.EntityType(
+                name="name_value",
+                display_name="display_name_value",
+                kind=entity_type.EntityType.Kind.KIND_MAP,
+                auto_expansion_mode=entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+                enable_fuzzy_extraction=True,
+                redact=True,
+            )
+        )
+        response = await client.get_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == entity_type.GetEntityTypeRequest()
@@ -1191,7 +1247,8 @@ async def test_get_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.GetEntityTypeRequest()
+        request = entity_type.GetEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, entity_type.EntityType)
@@ -1389,7 +1446,8 @@ def test_create_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_entity_type.CreateEntityTypeRequest()
+        request = gcdc_entity_type.CreateEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_entity_type.EntityType)
@@ -1417,6 +1475,65 @@ def test_create_entity_type_empty_call():
         type(client.transport.create_entity_type), "__call__"
     ) as call:
         client.create_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_entity_type.CreateEntityTypeRequest()
+
+
+def test_create_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_entity_type.CreateEntityTypeRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_type), "__call__"
+    ) as call:
+        client.create_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_entity_type.CreateEntityTypeRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_entity_type.EntityType(
+                name="name_value",
+                display_name="display_name_value",
+                kind=gcdc_entity_type.EntityType.Kind.KIND_MAP,
+                auto_expansion_mode=gcdc_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+                enable_fuzzy_extraction=True,
+                redact=True,
+            )
+        )
+        response = await client.create_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_entity_type.CreateEntityTypeRequest()
@@ -1456,7 +1573,8 @@ async def test_create_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_entity_type.CreateEntityTypeRequest()
+        request = gcdc_entity_type.CreateEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_entity_type.EntityType)
@@ -1672,7 +1790,8 @@ def test_update_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_entity_type.UpdateEntityTypeRequest()
+        request = gcdc_entity_type.UpdateEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_entity_type.EntityType)
@@ -1700,6 +1819,63 @@ def test_update_entity_type_empty_call():
         type(client.transport.update_entity_type), "__call__"
     ) as call:
         client.update_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_entity_type.UpdateEntityTypeRequest()
+
+
+def test_update_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_entity_type.UpdateEntityTypeRequest(
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entity_type), "__call__"
+    ) as call:
+        client.update_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_entity_type.UpdateEntityTypeRequest(
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_entity_type.EntityType(
+                name="name_value",
+                display_name="display_name_value",
+                kind=gcdc_entity_type.EntityType.Kind.KIND_MAP,
+                auto_expansion_mode=gcdc_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+                enable_fuzzy_extraction=True,
+                redact=True,
+            )
+        )
+        response = await client.update_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_entity_type.UpdateEntityTypeRequest()
@@ -1739,7 +1915,8 @@ async def test_update_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_entity_type.UpdateEntityTypeRequest()
+        request = gcdc_entity_type.UpdateEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_entity_type.EntityType)
@@ -1948,7 +2125,8 @@ def test_delete_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.DeleteEntityTypeRequest()
+        request = entity_type.DeleteEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1967,6 +2145,54 @@ def test_delete_entity_type_empty_call():
         type(client.transport.delete_entity_type), "__call__"
     ) as call:
         client.delete_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.DeleteEntityTypeRequest()
+
+
+def test_delete_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = entity_type.DeleteEntityTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_type), "__call__"
+    ) as call:
+        client.delete_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.DeleteEntityTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == entity_type.DeleteEntityTypeRequest()
@@ -1996,7 +2222,8 @@ async def test_delete_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.DeleteEntityTypeRequest()
+        request = entity_type.DeleteEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2184,7 +2411,8 @@ def test_list_entity_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ListEntityTypesRequest()
+        request = entity_type.ListEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntityTypesPager)
@@ -2204,6 +2432,62 @@ def test_list_entity_types_empty_call():
         type(client.transport.list_entity_types), "__call__"
     ) as call:
         client.list_entity_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.ListEntityTypesRequest()
+
+
+def test_list_entity_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = entity_type.ListEntityTypesRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_types), "__call__"
+    ) as call:
+        client.list_entity_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.ListEntityTypesRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entity_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            entity_type.ListEntityTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entity_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == entity_type.ListEntityTypesRequest()
@@ -2237,7 +2521,8 @@ async def test_list_entity_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ListEntityTypesRequest()
+        request = entity_type.ListEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntityTypesAsyncPager)
@@ -2626,7 +2911,8 @@ def test_export_entity_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ExportEntityTypesRequest()
+        request = entity_type.ExportEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2645,6 +2931,60 @@ def test_export_entity_types_empty_call():
         type(client.transport.export_entity_types), "__call__"
     ) as call:
         client.export_entity_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.ExportEntityTypesRequest()
+
+
+def test_export_entity_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = entity_type.ExportEntityTypesRequest(
+        parent="parent_value",
+        entity_types_uri="entity_types_uri_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_entity_types), "__call__"
+    ) as call:
+        client.export_entity_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.ExportEntityTypesRequest(
+            parent="parent_value",
+            entity_types_uri="entity_types_uri_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_entity_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_entity_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == entity_type.ExportEntityTypesRequest()
@@ -2676,7 +3016,8 @@ async def test_export_entity_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ExportEntityTypesRequest()
+        request = entity_type.ExportEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2780,7 +3121,8 @@ def test_import_entity_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ImportEntityTypesRequest()
+        request = entity_type.ImportEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2799,6 +3141,60 @@ def test_import_entity_types_empty_call():
         type(client.transport.import_entity_types), "__call__"
     ) as call:
         client.import_entity_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.ImportEntityTypesRequest()
+
+
+def test_import_entity_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = entity_type.ImportEntityTypesRequest(
+        parent="parent_value",
+        entity_types_uri="entity_types_uri_value",
+        target_entity_type="target_entity_type_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_entity_types), "__call__"
+    ) as call:
+        client.import_entity_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == entity_type.ImportEntityTypesRequest(
+            parent="parent_value",
+            entity_types_uri="entity_types_uri_value",
+            target_entity_type="target_entity_type_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_entity_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_entity_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == entity_type.ImportEntityTypesRequest()
@@ -2830,7 +3226,8 @@ async def test_import_entity_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ImportEntityTypesRequest()
+        request = entity_type.ImportEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

@@ -1103,7 +1103,8 @@ def test_create_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.CreateFlowRequest()
+        request = gcdc_flow.CreateFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_flow.Flow)
@@ -1124,6 +1125,59 @@ def test_create_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
         client.create_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_flow.CreateFlowRequest()
+
+
+def test_create_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_flow.CreateFlowRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
+        client.create_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_flow.CreateFlowRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_flow.Flow(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+            )
+        )
+        response = await client.create_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_flow.CreateFlowRequest()
@@ -1158,7 +1212,8 @@ async def test_create_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.CreateFlowRequest()
+        request = gcdc_flow.CreateFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_flow.Flow)
@@ -1348,7 +1403,8 @@ def test_delete_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.DeleteFlowRequest()
+        request = flow.DeleteFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1365,6 +1421,50 @@ def test_delete_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
         client.delete_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.DeleteFlowRequest()
+
+
+def test_delete_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.DeleteFlowRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
+        client.delete_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.DeleteFlowRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.DeleteFlowRequest()
@@ -1392,7 +1492,8 @@ async def test_delete_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.DeleteFlowRequest()
+        request = flow.DeleteFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1570,7 +1671,8 @@ def test_list_flows(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ListFlowsRequest()
+        request = flow.ListFlowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFlowsPager)
@@ -1588,6 +1690,58 @@ def test_list_flows_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
         client.list_flows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ListFlowsRequest()
+
+
+def test_list_flows_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.ListFlowsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
+        client.list_flows(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ListFlowsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_flows_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.ListFlowsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_flows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.ListFlowsRequest()
@@ -1619,7 +1773,8 @@ async def test_list_flows_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ListFlowsRequest()
+        request = flow.ListFlowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFlowsAsyncPager)
@@ -1995,7 +2150,8 @@ def test_get_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowRequest()
+        request = flow.GetFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.Flow)
@@ -2016,6 +2172,59 @@ def test_get_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
         client.get_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.GetFlowRequest()
+
+
+def test_get_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.GetFlowRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
+        client.get_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.GetFlowRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.Flow(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+            )
+        )
+        response = await client.get_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.GetFlowRequest()
@@ -2050,7 +2259,8 @@ async def test_get_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowRequest()
+        request = flow.GetFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.Flow)
@@ -2235,7 +2445,8 @@ def test_update_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.UpdateFlowRequest()
+        request = gcdc_flow.UpdateFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_flow.Flow)
@@ -2256,6 +2467,57 @@ def test_update_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
         client.update_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_flow.UpdateFlowRequest()
+
+
+def test_update_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_flow.UpdateFlowRequest(
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
+        client.update_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_flow.UpdateFlowRequest(
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_flow.Flow(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+            )
+        )
+        response = await client.update_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_flow.UpdateFlowRequest()
@@ -2290,7 +2552,8 @@ async def test_update_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.UpdateFlowRequest()
+        request = gcdc_flow.UpdateFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_flow.Flow)
@@ -2480,7 +2743,8 @@ def test_train_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.TrainFlowRequest()
+        request = flow.TrainFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2497,6 +2761,52 @@ def test_train_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
         client.train_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.TrainFlowRequest()
+
+
+def test_train_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.TrainFlowRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
+        client.train_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.TrainFlowRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_train_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.train_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.TrainFlowRequest()
@@ -2526,7 +2836,8 @@ async def test_train_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.TrainFlowRequest()
+        request = flow.TrainFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2708,7 +3019,8 @@ def test_validate_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ValidateFlowRequest()
+        request = flow.ValidateFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.FlowValidationResult)
@@ -2726,6 +3038,56 @@ def test_validate_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
         client.validate_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ValidateFlowRequest()
+
+
+def test_validate_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.ValidateFlowRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        client.validate_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ValidateFlowRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_validate_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult(
+                name="name_value",
+            )
+        )
+        response = await client.validate_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.ValidateFlowRequest()
@@ -2757,7 +3119,8 @@ async def test_validate_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ValidateFlowRequest()
+        request = flow.ValidateFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.FlowValidationResult)
@@ -2860,7 +3223,8 @@ def test_get_flow_validation_result(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowValidationResultRequest()
+        request = flow.GetFlowValidationResultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.FlowValidationResult)
@@ -2880,6 +3244,60 @@ def test_get_flow_validation_result_empty_call():
         type(client.transport.get_flow_validation_result), "__call__"
     ) as call:
         client.get_flow_validation_result()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.GetFlowValidationResultRequest()
+
+
+def test_get_flow_validation_result_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.GetFlowValidationResultRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        client.get_flow_validation_result(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.GetFlowValidationResultRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult(
+                name="name_value",
+            )
+        )
+        response = await client.get_flow_validation_result()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.GetFlowValidationResultRequest()
@@ -2913,7 +3331,8 @@ async def test_get_flow_validation_result_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowValidationResultRequest()
+        request = flow.GetFlowValidationResultRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.FlowValidationResult)
@@ -3102,7 +3521,8 @@ def test_import_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ImportFlowRequest()
+        request = flow.ImportFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3119,6 +3539,54 @@ def test_import_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
         client.import_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ImportFlowRequest()
+
+
+def test_import_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.ImportFlowRequest(
+        parent="parent_value",
+        flow_uri="flow_uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
+        client.import_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ImportFlowRequest(
+            parent="parent_value",
+            flow_uri="flow_uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.ImportFlowRequest()
@@ -3148,7 +3616,8 @@ async def test_import_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ImportFlowRequest()
+        request = flow.ImportFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3246,7 +3715,8 @@ def test_export_flow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ExportFlowRequest()
+        request = flow.ExportFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3263,6 +3733,54 @@ def test_export_flow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
         client.export_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ExportFlowRequest()
+
+
+def test_export_flow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = flow.ExportFlowRequest(
+        name="name_value",
+        flow_uri="flow_uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
+        client.export_flow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == flow.ExportFlowRequest(
+            name="name_value",
+            flow_uri="flow_uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_flow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_flow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == flow.ExportFlowRequest()
@@ -3292,7 +3810,8 @@ async def test_export_flow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ExportFlowRequest()
+        request = flow.ExportFlowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

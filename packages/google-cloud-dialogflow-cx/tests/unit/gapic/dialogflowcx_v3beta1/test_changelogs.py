@@ -1109,7 +1109,8 @@ def test_list_changelogs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == changelog.ListChangelogsRequest()
+        request = changelog.ListChangelogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChangelogsPager)
@@ -1127,6 +1128,58 @@ def test_list_changelogs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_changelogs), "__call__") as call:
         client.list_changelogs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == changelog.ListChangelogsRequest()
+
+
+def test_list_changelogs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChangelogsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = changelog.ListChangelogsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_changelogs), "__call__") as call:
+        client.list_changelogs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == changelog.ListChangelogsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_changelogs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ChangelogsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_changelogs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            changelog.ListChangelogsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_changelogs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == changelog.ListChangelogsRequest()
@@ -1158,7 +1211,8 @@ async def test_list_changelogs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == changelog.ListChangelogsRequest()
+        request = changelog.ListChangelogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChangelogsAsyncPager)
@@ -1537,7 +1591,8 @@ def test_get_changelog(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == changelog.GetChangelogRequest()
+        request = changelog.GetChangelogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, changelog.Changelog)
@@ -1561,6 +1616,60 @@ def test_get_changelog_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_changelog), "__call__") as call:
         client.get_changelog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == changelog.GetChangelogRequest()
+
+
+def test_get_changelog_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChangelogsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = changelog.GetChangelogRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_changelog), "__call__") as call:
+        client.get_changelog(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == changelog.GetChangelogRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_changelog_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ChangelogsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_changelog), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            changelog.Changelog(
+                name="name_value",
+                user_email="user_email_value",
+                display_name="display_name_value",
+                action="action_value",
+                type_="type__value",
+                resource="resource_value",
+                language_code="language_code_value",
+            )
+        )
+        response = await client.get_changelog()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == changelog.GetChangelogRequest()
@@ -1598,7 +1707,8 @@ async def test_get_changelog_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == changelog.GetChangelogRequest()
+        request = changelog.GetChangelogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, changelog.Changelog)
