@@ -63,10 +63,10 @@ class LinearRegression(RegressorMixin, LinearModel):
     the dataset, and the targets predicted by the linear approximation.
 
     Args:
-        optimize_strategy (str, default "normal_equation"):
+        optimize_strategy (str, default "auto_strategy"):
             The strategy to train linear regression models. Possible values are
             "auto_strategy", "batch_gradient_descent", "normal_equation". Default
-            to "normal_equation".
+            to "auto_strategy".
         fit_intercept (bool, default True):
             Default ``True``. Whether to calculate the intercept for this
             model. If set to False, no intercept will be used in calculations

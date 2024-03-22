@@ -184,7 +184,15 @@ def test_logistic_regression_customized_params_fit_score(
     penguins_df_default_index, dataset_id
 ):
     model = bigframes.ml.linear_model.LogisticRegression(
-        fit_intercept=False, class_weights="balanced"
+        fit_intercept=False,
+        class_weights="balanced",
+        l2_reg=0.2,
+        tol=0.02,
+        l1_reg=0.2,
+        max_iterations=30,
+        optimize_strategy="batch_gradient_descent",
+        learn_rate_strategy="constant",
+        learn_rate=0.2,
     )
     df = penguins_df_default_index.dropna()
     X_train = df[
@@ -203,12 +211,12 @@ def test_logistic_regression_customized_params_fit_score(
     result = model.score(X_train, y_train).to_pandas()
     expected = pd.DataFrame(
         {
-            "precision": [0.58483],
-            "recall": [0.586616],
-            "accuracy": [0.877246],
-            "f1_score": [0.58571],
-            "log_loss": [1.032699],
-            "roc_auc": [0.924132],
+            "precision": [0.487],
+            "recall": [0.602],
+            "accuracy": [0.464],
+            "f1_score": [0.379],
+            "log_loss": [0.972],
+            "roc_auc": [0.700],
         },
         dtype="Float64",
     )
@@ -223,5 +231,15 @@ def test_logistic_regression_customized_params_fit_score(
         f"{dataset_id}.temp_configured_logistic_reg_model"
         in reloaded_model._bqml_model.model_name
     )
+    # TODO(garrettwu) optimize_strategy isn't logged in BQML
+    # assert reloaded_model.optimize_strategy == "BATCH_GRADIENT_DESCENT"
     assert reloaded_model.fit_intercept is False
-    assert reloaded_model.class_weights == "balanced"
+    assert reloaded_model.calculate_p_values is False
+    assert reloaded_model.enable_global_explain is False
+    assert reloaded_model.l1_reg == 0.2
+    assert reloaded_model.l2_reg == 0.2
+    assert reloaded_model.ls_init_learn_rate is None
+    assert reloaded_model.max_iterations == 30
+    assert reloaded_model.tol == 0.02
+    assert reloaded_model.learn_rate_strategy == "CONSTANT"
+    assert reloaded_model.learn_rate == 0.2
