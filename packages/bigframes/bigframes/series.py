@@ -109,6 +109,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def name(self) -> blocks.Label:
         return self._name
 
+    @name.setter
+    def name(self, label: blocks.Label):
+        new_block = self._block.with_column_labels([label])
+        self._set_block(new_block)
+
     @property
     def shape(self) -> typing.Tuple[int]:
         return (self._block.shape[0],)

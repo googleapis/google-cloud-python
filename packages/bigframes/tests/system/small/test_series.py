@@ -1667,6 +1667,21 @@ def test_empty_true_memtable(session: bigframes.Session):
     assert bf_result == pd_result
 
 
+def test_series_names(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df["string_col"].copy()
+    bf_result.index.name = "new index name"
+    bf_result.name = "new series name"
+
+    pd_result = scalars_pandas_df["string_col"].copy()
+    pd_result.index.name = "new index name"
+    pd_result.name = "new series name"
+
+    assert pd_result.name == bf_result.name
+    assert pd_result.index.name == bf_result.index.name
+
+
 def test_dtype(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
