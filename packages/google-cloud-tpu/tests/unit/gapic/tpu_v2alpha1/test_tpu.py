@@ -1043,7 +1043,8 @@ def test_list_nodes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListNodesRequest()
+        request = cloud_tpu.ListNodesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodesPager)
@@ -1062,6 +1063,57 @@ def test_list_nodes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
         client.list_nodes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListNodesRequest()
+
+
+def test_list_nodes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.ListNodesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        client.list_nodes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListNodesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListNodesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_nodes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.ListNodesRequest()
@@ -1094,7 +1146,8 @@ async def test_list_nodes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListNodesRequest()
+        request = cloud_tpu.ListNodesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodesAsyncPager)
@@ -1480,7 +1533,8 @@ def test_get_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetNodeRequest()
+        request = cloud_tpu.GetNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.Node)
@@ -1510,6 +1564,66 @@ def test_get_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
         client.get_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetNodeRequest()
+
+
+def test_get_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.GetNodeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        client.get_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetNodeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.Node(
+                name="name_value",
+                description="description_value",
+                accelerator_type="accelerator_type_value",
+                state=cloud_tpu.Node.State.CREATING,
+                health_description="health_description_value",
+                runtime_version="runtime_version_value",
+                cidr_block="cidr_block_value",
+                health=cloud_tpu.Node.Health.HEALTHY,
+                tags=["tags_value"],
+                id=205,
+                api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
+                queued_resource="queued_resource_value",
+                multislice_node=True,
+            )
+        )
+        response = await client.get_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.GetNodeRequest()
@@ -1553,7 +1667,8 @@ async def test_get_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetNodeRequest()
+        request = cloud_tpu.GetNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.Node)
@@ -1742,7 +1857,8 @@ def test_create_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.CreateNodeRequest()
+        request = cloud_tpu.CreateNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1759,6 +1875,56 @@ def test_create_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node), "__call__") as call:
         client.create_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.CreateNodeRequest()
+
+
+def test_create_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.CreateNodeRequest(
+        parent="parent_value",
+        node_id="node_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_node), "__call__") as call:
+        client.create_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.CreateNodeRequest(
+            parent="parent_value",
+            node_id="node_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.CreateNodeRequest()
@@ -1788,7 +1954,8 @@ async def test_create_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.CreateNodeRequest()
+        request = cloud_tpu.CreateNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1988,7 +2155,8 @@ def test_delete_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.DeleteNodeRequest()
+        request = cloud_tpu.DeleteNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2005,6 +2173,54 @@ def test_delete_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
         client.delete_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.DeleteNodeRequest()
+
+
+def test_delete_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.DeleteNodeRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
+        client.delete_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.DeleteNodeRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.DeleteNodeRequest()
@@ -2034,7 +2250,8 @@ async def test_delete_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.DeleteNodeRequest()
+        request = cloud_tpu.DeleteNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2214,7 +2431,8 @@ def test_stop_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.StopNodeRequest()
+        request = cloud_tpu.StopNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2231,6 +2449,52 @@ def test_stop_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_node), "__call__") as call:
         client.stop_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.StopNodeRequest()
+
+
+def test_stop_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.StopNodeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_node), "__call__") as call:
+        client.stop_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.StopNodeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.stop_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.StopNodeRequest()
@@ -2260,7 +2524,8 @@ async def test_stop_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.StopNodeRequest()
+        request = cloud_tpu.StopNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2358,7 +2623,8 @@ def test_start_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.StartNodeRequest()
+        request = cloud_tpu.StartNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2375,6 +2641,52 @@ def test_start_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_node), "__call__") as call:
         client.start_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.StartNodeRequest()
+
+
+def test_start_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.StartNodeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_node), "__call__") as call:
+        client.start_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.StartNodeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.StartNodeRequest()
@@ -2404,7 +2716,8 @@ async def test_start_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.StartNodeRequest()
+        request = cloud_tpu.StartNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2502,7 +2815,8 @@ def test_update_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.UpdateNodeRequest()
+        request = cloud_tpu.UpdateNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2519,6 +2833,48 @@ def test_update_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_node), "__call__") as call:
         client.update_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.UpdateNodeRequest()
+
+
+def test_update_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.UpdateNodeRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_node), "__call__") as call:
+        client.update_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.UpdateNodeRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.UpdateNodeRequest()
@@ -2548,7 +2904,8 @@ async def test_update_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.UpdateNodeRequest()
+        request = cloud_tpu.UpdateNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2743,7 +3100,8 @@ def test_list_queued_resources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListQueuedResourcesRequest()
+        request = cloud_tpu.ListQueuedResourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQueuedResourcesPager)
@@ -2764,6 +3122,61 @@ def test_list_queued_resources_empty_call():
         type(client.transport.list_queued_resources), "__call__"
     ) as call:
         client.list_queued_resources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListQueuedResourcesRequest()
+
+
+def test_list_queued_resources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.ListQueuedResourcesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_queued_resources), "__call__"
+    ) as call:
+        client.list_queued_resources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListQueuedResourcesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_queued_resources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_queued_resources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListQueuedResourcesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_queued_resources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.ListQueuedResourcesRequest()
@@ -2798,7 +3211,8 @@ async def test_list_queued_resources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListQueuedResourcesRequest()
+        request = cloud_tpu.ListQueuedResourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQueuedResourcesAsyncPager)
@@ -3191,7 +3605,8 @@ def test_get_queued_resource(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetQueuedResourceRequest()
+        request = cloud_tpu.GetQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.QueuedResource)
@@ -3212,6 +3627,59 @@ def test_get_queued_resource_empty_call():
         type(client.transport.get_queued_resource), "__call__"
     ) as call:
         client.get_queued_resource()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetQueuedResourceRequest()
+
+
+def test_get_queued_resource_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.GetQueuedResourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_queued_resource), "__call__"
+    ) as call:
+        client.get_queued_resource(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetQueuedResourceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_queued_resource_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.QueuedResource(
+                name="name_value",
+                reservation_name="reservation_name_value",
+            )
+        )
+        response = await client.get_queued_resource()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.GetQueuedResourceRequest()
@@ -3246,7 +3714,8 @@ async def test_get_queued_resource_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetQueuedResourceRequest()
+        request = cloud_tpu.GetQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.QueuedResource)
@@ -3438,7 +3907,8 @@ def test_create_queued_resource(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.CreateQueuedResourceRequest()
+        request = cloud_tpu.CreateQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3457,6 +3927,60 @@ def test_create_queued_resource_empty_call():
         type(client.transport.create_queued_resource), "__call__"
     ) as call:
         client.create_queued_resource()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.CreateQueuedResourceRequest()
+
+
+def test_create_queued_resource_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.CreateQueuedResourceRequest(
+        parent="parent_value",
+        queued_resource_id="queued_resource_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_queued_resource), "__call__"
+    ) as call:
+        client.create_queued_resource(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.CreateQueuedResourceRequest(
+            parent="parent_value",
+            queued_resource_id="queued_resource_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_queued_resource_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_queued_resource()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.CreateQueuedResourceRequest()
@@ -3488,7 +4012,8 @@ async def test_create_queued_resource_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.CreateQueuedResourceRequest()
+        request = cloud_tpu.CreateQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3698,7 +4223,8 @@ def test_delete_queued_resource(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.DeleteQueuedResourceRequest()
+        request = cloud_tpu.DeleteQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3717,6 +4243,58 @@ def test_delete_queued_resource_empty_call():
         type(client.transport.delete_queued_resource), "__call__"
     ) as call:
         client.delete_queued_resource()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.DeleteQueuedResourceRequest()
+
+
+def test_delete_queued_resource_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.DeleteQueuedResourceRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_queued_resource), "__call__"
+    ) as call:
+        client.delete_queued_resource(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.DeleteQueuedResourceRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_queued_resource_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_queued_resource()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.DeleteQueuedResourceRequest()
@@ -3748,7 +4326,8 @@ async def test_delete_queued_resource_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.DeleteQueuedResourceRequest()
+        request = cloud_tpu.DeleteQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3938,7 +4517,8 @@ def test_reset_queued_resource(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ResetQueuedResourceRequest()
+        request = cloud_tpu.ResetQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3957,6 +4537,56 @@ def test_reset_queued_resource_empty_call():
         type(client.transport.reset_queued_resource), "__call__"
     ) as call:
         client.reset_queued_resource()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ResetQueuedResourceRequest()
+
+
+def test_reset_queued_resource_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.ResetQueuedResourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_queued_resource), "__call__"
+    ) as call:
+        client.reset_queued_resource(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ResetQueuedResourceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_queued_resource_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reset_queued_resource()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.ResetQueuedResourceRequest()
@@ -3988,7 +4618,8 @@ async def test_reset_queued_resource_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ResetQueuedResourceRequest()
+        request = cloud_tpu.ResetQueuedResourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4178,7 +4809,8 @@ def test_generate_service_identity(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GenerateServiceIdentityRequest()
+        request = cloud_tpu.GenerateServiceIdentityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.GenerateServiceIdentityResponse)
@@ -4197,6 +4829,56 @@ def test_generate_service_identity_empty_call():
         type(client.transport.generate_service_identity), "__call__"
     ) as call:
         client.generate_service_identity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GenerateServiceIdentityRequest()
+
+
+def test_generate_service_identity_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.GenerateServiceIdentityRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_service_identity), "__call__"
+    ) as call:
+        client.generate_service_identity(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GenerateServiceIdentityRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_service_identity_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_service_identity), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.GenerateServiceIdentityResponse()
+        )
+        response = await client.generate_service_identity()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.GenerateServiceIdentityRequest()
@@ -4229,7 +4911,8 @@ async def test_generate_service_identity_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GenerateServiceIdentityRequest()
+        request = cloud_tpu.GenerateServiceIdentityRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.GenerateServiceIdentityResponse)
@@ -4336,7 +5019,8 @@ def test_list_accelerator_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListAcceleratorTypesRequest()
+        request = cloud_tpu.ListAcceleratorTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAcceleratorTypesPager)
@@ -4357,6 +5041,65 @@ def test_list_accelerator_types_empty_call():
         type(client.transport.list_accelerator_types), "__call__"
     ) as call:
         client.list_accelerator_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListAcceleratorTypesRequest()
+
+
+def test_list_accelerator_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.ListAcceleratorTypesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_accelerator_types), "__call__"
+    ) as call:
+        client.list_accelerator_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListAcceleratorTypesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_accelerator_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_accelerator_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListAcceleratorTypesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_accelerator_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.ListAcceleratorTypesRequest()
@@ -4391,7 +5134,8 @@ async def test_list_accelerator_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListAcceleratorTypesRequest()
+        request = cloud_tpu.ListAcceleratorTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAcceleratorTypesAsyncPager)
@@ -4784,7 +5528,8 @@ def test_get_accelerator_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetAcceleratorTypeRequest()
+        request = cloud_tpu.GetAcceleratorTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.AcceleratorType)
@@ -4805,6 +5550,59 @@ def test_get_accelerator_type_empty_call():
         type(client.transport.get_accelerator_type), "__call__"
     ) as call:
         client.get_accelerator_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetAcceleratorTypeRequest()
+
+
+def test_get_accelerator_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.GetAcceleratorTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_accelerator_type), "__call__"
+    ) as call:
+        client.get_accelerator_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetAcceleratorTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_accelerator_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_accelerator_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.AcceleratorType(
+                name="name_value",
+                type_="type__value",
+            )
+        )
+        response = await client.get_accelerator_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.GetAcceleratorTypeRequest()
@@ -4839,7 +5637,8 @@ async def test_get_accelerator_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetAcceleratorTypeRequest()
+        request = cloud_tpu.GetAcceleratorTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.AcceleratorType)
@@ -5034,7 +5833,8 @@ def test_list_runtime_versions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListRuntimeVersionsRequest()
+        request = cloud_tpu.ListRuntimeVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuntimeVersionsPager)
@@ -5055,6 +5855,65 @@ def test_list_runtime_versions_empty_call():
         type(client.transport.list_runtime_versions), "__call__"
     ) as call:
         client.list_runtime_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListRuntimeVersionsRequest()
+
+
+def test_list_runtime_versions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.ListRuntimeVersionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_runtime_versions), "__call__"
+    ) as call:
+        client.list_runtime_versions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListRuntimeVersionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_runtime_versions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_runtime_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListRuntimeVersionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_runtime_versions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.ListRuntimeVersionsRequest()
@@ -5089,7 +5948,8 @@ async def test_list_runtime_versions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListRuntimeVersionsRequest()
+        request = cloud_tpu.ListRuntimeVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuntimeVersionsAsyncPager)
@@ -5482,7 +6342,8 @@ def test_get_runtime_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetRuntimeVersionRequest()
+        request = cloud_tpu.GetRuntimeVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.RuntimeVersion)
@@ -5503,6 +6364,59 @@ def test_get_runtime_version_empty_call():
         type(client.transport.get_runtime_version), "__call__"
     ) as call:
         client.get_runtime_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetRuntimeVersionRequest()
+
+
+def test_get_runtime_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.GetRuntimeVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_runtime_version), "__call__"
+    ) as call:
+        client.get_runtime_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetRuntimeVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_runtime_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_runtime_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.RuntimeVersion(
+                name="name_value",
+                version="version_value",
+            )
+        )
+        response = await client.get_runtime_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.GetRuntimeVersionRequest()
@@ -5537,7 +6451,8 @@ async def test_get_runtime_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetRuntimeVersionRequest()
+        request = cloud_tpu.GetRuntimeVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.RuntimeVersion)
@@ -5729,7 +6644,8 @@ def test_get_guest_attributes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetGuestAttributesRequest()
+        request = cloud_tpu.GetGuestAttributesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.GetGuestAttributesResponse)
@@ -5748,6 +6664,58 @@ def test_get_guest_attributes_empty_call():
         type(client.transport.get_guest_attributes), "__call__"
     ) as call:
         client.get_guest_attributes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetGuestAttributesRequest()
+
+
+def test_get_guest_attributes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.GetGuestAttributesRequest(
+        name="name_value",
+        query_path="query_path_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_guest_attributes), "__call__"
+    ) as call:
+        client.get_guest_attributes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.GetGuestAttributesRequest(
+            name="name_value",
+            query_path="query_path_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_guest_attributes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_guest_attributes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.GetGuestAttributesResponse()
+        )
+        response = await client.get_guest_attributes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.GetGuestAttributesRequest()
@@ -5779,7 +6747,8 @@ async def test_get_guest_attributes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetGuestAttributesRequest()
+        request = cloud_tpu.GetGuestAttributesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tpu.GetGuestAttributesResponse)
@@ -5883,7 +6852,8 @@ def test_simulate_maintenance_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.SimulateMaintenanceEventRequest()
+        request = cloud_tpu.SimulateMaintenanceEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5902,6 +6872,56 @@ def test_simulate_maintenance_event_empty_call():
         type(client.transport.simulate_maintenance_event), "__call__"
     ) as call:
         client.simulate_maintenance_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.SimulateMaintenanceEventRequest()
+
+
+def test_simulate_maintenance_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.SimulateMaintenanceEventRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_maintenance_event), "__call__"
+    ) as call:
+        client.simulate_maintenance_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.SimulateMaintenanceEventRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_simulate_maintenance_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_maintenance_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.simulate_maintenance_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tpu.SimulateMaintenanceEventRequest()
@@ -5934,7 +6954,8 @@ async def test_simulate_maintenance_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.SimulateMaintenanceEventRequest()
+        request = cloud_tpu.SimulateMaintenanceEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

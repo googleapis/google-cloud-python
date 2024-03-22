@@ -1114,7 +1114,8 @@ def test_list_workflows(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.ListWorkflowsRequest()
+        request = workflows.ListWorkflowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowsPager)
@@ -1133,6 +1134,61 @@ def test_list_workflows_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
         client.list_workflows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.ListWorkflowsRequest()
+
+
+def test_list_workflows_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WorkflowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = workflows.ListWorkflowsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
+        client.list_workflows(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.ListWorkflowsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workflows_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WorkflowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workflows.ListWorkflowsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_workflows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == workflows.ListWorkflowsRequest()
@@ -1165,7 +1221,8 @@ async def test_list_workflows_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.ListWorkflowsRequest()
+        request = workflows.ListWorkflowsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowsAsyncPager)
@@ -1546,7 +1603,8 @@ def test_get_workflow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.GetWorkflowRequest()
+        request = workflows.GetWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, workflows.Workflow)
@@ -1570,6 +1628,62 @@ def test_get_workflow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
         client.get_workflow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.GetWorkflowRequest()
+
+
+def test_get_workflow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WorkflowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = workflows.GetWorkflowRequest(
+        name="name_value",
+        revision_id="revision_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
+        client.get_workflow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.GetWorkflowRequest(
+            name="name_value",
+            revision_id="revision_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WorkflowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workflows.Workflow(
+                name="name_value",
+                description="description_value",
+                state=workflows.Workflow.State.ACTIVE,
+                revision_id="revision_id_value",
+                service_account="service_account_value",
+                crypto_key_name="crypto_key_name_value",
+                call_log_level=workflows.Workflow.CallLogLevel.LOG_ALL_CALLS,
+            )
+        )
+        response = await client.get_workflow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == workflows.GetWorkflowRequest()
@@ -1607,7 +1721,8 @@ async def test_get_workflow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.GetWorkflowRequest()
+        request = workflows.GetWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, workflows.Workflow)
@@ -1790,7 +1905,8 @@ def test_create_workflow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.CreateWorkflowRequest()
+        request = workflows.CreateWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1807,6 +1923,54 @@ def test_create_workflow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
         client.create_workflow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.CreateWorkflowRequest()
+
+
+def test_create_workflow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WorkflowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = workflows.CreateWorkflowRequest(
+        parent="parent_value",
+        workflow_id="workflow_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
+        client.create_workflow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.CreateWorkflowRequest(
+            parent="parent_value",
+            workflow_id="workflow_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WorkflowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_workflow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == workflows.CreateWorkflowRequest()
@@ -1836,7 +2000,8 @@ async def test_create_workflow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.CreateWorkflowRequest()
+        request = workflows.CreateWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2036,7 +2201,8 @@ def test_delete_workflow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.DeleteWorkflowRequest()
+        request = workflows.DeleteWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2053,6 +2219,52 @@ def test_delete_workflow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
         client.delete_workflow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.DeleteWorkflowRequest()
+
+
+def test_delete_workflow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WorkflowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = workflows.DeleteWorkflowRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
+        client.delete_workflow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.DeleteWorkflowRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WorkflowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_workflow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == workflows.DeleteWorkflowRequest()
@@ -2082,7 +2294,8 @@ async def test_delete_workflow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.DeleteWorkflowRequest()
+        request = workflows.DeleteWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2262,7 +2475,8 @@ def test_update_workflow(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.UpdateWorkflowRequest()
+        request = workflows.UpdateWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2279,6 +2493,48 @@ def test_update_workflow_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
         client.update_workflow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.UpdateWorkflowRequest()
+
+
+def test_update_workflow_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WorkflowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = workflows.UpdateWorkflowRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
+        client.update_workflow(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == workflows.UpdateWorkflowRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WorkflowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_workflow()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == workflows.UpdateWorkflowRequest()
@@ -2308,7 +2564,8 @@ async def test_update_workflow_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.UpdateWorkflowRequest()
+        request = workflows.UpdateWorkflowRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
