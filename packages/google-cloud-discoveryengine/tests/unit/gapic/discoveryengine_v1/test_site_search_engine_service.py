@@ -1234,7 +1234,8 @@ def test_get_site_search_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
+        request = site_search_engine_service.GetSiteSearchEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, site_search_engine.SiteSearchEngine)
@@ -1254,6 +1255,58 @@ def test_get_site_search_engine_empty_call():
         type(client.transport.get_site_search_engine), "__call__"
     ) as call:
         client.get_site_search_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
+
+
+def test_get_site_search_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.GetSiteSearchEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        client.get_site_search_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_site_search_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.SiteSearchEngine(
+                name="name_value",
+            )
+        )
+        response = await client.get_site_search_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
@@ -1288,7 +1341,8 @@ async def test_get_site_search_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
+        request = site_search_engine_service.GetSiteSearchEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, site_search_engine.SiteSearchEngine)
@@ -1479,7 +1533,8 @@ def test_create_target_site(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
+        request = site_search_engine_service.CreateTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1498,6 +1553,56 @@ def test_create_target_site_empty_call():
         type(client.transport.create_target_site), "__call__"
     ) as call:
         client.create_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
+
+
+def test_create_target_site_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.CreateTargetSiteRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        client.create_target_site(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.CreateTargetSiteRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_target_site_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_target_site()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
@@ -1530,7 +1635,8 @@ async def test_create_target_site_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
+        request = site_search_engine_service.CreateTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1730,7 +1836,8 @@ def test_batch_create_target_sites(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
+        request = site_search_engine_service.BatchCreateTargetSitesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1749,6 +1856,56 @@ def test_batch_create_target_sites_empty_call():
         type(client.transport.batch_create_target_sites), "__call__"
     ) as call:
         client.batch_create_target_sites()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
+
+
+def test_batch_create_target_sites_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.BatchCreateTargetSitesRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        client.batch_create_target_sites(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_target_sites_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_create_target_sites()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
@@ -1781,7 +1938,8 @@ async def test_batch_create_target_sites_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
+        request = site_search_engine_service.BatchCreateTargetSitesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1890,7 +2048,8 @@ def test_get_target_site(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.GetTargetSiteRequest()
+        request = site_search_engine_service.GetTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, site_search_engine.TargetSite)
@@ -1915,6 +2074,59 @@ def test_get_target_site_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
         client.get_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetTargetSiteRequest()
+
+
+def test_get_target_site_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.GetTargetSiteRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        client.get_target_site(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetTargetSiteRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_target_site_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.TargetSite(
+                name="name_value",
+                provided_uri_pattern="provided_uri_pattern_value",
+                type_=site_search_engine.TargetSite.Type.INCLUDE,
+                exact_match=True,
+                generated_uri_pattern="generated_uri_pattern_value",
+                indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
+            )
+        )
+        response = await client.get_target_site()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.GetTargetSiteRequest()
@@ -1952,7 +2164,8 @@ async def test_get_target_site_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.GetTargetSiteRequest()
+        request = site_search_engine_service.GetTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, site_search_engine.TargetSite)
@@ -2142,7 +2355,8 @@ def test_update_target_site(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+        request = site_search_engine_service.UpdateTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2161,6 +2375,52 @@ def test_update_target_site_empty_call():
         type(client.transport.update_target_site), "__call__"
     ) as call:
         client.update_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+
+
+def test_update_target_site_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.UpdateTargetSiteRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        client.update_target_site(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_target_site_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_target_site()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
@@ -2193,7 +2453,8 @@ async def test_update_target_site_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+        request = site_search_engine_service.UpdateTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2383,7 +2644,8 @@ def test_delete_target_site(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
+        request = site_search_engine_service.DeleteTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2402,6 +2664,56 @@ def test_delete_target_site_empty_call():
         type(client.transport.delete_target_site), "__call__"
     ) as call:
         client.delete_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
+
+
+def test_delete_target_site_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.DeleteTargetSiteRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        client.delete_target_site(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_target_site_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_target_site()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
@@ -2434,7 +2746,8 @@ async def test_delete_target_site_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
+        request = site_search_engine_service.DeleteTargetSiteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2627,7 +2940,8 @@ def test_list_target_sites(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.ListTargetSitesRequest()
+        request = site_search_engine_service.ListTargetSitesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTargetSitesPager)
@@ -2648,6 +2962,61 @@ def test_list_target_sites_empty_call():
         type(client.transport.list_target_sites), "__call__"
     ) as call:
         client.list_target_sites()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.ListTargetSitesRequest()
+
+
+def test_list_target_sites_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.ListTargetSitesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        client.list_target_sites(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.ListTargetSitesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.ListTargetSitesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_target_sites()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.ListTargetSitesRequest()
@@ -2683,7 +3052,8 @@ async def test_list_target_sites_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.ListTargetSitesRequest()
+        request = site_search_engine_service.ListTargetSitesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTargetSitesAsyncPager)
@@ -3073,7 +3443,8 @@ def test_enable_advanced_site_search(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
+        request = site_search_engine_service.EnableAdvancedSiteSearchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3092,6 +3463,56 @@ def test_enable_advanced_site_search_empty_call():
         type(client.transport.enable_advanced_site_search), "__call__"
     ) as call:
         client.enable_advanced_site_search()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
+
+
+def test_enable_advanced_site_search_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.EnableAdvancedSiteSearchRequest(
+        site_search_engine="site_search_engine_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        client.enable_advanced_site_search(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest(
+            site_search_engine="site_search_engine_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_advanced_site_search_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enable_advanced_site_search()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
@@ -3124,7 +3545,8 @@ async def test_enable_advanced_site_search_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
+        request = site_search_engine_service.EnableAdvancedSiteSearchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3228,7 +3650,8 @@ def test_disable_advanced_site_search(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
+        request = site_search_engine_service.DisableAdvancedSiteSearchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3247,6 +3670,56 @@ def test_disable_advanced_site_search_empty_call():
         type(client.transport.disable_advanced_site_search), "__call__"
     ) as call:
         client.disable_advanced_site_search()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
+
+
+def test_disable_advanced_site_search_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.DisableAdvancedSiteSearchRequest(
+        site_search_engine="site_search_engine_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        client.disable_advanced_site_search(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest(
+            site_search_engine="site_search_engine_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_advanced_site_search_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.disable_advanced_site_search()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
@@ -3279,7 +3752,8 @@ async def test_disable_advanced_site_search_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
+        request = site_search_engine_service.DisableAdvancedSiteSearchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3381,7 +3855,8 @@ def test_recrawl_uris(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.RecrawlUrisRequest()
+        request = site_search_engine_service.RecrawlUrisRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3398,6 +3873,52 @@ def test_recrawl_uris_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recrawl_uris), "__call__") as call:
         client.recrawl_uris()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.RecrawlUrisRequest()
+
+
+def test_recrawl_uris_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.RecrawlUrisRequest(
+        site_search_engine="site_search_engine_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.recrawl_uris), "__call__") as call:
+        client.recrawl_uris(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.RecrawlUrisRequest(
+            site_search_engine="site_search_engine_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_recrawl_uris_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.recrawl_uris), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.recrawl_uris()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.RecrawlUrisRequest()
@@ -3428,7 +3949,8 @@ async def test_recrawl_uris_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.RecrawlUrisRequest()
+        request = site_search_engine_service.RecrawlUrisRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3528,7 +4050,8 @@ def test_batch_verify_target_sites(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
+        request = site_search_engine_service.BatchVerifyTargetSitesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3547,6 +4070,56 @@ def test_batch_verify_target_sites_empty_call():
         type(client.transport.batch_verify_target_sites), "__call__"
     ) as call:
         client.batch_verify_target_sites()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
+
+
+def test_batch_verify_target_sites_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.BatchVerifyTargetSitesRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        client.batch_verify_target_sites(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_verify_target_sites_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_verify_target_sites()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
@@ -3579,7 +4152,8 @@ async def test_batch_verify_target_sites_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
+        request = site_search_engine_service.BatchVerifyTargetSitesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3688,9 +4262,8 @@ def test_fetch_domain_verification_status(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == site_search_engine_service.FetchDomainVerificationStatusRequest()
-        )
+        request = site_search_engine_service.FetchDomainVerificationStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchDomainVerificationStatusPager)
@@ -3711,6 +4284,65 @@ def test_fetch_domain_verification_status_empty_call():
         type(client.transport.fetch_domain_verification_status), "__call__"
     ) as call:
         client.fetch_domain_verification_status()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == site_search_engine_service.FetchDomainVerificationStatusRequest()
+        )
+
+
+def test_fetch_domain_verification_status_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = site_search_engine_service.FetchDomainVerificationStatusRequest(
+        site_search_engine="site_search_engine_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        client.fetch_domain_verification_status(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == site_search_engine_service.FetchDomainVerificationStatusRequest(
+            site_search_engine="site_search_engine_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_domain_verification_status_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.fetch_domain_verification_status()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -3748,9 +4380,8 @@ async def test_fetch_domain_verification_status_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == site_search_engine_service.FetchDomainVerificationStatusRequest()
-        )
+        request = site_search_engine_service.FetchDomainVerificationStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchDomainVerificationStatusAsyncPager)

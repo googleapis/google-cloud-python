@@ -1236,7 +1236,8 @@ def test_create_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_security_settings.CreateSecuritySettingsRequest()
+        request = gcdc_security_settings.CreateSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_security_settings.SecuritySettings)
@@ -1270,6 +1271,66 @@ def test_create_security_settings_empty_call():
         type(client.transport.create_security_settings), "__call__"
     ) as call:
         client.create_security_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_security_settings.CreateSecuritySettingsRequest()
+
+
+def test_create_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecuritySettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_security_settings.CreateSecuritySettingsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_settings), "__call__"
+    ) as call:
+        client.create_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_security_settings.CreateSecuritySettingsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_security_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecuritySettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_security_settings.SecuritySettings(
+                name="name_value",
+                display_name="display_name_value",
+                redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                inspect_template="inspect_template_value",
+                deidentify_template="deidentify_template_value",
+                purge_data_types=[
+                    gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                ],
+            )
+        )
+        response = await client.create_security_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_security_settings.CreateSecuritySettingsRequest()
@@ -1312,7 +1373,8 @@ async def test_create_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_security_settings.CreateSecuritySettingsRequest()
+        request = gcdc_security_settings.CreateSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_security_settings.SecuritySettings)
@@ -1546,7 +1608,8 @@ def test_get_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_settings.GetSecuritySettingsRequest()
+        request = security_settings.GetSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, security_settings.SecuritySettings)
@@ -1580,6 +1643,66 @@ def test_get_security_settings_empty_call():
         type(client.transport.get_security_settings), "__call__"
     ) as call:
         client.get_security_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == security_settings.GetSecuritySettingsRequest()
+
+
+def test_get_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecuritySettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_settings.GetSecuritySettingsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        client.get_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == security_settings.GetSecuritySettingsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_security_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecuritySettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_settings.SecuritySettings(
+                name="name_value",
+                display_name="display_name_value",
+                redaction_strategy=security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                inspect_template="inspect_template_value",
+                deidentify_template="deidentify_template_value",
+                purge_data_types=[
+                    security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                ],
+            )
+        )
+        response = await client.get_security_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == security_settings.GetSecuritySettingsRequest()
@@ -1622,7 +1745,8 @@ async def test_get_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_settings.GetSecuritySettingsRequest()
+        request = security_settings.GetSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, security_settings.SecuritySettings)
@@ -1838,7 +1962,8 @@ def test_update_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_security_settings.SecuritySettings)
@@ -1872,6 +1997,62 @@ def test_update_security_settings_empty_call():
         type(client.transport.update_security_settings), "__call__"
     ) as call:
         client.update_security_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_security_settings.UpdateSecuritySettingsRequest()
+
+
+def test_update_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecuritySettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        client.update_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_security_settings.UpdateSecuritySettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_security_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecuritySettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_security_settings.SecuritySettings(
+                name="name_value",
+                display_name="display_name_value",
+                redaction_strategy=gcdc_security_settings.SecuritySettings.RedactionStrategy.REDACT_WITH_SERVICE,
+                redaction_scope=gcdc_security_settings.SecuritySettings.RedactionScope.REDACT_DISK_STORAGE,
+                inspect_template="inspect_template_value",
+                deidentify_template="deidentify_template_value",
+                purge_data_types=[
+                    gcdc_security_settings.SecuritySettings.PurgeDataType.DIALOGFLOW_HISTORY
+                ],
+            )
+        )
+        response = await client.update_security_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_security_settings.UpdateSecuritySettingsRequest()
@@ -1914,7 +2095,8 @@ async def test_update_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_security_settings.UpdateSecuritySettingsRequest()
+        request = gcdc_security_settings.UpdateSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_security_settings.SecuritySettings)
@@ -2139,7 +2321,8 @@ def test_list_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_settings.ListSecuritySettingsRequest()
+        request = security_settings.ListSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecuritySettingsPager)
@@ -2159,6 +2342,60 @@ def test_list_security_settings_empty_call():
         type(client.transport.list_security_settings), "__call__"
     ) as call:
         client.list_security_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == security_settings.ListSecuritySettingsRequest()
+
+
+def test_list_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecuritySettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_settings.ListSecuritySettingsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_settings), "__call__"
+    ) as call:
+        client.list_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == security_settings.ListSecuritySettingsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_security_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecuritySettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_settings.ListSecuritySettingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_security_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == security_settings.ListSecuritySettingsRequest()
@@ -2193,7 +2430,8 @@ async def test_list_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_settings.ListSecuritySettingsRequest()
+        request = security_settings.ListSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecuritySettingsAsyncPager)
@@ -2582,7 +2820,8 @@ def test_delete_security_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_settings.DeleteSecuritySettingsRequest()
+        request = security_settings.DeleteSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2601,6 +2840,54 @@ def test_delete_security_settings_empty_call():
         type(client.transport.delete_security_settings), "__call__"
     ) as call:
         client.delete_security_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == security_settings.DeleteSecuritySettingsRequest()
+
+
+def test_delete_security_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecuritySettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_settings.DeleteSecuritySettingsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_settings), "__call__"
+    ) as call:
+        client.delete_security_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == security_settings.DeleteSecuritySettingsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_security_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecuritySettingsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_security_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == security_settings.DeleteSecuritySettingsRequest()
@@ -2631,7 +2918,8 @@ async def test_delete_security_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_settings.DeleteSecuritySettingsRequest()
+        request = security_settings.DeleteSecuritySettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

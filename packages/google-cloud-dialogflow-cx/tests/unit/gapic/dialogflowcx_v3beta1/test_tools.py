@@ -1095,7 +1095,8 @@ def test_create_tool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_tool.CreateToolRequest()
+        request = gcdc_tool.CreateToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_tool.Tool)
@@ -1118,6 +1119,59 @@ def test_create_tool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tool), "__call__") as call:
         client.create_tool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_tool.CreateToolRequest()
+
+
+def test_create_tool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ToolsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_tool.CreateToolRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tool), "__call__") as call:
+        client.create_tool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_tool.CreateToolRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_tool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ToolsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_tool.Tool(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                actions=["actions_value"],
+                schemas=["schemas_value"],
+                tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
+            )
+        )
+        response = await client.create_tool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_tool.CreateToolRequest()
@@ -1154,7 +1208,8 @@ async def test_create_tool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_tool.CreateToolRequest()
+        request = gcdc_tool.CreateToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_tool.Tool)
@@ -1348,7 +1403,8 @@ def test_list_tools(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ListToolsRequest()
+        request = tool.ListToolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListToolsPager)
@@ -1366,6 +1422,56 @@ def test_list_tools_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tools), "__call__") as call:
         client.list_tools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.ListToolsRequest()
+
+
+def test_list_tools_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ToolsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tool.ListToolsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tools), "__call__") as call:
+        client.list_tools(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.ListToolsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tools_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ToolsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tool.ListToolsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tools()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tool.ListToolsRequest()
@@ -1397,7 +1503,8 @@ async def test_list_tools_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ListToolsRequest()
+        request = tool.ListToolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListToolsAsyncPager)
@@ -1768,7 +1875,8 @@ def test_export_tools(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ExportToolsRequest()
+        request = tool.ExportToolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1785,6 +1893,54 @@ def test_export_tools_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_tools), "__call__") as call:
         client.export_tools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.ExportToolsRequest()
+
+
+def test_export_tools_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ToolsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tool.ExportToolsRequest(
+        parent="parent_value",
+        tools_uri="tools_uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_tools), "__call__") as call:
+        client.export_tools(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.ExportToolsRequest(
+            parent="parent_value",
+            tools_uri="tools_uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_tools_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ToolsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_tools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_tools()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tool.ExportToolsRequest()
@@ -1814,7 +1970,8 @@ async def test_export_tools_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ExportToolsRequest()
+        request = tool.ExportToolsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1919,7 +2076,8 @@ def test_get_tool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.GetToolRequest()
+        request = tool.GetToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tool.Tool)
@@ -1942,6 +2100,59 @@ def test_get_tool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tool), "__call__") as call:
         client.get_tool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.GetToolRequest()
+
+
+def test_get_tool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ToolsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tool.GetToolRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tool), "__call__") as call:
+        client.get_tool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.GetToolRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_tool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ToolsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tool.Tool(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                actions=["actions_value"],
+                schemas=["schemas_value"],
+                tool_type=tool.Tool.ToolType.CUSTOMIZED_TOOL,
+            )
+        )
+        response = await client.get_tool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tool.GetToolRequest()
@@ -1978,7 +2189,8 @@ async def test_get_tool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.GetToolRequest()
+        request = tool.GetToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tool.Tool)
@@ -2167,7 +2379,8 @@ def test_update_tool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_tool.UpdateToolRequest()
+        request = gcdc_tool.UpdateToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_tool.Tool)
@@ -2190,6 +2403,55 @@ def test_update_tool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tool), "__call__") as call:
         client.update_tool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_tool.UpdateToolRequest()
+
+
+def test_update_tool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ToolsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_tool.UpdateToolRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tool), "__call__") as call:
+        client.update_tool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_tool.UpdateToolRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_tool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ToolsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_tool.Tool(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                actions=["actions_value"],
+                schemas=["schemas_value"],
+                tool_type=gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL,
+            )
+        )
+        response = await client.update_tool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_tool.UpdateToolRequest()
@@ -2226,7 +2488,8 @@ async def test_update_tool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_tool.UpdateToolRequest()
+        request = gcdc_tool.UpdateToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_tool.Tool)
@@ -2418,7 +2681,8 @@ def test_delete_tool(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.DeleteToolRequest()
+        request = tool.DeleteToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2435,6 +2699,50 @@ def test_delete_tool_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tool), "__call__") as call:
         client.delete_tool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.DeleteToolRequest()
+
+
+def test_delete_tool_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ToolsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tool.DeleteToolRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tool), "__call__") as call:
+        client.delete_tool(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tool.DeleteToolRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tool_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ToolsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_tool()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tool.DeleteToolRequest()
@@ -2462,7 +2770,8 @@ async def test_delete_tool_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.DeleteToolRequest()
+        request = tool.DeleteToolRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

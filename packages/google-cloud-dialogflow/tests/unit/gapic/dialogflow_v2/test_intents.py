@@ -1096,7 +1096,8 @@ def test_list_intents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.ListIntentsRequest()
+        request = intent.ListIntentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIntentsPager)
@@ -1114,6 +1115,58 @@ def test_list_intents_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         client.list_intents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.ListIntentsRequest()
+
+
+def test_list_intents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = intent.ListIntentsRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
+        client.list_intents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.ListIntentsRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_intents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            intent.ListIntentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_intents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == intent.ListIntentsRequest()
@@ -1145,7 +1198,8 @@ async def test_list_intents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.ListIntentsRequest()
+        request = intent.ListIntentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIntentsAsyncPager)
@@ -1542,7 +1596,8 @@ def test_get_intent(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.GetIntentRequest()
+        request = intent.GetIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, intent.Intent)
@@ -1576,6 +1631,70 @@ def test_get_intent_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
         client.get_intent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.GetIntentRequest()
+
+
+def test_get_intent_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = intent.GetIntentRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
+        client.get_intent(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.GetIntentRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_intent_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            intent.Intent(
+                name="name_value",
+                display_name="display_name_value",
+                webhook_state=intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED,
+                priority=898,
+                is_fallback=True,
+                ml_disabled=True,
+                live_agent_handoff=True,
+                end_interaction=True,
+                input_context_names=["input_context_names_value"],
+                events=["events_value"],
+                action="action_value",
+                reset_contexts=True,
+                default_response_platforms=[intent.Intent.Message.Platform.FACEBOOK],
+                root_followup_intent_name="root_followup_intent_name_value",
+                parent_followup_intent_name="parent_followup_intent_name_value",
+            )
+        )
+        response = await client.get_intent()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == intent.GetIntentRequest()
@@ -1621,7 +1740,8 @@ async def test_get_intent_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.GetIntentRequest()
+        request = intent.GetIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, intent.Intent)
@@ -1840,7 +1960,8 @@ def test_create_intent(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_intent.CreateIntentRequest()
+        request = gcd_intent.CreateIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_intent.Intent)
@@ -1876,6 +1997,72 @@ def test_create_intent_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
         client.create_intent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_intent.CreateIntentRequest()
+
+
+def test_create_intent_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_intent.CreateIntentRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
+        client.create_intent(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_intent.CreateIntentRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_intent_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_intent.Intent(
+                name="name_value",
+                display_name="display_name_value",
+                webhook_state=gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED,
+                priority=898,
+                is_fallback=True,
+                ml_disabled=True,
+                live_agent_handoff=True,
+                end_interaction=True,
+                input_context_names=["input_context_names_value"],
+                events=["events_value"],
+                action="action_value",
+                reset_contexts=True,
+                default_response_platforms=[
+                    gcd_intent.Intent.Message.Platform.FACEBOOK
+                ],
+                root_followup_intent_name="root_followup_intent_name_value",
+                parent_followup_intent_name="parent_followup_intent_name_value",
+            )
+        )
+        response = await client.create_intent()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_intent.CreateIntentRequest()
@@ -1923,7 +2110,8 @@ async def test_create_intent_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_intent.CreateIntentRequest()
+        request = gcd_intent.CreateIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_intent.Intent)
@@ -2154,7 +2342,8 @@ def test_update_intent(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_intent.UpdateIntentRequest()
+        request = gcd_intent.UpdateIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_intent.Intent)
@@ -2190,6 +2379,70 @@ def test_update_intent_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
         client.update_intent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_intent.UpdateIntentRequest()
+
+
+def test_update_intent_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_intent.UpdateIntentRequest(
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
+        client.update_intent(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_intent.UpdateIntentRequest(
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_intent_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_intent.Intent(
+                name="name_value",
+                display_name="display_name_value",
+                webhook_state=gcd_intent.Intent.WebhookState.WEBHOOK_STATE_ENABLED,
+                priority=898,
+                is_fallback=True,
+                ml_disabled=True,
+                live_agent_handoff=True,
+                end_interaction=True,
+                input_context_names=["input_context_names_value"],
+                events=["events_value"],
+                action="action_value",
+                reset_contexts=True,
+                default_response_platforms=[
+                    gcd_intent.Intent.Message.Platform.FACEBOOK
+                ],
+                root_followup_intent_name="root_followup_intent_name_value",
+                parent_followup_intent_name="parent_followup_intent_name_value",
+            )
+        )
+        response = await client.update_intent()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_intent.UpdateIntentRequest()
@@ -2237,7 +2490,8 @@ async def test_update_intent_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_intent.UpdateIntentRequest()
+        request = gcd_intent.UpdateIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_intent.Intent)
@@ -2452,7 +2706,8 @@ def test_delete_intent(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.DeleteIntentRequest()
+        request = intent.DeleteIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2469,6 +2724,50 @@ def test_delete_intent_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         client.delete_intent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.DeleteIntentRequest()
+
+
+def test_delete_intent_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = intent.DeleteIntentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
+        client.delete_intent(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.DeleteIntentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_intent_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_intent()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == intent.DeleteIntentRequest()
@@ -2496,7 +2795,8 @@ async def test_delete_intent_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.DeleteIntentRequest()
+        request = intent.DeleteIntentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2674,7 +2974,8 @@ def test_batch_update_intents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.BatchUpdateIntentsRequest()
+        request = intent.BatchUpdateIntentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2693,6 +2994,60 @@ def test_batch_update_intents_empty_call():
         type(client.transport.batch_update_intents), "__call__"
     ) as call:
         client.batch_update_intents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.BatchUpdateIntentsRequest()
+
+
+def test_batch_update_intents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = intent.BatchUpdateIntentsRequest(
+        parent="parent_value",
+        intent_batch_uri="intent_batch_uri_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_intents), "__call__"
+    ) as call:
+        client.batch_update_intents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.BatchUpdateIntentsRequest(
+            parent="parent_value",
+            intent_batch_uri="intent_batch_uri_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_update_intents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_intents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_update_intents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == intent.BatchUpdateIntentsRequest()
@@ -2724,7 +3079,8 @@ async def test_batch_update_intents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.BatchUpdateIntentsRequest()
+        request = intent.BatchUpdateIntentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2936,7 +3292,8 @@ def test_batch_delete_intents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.BatchDeleteIntentsRequest()
+        request = intent.BatchDeleteIntentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2955,6 +3312,56 @@ def test_batch_delete_intents_empty_call():
         type(client.transport.batch_delete_intents), "__call__"
     ) as call:
         client.batch_delete_intents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.BatchDeleteIntentsRequest()
+
+
+def test_batch_delete_intents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = IntentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = intent.BatchDeleteIntentsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_intents), "__call__"
+    ) as call:
+        client.batch_delete_intents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == intent.BatchDeleteIntentsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_intents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IntentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_intents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_delete_intents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == intent.BatchDeleteIntentsRequest()
@@ -2986,7 +3393,8 @@ async def test_batch_delete_intents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intent.BatchDeleteIntentsRequest()
+        request = intent.BatchDeleteIntentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

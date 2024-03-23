@@ -1124,7 +1124,8 @@ def test_list_connection_profiles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListConnectionProfilesRequest()
+        request = datastream.ListConnectionProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectionProfilesPager)
@@ -1145,6 +1146,65 @@ def test_list_connection_profiles_empty_call():
         type(client.transport.list_connection_profiles), "__call__"
     ) as call:
         client.list_connection_profiles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListConnectionProfilesRequest()
+
+
+def test_list_connection_profiles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.ListConnectionProfilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_connection_profiles), "__call__"
+    ) as call:
+        client.list_connection_profiles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListConnectionProfilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_connection_profiles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_connection_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListConnectionProfilesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_connection_profiles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.ListConnectionProfilesRequest()
@@ -1180,7 +1240,8 @@ async def test_list_connection_profiles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListConnectionProfilesRequest()
+        request = datastream.ListConnectionProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectionProfilesAsyncPager)
@@ -1577,7 +1638,8 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetConnectionProfileRequest()
+        request = datastream.GetConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.ConnectionProfile)
@@ -1598,6 +1660,59 @@ def test_get_connection_profile_empty_call():
         type(client.transport.get_connection_profile), "__call__"
     ) as call:
         client.get_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetConnectionProfileRequest()
+
+
+def test_get_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.GetConnectionProfileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_connection_profile), "__call__"
+    ) as call:
+        client.get_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetConnectionProfileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.ConnectionProfile(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.GetConnectionProfileRequest()
@@ -1632,7 +1747,8 @@ async def test_get_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetConnectionProfileRequest()
+        request = datastream.GetConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.ConnectionProfile)
@@ -1824,7 +1940,8 @@ def test_create_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateConnectionProfileRequest()
+        request = datastream.CreateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1843,6 +1960,60 @@ def test_create_connection_profile_empty_call():
         type(client.transport.create_connection_profile), "__call__"
     ) as call:
         client.create_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreateConnectionProfileRequest()
+
+
+def test_create_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.CreateConnectionProfileRequest(
+        parent="parent_value",
+        connection_profile_id="connection_profile_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection_profile), "__call__"
+    ) as call:
+        client.create_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreateConnectionProfileRequest(
+            parent="parent_value",
+            connection_profile_id="connection_profile_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.CreateConnectionProfileRequest()
@@ -1875,7 +2046,8 @@ async def test_create_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateConnectionProfileRequest()
+        request = datastream.CreateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2093,7 +2265,8 @@ def test_update_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.UpdateConnectionProfileRequest()
+        request = datastream.UpdateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2112,6 +2285,56 @@ def test_update_connection_profile_empty_call():
         type(client.transport.update_connection_profile), "__call__"
     ) as call:
         client.update_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.UpdateConnectionProfileRequest()
+
+
+def test_update_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.UpdateConnectionProfileRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection_profile), "__call__"
+    ) as call:
+        client.update_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.UpdateConnectionProfileRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.UpdateConnectionProfileRequest()
@@ -2144,7 +2367,8 @@ async def test_update_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.UpdateConnectionProfileRequest()
+        request = datastream.UpdateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2352,7 +2576,8 @@ def test_delete_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteConnectionProfileRequest()
+        request = datastream.DeleteConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2371,6 +2596,58 @@ def test_delete_connection_profile_empty_call():
         type(client.transport.delete_connection_profile), "__call__"
     ) as call:
         client.delete_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeleteConnectionProfileRequest()
+
+
+def test_delete_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.DeleteConnectionProfileRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection_profile), "__call__"
+    ) as call:
+        client.delete_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeleteConnectionProfileRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.DeleteConnectionProfileRequest()
@@ -2403,7 +2680,8 @@ async def test_delete_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteConnectionProfileRequest()
+        request = datastream.DeleteConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2593,7 +2871,8 @@ def test_discover_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DiscoverConnectionProfileRequest()
+        request = datastream.DiscoverConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.DiscoverConnectionProfileResponse)
@@ -2612,6 +2891,58 @@ def test_discover_connection_profile_empty_call():
         type(client.transport.discover_connection_profile), "__call__"
     ) as call:
         client.discover_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DiscoverConnectionProfileRequest()
+
+
+def test_discover_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.DiscoverConnectionProfileRequest(
+        parent="parent_value",
+        connection_profile_name="connection_profile_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discover_connection_profile), "__call__"
+    ) as call:
+        client.discover_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DiscoverConnectionProfileRequest(
+            parent="parent_value",
+            connection_profile_name="connection_profile_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_discover_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discover_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.DiscoverConnectionProfileResponse()
+        )
+        response = await client.discover_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.DiscoverConnectionProfileRequest()
@@ -2644,7 +2975,8 @@ async def test_discover_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DiscoverConnectionProfileRequest()
+        request = datastream.DiscoverConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.DiscoverConnectionProfileResponse)
@@ -2749,7 +3081,8 @@ def test_list_streams(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListStreamsRequest()
+        request = datastream.ListStreamsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStreamsPager)
@@ -2768,6 +3101,61 @@ def test_list_streams_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
         client.list_streams()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamsRequest()
+
+
+def test_list_streams_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.ListStreamsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
+        client.list_streams(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_streams_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListStreamsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_streams()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.ListStreamsRequest()
@@ -2800,7 +3188,8 @@ async def test_list_streams_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListStreamsRequest()
+        request = datastream.ListStreamsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStreamsAsyncPager)
@@ -3177,7 +3566,8 @@ def test_get_stream(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetStreamRequest()
+        request = datastream.GetStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.Stream)
@@ -3201,6 +3591,57 @@ def test_get_stream_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
         client.get_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetStreamRequest()
+
+
+def test_get_stream_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.GetStreamRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
+        client.get_stream(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetStreamRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_stream_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.Stream(
+                name="name_value",
+                display_name="display_name_value",
+                state=datastream_resources.Stream.State.NOT_STARTED,
+                customer_managed_encryption_key="customer_managed_encryption_key_value",
+            )
+        )
+        response = await client.get_stream()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.GetStreamRequest()
@@ -3235,7 +3676,8 @@ async def test_get_stream_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetStreamRequest()
+        request = datastream.GetStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.Stream)
@@ -3422,7 +3864,8 @@ def test_create_stream(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateStreamRequest()
+        request = datastream.CreateStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3439,6 +3882,56 @@ def test_create_stream_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
         client.create_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreateStreamRequest()
+
+
+def test_create_stream_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.CreateStreamRequest(
+        parent="parent_value",
+        stream_id="stream_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
+        client.create_stream(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreateStreamRequest(
+            parent="parent_value",
+            stream_id="stream_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_stream_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_stream()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.CreateStreamRequest()
@@ -3468,7 +3961,8 @@ async def test_create_stream_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateStreamRequest()
+        request = datastream.CreateStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3668,7 +4162,8 @@ def test_update_stream(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.UpdateStreamRequest()
+        request = datastream.UpdateStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3685,6 +4180,52 @@ def test_update_stream_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
         client.update_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.UpdateStreamRequest()
+
+
+def test_update_stream_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.UpdateStreamRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
+        client.update_stream(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.UpdateStreamRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_stream_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_stream()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.UpdateStreamRequest()
@@ -3714,7 +4255,8 @@ async def test_update_stream_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.UpdateStreamRequest()
+        request = datastream.UpdateStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3904,7 +4446,8 @@ def test_delete_stream(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteStreamRequest()
+        request = datastream.DeleteStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3921,6 +4464,54 @@ def test_delete_stream_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
         client.delete_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeleteStreamRequest()
+
+
+def test_delete_stream_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.DeleteStreamRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
+        client.delete_stream(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeleteStreamRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_stream_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_stream()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.DeleteStreamRequest()
@@ -3950,7 +4541,8 @@ async def test_delete_stream_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteStreamRequest()
+        request = datastream.DeleteStreamRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4135,7 +4727,8 @@ def test_get_stream_object(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetStreamObjectRequest()
+        request = datastream.GetStreamObjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.StreamObject)
@@ -4156,6 +4749,59 @@ def test_get_stream_object_empty_call():
         type(client.transport.get_stream_object), "__call__"
     ) as call:
         client.get_stream_object()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetStreamObjectRequest()
+
+
+def test_get_stream_object_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.GetStreamObjectRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
+        client.get_stream_object(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetStreamObjectRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_stream_object_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.StreamObject(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_stream_object()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.GetStreamObjectRequest()
@@ -4190,7 +4836,8 @@ async def test_get_stream_object_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetStreamObjectRequest()
+        request = datastream.GetStreamObjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.StreamObject)
@@ -4385,7 +5032,8 @@ def test_lookup_stream_object(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.LookupStreamObjectRequest()
+        request = datastream.LookupStreamObjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.StreamObject)
@@ -4406,6 +5054,59 @@ def test_lookup_stream_object_empty_call():
         type(client.transport.lookup_stream_object), "__call__"
     ) as call:
         client.lookup_stream_object()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.LookupStreamObjectRequest()
+
+
+def test_lookup_stream_object_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.LookupStreamObjectRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        client.lookup_stream_object(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.LookupStreamObjectRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_stream_object_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.StreamObject(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.lookup_stream_object()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.LookupStreamObjectRequest()
@@ -4440,7 +5141,8 @@ async def test_lookup_stream_object_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.LookupStreamObjectRequest()
+        request = datastream.LookupStreamObjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.StreamObject)
@@ -4548,7 +5250,8 @@ def test_list_stream_objects(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListStreamObjectsRequest()
+        request = datastream.ListStreamObjectsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStreamObjectsPager)
@@ -4568,6 +5271,60 @@ def test_list_stream_objects_empty_call():
         type(client.transport.list_stream_objects), "__call__"
     ) as call:
         client.list_stream_objects()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamObjectsRequest()
+
+
+def test_list_stream_objects_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.ListStreamObjectsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        client.list_stream_objects(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamObjectsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListStreamObjectsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_stream_objects()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.ListStreamObjectsRequest()
@@ -4601,7 +5358,8 @@ async def test_list_stream_objects_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListStreamObjectsRequest()
+        request = datastream.ListStreamObjectsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStreamObjectsAsyncPager)
@@ -4990,7 +5748,8 @@ def test_start_backfill_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.StartBackfillJobRequest()
+        request = datastream.StartBackfillJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.StartBackfillJobResponse)
@@ -5009,6 +5768,56 @@ def test_start_backfill_job_empty_call():
         type(client.transport.start_backfill_job), "__call__"
     ) as call:
         client.start_backfill_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StartBackfillJobRequest()
+
+
+def test_start_backfill_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.StartBackfillJobRequest(
+        object_="object__value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        client.start_backfill_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StartBackfillJobRequest(
+            object_="object__value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_backfill_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StartBackfillJobResponse()
+        )
+        response = await client.start_backfill_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.StartBackfillJobRequest()
@@ -5040,7 +5849,8 @@ async def test_start_backfill_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.StartBackfillJobRequest()
+        request = datastream.StartBackfillJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.StartBackfillJobResponse)
@@ -5230,7 +6040,8 @@ def test_stop_backfill_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.StopBackfillJobRequest()
+        request = datastream.StopBackfillJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.StopBackfillJobResponse)
@@ -5249,6 +6060,56 @@ def test_stop_backfill_job_empty_call():
         type(client.transport.stop_backfill_job), "__call__"
     ) as call:
         client.stop_backfill_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StopBackfillJobRequest()
+
+
+def test_stop_backfill_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.StopBackfillJobRequest(
+        object_="object__value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        client.stop_backfill_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StopBackfillJobRequest(
+            object_="object__value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_backfill_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StopBackfillJobResponse()
+        )
+        response = await client.stop_backfill_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.StopBackfillJobRequest()
@@ -5280,7 +6141,8 @@ async def test_stop_backfill_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.StopBackfillJobRequest()
+        request = datastream.StopBackfillJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.StopBackfillJobResponse)
@@ -5471,7 +6333,8 @@ def test_fetch_static_ips(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchStaticIpsRequest()
+        request = datastream.FetchStaticIpsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchStaticIpsPager)
@@ -5490,6 +6353,57 @@ def test_fetch_static_ips_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
         client.fetch_static_ips()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.FetchStaticIpsRequest()
+
+
+def test_fetch_static_ips_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.FetchStaticIpsRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
+        client.fetch_static_ips(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.FetchStaticIpsRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_static_ips_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.FetchStaticIpsResponse(
+                static_ips=["static_ips_value"],
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.fetch_static_ips()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.FetchStaticIpsRequest()
@@ -5522,7 +6436,8 @@ async def test_fetch_static_ips_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchStaticIpsRequest()
+        request = datastream.FetchStaticIpsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchStaticIpsAsyncPager)
@@ -5896,7 +6811,8 @@ def test_create_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreatePrivateConnectionRequest()
+        request = datastream.CreatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5915,6 +6831,60 @@ def test_create_private_connection_empty_call():
         type(client.transport.create_private_connection), "__call__"
     ) as call:
         client.create_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreatePrivateConnectionRequest()
+
+
+def test_create_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.CreatePrivateConnectionRequest(
+        parent="parent_value",
+        private_connection_id="private_connection_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_connection), "__call__"
+    ) as call:
+        client.create_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreatePrivateConnectionRequest(
+            parent="parent_value",
+            private_connection_id="private_connection_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.CreatePrivateConnectionRequest()
@@ -5947,7 +6917,8 @@ async def test_create_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreatePrivateConnectionRequest()
+        request = datastream.CreatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6169,7 +7140,8 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetPrivateConnectionRequest()
+        request = datastream.GetPrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.PrivateConnection)
@@ -6191,6 +7163,60 @@ def test_get_private_connection_empty_call():
         type(client.transport.get_private_connection), "__call__"
     ) as call:
         client.get_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetPrivateConnectionRequest()
+
+
+def test_get_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.GetPrivateConnectionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_connection), "__call__"
+    ) as call:
+        client.get_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetPrivateConnectionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.PrivateConnection(
+                name="name_value",
+                display_name="display_name_value",
+                state=datastream_resources.PrivateConnection.State.CREATING,
+            )
+        )
+        response = await client.get_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.GetPrivateConnectionRequest()
@@ -6226,7 +7252,8 @@ async def test_get_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetPrivateConnectionRequest()
+        request = datastream.GetPrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.PrivateConnection)
@@ -6422,7 +7449,8 @@ def test_list_private_connections(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListPrivateConnectionsRequest()
+        request = datastream.ListPrivateConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionsPager)
@@ -6443,6 +7471,65 @@ def test_list_private_connections_empty_call():
         type(client.transport.list_private_connections), "__call__"
     ) as call:
         client.list_private_connections()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListPrivateConnectionsRequest()
+
+
+def test_list_private_connections_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.ListPrivateConnectionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connections), "__call__"
+    ) as call:
+        client.list_private_connections(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListPrivateConnectionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_private_connections_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListPrivateConnectionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_private_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.ListPrivateConnectionsRequest()
@@ -6478,7 +7565,8 @@ async def test_list_private_connections_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListPrivateConnectionsRequest()
+        request = datastream.ListPrivateConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionsAsyncPager)
@@ -6872,7 +7960,8 @@ def test_delete_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeletePrivateConnectionRequest()
+        request = datastream.DeletePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6891,6 +7980,58 @@ def test_delete_private_connection_empty_call():
         type(client.transport.delete_private_connection), "__call__"
     ) as call:
         client.delete_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeletePrivateConnectionRequest()
+
+
+def test_delete_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.DeletePrivateConnectionRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_connection), "__call__"
+    ) as call:
+        client.delete_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeletePrivateConnectionRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.DeletePrivateConnectionRequest()
@@ -6923,7 +8064,8 @@ async def test_delete_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeletePrivateConnectionRequest()
+        request = datastream.DeletePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7111,7 +8253,8 @@ def test_create_route(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateRouteRequest()
+        request = datastream.CreateRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7128,6 +8271,56 @@ def test_create_route_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_route), "__call__") as call:
         client.create_route()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreateRouteRequest()
+
+
+def test_create_route_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.CreateRouteRequest(
+        parent="parent_value",
+        route_id="route_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_route), "__call__") as call:
+        client.create_route(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.CreateRouteRequest(
+            parent="parent_value",
+            route_id="route_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_route_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_route), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_route()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.CreateRouteRequest()
@@ -7157,7 +8350,8 @@ async def test_create_route_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateRouteRequest()
+        request = datastream.CreateRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7362,7 +8556,8 @@ def test_get_route(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetRouteRequest()
+        request = datastream.GetRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.Route)
@@ -7383,6 +8578,57 @@ def test_get_route_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
         client.get_route()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetRouteRequest()
+
+
+def test_get_route_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.GetRouteRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_route), "__call__") as call:
+        client.get_route(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.GetRouteRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_route_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_route), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.Route(
+                name="name_value",
+                display_name="display_name_value",
+                destination_address="destination_address_value",
+                destination_port=1734,
+            )
+        )
+        response = await client.get_route()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.GetRouteRequest()
@@ -7417,7 +8663,8 @@ async def test_get_route_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetRouteRequest()
+        request = datastream.GetRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream_resources.Route)
@@ -7604,7 +8851,8 @@ def test_list_routes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListRoutesRequest()
+        request = datastream.ListRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRoutesPager)
@@ -7623,6 +8871,61 @@ def test_list_routes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
         client.list_routes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListRoutesRequest()
+
+
+def test_list_routes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.ListRoutesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
+        client.list_routes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListRoutesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_routes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListRoutesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_routes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.ListRoutesRequest()
@@ -7655,7 +8958,8 @@ async def test_list_routes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListRoutesRequest()
+        request = datastream.ListRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRoutesAsyncPager)
@@ -8027,7 +9331,8 @@ def test_delete_route(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteRouteRequest()
+        request = datastream.DeleteRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8044,6 +9349,54 @@ def test_delete_route_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
         client.delete_route()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeleteRouteRequest()
+
+
+def test_delete_route_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.DeleteRouteRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
+        client.delete_route(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.DeleteRouteRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_route_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_route()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastream.DeleteRouteRequest()
@@ -8073,7 +9426,8 @@ async def test_delete_route_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteRouteRequest()
+        request = datastream.DeleteRouteRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

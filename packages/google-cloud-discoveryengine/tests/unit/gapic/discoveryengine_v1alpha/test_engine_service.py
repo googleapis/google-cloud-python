@@ -1155,7 +1155,8 @@ def test_create_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.CreateEngineRequest()
+        request = engine_service.CreateEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1172,6 +1173,54 @@ def test_create_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_engine), "__call__") as call:
         client.create_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.CreateEngineRequest()
+
+
+def test_create_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.CreateEngineRequest(
+        parent="parent_value",
+        engine_id="engine_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_engine), "__call__") as call:
+        client.create_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.CreateEngineRequest(
+            parent="parent_value",
+            engine_id="engine_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.CreateEngineRequest()
@@ -1201,7 +1250,8 @@ async def test_create_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.CreateEngineRequest()
+        request = engine_service.CreateEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1401,7 +1451,8 @@ def test_delete_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.DeleteEngineRequest()
+        request = engine_service.DeleteEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1418,6 +1469,52 @@ def test_delete_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_engine), "__call__") as call:
         client.delete_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.DeleteEngineRequest()
+
+
+def test_delete_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.DeleteEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_engine), "__call__") as call:
+        client.delete_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.DeleteEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.DeleteEngineRequest()
@@ -1447,7 +1544,8 @@ async def test_delete_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.DeleteEngineRequest()
+        request = engine_service.DeleteEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1633,7 +1731,8 @@ def test_update_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.UpdateEngineRequest()
+        request = engine_service.UpdateEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_engine.Engine)
@@ -1655,6 +1754,54 @@ def test_update_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_engine), "__call__") as call:
         client.update_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.UpdateEngineRequest()
+
+
+def test_update_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.UpdateEngineRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_engine), "__call__") as call:
+        client.update_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.UpdateEngineRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.update_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.UpdateEngineRequest()
@@ -1690,7 +1837,8 @@ async def test_update_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.UpdateEngineRequest()
+        request = engine_service.UpdateEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_engine.Engine)
@@ -1887,7 +2035,8 @@ def test_get_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.GetEngineRequest()
+        request = engine_service.GetEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, engine.Engine)
@@ -1909,6 +2058,58 @@ def test_get_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_engine), "__call__") as call:
         client.get_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.GetEngineRequest()
+
+
+def test_get_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.GetEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_engine), "__call__") as call:
+        client.get_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.GetEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.get_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.GetEngineRequest()
@@ -1944,7 +2145,8 @@ async def test_get_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.GetEngineRequest()
+        request = engine_service.GetEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, engine.Engine)
@@ -2127,7 +2329,8 @@ def test_list_engines(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.ListEnginesRequest()
+        request = engine_service.ListEnginesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnginesPager)
@@ -2145,6 +2348,58 @@ def test_list_engines_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_engines), "__call__") as call:
         client.list_engines()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ListEnginesRequest()
+
+
+def test_list_engines_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.ListEnginesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_engines), "__call__") as call:
+        client.list_engines(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ListEnginesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_engines_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_engines), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine_service.ListEnginesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_engines()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.ListEnginesRequest()
@@ -2176,7 +2431,8 @@ async def test_list_engines_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.ListEnginesRequest()
+        request = engine_service.ListEnginesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnginesAsyncPager)
@@ -2553,7 +2809,8 @@ def test_pause_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.PauseEngineRequest()
+        request = engine_service.PauseEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, engine.Engine)
@@ -2575,6 +2832,58 @@ def test_pause_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
         client.pause_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.PauseEngineRequest()
+
+
+def test_pause_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.PauseEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        client.pause_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.PauseEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.pause_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.PauseEngineRequest()
@@ -2610,7 +2919,8 @@ async def test_pause_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.PauseEngineRequest()
+        request = engine_service.PauseEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, engine.Engine)
@@ -2797,7 +3107,8 @@ def test_resume_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.ResumeEngineRequest()
+        request = engine_service.ResumeEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, engine.Engine)
@@ -2819,6 +3130,58 @@ def test_resume_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
         client.resume_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ResumeEngineRequest()
+
+
+def test_resume_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.ResumeEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        client.resume_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ResumeEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.resume_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.ResumeEngineRequest()
@@ -2854,7 +3217,8 @@ async def test_resume_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.ResumeEngineRequest()
+        request = engine_service.ResumeEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, engine.Engine)
@@ -3035,7 +3399,8 @@ def test_tune_engine(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.TuneEngineRequest()
+        request = engine_service.TuneEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3052,6 +3417,52 @@ def test_tune_engine_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
         client.tune_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.TuneEngineRequest()
+
+
+def test_tune_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.TuneEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        client.tune_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.TuneEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.tune_engine()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == engine_service.TuneEngineRequest()
@@ -3081,7 +3492,8 @@ async def test_tune_engine_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == engine_service.TuneEngineRequest()
+        request = engine_service.TuneEngineRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

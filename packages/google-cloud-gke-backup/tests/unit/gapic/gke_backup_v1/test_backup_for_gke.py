@@ -1147,7 +1147,8 @@ def test_create_backup_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupPlanRequest()
+        request = gkebackup.CreateBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1166,6 +1167,58 @@ def test_create_backup_plan_empty_call():
         type(client.transport.create_backup_plan), "__call__"
     ) as call:
         client.create_backup_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateBackupPlanRequest()
+
+
+def test_create_backup_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.CreateBackupPlanRequest(
+        parent="parent_value",
+        backup_plan_id="backup_plan_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_plan), "__call__"
+    ) as call:
+        client.create_backup_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateBackupPlanRequest(
+            parent="parent_value",
+            backup_plan_id="backup_plan_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_backup_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_plan), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_backup_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.CreateBackupPlanRequest()
@@ -1197,7 +1250,8 @@ async def test_create_backup_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupPlanRequest()
+        request = gkebackup.CreateBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1410,7 +1464,8 @@ def test_list_backup_plans(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupPlansRequest()
+        request = gkebackup.ListBackupPlansRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupPlansPager)
@@ -1431,6 +1486,65 @@ def test_list_backup_plans_empty_call():
         type(client.transport.list_backup_plans), "__call__"
     ) as call:
         client.list_backup_plans()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListBackupPlansRequest()
+
+
+def test_list_backup_plans_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.ListBackupPlansRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_plans), "__call__"
+    ) as call:
+        client.list_backup_plans(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListBackupPlansRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backup_plans_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_plans), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.ListBackupPlansResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backup_plans()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.ListBackupPlansRequest()
@@ -1465,7 +1579,8 @@ async def test_list_backup_plans_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupPlansRequest()
+        request = gkebackup.ListBackupPlansRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupPlansAsyncPager)
@@ -1863,7 +1978,8 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupPlanRequest()
+        request = gkebackup.GetBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_plan.BackupPlan)
@@ -1889,6 +2005,62 @@ def test_get_backup_plan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup_plan), "__call__") as call:
         client.get_backup_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupPlanRequest()
+
+
+def test_get_backup_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetBackupPlanRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup_plan), "__call__") as call:
+        client.get_backup_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupPlanRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup_plan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_plan.BackupPlan(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                cluster="cluster_value",
+                etag="etag_value",
+                deactivated=True,
+                protected_pod_count=2036,
+                state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
+                state_reason="state_reason_value",
+            )
+        )
+        response = await client.get_backup_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.GetBackupPlanRequest()
@@ -1928,7 +2100,8 @@ async def test_get_backup_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupPlanRequest()
+        request = gkebackup.GetBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_plan.BackupPlan)
@@ -2119,7 +2292,8 @@ def test_update_backup_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupPlanRequest()
+        request = gkebackup.UpdateBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2138,6 +2312,52 @@ def test_update_backup_plan_empty_call():
         type(client.transport.update_backup_plan), "__call__"
     ) as call:
         client.update_backup_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateBackupPlanRequest()
+
+
+def test_update_backup_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.UpdateBackupPlanRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_plan), "__call__"
+    ) as call:
+        client.update_backup_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateBackupPlanRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_backup_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_plan), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_backup_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.UpdateBackupPlanRequest()
@@ -2169,7 +2389,8 @@ async def test_update_backup_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupPlanRequest()
+        request = gkebackup.UpdateBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2369,7 +2590,8 @@ def test_delete_backup_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupPlanRequest()
+        request = gkebackup.DeleteBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2388,6 +2610,58 @@ def test_delete_backup_plan_empty_call():
         type(client.transport.delete_backup_plan), "__call__"
     ) as call:
         client.delete_backup_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteBackupPlanRequest()
+
+
+def test_delete_backup_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.DeleteBackupPlanRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_plan), "__call__"
+    ) as call:
+        client.delete_backup_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteBackupPlanRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_plan), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_backup_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.DeleteBackupPlanRequest()
@@ -2419,7 +2693,8 @@ async def test_delete_backup_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupPlanRequest()
+        request = gkebackup.DeleteBackupPlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2607,7 +2882,8 @@ def test_create_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupRequest()
+        request = gkebackup.CreateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2624,6 +2900,54 @@ def test_create_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
         client.create_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateBackupRequest()
+
+
+def test_create_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.CreateBackupRequest(
+        parent="parent_value",
+        backup_id="backup_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        client.create_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateBackupRequest(
+            parent="parent_value",
+            backup_id="backup_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.CreateBackupRequest()
@@ -2653,7 +2977,8 @@ async def test_create_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupRequest()
+        request = gkebackup.CreateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2855,7 +3180,8 @@ def test_list_backups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupsRequest()
+        request = gkebackup.ListBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsPager)
@@ -2873,6 +3199,60 @@ def test_list_backups_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
         client.list_backups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListBackupsRequest()
+
+
+def test_list_backups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.ListBackupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListBackupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_backups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.ListBackupsRequest()
@@ -2904,7 +3284,8 @@ async def test_list_backups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupsRequest()
+        request = gkebackup.ListBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsAsyncPager)
@@ -3293,7 +3674,8 @@ def test_get_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupRequest()
+        request = gkebackup.GetBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup.Backup)
@@ -3326,6 +3708,69 @@ def test_get_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
         client.get_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupRequest()
+
+
+def test_get_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.Backup(
+                name="name_value",
+                uid="uid_value",
+                manual=True,
+                delete_lock_days=1675,
+                retain_days=1171,
+                contains_volume_data=True,
+                contains_secrets=True,
+                state=backup.Backup.State.CREATING,
+                state_reason="state_reason_value",
+                resource_count=1520,
+                volume_count=1312,
+                size_bytes=1089,
+                etag="etag_value",
+                description="description_value",
+                pod_count=971,
+                config_backup_size_bytes=2539,
+            )
+        )
+        response = await client.get_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.GetBackupRequest()
@@ -3372,7 +3817,8 @@ async def test_get_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupRequest()
+        request = gkebackup.GetBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup.Backup)
@@ -3564,7 +4010,8 @@ def test_update_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupRequest()
+        request = gkebackup.UpdateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3581,6 +4028,48 @@ def test_update_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
         client.update_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateBackupRequest()
+
+
+def test_update_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.UpdateBackupRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        client.update_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateBackupRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.UpdateBackupRequest()
@@ -3610,7 +4099,8 @@ async def test_update_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupRequest()
+        request = gkebackup.UpdateBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3800,7 +4290,8 @@ def test_delete_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupRequest()
+        request = gkebackup.DeleteBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3817,6 +4308,54 @@ def test_delete_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
         client.delete_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteBackupRequest()
+
+
+def test_delete_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.DeleteBackupRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteBackupRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.DeleteBackupRequest()
@@ -3846,7 +4385,8 @@ async def test_delete_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupRequest()
+        request = gkebackup.DeleteBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4030,7 +4570,8 @@ def test_list_volume_backups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListVolumeBackupsRequest()
+        request = gkebackup.ListVolumeBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumeBackupsPager)
@@ -4050,6 +4591,64 @@ def test_list_volume_backups_empty_call():
         type(client.transport.list_volume_backups), "__call__"
     ) as call:
         client.list_volume_backups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListVolumeBackupsRequest()
+
+
+def test_list_volume_backups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.ListVolumeBackupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_backups), "__call__"
+    ) as call:
+        client.list_volume_backups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListVolumeBackupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_volume_backups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_backups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.ListVolumeBackupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_volume_backups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.ListVolumeBackupsRequest()
@@ -4083,7 +4682,8 @@ async def test_list_volume_backups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListVolumeBackupsRequest()
+        request = gkebackup.ListVolumeBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumeBackupsAsyncPager)
@@ -4482,7 +5082,8 @@ def test_get_volume_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetVolumeBackupRequest()
+        request = gkebackup.GetVolumeBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, volume.VolumeBackup)
@@ -4512,6 +5113,66 @@ def test_get_volume_backup_empty_call():
         type(client.transport.get_volume_backup), "__call__"
     ) as call:
         client.get_volume_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetVolumeBackupRequest()
+
+
+def test_get_volume_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetVolumeBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_backup), "__call__"
+    ) as call:
+        client.get_volume_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetVolumeBackupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_volume_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_backup), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume.VolumeBackup(
+                name="name_value",
+                uid="uid_value",
+                volume_backup_handle="volume_backup_handle_value",
+                format_=volume.VolumeBackup.VolumeBackupFormat.GCE_PERSISTENT_DISK,
+                storage_bytes=1403,
+                disk_size_bytes=1611,
+                state=volume.VolumeBackup.State.CREATING,
+                state_message="state_message_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_volume_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.GetVolumeBackupRequest()
@@ -4553,7 +5214,8 @@ async def test_get_volume_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetVolumeBackupRequest()
+        request = gkebackup.GetVolumeBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, volume.VolumeBackup)
@@ -4750,7 +5412,8 @@ def test_create_restore_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestorePlanRequest()
+        request = gkebackup.CreateRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4769,6 +5432,58 @@ def test_create_restore_plan_empty_call():
         type(client.transport.create_restore_plan), "__call__"
     ) as call:
         client.create_restore_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateRestorePlanRequest()
+
+
+def test_create_restore_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.CreateRestorePlanRequest(
+        parent="parent_value",
+        restore_plan_id="restore_plan_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_restore_plan), "__call__"
+    ) as call:
+        client.create_restore_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateRestorePlanRequest(
+            parent="parent_value",
+            restore_plan_id="restore_plan_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_restore_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_restore_plan), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_restore_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.CreateRestorePlanRequest()
@@ -4800,7 +5515,8 @@ async def test_create_restore_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestorePlanRequest()
+        request = gkebackup.CreateRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5013,7 +5729,8 @@ def test_list_restore_plans(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestorePlansRequest()
+        request = gkebackup.ListRestorePlansRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRestorePlansPager)
@@ -5034,6 +5751,65 @@ def test_list_restore_plans_empty_call():
         type(client.transport.list_restore_plans), "__call__"
     ) as call:
         client.list_restore_plans()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListRestorePlansRequest()
+
+
+def test_list_restore_plans_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.ListRestorePlansRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_restore_plans), "__call__"
+    ) as call:
+        client.list_restore_plans(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListRestorePlansRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_restore_plans_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_restore_plans), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.ListRestorePlansResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_restore_plans()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.ListRestorePlansRequest()
@@ -5068,7 +5844,8 @@ async def test_list_restore_plans_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestorePlansRequest()
+        request = gkebackup.ListRestorePlansRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRestorePlansAsyncPager)
@@ -5465,7 +6242,8 @@ def test_get_restore_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestorePlanRequest()
+        request = gkebackup.GetRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, restore_plan.RestorePlan)
@@ -5490,6 +6268,61 @@ def test_get_restore_plan_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_restore_plan), "__call__") as call:
         client.get_restore_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetRestorePlanRequest()
+
+
+def test_get_restore_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetRestorePlanRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_restore_plan), "__call__") as call:
+        client.get_restore_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetRestorePlanRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_restore_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_restore_plan), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            restore_plan.RestorePlan(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                backup_plan="backup_plan_value",
+                cluster="cluster_value",
+                etag="etag_value",
+                state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
+                state_reason="state_reason_value",
+            )
+        )
+        response = await client.get_restore_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.GetRestorePlanRequest()
@@ -5528,7 +6361,8 @@ async def test_get_restore_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestorePlanRequest()
+        request = gkebackup.GetRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, restore_plan.RestorePlan)
@@ -5718,7 +6552,8 @@ def test_update_restore_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestorePlanRequest()
+        request = gkebackup.UpdateRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5737,6 +6572,52 @@ def test_update_restore_plan_empty_call():
         type(client.transport.update_restore_plan), "__call__"
     ) as call:
         client.update_restore_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateRestorePlanRequest()
+
+
+def test_update_restore_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.UpdateRestorePlanRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_restore_plan), "__call__"
+    ) as call:
+        client.update_restore_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateRestorePlanRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_restore_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_restore_plan), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_restore_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.UpdateRestorePlanRequest()
@@ -5768,7 +6649,8 @@ async def test_update_restore_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestorePlanRequest()
+        request = gkebackup.UpdateRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5968,7 +6850,8 @@ def test_delete_restore_plan(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestorePlanRequest()
+        request = gkebackup.DeleteRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5987,6 +6870,58 @@ def test_delete_restore_plan_empty_call():
         type(client.transport.delete_restore_plan), "__call__"
     ) as call:
         client.delete_restore_plan()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteRestorePlanRequest()
+
+
+def test_delete_restore_plan_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.DeleteRestorePlanRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_restore_plan), "__call__"
+    ) as call:
+        client.delete_restore_plan(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteRestorePlanRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_restore_plan_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_restore_plan), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_restore_plan()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.DeleteRestorePlanRequest()
@@ -6018,7 +6953,8 @@ async def test_delete_restore_plan_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestorePlanRequest()
+        request = gkebackup.DeleteRestorePlanRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6206,7 +7142,8 @@ def test_create_restore(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestoreRequest()
+        request = gkebackup.CreateRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6223,6 +7160,54 @@ def test_create_restore_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_restore), "__call__") as call:
         client.create_restore()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateRestoreRequest()
+
+
+def test_create_restore_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.CreateRestoreRequest(
+        parent="parent_value",
+        restore_id="restore_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_restore), "__call__") as call:
+        client.create_restore(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.CreateRestoreRequest(
+            parent="parent_value",
+            restore_id="restore_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_restore_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_restore), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_restore()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.CreateRestoreRequest()
@@ -6252,7 +7237,8 @@ async def test_create_restore_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestoreRequest()
+        request = gkebackup.CreateRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6455,7 +7441,8 @@ def test_list_restores(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestoresRequest()
+        request = gkebackup.ListRestoresRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRestoresPager)
@@ -6474,6 +7461,61 @@ def test_list_restores_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_restores), "__call__") as call:
         client.list_restores()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListRestoresRequest()
+
+
+def test_list_restores_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.ListRestoresRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_restores), "__call__") as call:
+        client.list_restores(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListRestoresRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_restores_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_restores), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.ListRestoresResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_restores()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.ListRestoresRequest()
@@ -6506,7 +7548,8 @@ async def test_list_restores_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestoresRequest()
+        request = gkebackup.ListRestoresRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRestoresAsyncPager)
@@ -6891,7 +7934,8 @@ def test_get_restore(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestoreRequest()
+        request = gkebackup.GetRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, restore.Restore)
@@ -6920,6 +7964,65 @@ def test_get_restore_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_restore), "__call__") as call:
         client.get_restore()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetRestoreRequest()
+
+
+def test_get_restore_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetRestoreRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_restore), "__call__") as call:
+        client.get_restore(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetRestoreRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_restore_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_restore), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            restore.Restore(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                backup="backup_value",
+                cluster="cluster_value",
+                state=restore.Restore.State.CREATING,
+                state_reason="state_reason_value",
+                resources_restored_count=2602,
+                resources_excluded_count=2576,
+                resources_failed_count=2343,
+                volumes_restored_count=2394,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_restore()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.GetRestoreRequest()
@@ -6962,7 +8065,8 @@ async def test_get_restore_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestoreRequest()
+        request = gkebackup.GetRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, restore.Restore)
@@ -7150,7 +8254,8 @@ def test_update_restore(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestoreRequest()
+        request = gkebackup.UpdateRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7167,6 +8272,48 @@ def test_update_restore_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_restore), "__call__") as call:
         client.update_restore()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateRestoreRequest()
+
+
+def test_update_restore_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.UpdateRestoreRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_restore), "__call__") as call:
+        client.update_restore(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.UpdateRestoreRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_restore_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_restore), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_restore()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.UpdateRestoreRequest()
@@ -7196,7 +8343,8 @@ async def test_update_restore_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestoreRequest()
+        request = gkebackup.UpdateRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7386,7 +8534,8 @@ def test_delete_restore(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestoreRequest()
+        request = gkebackup.DeleteRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7403,6 +8552,54 @@ def test_delete_restore_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_restore), "__call__") as call:
         client.delete_restore()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteRestoreRequest()
+
+
+def test_delete_restore_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.DeleteRestoreRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_restore), "__call__") as call:
+        client.delete_restore(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.DeleteRestoreRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_restore_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_restore), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_restore()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.DeleteRestoreRequest()
@@ -7432,7 +8629,8 @@ async def test_delete_restore_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestoreRequest()
+        request = gkebackup.DeleteRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7616,7 +8814,8 @@ def test_list_volume_restores(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListVolumeRestoresRequest()
+        request = gkebackup.ListVolumeRestoresRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumeRestoresPager)
@@ -7636,6 +8835,64 @@ def test_list_volume_restores_empty_call():
         type(client.transport.list_volume_restores), "__call__"
     ) as call:
         client.list_volume_restores()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListVolumeRestoresRequest()
+
+
+def test_list_volume_restores_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.ListVolumeRestoresRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_restores), "__call__"
+    ) as call:
+        client.list_volume_restores(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.ListVolumeRestoresRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_volume_restores_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_restores), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.ListVolumeRestoresResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_volume_restores()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.ListVolumeRestoresRequest()
@@ -7669,7 +8926,8 @@ async def test_list_volume_restores_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListVolumeRestoresRequest()
+        request = gkebackup.ListVolumeRestoresRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumeRestoresAsyncPager)
@@ -8067,7 +9325,8 @@ def test_get_volume_restore(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetVolumeRestoreRequest()
+        request = gkebackup.GetVolumeRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, volume.VolumeRestore)
@@ -8094,6 +9353,65 @@ def test_get_volume_restore_empty_call():
         type(client.transport.get_volume_restore), "__call__"
     ) as call:
         client.get_volume_restore()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetVolumeRestoreRequest()
+
+
+def test_get_volume_restore_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetVolumeRestoreRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_restore), "__call__"
+    ) as call:
+        client.get_volume_restore(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetVolumeRestoreRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_volume_restore_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_restore), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume.VolumeRestore(
+                name="name_value",
+                uid="uid_value",
+                volume_backup="volume_backup_value",
+                volume_handle="volume_handle_value",
+                volume_type=volume.VolumeRestore.VolumeType.GCE_PERSISTENT_DISK,
+                state=volume.VolumeRestore.State.CREATING,
+                state_message="state_message_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_volume_restore()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gkebackup.GetVolumeRestoreRequest()
@@ -8134,7 +9452,8 @@ async def test_get_volume_restore_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetVolumeRestoreRequest()
+        request = gkebackup.GetVolumeRestoreRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, volume.VolumeRestore)

@@ -1224,7 +1224,8 @@ def test_recommend(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == recommendation_service.RecommendRequest()
+        request = recommendation_service.RecommendRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, recommendation_service.RecommendResponse)
@@ -1244,6 +1245,58 @@ def test_recommend_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recommend), "__call__") as call:
         client.recommend()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommendation_service.RecommendRequest()
+
+
+def test_recommend_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RecommendationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = recommendation_service.RecommendRequest(
+        serving_config="serving_config_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.recommend), "__call__") as call:
+        client.recommend(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommendation_service.RecommendRequest(
+            serving_config="serving_config_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_recommend_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommendationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.recommend), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation_service.RecommendResponse(
+                attribution_token="attribution_token_value",
+                missing_ids=["missing_ids_value"],
+                validate_only=True,
+            )
+        )
+        response = await client.recommend()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == recommendation_service.RecommendRequest()
@@ -1278,7 +1331,8 @@ async def test_recommend_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == recommendation_service.RecommendRequest()
+        request = recommendation_service.RecommendRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, recommendation_service.RecommendResponse)

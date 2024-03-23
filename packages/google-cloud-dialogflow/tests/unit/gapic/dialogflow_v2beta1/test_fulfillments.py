@@ -1129,7 +1129,8 @@ def test_get_fulfillment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == fulfillment.GetFulfillmentRequest()
+        request = fulfillment.GetFulfillmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, fulfillment.Fulfillment)
@@ -1149,6 +1150,56 @@ def test_get_fulfillment_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_fulfillment), "__call__") as call:
         client.get_fulfillment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == fulfillment.GetFulfillmentRequest()
+
+
+def test_get_fulfillment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = fulfillment.GetFulfillmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_fulfillment), "__call__") as call:
+        client.get_fulfillment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == fulfillment.GetFulfillmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_fulfillment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_fulfillment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            fulfillment.Fulfillment(
+                name="name_value",
+                display_name="display_name_value",
+                enabled=True,
+            )
+        )
+        response = await client.get_fulfillment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == fulfillment.GetFulfillmentRequest()
@@ -1182,7 +1233,8 @@ async def test_get_fulfillment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == fulfillment.GetFulfillmentRequest()
+        request = fulfillment.GetFulfillmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, fulfillment.Fulfillment)
@@ -1371,7 +1423,8 @@ def test_update_fulfillment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_fulfillment.UpdateFulfillmentRequest()
+        request = gcd_fulfillment.UpdateFulfillmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_fulfillment.Fulfillment)
@@ -1393,6 +1446,56 @@ def test_update_fulfillment_empty_call():
         type(client.transport.update_fulfillment), "__call__"
     ) as call:
         client.update_fulfillment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_fulfillment.UpdateFulfillmentRequest()
+
+
+def test_update_fulfillment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_fulfillment.UpdateFulfillmentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_fulfillment), "__call__"
+    ) as call:
+        client.update_fulfillment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_fulfillment.UpdateFulfillmentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_fulfillment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_fulfillment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_fulfillment.Fulfillment(
+                name="name_value",
+                display_name="display_name_value",
+                enabled=True,
+            )
+        )
+        response = await client.update_fulfillment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_fulfillment.UpdateFulfillmentRequest()
@@ -1429,7 +1532,8 @@ async def test_update_fulfillment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_fulfillment.UpdateFulfillmentRequest()
+        request = gcd_fulfillment.UpdateFulfillmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_fulfillment.Fulfillment)

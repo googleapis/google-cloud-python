@@ -1257,7 +1257,8 @@ def test_process_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ProcessRequest()
+        request = document_processor_service.ProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.ProcessResponse)
@@ -1275,6 +1276,54 @@ def test_process_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         client.process_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ProcessRequest()
+
+
+def test_process_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ProcessRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
+        client.process_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ProcessRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_process_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ProcessResponse(
+                human_review_operation="human_review_operation_value",
+            )
+        )
+        response = await client.process_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ProcessRequest()
@@ -1307,7 +1356,8 @@ async def test_process_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ProcessRequest()
+        request = document_processor_service.ProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.ProcessResponse)
@@ -1490,7 +1540,8 @@ def test_batch_process_documents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.BatchProcessRequest()
+        request = document_processor_service.BatchProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1509,6 +1560,56 @@ def test_batch_process_documents_empty_call():
         type(client.transport.batch_process_documents), "__call__"
     ) as call:
         client.batch_process_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.BatchProcessRequest()
+
+
+def test_batch_process_documents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.BatchProcessRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_process_documents), "__call__"
+    ) as call:
+        client.batch_process_documents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.BatchProcessRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_process_documents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_process_documents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_process_documents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.BatchProcessRequest()
@@ -1541,7 +1642,8 @@ async def test_batch_process_documents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.BatchProcessRequest()
+        request = document_processor_service.BatchProcessRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1731,7 +1833,8 @@ def test_fetch_processor_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.FetchProcessorTypesRequest()
+        request = document_processor_service.FetchProcessorTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.FetchProcessorTypesResponse)
@@ -1750,6 +1853,56 @@ def test_fetch_processor_types_empty_call():
         type(client.transport.fetch_processor_types), "__call__"
     ) as call:
         client.fetch_processor_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.FetchProcessorTypesRequest()
+
+
+def test_fetch_processor_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.FetchProcessorTypesRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        client.fetch_processor_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.FetchProcessorTypesRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_processor_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.FetchProcessorTypesResponse()
+        )
+        response = await client.fetch_processor_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.FetchProcessorTypesRequest()
@@ -1782,7 +1935,8 @@ async def test_fetch_processor_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.FetchProcessorTypesRequest()
+        request = document_processor_service.FetchProcessorTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.FetchProcessorTypesResponse)
@@ -1974,7 +2128,8 @@ def test_list_processor_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorTypesRequest()
+        request = document_processor_service.ListProcessorTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorTypesPager)
@@ -1994,6 +2149,60 @@ def test_list_processor_types_empty_call():
         type(client.transport.list_processor_types), "__call__"
     ) as call:
         client.list_processor_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorTypesRequest()
+
+
+def test_list_processor_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ListProcessorTypesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_processor_types), "__call__"
+    ) as call:
+        client.list_processor_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorTypesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_processor_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_processor_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListProcessorTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_processor_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ListProcessorTypesRequest()
@@ -2028,7 +2237,8 @@ async def test_list_processor_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorTypesRequest()
+        request = document_processor_service.ListProcessorTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorTypesAsyncPager)
@@ -2424,7 +2634,8 @@ def test_get_processor_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorTypeRequest()
+        request = document_processor_service.GetProcessorTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, processor_type.ProcessorType)
@@ -2449,6 +2660,63 @@ def test_get_processor_type_empty_call():
         type(client.transport.get_processor_type), "__call__"
     ) as call:
         client.get_processor_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetProcessorTypeRequest()
+
+
+def test_get_processor_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.GetProcessorTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_processor_type), "__call__"
+    ) as call:
+        client.get_processor_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetProcessorTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_processor_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_processor_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            processor_type.ProcessorType(
+                name="name_value",
+                type_="type__value",
+                category="category_value",
+                allow_creation=True,
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                sample_document_uris=["sample_document_uris_value"],
+            )
+        )
+        response = await client.get_processor_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.GetProcessorTypeRequest()
@@ -2488,7 +2756,8 @@ async def test_get_processor_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorTypeRequest()
+        request = document_processor_service.GetProcessorTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, processor_type.ProcessorType)
@@ -2684,7 +2953,8 @@ def test_list_processors(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorsRequest()
+        request = document_processor_service.ListProcessorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorsPager)
@@ -2702,6 +2972,56 @@ def test_list_processors_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
         client.list_processors()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorsRequest()
+
+
+def test_list_processors_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ListProcessorsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        client.list_processors(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_processors_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListProcessorsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_processors()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ListProcessorsRequest()
@@ -2734,7 +3054,8 @@ async def test_list_processors_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorsRequest()
+        request = document_processor_service.ListProcessorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorsAsyncPager)
@@ -3113,7 +3434,8 @@ def test_get_processor(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorRequest()
+        request = document_processor_service.GetProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, processor.Processor)
@@ -3137,6 +3459,60 @@ def test_get_processor_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_processor), "__call__") as call:
         client.get_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetProcessorRequest()
+
+
+def test_get_processor_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.GetProcessorRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_processor), "__call__") as call:
+        client.get_processor(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetProcessorRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_processor_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            processor.Processor(
+                name="name_value",
+                type_="type__value",
+                display_name="display_name_value",
+                state=processor.Processor.State.ENABLED,
+                default_processor_version="default_processor_version_value",
+                process_endpoint="process_endpoint_value",
+                kms_key_name="kms_key_name_value",
+            )
+        )
+        response = await client.get_processor()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.GetProcessorRequest()
@@ -3175,7 +3551,8 @@ async def test_get_processor_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorRequest()
+        request = document_processor_service.GetProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, processor.Processor)
@@ -3360,7 +3737,8 @@ def test_train_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.TrainProcessorVersionRequest()
+        request = document_processor_service.TrainProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3379,6 +3757,58 @@ def test_train_processor_version_empty_call():
         type(client.transport.train_processor_version), "__call__"
     ) as call:
         client.train_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.TrainProcessorVersionRequest()
+
+
+def test_train_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.TrainProcessorVersionRequest(
+        parent="parent_value",
+        base_processor_version="base_processor_version_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.train_processor_version), "__call__"
+    ) as call:
+        client.train_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.TrainProcessorVersionRequest(
+            parent="parent_value",
+            base_processor_version="base_processor_version_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_train_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.train_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.train_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.TrainProcessorVersionRequest()
@@ -3411,7 +3841,8 @@ async def test_train_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.TrainProcessorVersionRequest()
+        request = document_processor_service.TrainProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3619,7 +4050,8 @@ def test_get_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorVersionRequest()
+        request = document_processor_service.GetProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, processor.ProcessorVersion)
@@ -3648,6 +4080,64 @@ def test_get_processor_version_empty_call():
         type(client.transport.get_processor_version), "__call__"
     ) as call:
         client.get_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetProcessorVersionRequest()
+
+
+def test_get_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.GetProcessorVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_processor_version), "__call__"
+    ) as call:
+        client.get_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetProcessorVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            processor.ProcessorVersion(
+                name="name_value",
+                display_name="display_name_value",
+                state=processor.ProcessorVersion.State.DEPLOYED,
+                kms_key_name="kms_key_name_value",
+                kms_key_version_name="kms_key_version_name_value",
+                google_managed=True,
+                model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
+            )
+        )
+        response = await client.get_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.GetProcessorVersionRequest()
@@ -3688,7 +4178,8 @@ async def test_get_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorVersionRequest()
+        request = document_processor_service.GetProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, processor.ProcessorVersion)
@@ -3890,7 +4381,8 @@ def test_list_processor_versions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorVersionsRequest()
+        request = document_processor_service.ListProcessorVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorVersionsPager)
@@ -3910,6 +4402,60 @@ def test_list_processor_versions_empty_call():
         type(client.transport.list_processor_versions), "__call__"
     ) as call:
         client.list_processor_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorVersionsRequest()
+
+
+def test_list_processor_versions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ListProcessorVersionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_processor_versions), "__call__"
+    ) as call:
+        client.list_processor_versions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorVersionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_processor_versions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_processor_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListProcessorVersionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_processor_versions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ListProcessorVersionsRequest()
@@ -3944,7 +4490,8 @@ async def test_list_processor_versions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorVersionsRequest()
+        request = document_processor_service.ListProcessorVersionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorVersionsAsyncPager)
@@ -4333,7 +4880,8 @@ def test_delete_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeleteProcessorVersionRequest()
+        request = document_processor_service.DeleteProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4352,6 +4900,56 @@ def test_delete_processor_version_empty_call():
         type(client.transport.delete_processor_version), "__call__"
     ) as call:
         client.delete_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorVersionRequest()
+
+
+def test_delete_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.DeleteProcessorVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_processor_version), "__call__"
+    ) as call:
+        client.delete_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.DeleteProcessorVersionRequest()
@@ -4384,7 +4982,8 @@ async def test_delete_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeleteProcessorVersionRequest()
+        request = document_processor_service.DeleteProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4574,7 +5173,8 @@ def test_deploy_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeployProcessorVersionRequest()
+        request = document_processor_service.DeployProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4593,6 +5193,56 @@ def test_deploy_processor_version_empty_call():
         type(client.transport.deploy_processor_version), "__call__"
     ) as call:
         client.deploy_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeployProcessorVersionRequest()
+
+
+def test_deploy_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.DeployProcessorVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_processor_version), "__call__"
+    ) as call:
+        client.deploy_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeployProcessorVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_deploy_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.deploy_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.DeployProcessorVersionRequest()
@@ -4625,7 +5275,8 @@ async def test_deploy_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeployProcessorVersionRequest()
+        request = document_processor_service.DeployProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4815,7 +5466,8 @@ def test_undeploy_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.UndeployProcessorVersionRequest()
+        request = document_processor_service.UndeployProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4834,6 +5486,56 @@ def test_undeploy_processor_version_empty_call():
         type(client.transport.undeploy_processor_version), "__call__"
     ) as call:
         client.undeploy_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.UndeployProcessorVersionRequest()
+
+
+def test_undeploy_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.UndeployProcessorVersionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_processor_version), "__call__"
+    ) as call:
+        client.undeploy_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.UndeployProcessorVersionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_undeploy_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.undeploy_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.UndeployProcessorVersionRequest()
@@ -4866,7 +5568,8 @@ async def test_undeploy_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.UndeployProcessorVersionRequest()
+        request = document_processor_service.UndeployProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5062,7 +5765,8 @@ def test_create_processor(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.CreateProcessorRequest()
+        request = document_processor_service.CreateProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_processor.Processor)
@@ -5086,6 +5790,60 @@ def test_create_processor_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
         client.create_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.CreateProcessorRequest()
+
+
+def test_create_processor_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.CreateProcessorRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        client.create_processor(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.CreateProcessorRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_processor_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_processor.Processor(
+                name="name_value",
+                type_="type__value",
+                display_name="display_name_value",
+                state=gcd_processor.Processor.State.ENABLED,
+                default_processor_version="default_processor_version_value",
+                process_endpoint="process_endpoint_value",
+                kms_key_name="kms_key_name_value",
+            )
+        )
+        response = await client.create_processor()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.CreateProcessorRequest()
@@ -5124,7 +5882,8 @@ async def test_create_processor_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.CreateProcessorRequest()
+        request = document_processor_service.CreateProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_processor.Processor)
@@ -5321,7 +6080,8 @@ def test_delete_processor(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeleteProcessorRequest()
+        request = document_processor_service.DeleteProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5338,6 +6098,52 @@ def test_delete_processor_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
         client.delete_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorRequest()
+
+
+def test_delete_processor_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.DeleteProcessorRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        client.delete_processor(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_processor()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.DeleteProcessorRequest()
@@ -5368,7 +6174,8 @@ async def test_delete_processor_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeleteProcessorRequest()
+        request = document_processor_service.DeleteProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5548,7 +6355,8 @@ def test_enable_processor(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.EnableProcessorRequest()
+        request = document_processor_service.EnableProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5565,6 +6373,52 @@ def test_enable_processor_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
         client.enable_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EnableProcessorRequest()
+
+
+def test_enable_processor_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.EnableProcessorRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        client.enable_processor(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EnableProcessorRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_processor_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enable_processor()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.EnableProcessorRequest()
@@ -5595,7 +6449,8 @@ async def test_enable_processor_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.EnableProcessorRequest()
+        request = document_processor_service.EnableProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5695,7 +6550,8 @@ def test_disable_processor(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DisableProcessorRequest()
+        request = document_processor_service.DisableProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5714,6 +6570,56 @@ def test_disable_processor_empty_call():
         type(client.transport.disable_processor), "__call__"
     ) as call:
         client.disable_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DisableProcessorRequest()
+
+
+def test_disable_processor_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.DisableProcessorRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        client.disable_processor(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DisableProcessorRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_processor_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.disable_processor()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.DisableProcessorRequest()
@@ -5746,7 +6652,8 @@ async def test_disable_processor_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DisableProcessorRequest()
+        request = document_processor_service.DisableProcessorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5850,7 +6757,8 @@ def test_set_default_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.SetDefaultProcessorVersionRequest()
+        request = document_processor_service.SetDefaultProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5869,6 +6777,58 @@ def test_set_default_processor_version_empty_call():
         type(client.transport.set_default_processor_version), "__call__"
     ) as call:
         client.set_default_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.SetDefaultProcessorVersionRequest()
+
+
+def test_set_default_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.SetDefaultProcessorVersionRequest(
+        processor="processor_value",
+        default_processor_version="default_processor_version_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_processor_version), "__call__"
+    ) as call:
+        client.set_default_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.SetDefaultProcessorVersionRequest(
+            processor="processor_value",
+            default_processor_version="default_processor_version_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_default_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.set_default_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.SetDefaultProcessorVersionRequest()
@@ -5901,7 +6861,8 @@ async def test_set_default_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.SetDefaultProcessorVersionRequest()
+        request = document_processor_service.SetDefaultProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6003,7 +6964,8 @@ def test_review_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ReviewDocumentRequest()
+        request = document_processor_service.ReviewDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6020,6 +6982,52 @@ def test_review_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         client.review_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ReviewDocumentRequest()
+
+
+def test_review_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ReviewDocumentRequest(
+        human_review_config="human_review_config_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
+        client.review_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ReviewDocumentRequest(
+            human_review_config="human_review_config_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_review_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.review_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ReviewDocumentRequest()
@@ -6050,7 +7058,8 @@ async def test_review_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ReviewDocumentRequest()
+        request = document_processor_service.ReviewDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6232,7 +7241,8 @@ def test_evaluate_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.EvaluateProcessorVersionRequest()
+        request = document_processor_service.EvaluateProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6251,6 +7261,56 @@ def test_evaluate_processor_version_empty_call():
         type(client.transport.evaluate_processor_version), "__call__"
     ) as call:
         client.evaluate_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EvaluateProcessorVersionRequest()
+
+
+def test_evaluate_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.EvaluateProcessorVersionRequest(
+        processor_version="processor_version_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.evaluate_processor_version), "__call__"
+    ) as call:
+        client.evaluate_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EvaluateProcessorVersionRequest(
+            processor_version="processor_version_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_evaluate_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.evaluate_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.evaluate_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.EvaluateProcessorVersionRequest()
@@ -6283,7 +7343,8 @@ async def test_evaluate_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.EvaluateProcessorVersionRequest()
+        request = document_processor_service.EvaluateProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6475,7 +7536,8 @@ def test_get_evaluation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetEvaluationRequest()
+        request = document_processor_service.GetEvaluationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation.Evaluation)
@@ -6495,6 +7557,56 @@ def test_get_evaluation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
         client.get_evaluation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetEvaluationRequest()
+
+
+def test_get_evaluation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.GetEvaluationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
+        client.get_evaluation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.GetEvaluationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_evaluation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            evaluation.Evaluation(
+                name="name_value",
+                kms_key_name="kms_key_name_value",
+                kms_key_version_name="kms_key_version_name_value",
+            )
+        )
+        response = await client.get_evaluation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.GetEvaluationRequest()
@@ -6529,7 +7641,8 @@ async def test_get_evaluation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetEvaluationRequest()
+        request = document_processor_service.GetEvaluationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation.Evaluation)
@@ -6714,7 +7827,8 @@ def test_list_evaluations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListEvaluationsRequest()
+        request = document_processor_service.ListEvaluationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationsPager)
@@ -6732,6 +7846,56 @@ def test_list_evaluations_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
         client.list_evaluations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListEvaluationsRequest()
+
+
+def test_list_evaluations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ListEvaluationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
+        client.list_evaluations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListEvaluationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_evaluations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListEvaluationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_evaluations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ListEvaluationsRequest()
@@ -6764,7 +7928,8 @@ async def test_list_evaluations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListEvaluationsRequest()
+        request = document_processor_service.ListEvaluationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationsAsyncPager)
@@ -7137,7 +8302,8 @@ def test_import_processor_version(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ImportProcessorVersionRequest()
+        request = document_processor_service.ImportProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7156,6 +8322,58 @@ def test_import_processor_version_empty_call():
         type(client.transport.import_processor_version), "__call__"
     ) as call:
         client.import_processor_version()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ImportProcessorVersionRequest()
+
+
+def test_import_processor_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_processor_service.ImportProcessorVersionRequest(
+        processor_version_source="processor_version_source_value",
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_processor_version), "__call__"
+    ) as call:
+        client.import_processor_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ImportProcessorVersionRequest(
+            processor_version_source="processor_version_source_value",
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_processor_version_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_processor_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_processor_version()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_processor_service.ImportProcessorVersionRequest()
@@ -7188,7 +8406,8 @@ async def test_import_processor_version_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ImportProcessorVersionRequest()
+        request = document_processor_service.ImportProcessorVersionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
