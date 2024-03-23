@@ -3036,10 +3036,13 @@ class WafSettings(proto.Message):
                 Cloud Armor
             FASTLY (3):
                 Fastly
+            CLOUDFLARE (4):
+                Cloudflare
         """
         WAF_SERVICE_UNSPECIFIED = 0
         CA = 1
         FASTLY = 3
+        CLOUDFLARE = 4
 
     waf_service: WafService = proto.Field(
         proto.ENUM,
