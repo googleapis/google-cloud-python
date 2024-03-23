@@ -1237,7 +1237,8 @@ def test_list_app_connectors(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.ListAppConnectorsRequest()
+        request = app_connectors_service.ListAppConnectorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAppConnectorsPager)
@@ -1258,6 +1259,65 @@ def test_list_app_connectors_empty_call():
         type(client.transport.list_app_connectors), "__call__"
     ) as call:
         client.list_app_connectors()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.ListAppConnectorsRequest()
+
+
+def test_list_app_connectors_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppConnectorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_connectors_service.ListAppConnectorsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_app_connectors), "__call__"
+    ) as call:
+        client.list_app_connectors(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.ListAppConnectorsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_app_connectors_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppConnectorsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_app_connectors), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            app_connectors_service.ListAppConnectorsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_app_connectors()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_connectors_service.ListAppConnectorsRequest()
@@ -1293,7 +1353,8 @@ async def test_list_app_connectors_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.ListAppConnectorsRequest()
+        request = app_connectors_service.ListAppConnectorsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAppConnectorsAsyncPager)
@@ -1690,7 +1751,8 @@ def test_get_app_connector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.GetAppConnectorRequest()
+        request = app_connectors_service.GetAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, app_connectors_service.AppConnector)
@@ -1713,6 +1775,61 @@ def test_get_app_connector_empty_call():
         type(client.transport.get_app_connector), "__call__"
     ) as call:
         client.get_app_connector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.GetAppConnectorRequest()
+
+
+def test_get_app_connector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppConnectorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_connectors_service.GetAppConnectorRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_app_connector), "__call__"
+    ) as call:
+        client.get_app_connector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.GetAppConnectorRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_app_connector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppConnectorsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_app_connector), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            app_connectors_service.AppConnector(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                state=app_connectors_service.AppConnector.State.CREATING,
+            )
+        )
+        response = await client.get_app_connector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_connectors_service.GetAppConnectorRequest()
@@ -1750,7 +1867,8 @@ async def test_get_app_connector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.GetAppConnectorRequest()
+        request = app_connectors_service.GetAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, app_connectors_service.AppConnector)
@@ -1944,7 +2062,8 @@ def test_create_app_connector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.CreateAppConnectorRequest()
+        request = app_connectors_service.CreateAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1963,6 +2082,60 @@ def test_create_app_connector_empty_call():
         type(client.transport.create_app_connector), "__call__"
     ) as call:
         client.create_app_connector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.CreateAppConnectorRequest()
+
+
+def test_create_app_connector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppConnectorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_connectors_service.CreateAppConnectorRequest(
+        parent="parent_value",
+        app_connector_id="app_connector_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_app_connector), "__call__"
+    ) as call:
+        client.create_app_connector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.CreateAppConnectorRequest(
+            parent="parent_value",
+            app_connector_id="app_connector_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_app_connector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppConnectorsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_app_connector), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_app_connector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_connectors_service.CreateAppConnectorRequest()
@@ -1995,7 +2168,8 @@ async def test_create_app_connector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.CreateAppConnectorRequest()
+        request = app_connectors_service.CreateAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2205,7 +2379,8 @@ def test_update_app_connector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.UpdateAppConnectorRequest()
+        request = app_connectors_service.UpdateAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2224,6 +2399,56 @@ def test_update_app_connector_empty_call():
         type(client.transport.update_app_connector), "__call__"
     ) as call:
         client.update_app_connector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.UpdateAppConnectorRequest()
+
+
+def test_update_app_connector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppConnectorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_connectors_service.UpdateAppConnectorRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_app_connector), "__call__"
+    ) as call:
+        client.update_app_connector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.UpdateAppConnectorRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_app_connector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppConnectorsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_app_connector), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_app_connector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_connectors_service.UpdateAppConnectorRequest()
@@ -2256,7 +2481,8 @@ async def test_update_app_connector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.UpdateAppConnectorRequest()
+        request = app_connectors_service.UpdateAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2456,7 +2682,8 @@ def test_delete_app_connector(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.DeleteAppConnectorRequest()
+        request = app_connectors_service.DeleteAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2475,6 +2702,58 @@ def test_delete_app_connector_empty_call():
         type(client.transport.delete_app_connector), "__call__"
     ) as call:
         client.delete_app_connector()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.DeleteAppConnectorRequest()
+
+
+def test_delete_app_connector_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppConnectorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_connectors_service.DeleteAppConnectorRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_app_connector), "__call__"
+    ) as call:
+        client.delete_app_connector(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.DeleteAppConnectorRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_app_connector_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppConnectorsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_app_connector), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_app_connector()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_connectors_service.DeleteAppConnectorRequest()
@@ -2507,7 +2786,8 @@ async def test_delete_app_connector_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.DeleteAppConnectorRequest()
+        request = app_connectors_service.DeleteAppConnectorRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2695,7 +2975,8 @@ def test_report_status(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.ReportStatusRequest()
+        request = app_connectors_service.ReportStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2712,6 +2993,54 @@ def test_report_status_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.report_status), "__call__") as call:
         client.report_status()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.ReportStatusRequest()
+
+
+def test_report_status_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppConnectorsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_connectors_service.ReportStatusRequest(
+        app_connector="app_connector_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report_status), "__call__") as call:
+        client.report_status(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_connectors_service.ReportStatusRequest(
+            app_connector="app_connector_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_report_status_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppConnectorsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report_status), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.report_status()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_connectors_service.ReportStatusRequest()
@@ -2742,7 +3071,8 @@ async def test_report_status_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.ReportStatusRequest()
+        request = app_connectors_service.ReportStatusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

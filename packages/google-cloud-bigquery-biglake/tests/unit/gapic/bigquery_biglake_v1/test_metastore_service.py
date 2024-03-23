@@ -1179,7 +1179,8 @@ def test_create_catalog(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateCatalogRequest()
+        request = metastore.CreateCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
@@ -1197,6 +1198,56 @@ def test_create_catalog_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_catalog), "__call__") as call:
         client.create_catalog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.CreateCatalogRequest()
+
+
+def test_create_catalog_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.CreateCatalogRequest(
+        parent="parent_value",
+        catalog_id="catalog_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_catalog), "__call__") as call:
+        client.create_catalog(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.CreateCatalogRequest(
+            parent="parent_value",
+            catalog_id="catalog_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_catalog_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_catalog), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Catalog(
+                name="name_value",
+            )
+        )
+        response = await client.create_catalog()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.CreateCatalogRequest()
@@ -1228,7 +1279,8 @@ async def test_create_catalog_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateCatalogRequest()
+        request = metastore.CreateCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
@@ -1427,7 +1479,8 @@ def test_delete_catalog(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteCatalogRequest()
+        request = metastore.DeleteCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
@@ -1445,6 +1498,54 @@ def test_delete_catalog_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_catalog), "__call__") as call:
         client.delete_catalog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.DeleteCatalogRequest()
+
+
+def test_delete_catalog_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.DeleteCatalogRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_catalog), "__call__") as call:
+        client.delete_catalog(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.DeleteCatalogRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_catalog_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_catalog), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Catalog(
+                name="name_value",
+            )
+        )
+        response = await client.delete_catalog()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.DeleteCatalogRequest()
@@ -1476,7 +1577,8 @@ async def test_delete_catalog_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteCatalogRequest()
+        request = metastore.DeleteCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
@@ -1655,7 +1757,8 @@ def test_get_catalog(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetCatalogRequest()
+        request = metastore.GetCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
@@ -1673,6 +1776,54 @@ def test_get_catalog_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_catalog), "__call__") as call:
         client.get_catalog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.GetCatalogRequest()
+
+
+def test_get_catalog_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.GetCatalogRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_catalog), "__call__") as call:
+        client.get_catalog(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.GetCatalogRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_catalog_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_catalog), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Catalog(
+                name="name_value",
+            )
+        )
+        response = await client.get_catalog()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.GetCatalogRequest()
@@ -1704,7 +1855,8 @@ async def test_get_catalog_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetCatalogRequest()
+        request = metastore.GetCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
@@ -1883,7 +2035,8 @@ def test_list_catalogs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListCatalogsRequest()
+        request = metastore.ListCatalogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCatalogsPager)
@@ -1901,6 +2054,56 @@ def test_list_catalogs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
         client.list_catalogs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.ListCatalogsRequest()
+
+
+def test_list_catalogs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.ListCatalogsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
+        client.list_catalogs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.ListCatalogsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_catalogs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.ListCatalogsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_catalogs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.ListCatalogsRequest()
@@ -1932,7 +2135,8 @@ async def test_list_catalogs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListCatalogsRequest()
+        request = metastore.ListCatalogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCatalogsAsyncPager)
@@ -2306,7 +2510,8 @@ def test_create_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateDatabaseRequest()
+        request = metastore.CreateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -2325,6 +2530,57 @@ def test_create_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_database), "__call__") as call:
         client.create_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.CreateDatabaseRequest()
+
+
+def test_create_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.CreateDatabaseRequest(
+        parent="parent_value",
+        database_id="database_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        client.create_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.CreateDatabaseRequest(
+            parent="parent_value",
+            database_id="database_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Database(
+                name="name_value",
+                type_=metastore.Database.Type.HIVE,
+            )
+        )
+        response = await client.create_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.CreateDatabaseRequest()
@@ -2357,7 +2613,8 @@ async def test_create_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateDatabaseRequest()
+        request = metastore.CreateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -2582,7 +2839,8 @@ def test_delete_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteDatabaseRequest()
+        request = metastore.DeleteDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -2601,6 +2859,55 @@ def test_delete_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
         client.delete_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.DeleteDatabaseRequest()
+
+
+def test_delete_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.DeleteDatabaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        client.delete_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.DeleteDatabaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Database(
+                name="name_value",
+                type_=metastore.Database.Type.HIVE,
+            )
+        )
+        response = await client.delete_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.DeleteDatabaseRequest()
@@ -2633,7 +2940,8 @@ async def test_delete_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteDatabaseRequest()
+        request = metastore.DeleteDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -2814,7 +3122,8 @@ def test_update_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateDatabaseRequest()
+        request = metastore.UpdateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -2833,6 +3142,51 @@ def test_update_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
         client.update_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.UpdateDatabaseRequest()
+
+
+def test_update_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.UpdateDatabaseRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        client.update_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.UpdateDatabaseRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Database(
+                name="name_value",
+                type_=metastore.Database.Type.HIVE,
+            )
+        )
+        response = await client.update_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.UpdateDatabaseRequest()
@@ -2865,7 +3219,8 @@ async def test_update_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateDatabaseRequest()
+        request = metastore.UpdateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -3080,7 +3435,8 @@ def test_get_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetDatabaseRequest()
+        request = metastore.GetDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -3099,6 +3455,55 @@ def test_get_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
         client.get_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.GetDatabaseRequest()
+
+
+def test_get_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.GetDatabaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        client.get_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.GetDatabaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Database(
+                name="name_value",
+                type_=metastore.Database.Type.HIVE,
+            )
+        )
+        response = await client.get_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.GetDatabaseRequest()
@@ -3131,7 +3536,8 @@ async def test_get_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetDatabaseRequest()
+        request = metastore.GetDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Database)
@@ -3311,7 +3717,8 @@ def test_list_databases(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListDatabasesRequest()
+        request = metastore.ListDatabasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabasesPager)
@@ -3329,6 +3736,56 @@ def test_list_databases_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
         client.list_databases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.ListDatabasesRequest()
+
+
+def test_list_databases_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.ListDatabasesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        client.list_databases(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.ListDatabasesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_databases_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.ListDatabasesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_databases()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.ListDatabasesRequest()
@@ -3360,7 +3817,8 @@ async def test_list_databases_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListDatabasesRequest()
+        request = metastore.ListDatabasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabasesAsyncPager)
@@ -3735,7 +4193,8 @@ def test_create_table(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateTableRequest()
+        request = metastore.CreateTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -3755,6 +4214,58 @@ def test_create_table_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_table), "__call__") as call:
         client.create_table()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.CreateTableRequest()
+
+
+def test_create_table_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.CreateTableRequest(
+        parent="parent_value",
+        table_id="table_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
+        client.create_table(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.CreateTableRequest(
+            parent="parent_value",
+            table_id="table_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_table_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Table(
+                name="name_value",
+                type_=metastore.Table.Type.HIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.create_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.CreateTableRequest()
@@ -3788,7 +4299,8 @@ async def test_create_table_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateTableRequest()
+        request = metastore.CreateTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4015,7 +4527,8 @@ def test_delete_table(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteTableRequest()
+        request = metastore.DeleteTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4035,6 +4548,56 @@ def test_delete_table_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
         client.delete_table()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.DeleteTableRequest()
+
+
+def test_delete_table_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.DeleteTableRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
+        client.delete_table(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.DeleteTableRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_table_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Table(
+                name="name_value",
+                type_=metastore.Table.Type.HIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.delete_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.DeleteTableRequest()
@@ -4068,7 +4631,8 @@ async def test_delete_table_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteTableRequest()
+        request = metastore.DeleteTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4251,7 +4815,8 @@ def test_update_table(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateTableRequest()
+        request = metastore.UpdateTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4271,6 +4836,52 @@ def test_update_table_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_table), "__call__") as call:
         client.update_table()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.UpdateTableRequest()
+
+
+def test_update_table_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.UpdateTableRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
+        client.update_table(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.UpdateTableRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_table_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Table(
+                name="name_value",
+                type_=metastore.Table.Type.HIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.update_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.UpdateTableRequest()
@@ -4304,7 +4915,8 @@ async def test_update_table_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateTableRequest()
+        request = metastore.UpdateTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4521,7 +5133,8 @@ def test_rename_table(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RenameTableRequest()
+        request = metastore.RenameTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4541,6 +5154,58 @@ def test_rename_table_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_table), "__call__") as call:
         client.rename_table()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.RenameTableRequest()
+
+
+def test_rename_table_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.RenameTableRequest(
+        name="name_value",
+        new_name="new_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_table), "__call__") as call:
+        client.rename_table(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.RenameTableRequest(
+            name="name_value",
+            new_name="new_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_table_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Table(
+                name="name_value",
+                type_=metastore.Table.Type.HIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.rename_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.RenameTableRequest()
@@ -4574,7 +5239,8 @@ async def test_rename_table_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RenameTableRequest()
+        request = metastore.RenameTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4767,7 +5433,8 @@ def test_get_table(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetTableRequest()
+        request = metastore.GetTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -4787,6 +5454,56 @@ def test_get_table_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
         client.get_table()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.GetTableRequest()
+
+
+def test_get_table_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.GetTableRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        client.get_table(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.GetTableRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_table_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.Table(
+                name="name_value",
+                type_=metastore.Table.Type.HIVE,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.GetTableRequest()
@@ -4820,7 +5537,8 @@ async def test_get_table_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetTableRequest()
+        request = metastore.GetTableRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Table)
@@ -5001,7 +5719,8 @@ def test_list_tables(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListTablesRequest()
+        request = metastore.ListTablesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesPager)
@@ -5019,6 +5738,56 @@ def test_list_tables_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
         client.list_tables()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.ListTablesRequest()
+
+
+def test_list_tables_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetastoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metastore.ListTablesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        client.list_tables(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metastore.ListTablesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tables_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetastoreServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metastore.ListTablesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tables()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metastore.ListTablesRequest()
@@ -5050,7 +5819,8 @@ async def test_list_tables_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListTablesRequest()
+        request = metastore.ListTablesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesAsyncPager)

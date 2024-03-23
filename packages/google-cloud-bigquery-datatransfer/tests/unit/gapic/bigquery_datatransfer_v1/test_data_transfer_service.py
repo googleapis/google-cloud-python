@@ -1234,7 +1234,8 @@ def test_get_data_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetDataSourceRequest()
+        request = datatransfer.GetDataSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.DataSource)
@@ -1273,6 +1274,69 @@ def test_get_data_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
         client.get_data_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.GetDataSourceRequest()
+
+
+def test_get_data_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.GetDataSourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
+        client.get_data_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.GetDataSourceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.DataSource(
+                name="name_value",
+                data_source_id="data_source_id_value",
+                display_name="display_name_value",
+                description="description_value",
+                client_id="client_id_value",
+                scopes=["scopes_value"],
+                transfer_type=transfer.TransferType.BATCH,
+                supports_multiple_transfers=True,
+                update_deadline_seconds=2406,
+                default_schedule="default_schedule_value",
+                supports_custom_schedule=True,
+                help_url="help_url_value",
+                authorization_type=datatransfer.DataSource.AuthorizationType.AUTHORIZATION_CODE,
+                data_refresh_type=datatransfer.DataSource.DataRefreshType.SLIDING_WINDOW,
+                default_data_refresh_window_days=3379,
+                manual_runs_disabled=True,
+            )
+        )
+        response = await client.get_data_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.GetDataSourceRequest()
@@ -1319,7 +1383,8 @@ async def test_get_data_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetDataSourceRequest()
+        request = datatransfer.GetDataSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.DataSource)
@@ -1525,7 +1590,8 @@ def test_list_data_sources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListDataSourcesRequest()
+        request = datatransfer.ListDataSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourcesPager)
@@ -1545,6 +1611,60 @@ def test_list_data_sources_empty_call():
         type(client.transport.list_data_sources), "__call__"
     ) as call:
         client.list_data_sources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListDataSourcesRequest()
+
+
+def test_list_data_sources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.ListDataSourcesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_sources), "__call__"
+    ) as call:
+        client.list_data_sources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListDataSourcesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_sources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_sources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.ListDataSourcesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_data_sources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.ListDataSourcesRequest()
@@ -1578,7 +1698,8 @@ async def test_list_data_sources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListDataSourcesRequest()
+        request = datatransfer.ListDataSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourcesAsyncPager)
@@ -1979,7 +2100,8 @@ def test_create_transfer_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.CreateTransferConfigRequest()
+        request = datatransfer.CreateTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferConfig)
@@ -2008,6 +2130,73 @@ def test_create_transfer_config_empty_call():
         type(client.transport.create_transfer_config), "__call__"
     ) as call:
         client.create_transfer_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.CreateTransferConfigRequest()
+
+
+def test_create_transfer_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.CreateTransferConfigRequest(
+        parent="parent_value",
+        authorization_code="authorization_code_value",
+        version_info="version_info_value",
+        service_account_name="service_account_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_transfer_config), "__call__"
+    ) as call:
+        client.create_transfer_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.CreateTransferConfigRequest(
+            parent="parent_value",
+            authorization_code="authorization_code_value",
+            version_info="version_info_value",
+            service_account_name="service_account_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_transfer_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_transfer_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.TransferConfig(
+                name="name_value",
+                display_name="display_name_value",
+                data_source_id="data_source_id_value",
+                schedule="schedule_value",
+                data_refresh_window_days=2543,
+                disabled=True,
+                state=transfer.TransferState.PENDING,
+                user_id=747,
+                dataset_region="dataset_region_value",
+                notification_pubsub_topic="notification_pubsub_topic_value",
+            )
+        )
+        response = await client.create_transfer_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.CreateTransferConfigRequest()
@@ -2051,7 +2240,8 @@ async def test_create_transfer_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.CreateTransferConfigRequest()
+        request = datatransfer.CreateTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferConfig)
@@ -2273,7 +2463,8 @@ def test_update_transfer_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.UpdateTransferConfigRequest()
+        request = datatransfer.UpdateTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferConfig)
@@ -2302,6 +2493,71 @@ def test_update_transfer_config_empty_call():
         type(client.transport.update_transfer_config), "__call__"
     ) as call:
         client.update_transfer_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.UpdateTransferConfigRequest()
+
+
+def test_update_transfer_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.UpdateTransferConfigRequest(
+        authorization_code="authorization_code_value",
+        version_info="version_info_value",
+        service_account_name="service_account_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_transfer_config), "__call__"
+    ) as call:
+        client.update_transfer_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.UpdateTransferConfigRequest(
+            authorization_code="authorization_code_value",
+            version_info="version_info_value",
+            service_account_name="service_account_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_transfer_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_transfer_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.TransferConfig(
+                name="name_value",
+                display_name="display_name_value",
+                data_source_id="data_source_id_value",
+                schedule="schedule_value",
+                data_refresh_window_days=2543,
+                disabled=True,
+                state=transfer.TransferState.PENDING,
+                user_id=747,
+                dataset_region="dataset_region_value",
+                notification_pubsub_topic="notification_pubsub_topic_value",
+            )
+        )
+        response = await client.update_transfer_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.UpdateTransferConfigRequest()
@@ -2345,7 +2601,8 @@ async def test_update_transfer_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.UpdateTransferConfigRequest()
+        request = datatransfer.UpdateTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferConfig)
@@ -2555,7 +2812,8 @@ def test_delete_transfer_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.DeleteTransferConfigRequest()
+        request = datatransfer.DeleteTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2574,6 +2832,54 @@ def test_delete_transfer_config_empty_call():
         type(client.transport.delete_transfer_config), "__call__"
     ) as call:
         client.delete_transfer_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.DeleteTransferConfigRequest()
+
+
+def test_delete_transfer_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.DeleteTransferConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_config), "__call__"
+    ) as call:
+        client.delete_transfer_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.DeleteTransferConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_transfer_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_transfer_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.DeleteTransferConfigRequest()
@@ -2604,7 +2910,8 @@ async def test_delete_transfer_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.DeleteTransferConfigRequest()
+        request = datatransfer.DeleteTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2802,7 +3109,8 @@ def test_get_transfer_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetTransferConfigRequest()
+        request = datatransfer.GetTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferConfig)
@@ -2831,6 +3139,67 @@ def test_get_transfer_config_empty_call():
         type(client.transport.get_transfer_config), "__call__"
     ) as call:
         client.get_transfer_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.GetTransferConfigRequest()
+
+
+def test_get_transfer_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.GetTransferConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_transfer_config), "__call__"
+    ) as call:
+        client.get_transfer_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.GetTransferConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_transfer_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_transfer_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.TransferConfig(
+                name="name_value",
+                display_name="display_name_value",
+                data_source_id="data_source_id_value",
+                schedule="schedule_value",
+                data_refresh_window_days=2543,
+                disabled=True,
+                state=transfer.TransferState.PENDING,
+                user_id=747,
+                dataset_region="dataset_region_value",
+                notification_pubsub_topic="notification_pubsub_topic_value",
+            )
+        )
+        response = await client.get_transfer_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.GetTransferConfigRequest()
@@ -2873,7 +3242,8 @@ async def test_get_transfer_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetTransferConfigRequest()
+        request = datatransfer.GetTransferConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferConfig)
@@ -3075,7 +3445,8 @@ def test_list_transfer_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferConfigsRequest()
+        request = datatransfer.ListTransferConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferConfigsPager)
@@ -3095,6 +3466,60 @@ def test_list_transfer_configs_empty_call():
         type(client.transport.list_transfer_configs), "__call__"
     ) as call:
         client.list_transfer_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListTransferConfigsRequest()
+
+
+def test_list_transfer_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.ListTransferConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transfer_configs), "__call__"
+    ) as call:
+        client.list_transfer_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListTransferConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_transfer_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transfer_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.ListTransferConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_transfer_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.ListTransferConfigsRequest()
@@ -3129,7 +3554,8 @@ async def test_list_transfer_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferConfigsRequest()
+        request = datatransfer.ListTransferConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferConfigsAsyncPager)
@@ -3518,7 +3944,8 @@ def test_schedule_transfer_runs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ScheduleTransferRunsRequest()
+        request = datatransfer.ScheduleTransferRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.ScheduleTransferRunsResponse)
@@ -3537,6 +3964,56 @@ def test_schedule_transfer_runs_empty_call():
         type(client.transport.schedule_transfer_runs), "__call__"
     ) as call:
         client.schedule_transfer_runs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ScheduleTransferRunsRequest()
+
+
+def test_schedule_transfer_runs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.ScheduleTransferRunsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.schedule_transfer_runs), "__call__"
+    ) as call:
+        client.schedule_transfer_runs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ScheduleTransferRunsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_schedule_transfer_runs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.schedule_transfer_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.ScheduleTransferRunsResponse()
+        )
+        response = await client.schedule_transfer_runs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.ScheduleTransferRunsRequest()
@@ -3569,7 +4046,8 @@ async def test_schedule_transfer_runs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ScheduleTransferRunsRequest()
+        request = datatransfer.ScheduleTransferRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.ScheduleTransferRunsResponse)
@@ -3779,7 +4257,8 @@ def test_start_manual_transfer_runs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.StartManualTransferRunsRequest()
+        request = datatransfer.StartManualTransferRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.StartManualTransferRunsResponse)
@@ -3798,6 +4277,56 @@ def test_start_manual_transfer_runs_empty_call():
         type(client.transport.start_manual_transfer_runs), "__call__"
     ) as call:
         client.start_manual_transfer_runs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.StartManualTransferRunsRequest()
+
+
+def test_start_manual_transfer_runs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.StartManualTransferRunsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_manual_transfer_runs), "__call__"
+    ) as call:
+        client.start_manual_transfer_runs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.StartManualTransferRunsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_manual_transfer_runs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_manual_transfer_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.StartManualTransferRunsResponse()
+        )
+        response = await client.start_manual_transfer_runs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.StartManualTransferRunsRequest()
@@ -3830,7 +4359,8 @@ async def test_start_manual_transfer_runs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.StartManualTransferRunsRequest()
+        request = datatransfer.StartManualTransferRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.StartManualTransferRunsResponse)
@@ -3940,7 +4470,8 @@ def test_get_transfer_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetTransferRunRequest()
+        request = datatransfer.GetTransferRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferRun)
@@ -3963,6 +4494,59 @@ def test_get_transfer_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
         client.get_transfer_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.GetTransferRunRequest()
+
+
+def test_get_transfer_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.GetTransferRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
+        client.get_transfer_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.GetTransferRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_transfer_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.TransferRun(
+                name="name_value",
+                data_source_id="data_source_id_value",
+                state=transfer.TransferState.PENDING,
+                user_id=747,
+                schedule="schedule_value",
+                notification_pubsub_topic="notification_pubsub_topic_value",
+            )
+        )
+        response = await client.get_transfer_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.GetTransferRunRequest()
@@ -3999,7 +4583,8 @@ async def test_get_transfer_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetTransferRunRequest()
+        request = datatransfer.GetTransferRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transfer.TransferRun)
@@ -4187,7 +4772,8 @@ def test_delete_transfer_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.DeleteTransferRunRequest()
+        request = datatransfer.DeleteTransferRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4206,6 +4792,54 @@ def test_delete_transfer_run_empty_call():
         type(client.transport.delete_transfer_run), "__call__"
     ) as call:
         client.delete_transfer_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.DeleteTransferRunRequest()
+
+
+def test_delete_transfer_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.DeleteTransferRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_run), "__call__"
+    ) as call:
+        client.delete_transfer_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.DeleteTransferRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_transfer_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_transfer_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_transfer_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.DeleteTransferRunRequest()
@@ -4235,7 +4869,8 @@ async def test_delete_transfer_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.DeleteTransferRunRequest()
+        request = datatransfer.DeleteTransferRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4423,7 +5058,8 @@ def test_list_transfer_runs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferRunsRequest()
+        request = datatransfer.ListTransferRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferRunsPager)
@@ -4443,6 +5079,60 @@ def test_list_transfer_runs_empty_call():
         type(client.transport.list_transfer_runs), "__call__"
     ) as call:
         client.list_transfer_runs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListTransferRunsRequest()
+
+
+def test_list_transfer_runs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.ListTransferRunsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transfer_runs), "__call__"
+    ) as call:
+        client.list_transfer_runs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListTransferRunsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_transfer_runs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transfer_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.ListTransferRunsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_transfer_runs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.ListTransferRunsRequest()
@@ -4476,7 +5166,8 @@ async def test_list_transfer_runs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferRunsRequest()
+        request = datatransfer.ListTransferRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferRunsAsyncPager)
@@ -4867,7 +5558,8 @@ def test_list_transfer_logs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferLogsRequest()
+        request = datatransfer.ListTransferLogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferLogsPager)
@@ -4887,6 +5579,60 @@ def test_list_transfer_logs_empty_call():
         type(client.transport.list_transfer_logs), "__call__"
     ) as call:
         client.list_transfer_logs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListTransferLogsRequest()
+
+
+def test_list_transfer_logs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.ListTransferLogsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transfer_logs), "__call__"
+    ) as call:
+        client.list_transfer_logs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.ListTransferLogsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_transfer_logs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_transfer_logs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.ListTransferLogsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_transfer_logs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.ListTransferLogsRequest()
@@ -4920,7 +5666,8 @@ async def test_list_transfer_logs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferLogsRequest()
+        request = datatransfer.ListTransferLogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferLogsAsyncPager)
@@ -5311,7 +6058,8 @@ def test_check_valid_creds(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.CheckValidCredsRequest()
+        request = datatransfer.CheckValidCredsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.CheckValidCredsResponse)
@@ -5331,6 +6079,58 @@ def test_check_valid_creds_empty_call():
         type(client.transport.check_valid_creds), "__call__"
     ) as call:
         client.check_valid_creds()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.CheckValidCredsRequest()
+
+
+def test_check_valid_creds_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.CheckValidCredsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_valid_creds), "__call__"
+    ) as call:
+        client.check_valid_creds(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.CheckValidCredsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_check_valid_creds_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_valid_creds), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datatransfer.CheckValidCredsResponse(
+                has_valid_creds=True,
+            )
+        )
+        response = await client.check_valid_creds()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.CheckValidCredsRequest()
@@ -5364,7 +6164,8 @@ async def test_check_valid_creds_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.CheckValidCredsRequest()
+        request = datatransfer.CheckValidCredsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.CheckValidCredsResponse)
@@ -5555,7 +6356,8 @@ def test_enroll_data_sources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.EnrollDataSourcesRequest()
+        request = datatransfer.EnrollDataSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5574,6 +6376,54 @@ def test_enroll_data_sources_empty_call():
         type(client.transport.enroll_data_sources), "__call__"
     ) as call:
         client.enroll_data_sources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.EnrollDataSourcesRequest()
+
+
+def test_enroll_data_sources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.EnrollDataSourcesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enroll_data_sources), "__call__"
+    ) as call:
+        client.enroll_data_sources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.EnrollDataSourcesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_enroll_data_sources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enroll_data_sources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.enroll_data_sources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.EnrollDataSourcesRequest()
@@ -5603,7 +6453,8 @@ async def test_enroll_data_sources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.EnrollDataSourcesRequest()
+        request = datatransfer.EnrollDataSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5705,7 +6556,8 @@ def test_unenroll_data_sources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.UnenrollDataSourcesRequest()
+        request = datatransfer.UnenrollDataSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5724,6 +6576,54 @@ def test_unenroll_data_sources_empty_call():
         type(client.transport.unenroll_data_sources), "__call__"
     ) as call:
         client.unenroll_data_sources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.UnenrollDataSourcesRequest()
+
+
+def test_unenroll_data_sources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datatransfer.UnenrollDataSourcesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.unenroll_data_sources), "__call__"
+    ) as call:
+        client.unenroll_data_sources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datatransfer.UnenrollDataSourcesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_unenroll_data_sources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.unenroll_data_sources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.unenroll_data_sources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datatransfer.UnenrollDataSourcesRequest()
@@ -5754,7 +6654,8 @@ async def test_unenroll_data_sources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.UnenrollDataSourcesRequest()
+        request = datatransfer.UnenrollDataSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

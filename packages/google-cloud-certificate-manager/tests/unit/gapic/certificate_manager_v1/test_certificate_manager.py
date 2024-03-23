@@ -1210,7 +1210,8 @@ def test_list_certificates(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificatesRequest()
+        request = certificate_manager.ListCertificatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificatesPager)
@@ -1231,6 +1232,65 @@ def test_list_certificates_empty_call():
         type(client.transport.list_certificates), "__call__"
     ) as call:
         client.list_certificates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListCertificatesRequest()
+
+
+def test_list_certificates_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.ListCertificatesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificates), "__call__"
+    ) as call:
+        client.list_certificates(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListCertificatesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificates_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.ListCertificatesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_certificates()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.ListCertificatesRequest()
@@ -1266,7 +1326,8 @@ async def test_list_certificates_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificatesRequest()
+        request = certificate_manager.ListCertificatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificatesAsyncPager)
@@ -1660,7 +1721,8 @@ def test_get_certificate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateRequest()
+        request = certificate_manager.GetCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.Certificate)
@@ -1682,6 +1744,58 @@ def test_get_certificate_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
         client.get_certificate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetCertificateRequest()
+
+
+def test_get_certificate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.GetCertificateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
+        client.get_certificate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetCertificateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.Certificate(
+                name="name_value",
+                description="description_value",
+                san_dnsnames=["san_dnsnames_value"],
+                pem_certificate="pem_certificate_value",
+                scope=certificate_manager.Certificate.Scope.EDGE_CACHE,
+            )
+        )
+        response = await client.get_certificate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.GetCertificateRequest()
@@ -1718,7 +1832,8 @@ async def test_get_certificate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateRequest()
+        request = certificate_manager.GetCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.Certificate)
@@ -1905,7 +2020,8 @@ def test_create_certificate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateRequest()
+        request = certificate_manager.CreateCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1924,6 +2040,58 @@ def test_create_certificate_empty_call():
         type(client.transport.create_certificate), "__call__"
     ) as call:
         client.create_certificate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateCertificateRequest()
+
+
+def test_create_certificate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.CreateCertificateRequest(
+        parent="parent_value",
+        certificate_id="certificate_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate), "__call__"
+    ) as call:
+        client.create_certificate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateCertificateRequest(
+            parent="parent_value",
+            certificate_id="certificate_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_certificate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.CreateCertificateRequest()
@@ -1956,7 +2124,8 @@ async def test_create_certificate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateRequest()
+        request = certificate_manager.CreateCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2166,7 +2335,8 @@ def test_update_certificate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateRequest()
+        request = certificate_manager.UpdateCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2185,6 +2355,52 @@ def test_update_certificate_empty_call():
         type(client.transport.update_certificate), "__call__"
     ) as call:
         client.update_certificate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateCertificateRequest()
+
+
+def test_update_certificate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.UpdateCertificateRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_certificate), "__call__"
+    ) as call:
+        client.update_certificate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateCertificateRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_certificate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_certificate), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_certificate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.UpdateCertificateRequest()
@@ -2217,7 +2433,8 @@ async def test_update_certificate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateRequest()
+        request = certificate_manager.UpdateCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2417,7 +2634,8 @@ def test_delete_certificate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateRequest()
+        request = certificate_manager.DeleteCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2436,6 +2654,56 @@ def test_delete_certificate_empty_call():
         type(client.transport.delete_certificate), "__call__"
     ) as call:
         client.delete_certificate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteCertificateRequest()
+
+
+def test_delete_certificate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.DeleteCertificateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate), "__call__"
+    ) as call:
+        client.delete_certificate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteCertificateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_certificate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.DeleteCertificateRequest()
@@ -2468,7 +2736,8 @@ async def test_delete_certificate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateRequest()
+        request = certificate_manager.DeleteCertificateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2661,7 +2930,8 @@ def test_list_certificate_maps(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificateMapsRequest()
+        request = certificate_manager.ListCertificateMapsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificateMapsPager)
@@ -2682,6 +2952,65 @@ def test_list_certificate_maps_empty_call():
         type(client.transport.list_certificate_maps), "__call__"
     ) as call:
         client.list_certificate_maps()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListCertificateMapsRequest()
+
+
+def test_list_certificate_maps_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.ListCertificateMapsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_maps), "__call__"
+    ) as call:
+        client.list_certificate_maps(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListCertificateMapsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_maps_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_maps), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.ListCertificateMapsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_certificate_maps()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.ListCertificateMapsRequest()
@@ -2717,7 +3046,8 @@ async def test_list_certificate_maps_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificateMapsRequest()
+        request = certificate_manager.ListCertificateMapsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificateMapsAsyncPager)
@@ -3110,7 +3440,8 @@ def test_get_certificate_map(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateMapRequest()
+        request = certificate_manager.GetCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.CertificateMap)
@@ -3131,6 +3462,59 @@ def test_get_certificate_map_empty_call():
         type(client.transport.get_certificate_map), "__call__"
     ) as call:
         client.get_certificate_map()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetCertificateMapRequest()
+
+
+def test_get_certificate_map_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.GetCertificateMapRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_map), "__call__"
+    ) as call:
+        client.get_certificate_map(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetCertificateMapRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_map_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_map), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.CertificateMap(
+                name="name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_certificate_map()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.GetCertificateMapRequest()
@@ -3166,7 +3550,8 @@ async def test_get_certificate_map_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateMapRequest()
+        request = certificate_manager.GetCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.CertificateMap)
@@ -3358,7 +3743,8 @@ def test_create_certificate_map(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateMapRequest()
+        request = certificate_manager.CreateCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3377,6 +3763,58 @@ def test_create_certificate_map_empty_call():
         type(client.transport.create_certificate_map), "__call__"
     ) as call:
         client.create_certificate_map()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateCertificateMapRequest()
+
+
+def test_create_certificate_map_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.CreateCertificateMapRequest(
+        parent="parent_value",
+        certificate_map_id="certificate_map_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_map), "__call__"
+    ) as call:
+        client.create_certificate_map(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateCertificateMapRequest(
+            parent="parent_value",
+            certificate_map_id="certificate_map_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_map_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_map), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_certificate_map()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.CreateCertificateMapRequest()
@@ -3409,7 +3847,8 @@ async def test_create_certificate_map_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateMapRequest()
+        request = certificate_manager.CreateCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3619,7 +4058,8 @@ def test_update_certificate_map(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateMapRequest()
+        request = certificate_manager.UpdateCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3638,6 +4078,52 @@ def test_update_certificate_map_empty_call():
         type(client.transport.update_certificate_map), "__call__"
     ) as call:
         client.update_certificate_map()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateCertificateMapRequest()
+
+
+def test_update_certificate_map_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.UpdateCertificateMapRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_certificate_map), "__call__"
+    ) as call:
+        client.update_certificate_map(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateCertificateMapRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_certificate_map_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_certificate_map), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_certificate_map()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.UpdateCertificateMapRequest()
@@ -3670,7 +4156,8 @@ async def test_update_certificate_map_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateMapRequest()
+        request = certificate_manager.UpdateCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3870,7 +4357,8 @@ def test_delete_certificate_map(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateMapRequest()
+        request = certificate_manager.DeleteCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3889,6 +4377,56 @@ def test_delete_certificate_map_empty_call():
         type(client.transport.delete_certificate_map), "__call__"
     ) as call:
         client.delete_certificate_map()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteCertificateMapRequest()
+
+
+def test_delete_certificate_map_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.DeleteCertificateMapRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_map), "__call__"
+    ) as call:
+        client.delete_certificate_map(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteCertificateMapRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_map_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_map), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_certificate_map()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.DeleteCertificateMapRequest()
@@ -3921,7 +4459,8 @@ async def test_delete_certificate_map_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateMapRequest()
+        request = certificate_manager.DeleteCertificateMapRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4114,7 +4653,8 @@ def test_list_certificate_map_entries(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificateMapEntriesRequest()
+        request = certificate_manager.ListCertificateMapEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificateMapEntriesPager)
@@ -4135,6 +4675,65 @@ def test_list_certificate_map_entries_empty_call():
         type(client.transport.list_certificate_map_entries), "__call__"
     ) as call:
         client.list_certificate_map_entries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListCertificateMapEntriesRequest()
+
+
+def test_list_certificate_map_entries_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.ListCertificateMapEntriesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_map_entries), "__call__"
+    ) as call:
+        client.list_certificate_map_entries(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListCertificateMapEntriesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_map_entries_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_map_entries), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.ListCertificateMapEntriesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_certificate_map_entries()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.ListCertificateMapEntriesRequest()
@@ -4170,7 +4769,8 @@ async def test_list_certificate_map_entries_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificateMapEntriesRequest()
+        request = certificate_manager.ListCertificateMapEntriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificateMapEntriesAsyncPager)
@@ -4570,7 +5170,8 @@ def test_get_certificate_map_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateMapEntryRequest()
+        request = certificate_manager.GetCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.CertificateMapEntry)
@@ -4593,6 +5194,61 @@ def test_get_certificate_map_entry_empty_call():
         type(client.transport.get_certificate_map_entry), "__call__"
     ) as call:
         client.get_certificate_map_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetCertificateMapEntryRequest()
+
+
+def test_get_certificate_map_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.GetCertificateMapEntryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_map_entry), "__call__"
+    ) as call:
+        client.get_certificate_map_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetCertificateMapEntryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_map_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_map_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.CertificateMapEntry(
+                name="name_value",
+                description="description_value",
+                certificates=["certificates_value"],
+                state=certificate_manager.ServingState.ACTIVE,
+            )
+        )
+        response = await client.get_certificate_map_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.GetCertificateMapEntryRequest()
@@ -4630,7 +5286,8 @@ async def test_get_certificate_map_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateMapEntryRequest()
+        request = certificate_manager.GetCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.CertificateMapEntry)
@@ -4824,7 +5481,8 @@ def test_create_certificate_map_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateMapEntryRequest()
+        request = certificate_manager.CreateCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4843,6 +5501,58 @@ def test_create_certificate_map_entry_empty_call():
         type(client.transport.create_certificate_map_entry), "__call__"
     ) as call:
         client.create_certificate_map_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateCertificateMapEntryRequest()
+
+
+def test_create_certificate_map_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.CreateCertificateMapEntryRequest(
+        parent="parent_value",
+        certificate_map_entry_id="certificate_map_entry_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_map_entry), "__call__"
+    ) as call:
+        client.create_certificate_map_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateCertificateMapEntryRequest(
+            parent="parent_value",
+            certificate_map_entry_id="certificate_map_entry_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_map_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_map_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_certificate_map_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.CreateCertificateMapEntryRequest()
@@ -4875,7 +5585,8 @@ async def test_create_certificate_map_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateMapEntryRequest()
+        request = certificate_manager.CreateCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5093,7 +5804,8 @@ def test_update_certificate_map_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateMapEntryRequest()
+        request = certificate_manager.UpdateCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5112,6 +5824,52 @@ def test_update_certificate_map_entry_empty_call():
         type(client.transport.update_certificate_map_entry), "__call__"
     ) as call:
         client.update_certificate_map_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateCertificateMapEntryRequest()
+
+
+def test_update_certificate_map_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.UpdateCertificateMapEntryRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_certificate_map_entry), "__call__"
+    ) as call:
+        client.update_certificate_map_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateCertificateMapEntryRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_certificate_map_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_certificate_map_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_certificate_map_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.UpdateCertificateMapEntryRequest()
@@ -5144,7 +5902,8 @@ async def test_update_certificate_map_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateMapEntryRequest()
+        request = certificate_manager.UpdateCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5352,7 +6111,8 @@ def test_delete_certificate_map_entry(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateMapEntryRequest()
+        request = certificate_manager.DeleteCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5371,6 +6131,56 @@ def test_delete_certificate_map_entry_empty_call():
         type(client.transport.delete_certificate_map_entry), "__call__"
     ) as call:
         client.delete_certificate_map_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteCertificateMapEntryRequest()
+
+
+def test_delete_certificate_map_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.DeleteCertificateMapEntryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_map_entry), "__call__"
+    ) as call:
+        client.delete_certificate_map_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteCertificateMapEntryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_map_entry_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_map_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_certificate_map_entry()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.DeleteCertificateMapEntryRequest()
@@ -5403,7 +6213,8 @@ async def test_delete_certificate_map_entry_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateMapEntryRequest()
+        request = certificate_manager.DeleteCertificateMapEntryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5596,7 +6407,8 @@ def test_list_dns_authorizations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListDnsAuthorizationsRequest()
+        request = certificate_manager.ListDnsAuthorizationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDnsAuthorizationsPager)
@@ -5617,6 +6429,65 @@ def test_list_dns_authorizations_empty_call():
         type(client.transport.list_dns_authorizations), "__call__"
     ) as call:
         client.list_dns_authorizations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListDnsAuthorizationsRequest()
+
+
+def test_list_dns_authorizations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.ListDnsAuthorizationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dns_authorizations), "__call__"
+    ) as call:
+        client.list_dns_authorizations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.ListDnsAuthorizationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_dns_authorizations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dns_authorizations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.ListDnsAuthorizationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_dns_authorizations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.ListDnsAuthorizationsRequest()
@@ -5652,7 +6523,8 @@ async def test_list_dns_authorizations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListDnsAuthorizationsRequest()
+        request = certificate_manager.ListDnsAuthorizationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDnsAuthorizationsAsyncPager)
@@ -6049,7 +6921,8 @@ def test_get_dns_authorization(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetDnsAuthorizationRequest()
+        request = certificate_manager.GetDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.DnsAuthorization)
@@ -6072,6 +6945,61 @@ def test_get_dns_authorization_empty_call():
         type(client.transport.get_dns_authorization), "__call__"
     ) as call:
         client.get_dns_authorization()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetDnsAuthorizationRequest()
+
+
+def test_get_dns_authorization_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.GetDnsAuthorizationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_authorization), "__call__"
+    ) as call:
+        client.get_dns_authorization(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.GetDnsAuthorizationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dns_authorization_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_authorization), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_manager.DnsAuthorization(
+                name="name_value",
+                description="description_value",
+                domain="domain_value",
+                type_=certificate_manager.DnsAuthorization.Type.FIXED_RECORD,
+            )
+        )
+        response = await client.get_dns_authorization()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.GetDnsAuthorizationRequest()
@@ -6109,7 +7037,8 @@ async def test_get_dns_authorization_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetDnsAuthorizationRequest()
+        request = certificate_manager.GetDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_manager.DnsAuthorization)
@@ -6303,7 +7232,8 @@ def test_create_dns_authorization(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateDnsAuthorizationRequest()
+        request = certificate_manager.CreateDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6322,6 +7252,58 @@ def test_create_dns_authorization_empty_call():
         type(client.transport.create_dns_authorization), "__call__"
     ) as call:
         client.create_dns_authorization()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateDnsAuthorizationRequest()
+
+
+def test_create_dns_authorization_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.CreateDnsAuthorizationRequest(
+        parent="parent_value",
+        dns_authorization_id="dns_authorization_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dns_authorization), "__call__"
+    ) as call:
+        client.create_dns_authorization(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.CreateDnsAuthorizationRequest(
+            parent="parent_value",
+            dns_authorization_id="dns_authorization_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_dns_authorization_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dns_authorization), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_dns_authorization()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.CreateDnsAuthorizationRequest()
@@ -6354,7 +7336,8 @@ async def test_create_dns_authorization_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateDnsAuthorizationRequest()
+        request = certificate_manager.CreateDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6564,7 +7547,8 @@ def test_update_dns_authorization(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateDnsAuthorizationRequest()
+        request = certificate_manager.UpdateDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6583,6 +7567,52 @@ def test_update_dns_authorization_empty_call():
         type(client.transport.update_dns_authorization), "__call__"
     ) as call:
         client.update_dns_authorization()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateDnsAuthorizationRequest()
+
+
+def test_update_dns_authorization_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.UpdateDnsAuthorizationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_authorization), "__call__"
+    ) as call:
+        client.update_dns_authorization(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.UpdateDnsAuthorizationRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_dns_authorization_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_authorization), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_dns_authorization()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.UpdateDnsAuthorizationRequest()
@@ -6615,7 +7645,8 @@ async def test_update_dns_authorization_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateDnsAuthorizationRequest()
+        request = certificate_manager.UpdateDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6815,7 +7846,8 @@ def test_delete_dns_authorization(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteDnsAuthorizationRequest()
+        request = certificate_manager.DeleteDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6834,6 +7866,56 @@ def test_delete_dns_authorization_empty_call():
         type(client.transport.delete_dns_authorization), "__call__"
     ) as call:
         client.delete_dns_authorization()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteDnsAuthorizationRequest()
+
+
+def test_delete_dns_authorization_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_manager.DeleteDnsAuthorizationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dns_authorization), "__call__"
+    ) as call:
+        client.delete_dns_authorization(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == certificate_manager.DeleteDnsAuthorizationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_dns_authorization_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dns_authorization), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_dns_authorization()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == certificate_manager.DeleteDnsAuthorizationRequest()
@@ -6866,7 +7948,8 @@ async def test_delete_dns_authorization_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteDnsAuthorizationRequest()
+        request = certificate_manager.DeleteDnsAuthorizationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7061,10 +8144,8 @@ def test_list_certificate_issuance_configs(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
-        )
+        request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificateIssuanceConfigsPager)
@@ -7085,6 +8166,70 @@ def test_list_certificate_issuance_configs_empty_call():
         type(client.transport.list_certificate_issuance_configs), "__call__"
     ) as call:
         client.list_certificate_issuance_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+        )
+
+
+def test_list_certificate_issuance_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        client.list_certificate_issuance_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == certificate_issuance_config.ListCertificateIssuanceConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_certificate_issuance_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_certificate_issuance_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_certificate_issuance_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -7123,10 +8268,8 @@ async def test_list_certificate_issuance_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
-        )
+        request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCertificateIssuanceConfigsAsyncPager)
@@ -7533,9 +8676,8 @@ def test_get_certificate_issuance_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == certificate_issuance_config.GetCertificateIssuanceConfigRequest()
-        )
+        request = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_issuance_config.CertificateIssuanceConfig)
@@ -7561,6 +8703,65 @@ def test_get_certificate_issuance_config_empty_call():
         type(client.transport.get_certificate_issuance_config), "__call__"
     ) as call:
         client.get_certificate_issuance_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+        )
+
+
+def test_get_certificate_issuance_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_issuance_config.GetCertificateIssuanceConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        client.get_certificate_issuance_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == certificate_issuance_config.GetCertificateIssuanceConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_certificate_issuance_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            certificate_issuance_config.CertificateIssuanceConfig(
+                name="name_value",
+                description="description_value",
+                rotation_window_percentage=2788,
+                key_algorithm=certificate_issuance_config.CertificateIssuanceConfig.KeyAlgorithm.RSA_2048,
+            )
+        )
+        response = await client.get_certificate_issuance_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -7600,9 +8801,8 @@ async def test_get_certificate_issuance_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == certificate_issuance_config.GetCertificateIssuanceConfigRequest()
-        )
+        request = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, certificate_issuance_config.CertificateIssuanceConfig)
@@ -7799,10 +8999,10 @@ def test_create_certificate_issuance_config(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+        request = (
+            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7821,6 +9021,63 @@ def test_create_certificate_issuance_config_empty_call():
         type(client.transport.create_certificate_issuance_config), "__call__"
     ) as call:
         client.create_certificate_issuance_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+        )
+
+
+def test_create_certificate_issuance_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(
+        parent="parent_value",
+        certificate_issuance_config_id="certificate_issuance_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        client.create_certificate_issuance_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(
+            parent="parent_value",
+            certificate_issuance_config_id="certificate_issuance_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_certificate_issuance_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_certificate_issuance_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -7856,10 +9113,10 @@ async def test_create_certificate_issuance_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
+        request = (
+            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8081,10 +9338,8 @@ def test_delete_certificate_issuance_config(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
-        )
+        request = certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8103,6 +9358,61 @@ def test_delete_certificate_issuance_config_empty_call():
         type(client.transport.delete_certificate_issuance_config), "__call__"
     ) as call:
         client.delete_certificate_issuance_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+        )
+
+
+def test_delete_certificate_issuance_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        client.delete_certificate_issuance_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_certificate_issuance_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_certificate_issuance_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_certificate_issuance_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -8138,10 +9448,8 @@ async def test_delete_certificate_issuance_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
-        )
+        request = certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8334,7 +9642,8 @@ def test_list_trust_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.ListTrustConfigsRequest()
+        request = trust_config.ListTrustConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTrustConfigsPager)
@@ -8355,6 +9664,65 @@ def test_list_trust_configs_empty_call():
         type(client.transport.list_trust_configs), "__call__"
     ) as call:
         client.list_trust_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trust_config.ListTrustConfigsRequest()
+
+
+def test_list_trust_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trust_config.ListTrustConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_trust_configs), "__call__"
+    ) as call:
+        client.list_trust_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trust_config.ListTrustConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_trust_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_trust_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            trust_config.ListTrustConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_trust_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trust_config.ListTrustConfigsRequest()
@@ -8389,7 +9757,8 @@ async def test_list_trust_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.ListTrustConfigsRequest()
+        request = trust_config.ListTrustConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTrustConfigsAsyncPager)
@@ -8781,7 +10150,8 @@ def test_get_trust_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.GetTrustConfigRequest()
+        request = trust_config.GetTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trust_config.TrustConfig)
@@ -8801,6 +10171,56 @@ def test_get_trust_config_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trust_config), "__call__") as call:
         client.get_trust_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trust_config.GetTrustConfigRequest()
+
+
+def test_get_trust_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trust_config.GetTrustConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_trust_config), "__call__") as call:
+        client.get_trust_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trust_config.GetTrustConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_trust_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_trust_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            trust_config.TrustConfig(
+                name="name_value",
+                description="description_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_trust_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trust_config.GetTrustConfigRequest()
@@ -8834,7 +10254,8 @@ async def test_get_trust_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.GetTrustConfigRequest()
+        request = trust_config.GetTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trust_config.TrustConfig)
@@ -9019,7 +10440,8 @@ def test_create_trust_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_trust_config.CreateTrustConfigRequest()
+        request = gcc_trust_config.CreateTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9038,6 +10460,58 @@ def test_create_trust_config_empty_call():
         type(client.transport.create_trust_config), "__call__"
     ) as call:
         client.create_trust_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcc_trust_config.CreateTrustConfigRequest()
+
+
+def test_create_trust_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcc_trust_config.CreateTrustConfigRequest(
+        parent="parent_value",
+        trust_config_id="trust_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_trust_config), "__call__"
+    ) as call:
+        client.create_trust_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcc_trust_config.CreateTrustConfigRequest(
+            parent="parent_value",
+            trust_config_id="trust_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_trust_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_trust_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_trust_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcc_trust_config.CreateTrustConfigRequest()
@@ -9070,7 +10544,8 @@ async def test_create_trust_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_trust_config.CreateTrustConfigRequest()
+        request = gcc_trust_config.CreateTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9280,7 +10755,8 @@ def test_update_trust_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_trust_config.UpdateTrustConfigRequest()
+        request = gcc_trust_config.UpdateTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9299,6 +10775,52 @@ def test_update_trust_config_empty_call():
         type(client.transport.update_trust_config), "__call__"
     ) as call:
         client.update_trust_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcc_trust_config.UpdateTrustConfigRequest()
+
+
+def test_update_trust_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcc_trust_config.UpdateTrustConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_trust_config), "__call__"
+    ) as call:
+        client.update_trust_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcc_trust_config.UpdateTrustConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_trust_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_trust_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_trust_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcc_trust_config.UpdateTrustConfigRequest()
@@ -9331,7 +10853,8 @@ async def test_update_trust_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_trust_config.UpdateTrustConfigRequest()
+        request = gcc_trust_config.UpdateTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9531,7 +11054,8 @@ def test_delete_trust_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.DeleteTrustConfigRequest()
+        request = trust_config.DeleteTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9550,6 +11074,58 @@ def test_delete_trust_config_empty_call():
         type(client.transport.delete_trust_config), "__call__"
     ) as call:
         client.delete_trust_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trust_config.DeleteTrustConfigRequest()
+
+
+def test_delete_trust_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CertificateManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trust_config.DeleteTrustConfigRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_trust_config), "__call__"
+    ) as call:
+        client.delete_trust_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trust_config.DeleteTrustConfigRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_trust_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CertificateManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_trust_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_trust_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trust_config.DeleteTrustConfigRequest()
@@ -9581,7 +11157,8 @@ async def test_delete_trust_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.DeleteTrustConfigRequest()
+        request = trust_config.DeleteTrustConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

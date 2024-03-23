@@ -1164,7 +1164,8 @@ def test_translate_query(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateQueryRequest()
+        request = translation_service.TranslateQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateQueryResponse)
@@ -1183,6 +1184,57 @@ def test_translate_query_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.translate_query), "__call__") as call:
         client.translate_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateQueryRequest()
+
+
+def test_translate_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SqlTranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = translation_service.TranslateQueryRequest(
+        parent="parent_value",
+        query="query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.translate_query), "__call__") as call:
+        client.translate_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateQueryRequest(
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_translate_query_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SqlTranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.translate_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateQueryResponse(
+                translation_job="translation_job_value",
+                translated_query="translated_query_value",
+            )
+        )
+        response = await client.translate_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == translation_service.TranslateQueryRequest()
@@ -1216,7 +1268,8 @@ async def test_translate_query_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateQueryRequest()
+        request = translation_service.TranslateQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateQueryResponse)
