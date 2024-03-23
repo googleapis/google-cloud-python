@@ -1183,7 +1183,8 @@ def test_create_cdn_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateCdnKeyRequest()
+        request = video_stitcher_service.CreateCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1200,6 +1201,54 @@ def test_create_cdn_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
         client.create_cdn_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateCdnKeyRequest()
+
+
+def test_create_cdn_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.CreateCdnKeyRequest(
+        parent="parent_value",
+        cdn_key_id="cdn_key_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
+        client.create_cdn_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateCdnKeyRequest(
+            parent="parent_value",
+            cdn_key_id="cdn_key_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_cdn_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_cdn_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.CreateCdnKeyRequest()
@@ -1230,7 +1279,8 @@ async def test_create_cdn_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateCdnKeyRequest()
+        request = video_stitcher_service.CreateCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1445,7 +1495,8 @@ def test_list_cdn_keys(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListCdnKeysRequest()
+        request = video_stitcher_service.ListCdnKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCdnKeysPager)
@@ -1464,6 +1515,61 @@ def test_list_cdn_keys_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
         client.list_cdn_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListCdnKeysRequest()
+
+
+def test_list_cdn_keys_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.ListCdnKeysRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
+        client.list_cdn_keys(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListCdnKeysRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_cdn_keys_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            video_stitcher_service.ListCdnKeysResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_cdn_keys()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.ListCdnKeysRequest()
@@ -1497,7 +1603,8 @@ async def test_list_cdn_keys_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListCdnKeysRequest()
+        request = video_stitcher_service.ListCdnKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCdnKeysAsyncPager)
@@ -1872,7 +1979,8 @@ def test_get_cdn_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetCdnKeyRequest()
+        request = video_stitcher_service.GetCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cdn_keys.CdnKey)
@@ -1891,6 +1999,55 @@ def test_get_cdn_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
         client.get_cdn_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetCdnKeyRequest()
+
+
+def test_get_cdn_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetCdnKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
+        client.get_cdn_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetCdnKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_cdn_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cdn_keys.CdnKey(
+                name="name_value",
+                hostname="hostname_value",
+            )
+        )
+        response = await client.get_cdn_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetCdnKeyRequest()
@@ -1924,7 +2081,8 @@ async def test_get_cdn_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetCdnKeyRequest()
+        request = video_stitcher_service.GetCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cdn_keys.CdnKey)
@@ -2102,7 +2260,8 @@ def test_delete_cdn_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteCdnKeyRequest()
+        request = video_stitcher_service.DeleteCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2119,6 +2278,52 @@ def test_delete_cdn_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
         client.delete_cdn_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.DeleteCdnKeyRequest()
+
+
+def test_delete_cdn_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.DeleteCdnKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
+        client.delete_cdn_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.DeleteCdnKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_cdn_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_cdn_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.DeleteCdnKeyRequest()
@@ -2149,7 +2354,8 @@ async def test_delete_cdn_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteCdnKeyRequest()
+        request = video_stitcher_service.DeleteCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2329,7 +2535,8 @@ def test_update_cdn_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateCdnKeyRequest()
+        request = video_stitcher_service.UpdateCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2346,6 +2553,48 @@ def test_update_cdn_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
         client.update_cdn_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.UpdateCdnKeyRequest()
+
+
+def test_update_cdn_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.UpdateCdnKeyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
+        client.update_cdn_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.UpdateCdnKeyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_cdn_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_cdn_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.UpdateCdnKeyRequest()
@@ -2376,7 +2625,8 @@ async def test_update_cdn_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateCdnKeyRequest()
+        request = video_stitcher_service.UpdateCdnKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2587,7 +2837,8 @@ def test_create_vod_session(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateVodSessionRequest()
+        request = video_stitcher_service.CreateVodSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.VodSession)
@@ -2612,6 +2863,63 @@ def test_create_vod_session_empty_call():
         type(client.transport.create_vod_session), "__call__"
     ) as call:
         client.create_vod_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateVodSessionRequest()
+
+
+def test_create_vod_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.CreateVodSessionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_vod_session), "__call__"
+    ) as call:
+        client.create_vod_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateVodSessionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_vod_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_vod_session), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            sessions.VodSession(
+                name="name_value",
+                play_uri="play_uri_value",
+                source_uri="source_uri_value",
+                ad_tag_uri="ad_tag_uri_value",
+                asset_id="asset_id_value",
+                ad_tracking=live_configs.AdTracking.CLIENT,
+            )
+        )
+        response = await client.create_vod_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.CreateVodSessionRequest()
@@ -2651,7 +2959,8 @@ async def test_create_vod_session_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateVodSessionRequest()
+        request = video_stitcher_service.CreateVodSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.VodSession)
@@ -2858,7 +3167,8 @@ def test_get_vod_session(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodSessionRequest()
+        request = video_stitcher_service.GetVodSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.VodSession)
@@ -2881,6 +3191,59 @@ def test_get_vod_session_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
         client.get_vod_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetVodSessionRequest()
+
+
+def test_get_vod_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetVodSessionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
+        client.get_vod_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetVodSessionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vod_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            sessions.VodSession(
+                name="name_value",
+                play_uri="play_uri_value",
+                source_uri="source_uri_value",
+                ad_tag_uri="ad_tag_uri_value",
+                asset_id="asset_id_value",
+                ad_tracking=live_configs.AdTracking.CLIENT,
+            )
+        )
+        response = await client.get_vod_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetVodSessionRequest()
@@ -2918,7 +3281,8 @@ async def test_get_vod_session_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodSessionRequest()
+        request = video_stitcher_service.GetVodSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.VodSession)
@@ -3104,7 +3468,8 @@ def test_list_vod_stitch_details(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodStitchDetailsRequest()
+        request = video_stitcher_service.ListVodStitchDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVodStitchDetailsPager)
@@ -3124,6 +3489,60 @@ def test_list_vod_stitch_details_empty_call():
         type(client.transport.list_vod_stitch_details), "__call__"
     ) as call:
         client.list_vod_stitch_details()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListVodStitchDetailsRequest()
+
+
+def test_list_vod_stitch_details_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.ListVodStitchDetailsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vod_stitch_details), "__call__"
+    ) as call:
+        client.list_vod_stitch_details(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListVodStitchDetailsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_vod_stitch_details_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vod_stitch_details), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            video_stitcher_service.ListVodStitchDetailsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_vod_stitch_details()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.ListVodStitchDetailsRequest()
@@ -3158,7 +3577,8 @@ async def test_list_vod_stitch_details_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodStitchDetailsRequest()
+        request = video_stitcher_service.ListVodStitchDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVodStitchDetailsAsyncPager)
@@ -3549,7 +3969,8 @@ def test_get_vod_stitch_detail(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodStitchDetailRequest()
+        request = video_stitcher_service.GetVodStitchDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, stitch_details.VodStitchDetail)
@@ -3569,6 +3990,58 @@ def test_get_vod_stitch_detail_empty_call():
         type(client.transport.get_vod_stitch_detail), "__call__"
     ) as call:
         client.get_vod_stitch_detail()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetVodStitchDetailRequest()
+
+
+def test_get_vod_stitch_detail_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetVodStitchDetailRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vod_stitch_detail), "__call__"
+    ) as call:
+        client.get_vod_stitch_detail(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetVodStitchDetailRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vod_stitch_detail_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vod_stitch_detail), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            stitch_details.VodStitchDetail(
+                name="name_value",
+            )
+        )
+        response = await client.get_vod_stitch_detail()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetVodStitchDetailRequest()
@@ -3603,7 +4076,8 @@ async def test_get_vod_stitch_detail_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodStitchDetailRequest()
+        request = video_stitcher_service.GetVodStitchDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, stitch_details.VodStitchDetail)
@@ -3796,7 +4270,8 @@ def test_list_vod_ad_tag_details(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodAdTagDetailsRequest()
+        request = video_stitcher_service.ListVodAdTagDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVodAdTagDetailsPager)
@@ -3816,6 +4291,60 @@ def test_list_vod_ad_tag_details_empty_call():
         type(client.transport.list_vod_ad_tag_details), "__call__"
     ) as call:
         client.list_vod_ad_tag_details()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListVodAdTagDetailsRequest()
+
+
+def test_list_vod_ad_tag_details_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.ListVodAdTagDetailsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vod_ad_tag_details), "__call__"
+    ) as call:
+        client.list_vod_ad_tag_details(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListVodAdTagDetailsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_vod_ad_tag_details_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vod_ad_tag_details), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            video_stitcher_service.ListVodAdTagDetailsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_vod_ad_tag_details()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.ListVodAdTagDetailsRequest()
@@ -3850,7 +4379,8 @@ async def test_list_vod_ad_tag_details_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodAdTagDetailsRequest()
+        request = video_stitcher_service.ListVodAdTagDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVodAdTagDetailsAsyncPager)
@@ -4241,7 +4771,8 @@ def test_get_vod_ad_tag_detail(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodAdTagDetailRequest()
+        request = video_stitcher_service.GetVodAdTagDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ad_tag_details.VodAdTagDetail)
@@ -4261,6 +4792,58 @@ def test_get_vod_ad_tag_detail_empty_call():
         type(client.transport.get_vod_ad_tag_detail), "__call__"
     ) as call:
         client.get_vod_ad_tag_detail()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetVodAdTagDetailRequest()
+
+
+def test_get_vod_ad_tag_detail_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetVodAdTagDetailRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vod_ad_tag_detail), "__call__"
+    ) as call:
+        client.get_vod_ad_tag_detail(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetVodAdTagDetailRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vod_ad_tag_detail_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vod_ad_tag_detail), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ad_tag_details.VodAdTagDetail(
+                name="name_value",
+            )
+        )
+        response = await client.get_vod_ad_tag_detail()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetVodAdTagDetailRequest()
@@ -4295,7 +4878,8 @@ async def test_get_vod_ad_tag_detail_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodAdTagDetailRequest()
+        request = video_stitcher_service.GetVodAdTagDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ad_tag_details.VodAdTagDetail)
@@ -4488,7 +5072,8 @@ def test_list_live_ad_tag_details(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListLiveAdTagDetailsRequest()
+        request = video_stitcher_service.ListLiveAdTagDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLiveAdTagDetailsPager)
@@ -4508,6 +5093,60 @@ def test_list_live_ad_tag_details_empty_call():
         type(client.transport.list_live_ad_tag_details), "__call__"
     ) as call:
         client.list_live_ad_tag_details()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListLiveAdTagDetailsRequest()
+
+
+def test_list_live_ad_tag_details_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.ListLiveAdTagDetailsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_live_ad_tag_details), "__call__"
+    ) as call:
+        client.list_live_ad_tag_details(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListLiveAdTagDetailsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_live_ad_tag_details_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_live_ad_tag_details), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            video_stitcher_service.ListLiveAdTagDetailsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_live_ad_tag_details()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.ListLiveAdTagDetailsRequest()
@@ -4542,7 +5181,8 @@ async def test_list_live_ad_tag_details_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListLiveAdTagDetailsRequest()
+        request = video_stitcher_service.ListLiveAdTagDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLiveAdTagDetailsAsyncPager)
@@ -4933,7 +5573,8 @@ def test_get_live_ad_tag_detail(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveAdTagDetailRequest()
+        request = video_stitcher_service.GetLiveAdTagDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ad_tag_details.LiveAdTagDetail)
@@ -4953,6 +5594,58 @@ def test_get_live_ad_tag_detail_empty_call():
         type(client.transport.get_live_ad_tag_detail), "__call__"
     ) as call:
         client.get_live_ad_tag_detail()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetLiveAdTagDetailRequest()
+
+
+def test_get_live_ad_tag_detail_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetLiveAdTagDetailRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_live_ad_tag_detail), "__call__"
+    ) as call:
+        client.get_live_ad_tag_detail(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetLiveAdTagDetailRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_live_ad_tag_detail_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_live_ad_tag_detail), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ad_tag_details.LiveAdTagDetail(
+                name="name_value",
+            )
+        )
+        response = await client.get_live_ad_tag_detail()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetLiveAdTagDetailRequest()
@@ -4987,7 +5680,8 @@ async def test_get_live_ad_tag_detail_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveAdTagDetailRequest()
+        request = video_stitcher_service.GetLiveAdTagDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ad_tag_details.LiveAdTagDetail)
@@ -5176,7 +5870,8 @@ def test_create_slate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateSlateRequest()
+        request = video_stitcher_service.CreateSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5193,6 +5888,56 @@ def test_create_slate_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
         client.create_slate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateSlateRequest()
+
+
+def test_create_slate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.CreateSlateRequest(
+        parent="parent_value",
+        slate_id="slate_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
+        client.create_slate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateSlateRequest(
+            parent="parent_value",
+            slate_id="slate_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_slate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_slate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.CreateSlateRequest()
@@ -5223,7 +5968,8 @@ async def test_create_slate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateSlateRequest()
+        request = video_stitcher_service.CreateSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5426,7 +6172,8 @@ def test_list_slates(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListSlatesRequest()
+        request = video_stitcher_service.ListSlatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSlatesPager)
@@ -5445,6 +6192,61 @@ def test_list_slates_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
         client.list_slates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListSlatesRequest()
+
+
+def test_list_slates_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.ListSlatesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
+        client.list_slates(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListSlatesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_slates_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            video_stitcher_service.ListSlatesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_slates()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.ListSlatesRequest()
@@ -5478,7 +6280,8 @@ async def test_list_slates_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListSlatesRequest()
+        request = video_stitcher_service.ListSlatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSlatesAsyncPager)
@@ -5853,7 +6656,8 @@ def test_get_slate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetSlateRequest()
+        request = video_stitcher_service.GetSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, slates.Slate)
@@ -5872,6 +6676,55 @@ def test_get_slate_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
         client.get_slate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetSlateRequest()
+
+
+def test_get_slate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetSlateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
+        client.get_slate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetSlateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_slate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            slates.Slate(
+                name="name_value",
+                uri="uri_value",
+            )
+        )
+        response = await client.get_slate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetSlateRequest()
@@ -5904,7 +6757,8 @@ async def test_get_slate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetSlateRequest()
+        request = video_stitcher_service.GetSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, slates.Slate)
@@ -6082,7 +6936,8 @@ def test_update_slate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateSlateRequest()
+        request = video_stitcher_service.UpdateSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6099,6 +6954,48 @@ def test_update_slate_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
         client.update_slate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.UpdateSlateRequest()
+
+
+def test_update_slate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.UpdateSlateRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
+        client.update_slate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.UpdateSlateRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_slate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_slate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.UpdateSlateRequest()
@@ -6129,7 +7026,8 @@ async def test_update_slate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateSlateRequest()
+        request = video_stitcher_service.UpdateSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6319,7 +7217,8 @@ def test_delete_slate(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteSlateRequest()
+        request = video_stitcher_service.DeleteSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6336,6 +7235,52 @@ def test_delete_slate_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
         client.delete_slate()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.DeleteSlateRequest()
+
+
+def test_delete_slate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.DeleteSlateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
+        client.delete_slate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.DeleteSlateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_slate_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_slate()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.DeleteSlateRequest()
@@ -6366,7 +7311,8 @@ async def test_delete_slate_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteSlateRequest()
+        request = video_stitcher_service.DeleteSlateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6552,7 +7498,8 @@ def test_create_live_session(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateLiveSessionRequest()
+        request = video_stitcher_service.CreateLiveSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.LiveSession)
@@ -6574,6 +7521,60 @@ def test_create_live_session_empty_call():
         type(client.transport.create_live_session), "__call__"
     ) as call:
         client.create_live_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateLiveSessionRequest()
+
+
+def test_create_live_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.CreateLiveSessionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_live_session), "__call__"
+    ) as call:
+        client.create_live_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateLiveSessionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_live_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_live_session), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            sessions.LiveSession(
+                name="name_value",
+                play_uri="play_uri_value",
+                live_config="live_config_value",
+            )
+        )
+        response = await client.create_live_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.CreateLiveSessionRequest()
@@ -6610,7 +7611,8 @@ async def test_create_live_session_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateLiveSessionRequest()
+        request = video_stitcher_service.CreateLiveSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.LiveSession)
@@ -6815,7 +7817,8 @@ def test_get_live_session(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveSessionRequest()
+        request = video_stitcher_service.GetLiveSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.LiveSession)
@@ -6835,6 +7838,56 @@ def test_get_live_session_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
         client.get_live_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetLiveSessionRequest()
+
+
+def test_get_live_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetLiveSessionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
+        client.get_live_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetLiveSessionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_live_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            sessions.LiveSession(
+                name="name_value",
+                play_uri="play_uri_value",
+                live_config="live_config_value",
+            )
+        )
+        response = await client.get_live_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetLiveSessionRequest()
@@ -6869,7 +7922,8 @@ async def test_get_live_session_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveSessionRequest()
+        request = video_stitcher_service.GetLiveSessionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, sessions.LiveSession)
@@ -7054,7 +8108,8 @@ def test_create_live_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateLiveConfigRequest()
+        request = video_stitcher_service.CreateLiveConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7073,6 +8128,60 @@ def test_create_live_config_empty_call():
         type(client.transport.create_live_config), "__call__"
     ) as call:
         client.create_live_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateLiveConfigRequest()
+
+
+def test_create_live_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.CreateLiveConfigRequest(
+        parent="parent_value",
+        live_config_id="live_config_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_live_config), "__call__"
+    ) as call:
+        client.create_live_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.CreateLiveConfigRequest(
+            parent="parent_value",
+            live_config_id="live_config_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_live_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_live_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_live_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.CreateLiveConfigRequest()
@@ -7105,7 +8214,8 @@ async def test_create_live_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateLiveConfigRequest()
+        request = video_stitcher_service.CreateLiveConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7318,7 +8428,8 @@ def test_list_live_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListLiveConfigsRequest()
+        request = video_stitcher_service.ListLiveConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLiveConfigsPager)
@@ -7339,6 +8450,65 @@ def test_list_live_configs_empty_call():
         type(client.transport.list_live_configs), "__call__"
     ) as call:
         client.list_live_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListLiveConfigsRequest()
+
+
+def test_list_live_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.ListLiveConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_live_configs), "__call__"
+    ) as call:
+        client.list_live_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.ListLiveConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_live_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_live_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            video_stitcher_service.ListLiveConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_live_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.ListLiveConfigsRequest()
@@ -7374,7 +8544,8 @@ async def test_list_live_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListLiveConfigsRequest()
+        request = video_stitcher_service.ListLiveConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLiveConfigsAsyncPager)
@@ -7770,7 +8941,8 @@ def test_get_live_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveConfigRequest()
+        request = video_stitcher_service.GetLiveConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, live_configs.LiveConfig)
@@ -7796,6 +8968,60 @@ def test_get_live_config_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_config), "__call__") as call:
         client.get_live_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetLiveConfigRequest()
+
+
+def test_get_live_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.GetLiveConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_live_config), "__call__") as call:
+        client.get_live_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.GetLiveConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_live_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_live_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            live_configs.LiveConfig(
+                name="name_value",
+                source_uri="source_uri_value",
+                ad_tag_uri="ad_tag_uri_value",
+                state=live_configs.LiveConfig.State.CREATING,
+                ad_tracking=live_configs.AdTracking.CLIENT,
+                default_slate="default_slate_value",
+                stitching_policy=live_configs.LiveConfig.StitchingPolicy.CUT_CURRENT,
+            )
+        )
+        response = await client.get_live_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.GetLiveConfigRequest()
@@ -7834,7 +9060,8 @@ async def test_get_live_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveConfigRequest()
+        request = video_stitcher_service.GetLiveConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, live_configs.LiveConfig)
@@ -8025,7 +9252,8 @@ def test_delete_live_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteLiveConfigRequest()
+        request = video_stitcher_service.DeleteLiveConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8044,6 +9272,56 @@ def test_delete_live_config_empty_call():
         type(client.transport.delete_live_config), "__call__"
     ) as call:
         client.delete_live_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.DeleteLiveConfigRequest()
+
+
+def test_delete_live_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = video_stitcher_service.DeleteLiveConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_live_config), "__call__"
+    ) as call:
+        client.delete_live_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == video_stitcher_service.DeleteLiveConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_live_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VideoStitcherServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_live_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_live_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == video_stitcher_service.DeleteLiveConfigRequest()
@@ -8076,7 +9354,8 @@ async def test_delete_live_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteLiveConfigRequest()
+        request = video_stitcher_service.DeleteLiveConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

@@ -1119,7 +1119,8 @@ def test_list_voices(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.ListVoicesRequest()
+        request = cloud_tts.ListVoicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tts.ListVoicesResponse)
@@ -1136,6 +1137,52 @@ def test_list_voices_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
         client.list_voices()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tts.ListVoicesRequest()
+
+
+def test_list_voices_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tts.ListVoicesRequest(
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
+        client.list_voices(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tts.ListVoicesRequest(
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_voices_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TextToSpeechAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tts.ListVoicesResponse()
+        )
+        response = await client.list_voices()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tts.ListVoicesRequest()
@@ -1165,7 +1212,8 @@ async def test_list_voices_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.ListVoicesRequest()
+        request = cloud_tts.ListVoicesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tts.ListVoicesResponse)
@@ -1288,7 +1336,8 @@ def test_synthesize_speech(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+        request = cloud_tts.SynthesizeSpeechRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tts.SynthesizeSpeechResponse)
@@ -1308,6 +1357,54 @@ def test_synthesize_speech_empty_call():
         type(client.transport.synthesize_speech), "__call__"
     ) as call:
         client.synthesize_speech()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+
+
+def test_synthesize_speech_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TextToSpeechClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tts.SynthesizeSpeechRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.synthesize_speech), "__call__"
+    ) as call:
+        client.synthesize_speech(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+
+
+@pytest.mark.asyncio
+async def test_synthesize_speech_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TextToSpeechAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.synthesize_speech), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tts.SynthesizeSpeechResponse(
+                audio_content=b"audio_content_blob",
+            )
+        )
+        response = await client.synthesize_speech()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_tts.SynthesizeSpeechRequest()
@@ -1341,7 +1438,8 @@ async def test_synthesize_speech_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+        request = cloud_tts.SynthesizeSpeechRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tts.SynthesizeSpeechResponse)

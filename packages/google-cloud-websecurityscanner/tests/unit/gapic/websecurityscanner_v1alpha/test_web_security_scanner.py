@@ -1204,7 +1204,8 @@ def test_create_scan_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.CreateScanConfigRequest()
+        request = web_security_scanner.CreateScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcw_scan_config.ScanConfig)
@@ -1232,6 +1233,64 @@ def test_create_scan_config_empty_call():
         type(client.transport.create_scan_config), "__call__"
     ) as call:
         client.create_scan_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.CreateScanConfigRequest()
+
+
+def test_create_scan_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.CreateScanConfigRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_scan_config), "__call__"
+    ) as call:
+        client.create_scan_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.CreateScanConfigRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_scan_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_scan_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcw_scan_config.ScanConfig(
+                name="name_value",
+                display_name="display_name_value",
+                max_qps=761,
+                starting_urls=["starting_urls_value"],
+                user_agent=gcw_scan_config.ScanConfig.UserAgent.CHROME_LINUX,
+                blacklist_patterns=["blacklist_patterns_value"],
+                target_platforms=[gcw_scan_config.ScanConfig.TargetPlatform.APP_ENGINE],
+            )
+        )
+        response = await client.create_scan_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.CreateScanConfigRequest()
@@ -1272,7 +1331,8 @@ async def test_create_scan_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.CreateScanConfigRequest()
+        request = web_security_scanner.CreateScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcw_scan_config.ScanConfig)
@@ -1481,7 +1541,8 @@ def test_delete_scan_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.DeleteScanConfigRequest()
+        request = web_security_scanner.DeleteScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1500,6 +1561,54 @@ def test_delete_scan_config_empty_call():
         type(client.transport.delete_scan_config), "__call__"
     ) as call:
         client.delete_scan_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.DeleteScanConfigRequest()
+
+
+def test_delete_scan_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.DeleteScanConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_scan_config), "__call__"
+    ) as call:
+        client.delete_scan_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.DeleteScanConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_scan_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_scan_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_scan_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.DeleteScanConfigRequest()
@@ -1530,7 +1639,8 @@ async def test_delete_scan_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.DeleteScanConfigRequest()
+        request = web_security_scanner.DeleteScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1722,7 +1832,8 @@ def test_get_scan_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetScanConfigRequest()
+        request = web_security_scanner.GetScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_config.ScanConfig)
@@ -1748,6 +1859,60 @@ def test_get_scan_config_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
         client.get_scan_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.GetScanConfigRequest()
+
+
+def test_get_scan_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.GetScanConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
+        client.get_scan_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.GetScanConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_scan_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            scan_config.ScanConfig(
+                name="name_value",
+                display_name="display_name_value",
+                max_qps=761,
+                starting_urls=["starting_urls_value"],
+                user_agent=scan_config.ScanConfig.UserAgent.CHROME_LINUX,
+                blacklist_patterns=["blacklist_patterns_value"],
+                target_platforms=[scan_config.ScanConfig.TargetPlatform.APP_ENGINE],
+            )
+        )
+        response = await client.get_scan_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.GetScanConfigRequest()
@@ -1786,7 +1951,8 @@ async def test_get_scan_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetScanConfigRequest()
+        request = web_security_scanner.GetScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_config.ScanConfig)
@@ -1979,7 +2145,8 @@ def test_list_scan_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListScanConfigsRequest()
+        request = web_security_scanner.ListScanConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScanConfigsPager)
@@ -1999,6 +2166,60 @@ def test_list_scan_configs_empty_call():
         type(client.transport.list_scan_configs), "__call__"
     ) as call:
         client.list_scan_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListScanConfigsRequest()
+
+
+def test_list_scan_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.ListScanConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_scan_configs), "__call__"
+    ) as call:
+        client.list_scan_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListScanConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_scan_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_scan_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            web_security_scanner.ListScanConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_scan_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.ListScanConfigsRequest()
@@ -2033,7 +2254,8 @@ async def test_list_scan_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListScanConfigsRequest()
+        request = web_security_scanner.ListScanConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScanConfigsAsyncPager)
@@ -2430,7 +2652,8 @@ def test_update_scan_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.UpdateScanConfigRequest()
+        request = web_security_scanner.UpdateScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcw_scan_config.ScanConfig)
@@ -2458,6 +2681,60 @@ def test_update_scan_config_empty_call():
         type(client.transport.update_scan_config), "__call__"
     ) as call:
         client.update_scan_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.UpdateScanConfigRequest()
+
+
+def test_update_scan_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.UpdateScanConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_scan_config), "__call__"
+    ) as call:
+        client.update_scan_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.UpdateScanConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_scan_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_scan_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcw_scan_config.ScanConfig(
+                name="name_value",
+                display_name="display_name_value",
+                max_qps=761,
+                starting_urls=["starting_urls_value"],
+                user_agent=gcw_scan_config.ScanConfig.UserAgent.CHROME_LINUX,
+                blacklist_patterns=["blacklist_patterns_value"],
+                target_platforms=[gcw_scan_config.ScanConfig.TargetPlatform.APP_ENGINE],
+            )
+        )
+        response = await client.update_scan_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.UpdateScanConfigRequest()
@@ -2498,7 +2775,8 @@ async def test_update_scan_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.UpdateScanConfigRequest()
+        request = web_security_scanner.UpdateScanConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcw_scan_config.ScanConfig)
@@ -2713,7 +2991,8 @@ def test_start_scan_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.StartScanRunRequest()
+        request = web_security_scanner.StartScanRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_run.ScanRun)
@@ -2737,6 +3016,60 @@ def test_start_scan_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
         client.start_scan_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.StartScanRunRequest()
+
+
+def test_start_scan_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.StartScanRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
+        client.start_scan_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.StartScanRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_scan_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            scan_run.ScanRun(
+                name="name_value",
+                execution_state=scan_run.ScanRun.ExecutionState.QUEUED,
+                result_state=scan_run.ScanRun.ResultState.SUCCESS,
+                urls_crawled_count=1935,
+                urls_tested_count=1846,
+                has_vulnerabilities=True,
+                progress_percent=1733,
+            )
+        )
+        response = await client.start_scan_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.StartScanRunRequest()
@@ -2775,7 +3108,8 @@ async def test_start_scan_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.StartScanRunRequest()
+        request = web_security_scanner.StartScanRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_run.ScanRun)
@@ -2966,7 +3300,8 @@ def test_get_scan_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetScanRunRequest()
+        request = web_security_scanner.GetScanRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_run.ScanRun)
@@ -2990,6 +3325,60 @@ def test_get_scan_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
         client.get_scan_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.GetScanRunRequest()
+
+
+def test_get_scan_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.GetScanRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
+        client.get_scan_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.GetScanRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_scan_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            scan_run.ScanRun(
+                name="name_value",
+                execution_state=scan_run.ScanRun.ExecutionState.QUEUED,
+                result_state=scan_run.ScanRun.ResultState.SUCCESS,
+                urls_crawled_count=1935,
+                urls_tested_count=1846,
+                has_vulnerabilities=True,
+                progress_percent=1733,
+            )
+        )
+        response = await client.get_scan_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.GetScanRunRequest()
@@ -3027,7 +3416,8 @@ async def test_get_scan_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetScanRunRequest()
+        request = web_security_scanner.GetScanRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_run.ScanRun)
@@ -3212,7 +3602,8 @@ def test_list_scan_runs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListScanRunsRequest()
+        request = web_security_scanner.ListScanRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScanRunsPager)
@@ -3230,6 +3621,56 @@ def test_list_scan_runs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
         client.list_scan_runs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListScanRunsRequest()
+
+
+def test_list_scan_runs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.ListScanRunsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
+        client.list_scan_runs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListScanRunsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_scan_runs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            web_security_scanner.ListScanRunsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_scan_runs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.ListScanRunsRequest()
@@ -3262,7 +3703,8 @@ async def test_list_scan_runs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListScanRunsRequest()
+        request = web_security_scanner.ListScanRunsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScanRunsAsyncPager)
@@ -3641,7 +4083,8 @@ def test_stop_scan_run(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.StopScanRunRequest()
+        request = web_security_scanner.StopScanRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_run.ScanRun)
@@ -3665,6 +4108,60 @@ def test_stop_scan_run_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
         client.stop_scan_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.StopScanRunRequest()
+
+
+def test_stop_scan_run_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.StopScanRunRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
+        client.stop_scan_run(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.StopScanRunRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_scan_run_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            scan_run.ScanRun(
+                name="name_value",
+                execution_state=scan_run.ScanRun.ExecutionState.QUEUED,
+                result_state=scan_run.ScanRun.ResultState.SUCCESS,
+                urls_crawled_count=1935,
+                urls_tested_count=1846,
+                has_vulnerabilities=True,
+                progress_percent=1733,
+            )
+        )
+        response = await client.stop_scan_run()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.StopScanRunRequest()
@@ -3703,7 +4200,8 @@ async def test_stop_scan_run_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.StopScanRunRequest()
+        request = web_security_scanner.StopScanRunRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, scan_run.ScanRun)
@@ -3890,7 +4388,8 @@ def test_list_crawled_urls(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListCrawledUrlsRequest()
+        request = web_security_scanner.ListCrawledUrlsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCrawledUrlsPager)
@@ -3910,6 +4409,60 @@ def test_list_crawled_urls_empty_call():
         type(client.transport.list_crawled_urls), "__call__"
     ) as call:
         client.list_crawled_urls()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListCrawledUrlsRequest()
+
+
+def test_list_crawled_urls_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.ListCrawledUrlsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_crawled_urls), "__call__"
+    ) as call:
+        client.list_crawled_urls(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListCrawledUrlsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_crawled_urls_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_crawled_urls), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            web_security_scanner.ListCrawledUrlsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_crawled_urls()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.ListCrawledUrlsRequest()
@@ -3944,7 +4497,8 @@ async def test_list_crawled_urls_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListCrawledUrlsRequest()
+        request = web_security_scanner.ListCrawledUrlsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCrawledUrlsAsyncPager)
@@ -4342,7 +4896,8 @@ def test_get_finding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetFindingRequest()
+        request = web_security_scanner.GetFindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, finding.Finding)
@@ -4369,6 +4924,63 @@ def test_get_finding_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
         client.get_finding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.GetFindingRequest()
+
+
+def test_get_finding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.GetFindingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
+        client.get_finding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.GetFindingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_finding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            finding.Finding(
+                name="name_value",
+                finding_type=finding.Finding.FindingType.MIXED_CONTENT,
+                http_method="http_method_value",
+                fuzzed_url="fuzzed_url_value",
+                body="body_value",
+                description="description_value",
+                reproduction_url="reproduction_url_value",
+                frame_url="frame_url_value",
+                final_url="final_url_value",
+                tracking_id="tracking_id_value",
+            )
+        )
+        response = await client.get_finding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.GetFindingRequest()
@@ -4409,7 +5021,8 @@ async def test_get_finding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetFindingRequest()
+        request = web_security_scanner.GetFindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, finding.Finding)
@@ -4597,7 +5210,8 @@ def test_list_findings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListFindingsRequest()
+        request = web_security_scanner.ListFindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFindingsPager)
@@ -4615,6 +5229,58 @@ def test_list_findings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
         client.list_findings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListFindingsRequest()
+
+
+def test_list_findings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.ListFindingsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
+        client.list_findings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListFindingsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_findings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            web_security_scanner.ListFindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_findings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.ListFindingsRequest()
@@ -4647,7 +5313,8 @@ async def test_list_findings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListFindingsRequest()
+        request = web_security_scanner.ListFindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFindingsAsyncPager)
@@ -5030,7 +5697,8 @@ def test_list_finding_type_stats(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListFindingTypeStatsRequest()
+        request = web_security_scanner.ListFindingTypeStatsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, web_security_scanner.ListFindingTypeStatsResponse)
@@ -5049,6 +5717,56 @@ def test_list_finding_type_stats_empty_call():
         type(client.transport.list_finding_type_stats), "__call__"
     ) as call:
         client.list_finding_type_stats()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListFindingTypeStatsRequest()
+
+
+def test_list_finding_type_stats_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebSecurityScannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = web_security_scanner.ListFindingTypeStatsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_finding_type_stats), "__call__"
+    ) as call:
+        client.list_finding_type_stats(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == web_security_scanner.ListFindingTypeStatsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_finding_type_stats_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebSecurityScannerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_finding_type_stats), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            web_security_scanner.ListFindingTypeStatsResponse()
+        )
+        response = await client.list_finding_type_stats()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == web_security_scanner.ListFindingTypeStatsRequest()
@@ -5081,7 +5799,8 @@ async def test_list_finding_type_stats_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListFindingTypeStatsRequest()
+        request = web_security_scanner.ListFindingTypeStatsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, web_security_scanner.ListFindingTypeStatsResponse)
