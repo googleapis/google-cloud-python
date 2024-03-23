@@ -31,7 +31,7 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
         fit_intercept (default True):
             Default True. Specifies if a constant (a.k.a. bias or intercept)
             should be added to the decision function.
-        class_weights (dict or 'balanced', default None):
+        class_weight (dict or 'balanced', default None):
             Default None. Weights associated with classes in the form
             ``{class_label: weight}``.If not given, all classes are supposed
             to have weight one. The "balanced" mode uses the values of y to
@@ -47,14 +47,14 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
             The maximum number of training iterations or steps. Default to 20.
         warm_start (bool, default False):
             Determines whether to train a model with new training data, new model options, or both. Unless you explicitly override them, the initial options used to train the model are used for the warm start run. Default to False.
-        learn_rate (float or None, default None):
-            The learn rate for gradient descent when learn_rate_strategy='constant'. If unset, value 0.1 is used. If learn_rate_strategy='line_search', an error is returned.
-        learn_rate_strategy (str, default "line_search"):
+        learning_rate (float or None, default None):
+            The learn rate for gradient descent when learning_rate_strategy='constant'. If unset, value 0.1 is used. If learning_rate_strategy='line_search', an error is returned.
+        learning_rate_strategy (str, default "line_search"):
             The strategy for specifying the learning rate during training. Default to "line_search".
         tol (float, default 0.01):
             The minimum relative loss improvement that is necessary to continue training when EARLY_STOP is set to true. For example, a value of 0.01 specifies that each iteration must reduce the loss by 1% for training to continue. Default to 0.01.
-        ls_init_learn_rate (float or None, default None):
-            Sets the initial learning rate that learn_rate_strategy='line_search' uses. This option can only be used if line_search is specified. If unset, value 0.1 is used.
+        ls_init_learning_rate (float or None, default None):
+            Sets the initial learning rate that learning_rate_strategy='line_search' uses. This option can only be used if line_search is specified. If unset, value 0.1 is used.
         calculate_p_values (bool, default False):
             Specifies whether to compute p-values and standard errors during training. Default to False.
         enable_global_explain (bool, default False):

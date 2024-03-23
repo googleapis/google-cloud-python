@@ -37,7 +37,7 @@ class PCA(
 
     def __init__(
         self,
-        n_components: int = 3,
+        n_components: Optional[Union[int, float]] = None,
         *,
         svd_solver: Literal["full", "randomized", "auto"] = "auto",
     ):
@@ -56,12 +56,30 @@ class PCA(
         last_fitting = model.training_runs[-1]["trainingOptions"]
         if "numPrincipalComponents" in last_fitting:
             kwargs["n_components"] = int(last_fitting["numPrincipalComponents"])
+        if "pcaExplainedVarianceRatio" in last_fitting:
+            kwargs["n_components"] = float(last_fitting["pcaExplainedVarianceRatio"])
         if "pcaSolver" in last_fitting:
             kwargs["svd_solver"] = str(last_fitting["pcaSolver"])
 
         new_pca = cls(**kwargs)
         new_pca._bqml_model = core.BqmlModel(session, model)
         return new_pca
+
+    @property
+    def _bqml_options(self) -> dict:
+        """The model options as they will be set for BQML"""
+        options: dict = {
+            "model_type": "PCA",
+            "pca_solver": self.svd_solver,
+        }
+
+        assert self.n_components is not None
+        if 0 < self.n_components < 1:
+            options["pca_explained_variance_ratio"] = float(self.n_components)
+        elif self.n_components >= 1:
+            options["num_principal_components"] = int(self.n_components)
+
+        return options
 
     def _fit(
         self,
@@ -71,14 +89,13 @@ class PCA(
     ) -> PCA:
         (X,) = utils.convert_to_dataframe(X)
 
+        # To mimic sklearn's behavior
+        if self.n_components is None:
+            self.n_components = min(X.shape)
         self._bqml_model = self._bqml_model_factory.create_model(
             X_train=X,
             transforms=transforms,
-            options={
-                "model_type": "PCA",
-                "num_principal_components": self.n_components,
-                "pca_solver": self.svd_solver,
-            },
+            options=self._bqml_options,
         )
         return self
 

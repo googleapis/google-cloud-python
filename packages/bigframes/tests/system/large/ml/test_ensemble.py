@@ -20,7 +20,7 @@ import pytest
 import bigframes.ml.ensemble
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.XGBRegressor()
 
@@ -64,7 +64,7 @@ def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
     )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_xgbregressor_dart_booster_multiple_params(
     penguins_df_default_index, dataset_id
 ):
@@ -75,14 +75,14 @@ def test_xgbregressor_dart_booster_multiple_params(
         colsample_bytree=0.95,
         colsample_bylevel=0.95,
         colsample_bynode=0.95,
-        num_parallel_tree=2,
+        n_estimators=2,
         max_depth=4,
         subsample=0.95,
         reg_alpha=0.0001,
         reg_lambda=0.0001,
         learning_rate=0.015,
         max_iterations=4,
-        min_rel_progress=0.02,
+        tol=0.02,
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
@@ -126,20 +126,19 @@ def test_xgbregressor_dart_booster_multiple_params(
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
     assert reloaded_model.colsample_bynode == 0.95
-    assert reloaded_model.early_stop is True
     assert reloaded_model.subsample == 0.95
     assert reloaded_model.reg_alpha == 0.0001
     assert reloaded_model.reg_lambda == 0.0001
     assert reloaded_model.learning_rate == 0.015
     assert reloaded_model.max_iterations == 4
-    assert reloaded_model.min_rel_progress == 0.02
+    assert reloaded_model.tol == 0.02
     assert reloaded_model.gamma == 0.0
     assert reloaded_model.max_depth == 4
     assert reloaded_model.min_tree_child_weight == 2
-    assert reloaded_model.num_parallel_tree == 2
+    assert reloaded_model.n_estimators == 2
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.XGBClassifier()
 
@@ -179,7 +178,7 @@ def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     )
 
 
-# @pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_xgbclassifier_dart_booster_multiple_params(
     penguins_df_default_index, dataset_id
 ):
@@ -190,14 +189,14 @@ def test_xgbclassifier_dart_booster_multiple_params(
         colsample_bytree=0.95,
         colsample_bylevel=0.95,
         colsample_bynode=0.95,
-        num_parallel_tree=2,
+        n_estimators=2,
         max_depth=4,
         subsample=0.95,
         reg_alpha=0.0001,
         reg_lambda=0.0001,
         learning_rate=0.015,
         max_iterations=4,
-        min_rel_progress=0.02,
+        tol=0.02,
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
@@ -240,20 +239,19 @@ def test_xgbclassifier_dart_booster_multiple_params(
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
     assert reloaded_model.colsample_bynode == 0.95
-    assert reloaded_model.early_stop is True
     assert reloaded_model.subsample == 0.95
     assert reloaded_model.reg_alpha == 0.0001
     assert reloaded_model.reg_lambda == 0.0001
     assert reloaded_model.learning_rate == 0.015
     assert reloaded_model.max_iterations == 4
-    assert reloaded_model.min_rel_progress == 0.02
+    assert reloaded_model.tol == 0.02
     assert reloaded_model.gamma == 0.0
     assert reloaded_model.max_depth == 4
     assert reloaded_model.min_tree_child_weight == 2
-    assert reloaded_model.num_parallel_tree == 2
+    assert reloaded_model.n_estimators == 2
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_randomforestregressor_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestRegressor()
 
@@ -294,7 +292,7 @@ def test_randomforestregressor_default_params(penguins_df_default_index, dataset
     )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_randomforestregressor_multiple_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestRegressor(
         tree_method="auto",
@@ -302,12 +300,12 @@ def test_randomforestregressor_multiple_params(penguins_df_default_index, datase
         colsample_bytree=0.95,
         colsample_bylevel=0.95,
         colsample_bynode=0.95,
-        num_parallel_tree=90,
+        n_estimators=90,
         max_depth=14,
         subsample=0.95,
         reg_alpha=0.0001,
         reg_lambda=0.0001,
-        min_rel_progress=0.02,
+        tol=0.02,
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
@@ -349,19 +347,18 @@ def test_randomforestregressor_multiple_params(penguins_df_default_index, datase
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
     assert reloaded_model.colsample_bynode == 0.95
-    assert reloaded_model.early_stop is True
     assert reloaded_model.subsample == 0.95
     assert reloaded_model.reg_alpha == 0.0001
     assert reloaded_model.reg_lambda == 0.0001
-    assert reloaded_model.min_rel_progress == 0.02
+    assert reloaded_model.tol == 0.02
     assert reloaded_model.gamma == 0.0
     assert reloaded_model.max_depth == 14
     assert reloaded_model.min_tree_child_weight == 2
-    assert reloaded_model.num_parallel_tree == 90
+    assert reloaded_model.n_estimators == 90
     assert reloaded_model.enable_global_explain is False
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_randomforestclassifier_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestClassifier()
 
@@ -401,7 +398,7 @@ def test_randomforestclassifier_default_params(penguins_df_default_index, datase
     )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_randomforestclassifier_multiple_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestClassifier(
         tree_method="AUTO",
@@ -409,12 +406,12 @@ def test_randomforestclassifier_multiple_params(penguins_df_default_index, datas
         colsample_bytree=0.95,
         colsample_bylevel=0.95,
         colsample_bynode=0.95,
-        num_parallel_tree=90,
+        n_estimators=90,
         max_depth=14,
         subsample=0.95,
         reg_alpha=0.0001,
         reg_lambda=0.0001,
-        min_rel_progress=0.02,
+        tol=0.02,
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
@@ -455,13 +452,12 @@ def test_randomforestclassifier_multiple_params(penguins_df_default_index, datas
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
     assert reloaded_model.colsample_bynode == 0.95
-    assert reloaded_model.early_stop is True
     assert reloaded_model.subsample == 0.95
     assert reloaded_model.reg_alpha == 0.0001
     assert reloaded_model.reg_lambda == 0.0001
-    assert reloaded_model.min_rel_progress == 0.02
+    assert reloaded_model.tol == 0.02
     assert reloaded_model.gamma == 0.0
     assert reloaded_model.max_depth == 14
     assert reloaded_model.min_tree_child_weight == 2
-    assert reloaded_model.num_parallel_tree == 90
+    assert reloaded_model.n_estimators == 90
     assert reloaded_model.enable_global_explain is False

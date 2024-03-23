@@ -105,7 +105,7 @@ def test_linear_regression_default_fit(
     model.fit(mock_X, mock_y)
 
     mock_session._start_query_ml_ddl.assert_called_once_with(
-        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="auto_strategy",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="auto_strategy",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  min_rel_progress=0.01,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -115,7 +115,7 @@ def test_linear_regression_params_fit(bqml_model_factory, mock_session, mock_X, 
     model.fit(mock_X, mock_y)
 
     mock_session._start_query_ml_ddl.assert_called_once_with(
-        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="auto_strategy",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="auto_strategy",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  min_rel_progress=0.01,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -157,14 +157,14 @@ def test_logistic_regression_params_fit(
 ):
     model = linear_model.LogisticRegression(
         fit_intercept=False,
-        class_weights="balanced",
+        class_weight="balanced",
         l2_reg=0.2,
         tol=0.02,
         l1_reg=0.2,
         max_iterations=30,
         optimize_strategy="batch_gradient_descent",
-        learn_rate_strategy="constant",
-        learn_rate=0.2,
+        learning_rate_strategy="constant",
+        learning_rate=0.2,
     )
     model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)

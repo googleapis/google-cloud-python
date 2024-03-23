@@ -91,7 +91,7 @@ class RandomForestRegressor(ForestRegressor):
     to improve the predictive accuracy and control over-fitting.
 
     Args:
-        num_parallel_tree (Optional[int]):
+        n_estimators (Optional[int]):
             Number of parallel trees constructed during each iteration. Default to 100. Minimum value is 2.
         tree_method (Optional[str]):
             Specify which tree method to use. Default to "auto". If this parameter is set to
@@ -116,10 +116,8 @@ class RandomForestRegressor(ForestRegressor):
             L1 regularization term on weights (xgb's alpha). Default to 0.0.
         reg_lambda (Optional[float]):
             L2 regularization term on weights (xgb's lambda). Default to 1.0.
-        early_stop (Optional[bool]):
-            Whether training should stop after the first iteration. Default to True.
-        min_rel_progress (Optional[float]):
-            Minimum relative loss improvement necessary to continue training when early_stop is set to True. Default to 0.01.
+        tol (Optional[float]):
+            Minimum relative loss improvement necessary to continue training. Default to 0.01.
         enable_global_explain (Optional[bool]):
             Whether to compute global explanations using explainable AI to evaluate global feature importance to the model. Default to False.
         xgboost_version (Optional[str]):
@@ -158,7 +156,7 @@ class RandomForestClassifier(ForestClassifier):
     improve the predictive accuracy and control over-fitting.
 
     Args:
-        num_parallel_tree (Optional[int]):
+        n_estimators (Optional[int]):
             Number of parallel trees constructed during each iteration. Default to 100. Minimum value is 2.
         tree_method (Optional[str]):
             Specify which tree method to use. Default to "auto". If this parameter is set to
@@ -183,10 +181,8 @@ class RandomForestClassifier(ForestClassifier):
             L1 regularization term on weights (xgb's alpha). Default to 0.0.
         reg_lambda (Optional[float]):
             L2 regularization term on weights (xgb's lambda). Default to 1.0.
-        early_stop (Optional[bool]):
-            Whether training should stop after the first iteration. Default to True.
-        min_rel_progress (Optional[float]):
-            Minimum relative loss improvement necessary to continue training when early_stop is set to True. Default to 0.01.
+        tol (Optional[float]):
+            Minimum relative loss improvement necessary to continue training. Default to 0.01.
         enable_global_explain (Optional[bool]):
             Whether to compute global explanations using explainable AI to evaluate global feature importance to the model. Default to False.
         xgboost_version (Optional[str]):

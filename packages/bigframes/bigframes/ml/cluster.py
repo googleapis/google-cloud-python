@@ -33,7 +33,6 @@ _BQML_PARAMS_MAPPING = {
     "init_col": "kmeansInitializationColumn",
     "distance_type": "distanceType",
     "max_iter": "maxIterations",
-    "early_stop": "earlyStop",
     "tol": "minRelativeProgress",
 }
 

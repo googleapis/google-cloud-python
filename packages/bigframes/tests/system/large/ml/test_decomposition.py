@@ -155,3 +155,37 @@ def test_decomposition_configure_fit_score_predict_params(
     )
     assert reloaded_model.n_components == 5
     assert reloaded_model.svd_solver == "RANDOMIZED"
+
+
+def test_decomposition_configure_fit_load_float_component(
+    penguins_df_default_index, dataset_id
+):
+    model = decomposition.PCA(n_components=0.2)
+    model.fit(penguins_df_default_index)
+
+    # save, load, check n_components to ensure configuration was kept
+    reloaded_model = model.to_gbq(
+        f"{dataset_id}.temp_configured_pca_model", replace=True
+    )
+    assert (
+        f"{dataset_id}.temp_configured_pca_model"
+        in reloaded_model._bqml_model.model_name
+    )
+    assert reloaded_model.n_components == 0.2
+
+
+def test_decomposition_configure_fit_load_none_component(
+    penguins_df_default_index, dataset_id
+):
+    model = decomposition.PCA(n_components=None)
+    model.fit(penguins_df_default_index)
+
+    # save, load, check n_components. Here n_components is the column size of the training input.
+    reloaded_model = model.to_gbq(
+        f"{dataset_id}.temp_configured_pca_model", replace=True
+    )
+    assert (
+        f"{dataset_id}.temp_configured_pca_model"
+        in reloaded_model._bqml_model.model_name
+    )
+    assert reloaded_model.n_components == 7

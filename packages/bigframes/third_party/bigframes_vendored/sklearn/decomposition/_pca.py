@@ -20,21 +20,11 @@ from bigframes import constants
 class PCA(BaseEstimator, metaclass=ABCMeta):
     """Principal component analysis (PCA).
 
-    Linear dimensionality reduction using Singular Value Decomposition of the
-    data to project it to a lower dimensional space. The input data is centered
-    but not scaled for each feature before applying the SVD.
-
-    It uses the LAPACK implementation of the full SVD or a randomized truncated
-    SVD by the method of Halko et al. 2009, depending on the shape of the input
-    data and the number of components to extract.
-
-    It can also use the scipy.sparse.linalg ARPACK implementation of the
-    truncated SVD.
-
     Args:
-        n_components (Optional[int], default 3):
-            Number of components to keep. if n_components is not set all components
-            are kept.
+        n_components (int, float or None, default None):
+            Number of components to keep.
+            If n_components is not set all components are kept. n_components = min(n_samples, n_features).
+            If 0 < n_components < 1, select the number of components such that the amount of variance that needs to be explained is greater than the percentage specified by n_components.
         svd_solver ("full", "randomized" or "auto", default "auto"):
             The solver to use to calculate the principal components. Details: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-pca#pca_solver.
 

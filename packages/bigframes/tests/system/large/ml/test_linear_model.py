@@ -58,15 +58,14 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
     assert reloaded_model.optimize_strategy == "NORMAL_EQUATION"
     assert reloaded_model.fit_intercept is True
     assert reloaded_model.calculate_p_values is False
-    assert reloaded_model.early_stop is True
     assert reloaded_model.enable_global_explain is False
     assert reloaded_model.l1_reg is None
     assert reloaded_model.l2_reg == 0.0
-    assert reloaded_model.learn_rate is None
-    assert reloaded_model.learn_rate_strategy == "line_search"
-    assert reloaded_model.ls_init_learn_rate is None
+    assert reloaded_model.learning_rate is None
+    assert reloaded_model.learning_rate_strategy == "line_search"
+    assert reloaded_model.ls_init_learning_rate is None
     assert reloaded_model.max_iterations == 20
-    assert reloaded_model.min_rel_progress == 0.01
+    assert reloaded_model.tol == 0.01
 
 
 def test_linear_regression_customized_params_fit_score(
@@ -75,12 +74,12 @@ def test_linear_regression_customized_params_fit_score(
     model = bigframes.ml.linear_model.LinearRegression(
         fit_intercept=False,
         l2_reg=0.2,
-        min_rel_progress=0.02,
+        tol=0.02,
         l1_reg=0.2,
         max_iterations=30,
         optimize_strategy="batch_gradient_descent",
-        learn_rate_strategy="constant",
-        learn_rate=0.2,
+        learning_rate_strategy="constant",
+        learning_rate=0.2,
     )
 
     df = penguins_df_default_index.dropna()
@@ -121,15 +120,14 @@ def test_linear_regression_customized_params_fit_score(
     assert reloaded_model.optimize_strategy == "BATCH_GRADIENT_DESCENT"
     assert reloaded_model.fit_intercept is False
     assert reloaded_model.calculate_p_values is False
-    assert reloaded_model.early_stop is True
     assert reloaded_model.enable_global_explain is False
     assert reloaded_model.l1_reg == 0.2
     assert reloaded_model.l2_reg == 0.2
-    assert reloaded_model.ls_init_learn_rate is None
+    assert reloaded_model.ls_init_learning_rate is None
     assert reloaded_model.max_iterations == 30
-    assert reloaded_model.min_rel_progress == 0.02
-    assert reloaded_model.learn_rate_strategy == "CONSTANT"
-    assert reloaded_model.learn_rate == 0.2
+    assert reloaded_model.tol == 0.02
+    assert reloaded_model.learning_rate_strategy == "CONSTANT"
+    assert reloaded_model.learning_rate == 0.2
 
 
 # TODO(garrettwu): add tests for param warm_start. Requires a trained model.
@@ -177,7 +175,7 @@ def test_logistic_regression_configure_fit_score(penguins_df_default_index, data
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.fit_intercept is True
-    assert reloaded_model.class_weights is None
+    assert reloaded_model.class_weight is None
 
 
 def test_logistic_regression_customized_params_fit_score(
@@ -185,14 +183,14 @@ def test_logistic_regression_customized_params_fit_score(
 ):
     model = bigframes.ml.linear_model.LogisticRegression(
         fit_intercept=False,
-        class_weights="balanced",
+        class_weight="balanced",
         l2_reg=0.2,
         tol=0.02,
         l1_reg=0.2,
         max_iterations=30,
         optimize_strategy="batch_gradient_descent",
-        learn_rate_strategy="constant",
-        learn_rate=0.2,
+        learning_rate_strategy="constant",
+        learning_rate=0.2,
     )
     df = penguins_df_default_index.dropna()
     X_train = df[
@@ -234,12 +232,13 @@ def test_logistic_regression_customized_params_fit_score(
     # TODO(garrettwu) optimize_strategy isn't logged in BQML
     # assert reloaded_model.optimize_strategy == "BATCH_GRADIENT_DESCENT"
     assert reloaded_model.fit_intercept is False
+    assert reloaded_model.class_weight == "balanced"
     assert reloaded_model.calculate_p_values is False
     assert reloaded_model.enable_global_explain is False
     assert reloaded_model.l1_reg == 0.2
     assert reloaded_model.l2_reg == 0.2
-    assert reloaded_model.ls_init_learn_rate is None
+    assert reloaded_model.ls_init_learning_rate is None
     assert reloaded_model.max_iterations == 30
     assert reloaded_model.tol == 0.02
-    assert reloaded_model.learn_rate_strategy == "CONSTANT"
-    assert reloaded_model.learn_rate == 0.2
+    assert reloaded_model.learning_rate_strategy == "CONSTANT"
+    assert reloaded_model.learning_rate == 0.2

@@ -55,7 +55,7 @@ class XGBRegressor(XGBModel, XGBRegressorBase):
     XGBoost regression model.
 
     Args:
-        num_parallel_tree (Optional[int]):
+        n_estimators (Optional[int]):
             Number of parallel trees constructed during each iteration. Default to 1.
         booster (Optional[str]):
             Specify which booster to use: gbtree or dart. Default to "gbtree".
@@ -84,14 +84,12 @@ class XGBRegressor(XGBModel, XGBRegressorBase):
             L1 regularization term on weights (xgb's alpha). Default to 0.0.
         reg_lambda (Optional[float]):
             L2 regularization term on weights (xgb's lambda). Default to 1.0.
-        early_stop (Optional[bool]):
-            Whether training should stop after the first iteration. Default to True.
         learning_rate (Optional[float]):
             Boosting learning rate (xgb's "eta"). Default to 0.3.
         max_iterations (Optional[int]):
             Maximum number of rounds for boosting. Default to 20.
-        min_rel_progress (Optional[float]):
-            Minimum relative loss improvement necessary to continue training when early_stop is set to True. Default to 0.01.
+        tol (Optional[float]):
+            Minimum relative loss improvement necessary to continue training. Default to 0.01.
         enable_global_explain (Optional[bool]):
             Whether to compute global explanations using explainable AI to evaluate global feature importance to the model. Default to False.
         xgboost_version (Optional[str]):
@@ -104,7 +102,7 @@ class XGBClassifier(XGBModel, XGBClassifierMixIn, XGBClassifierBase):
     XGBoost classifier model.
 
     Args:
-        num_parallel_tree (Optional[int]):
+        n_estimators (Optional[int]):
             Number of parallel trees constructed during each iteration. Default to 1.
         booster (Optional[str]):
             Specify which booster to use: gbtree or dart. Default to "gbtree".
@@ -133,14 +131,12 @@ class XGBClassifier(XGBModel, XGBClassifierMixIn, XGBClassifierBase):
             L1 regularization term on weights (xgb's alpha). Default to 0.0.
         reg_lambda (Optional[float]):
             L2 regularization term on weights (xgb's lambda). Default to 1.0.
-        early_stop (Optional[bool]):
-            Whether training should stop after the first iteration. Default to True.
         learning_rate (Optional[float]):
             Boosting learning rate (xgb's "eta"). Default to 0.3.
         max_iterations (Optional[int]):
             Maximum number of rounds for boosting. Default to 20.
-        min_rel_progress (Optional[float]):
-            Minimum relative loss improvement necessary to continue training when early_stop is set to True. Default to 0.01.
+        tol (Optional[float]):
+            Minimum relative loss improvement necessary to continue training. Default to 0.01.
         enable_global_explain (Optional[bool]):
             Whether to compute global explanations using explainable AI to evaluate global feature importance to the model. Default to False.
         xgboost_version (Optional[str]):

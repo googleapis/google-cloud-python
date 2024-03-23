@@ -31,7 +31,6 @@ import bigframes.pandas as bpd
 _BQML_PARAMS_MAPPING = {
     "booster": "boosterType",
     "tree_method": "treeMethod",
-    "early_stop": "earlyStop",
     "colsample_bytree": "colsampleBylevel",
     "colsample_bylevel": "colsampleBytree",
     "colsample_bynode": "colsampleBynode",
@@ -40,8 +39,8 @@ _BQML_PARAMS_MAPPING = {
     "reg_alpha": "l1Regularization",
     "reg_lambda": "l2Regularization",
     "learning_rate": "learnRate",
-    "min_rel_progress": "minRelativeProgress",
-    "num_parallel_tree": "numParallelTree",
+    "tol": "minRelativeProgress",
+    "n_estimators": "numParallelTree",
     "min_tree_child_weight": "minTreeChildWeight",
     "max_depth": "maxTreeDepth",
     "max_iterations": "maxIterations",
@@ -57,7 +56,7 @@ class XGBRegressor(
 
     def __init__(
         self,
-        num_parallel_tree: int = 1,
+        n_estimators: int = 1,
         *,
         booster: Literal["gbtree", "dart"] = "gbtree",
         dart_normalized_type: Literal["tree", "forest"] = "tree",
@@ -71,14 +70,13 @@ class XGBRegressor(
         subsample: float = 1.0,
         reg_alpha: float = 0.0,
         reg_lambda: float = 1.0,
-        early_stop: float = True,
         learning_rate: float = 0.3,
         max_iterations: int = 20,
-        min_rel_progress: float = 0.01,
+        tol: float = 0.01,
         enable_global_explain: bool = False,
         xgboost_version: Literal["0.9", "1.1"] = "0.9",
     ):
-        self.num_parallel_tree = num_parallel_tree
+        self.n_estimators = n_estimators
         self.booster = booster
         self.dart_normalized_type = dart_normalized_type
         self.tree_method = tree_method
@@ -91,10 +89,9 @@ class XGBRegressor(
         self.subsample = subsample
         self.reg_alpha = reg_alpha
         self.reg_lambda = reg_lambda
-        self.early_stop = early_stop
         self.learning_rate = learning_rate
         self.max_iterations = max_iterations
-        self.min_rel_progress = min_rel_progress
+        self.tol = tol
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -127,7 +124,8 @@ class XGBRegressor(
         return {
             "model_type": "BOOSTED_TREE_REGRESSOR",
             "data_split_method": "NO_SPLIT",
-            "num_parallel_tree": self.num_parallel_tree,
+            "early_stop": True,
+            "num_parallel_tree": self.n_estimators,
             "booster_type": self.booster,
             "tree_method": self.tree_method,
             "min_tree_child_weight": self.min_tree_child_weight,
@@ -139,10 +137,9 @@ class XGBRegressor(
             "subsample": self.subsample,
             "l1_reg": self.reg_alpha,
             "l2_reg": self.reg_lambda,
-            "early_stop": self.early_stop,
             "learn_rate": self.learning_rate,
             "max_iterations": self.max_iterations,
-            "min_rel_progress": self.min_rel_progress,
+            "min_rel_progress": self.tol,
             "enable_global_explain": self.enable_global_explain,
             "xgboost_version": self.xgboost_version,
         }
@@ -215,7 +212,7 @@ class XGBClassifier(
 
     def __init__(
         self,
-        num_parallel_tree: int = 1,
+        n_estimators: int = 1,
         *,
         booster: Literal["gbtree", "dart"] = "gbtree",
         dart_normalized_type: Literal["tree", "forest"] = "tree",
@@ -229,14 +226,13 @@ class XGBClassifier(
         subsample: float = 1.0,
         reg_alpha: float = 0.0,
         reg_lambda: float = 1.0,
-        early_stop: bool = True,
         learning_rate: float = 0.3,
         max_iterations: int = 20,
-        min_rel_progress: float = 0.01,
+        tol: float = 0.01,
         enable_global_explain: bool = False,
         xgboost_version: Literal["0.9", "1.1"] = "0.9",
     ):
-        self.num_parallel_tree = num_parallel_tree
+        self.n_estimators = n_estimators
         self.booster = booster
         self.dart_normalized_type = dart_normalized_type
         self.tree_method = tree_method
@@ -249,10 +245,9 @@ class XGBClassifier(
         self.subsample = subsample
         self.reg_alpha = reg_alpha
         self.reg_lambda = reg_lambda
-        self.early_stop = early_stop
         self.learning_rate = learning_rate
         self.max_iterations = max_iterations
-        self.min_rel_progress = min_rel_progress
+        self.tol = tol
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -285,7 +280,8 @@ class XGBClassifier(
         return {
             "model_type": "BOOSTED_TREE_CLASSIFIER",
             "data_split_method": "NO_SPLIT",
-            "num_parallel_tree": self.num_parallel_tree,
+            "early_stop": True,
+            "num_parallel_tree": self.n_estimators,
             "booster_type": self.booster,
             "tree_method": self.tree_method,
             "min_tree_child_weight": self.min_tree_child_weight,
@@ -297,10 +293,9 @@ class XGBClassifier(
             "subsample": self.subsample,
             "l1_reg": self.reg_alpha,
             "l2_reg": self.reg_lambda,
-            "early_stop": self.early_stop,
             "learn_rate": self.learning_rate,
             "max_iterations": self.max_iterations,
-            "min_rel_progress": self.min_rel_progress,
+            "min_rel_progress": self.tol,
             "enable_global_explain": self.enable_global_explain,
             "xgboost_version": self.xgboost_version,
         }
@@ -371,7 +366,7 @@ class RandomForestRegressor(
 
     def __init__(
         self,
-        num_parallel_tree: int = 100,
+        n_estimators: int = 100,
         *,
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
         min_tree_child_weight: int = 1,
@@ -383,12 +378,11 @@ class RandomForestRegressor(
         subsample=0.8,
         reg_alpha=0.0,
         reg_lambda=1.0,
-        early_stop=True,
-        min_rel_progress=0.01,
+        tol=0.01,
         enable_global_explain=False,
         xgboost_version: Literal["0.9", "1.1"] = "0.9",
     ):
-        self.num_parallel_tree = num_parallel_tree
+        self.n_estimators = n_estimators
         self.tree_method = tree_method
         self.min_tree_child_weight = min_tree_child_weight
         self.colsample_bytree = colsample_bytree
@@ -399,8 +393,7 @@ class RandomForestRegressor(
         self.subsample = subsample
         self.reg_alpha = reg_alpha
         self.reg_lambda = reg_lambda
-        self.early_stop = early_stop
-        self.min_rel_progress = min_rel_progress
+        self.tol = tol
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -432,7 +425,8 @@ class RandomForestRegressor(
         """The model options as they will be set for BQML"""
         return {
             "model_type": "RANDOM_FOREST_REGRESSOR",
-            "num_parallel_tree": self.num_parallel_tree,
+            "early_stop": True,
+            "num_parallel_tree": self.n_estimators,
             "tree_method": self.tree_method,
             "min_tree_child_weight": self.min_tree_child_weight,
             "colsample_bytree": self.colsample_bytree,
@@ -443,8 +437,7 @@ class RandomForestRegressor(
             "subsample": self.subsample,
             "l1_reg": self.reg_alpha,
             "l2_reg": self.reg_lambda,
-            "early_stop": self.early_stop,
-            "min_rel_progress": self.min_rel_progress,
+            "min_rel_progress": self.tol,
             "data_split_method": "NO_SPLIT",
             "enable_global_explain": self.enable_global_explain,
             "xgboost_version": self.xgboost_version,
@@ -536,7 +529,7 @@ class RandomForestClassifier(
 
     def __init__(
         self,
-        num_parallel_tree: int = 100,
+        n_estimators: int = 100,
         *,
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
         min_tree_child_weight: int = 1,
@@ -548,12 +541,11 @@ class RandomForestClassifier(
         subsample: float = 0.8,
         reg_alpha: float = 0.0,
         reg_lambda: float = 1.0,
-        early_stop=True,
-        min_rel_progress: float = 0.01,
+        tol: float = 0.01,
         enable_global_explain=False,
         xgboost_version: Literal["0.9", "1.1"] = "0.9",
     ):
-        self.num_parallel_tree = num_parallel_tree
+        self.n_estimators = n_estimators
         self.tree_method = tree_method
         self.min_tree_child_weight = min_tree_child_weight
         self.colsample_bytree = colsample_bytree
@@ -564,8 +556,7 @@ class RandomForestClassifier(
         self.subsample = subsample
         self.reg_alpha = reg_alpha
         self.reg_lambda = reg_lambda
-        self.early_stop = early_stop
-        self.min_rel_progress = min_rel_progress
+        self.tol = tol
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -597,7 +588,8 @@ class RandomForestClassifier(
         """The model options as they will be set for BQML"""
         return {
             "model_type": "RANDOM_FOREST_CLASSIFIER",
-            "num_parallel_tree": self.num_parallel_tree,
+            "early_stop": True,
+            "num_parallel_tree": self.n_estimators,
             "tree_method": self.tree_method,
             "min_tree_child_weight": self.min_tree_child_weight,
             "colsample_bytree": self.colsample_bytree,
@@ -608,8 +600,7 @@ class RandomForestClassifier(
             "subsample": self.subsample,
             "l1_reg": self.reg_alpha,
             "l2_reg": self.reg_lambda,
-            "early_stop": self.early_stop,
-            "min_rel_progress": self.min_rel_progress,
+            "min_rel_progress": self.tol,
             "data_split_method": "NO_SPLIT",
             "enable_global_explain": self.enable_global_explain,
             "xgboost_version": self.xgboost_version,
