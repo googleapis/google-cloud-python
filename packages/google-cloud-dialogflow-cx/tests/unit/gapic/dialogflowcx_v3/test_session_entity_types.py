@@ -1198,7 +1198,8 @@ def test_list_session_entity_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.ListSessionEntityTypesRequest()
+        request = session_entity_type.ListSessionEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionEntityTypesPager)
@@ -1218,6 +1219,60 @@ def test_list_session_entity_types_empty_call():
         type(client.transport.list_session_entity_types), "__call__"
     ) as call:
         client.list_session_entity_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_entity_type.ListSessionEntityTypesRequest()
+
+
+def test_list_session_entity_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_entity_type.ListSessionEntityTypesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_session_entity_types), "__call__"
+    ) as call:
+        client.list_session_entity_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_entity_type.ListSessionEntityTypesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_session_entity_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionEntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_session_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session_entity_type.ListSessionEntityTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_session_entity_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_entity_type.ListSessionEntityTypesRequest()
@@ -1252,7 +1307,8 @@ async def test_list_session_entity_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.ListSessionEntityTypesRequest()
+        request = session_entity_type.ListSessionEntityTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionEntityTypesAsyncPager)
@@ -1648,7 +1704,8 @@ def test_get_session_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.GetSessionEntityTypeRequest()
+        request = session_entity_type.GetSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_entity_type.SessionEntityType)
@@ -1672,6 +1729,59 @@ def test_get_session_entity_type_empty_call():
         type(client.transport.get_session_entity_type), "__call__"
     ) as call:
         client.get_session_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_entity_type.GetSessionEntityTypeRequest()
+
+
+def test_get_session_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_entity_type.GetSessionEntityTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_session_entity_type), "__call__"
+    ) as call:
+        client.get_session_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_entity_type.GetSessionEntityTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_session_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionEntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_session_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session_entity_type.SessionEntityType(
+                name="name_value",
+                entity_override_mode=session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE,
+            )
+        )
+        response = await client.get_session_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_entity_type.GetSessionEntityTypeRequest()
@@ -1707,7 +1817,8 @@ async def test_get_session_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.GetSessionEntityTypeRequest()
+        request = session_entity_type.GetSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_entity_type.SessionEntityType)
@@ -1905,7 +2016,8 @@ def test_create_session_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_session_entity_type.CreateSessionEntityTypeRequest()
+        request = gcdc_session_entity_type.CreateSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_session_entity_type.SessionEntityType)
@@ -1929,6 +2041,59 @@ def test_create_session_entity_type_empty_call():
         type(client.transport.create_session_entity_type), "__call__"
     ) as call:
         client.create_session_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_session_entity_type.CreateSessionEntityTypeRequest()
+
+
+def test_create_session_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_session_entity_type.CreateSessionEntityTypeRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_session_entity_type), "__call__"
+    ) as call:
+        client.create_session_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_session_entity_type.CreateSessionEntityTypeRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_session_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionEntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_session_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_session_entity_type.SessionEntityType(
+                name="name_value",
+                entity_override_mode=gcdc_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE,
+            )
+        )
+        response = await client.create_session_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_session_entity_type.CreateSessionEntityTypeRequest()
@@ -1964,7 +2129,8 @@ async def test_create_session_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_session_entity_type.CreateSessionEntityTypeRequest()
+        request = gcdc_session_entity_type.CreateSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_session_entity_type.SessionEntityType)
@@ -2180,7 +2346,8 @@ def test_update_session_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+        request = gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_session_entity_type.SessionEntityType)
@@ -2204,6 +2371,55 @@ def test_update_session_entity_type_empty_call():
         type(client.transport.update_session_entity_type), "__call__"
     ) as call:
         client.update_session_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+
+
+def test_update_session_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_session_entity_type), "__call__"
+    ) as call:
+        client.update_session_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_session_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionEntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_session_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_session_entity_type.SessionEntityType(
+                name="name_value",
+                entity_override_mode=gcdc_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE,
+            )
+        )
+        response = await client.update_session_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
@@ -2239,7 +2455,8 @@ async def test_update_session_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+        request = gcdc_session_entity_type.UpdateSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_session_entity_type.SessionEntityType)
@@ -2452,7 +2669,8 @@ def test_delete_session_entity_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.DeleteSessionEntityTypeRequest()
+        request = session_entity_type.DeleteSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2471,6 +2689,54 @@ def test_delete_session_entity_type_empty_call():
         type(client.transport.delete_session_entity_type), "__call__"
     ) as call:
         client.delete_session_entity_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_entity_type.DeleteSessionEntityTypeRequest()
+
+
+def test_delete_session_entity_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionEntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_entity_type.DeleteSessionEntityTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_session_entity_type), "__call__"
+    ) as call:
+        client.delete_session_entity_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_entity_type.DeleteSessionEntityTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_session_entity_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionEntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_session_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_session_entity_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_entity_type.DeleteSessionEntityTypeRequest()
@@ -2501,7 +2767,8 @@ async def test_delete_session_entity_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.DeleteSessionEntityTypeRequest()
+        request = session_entity_type.DeleteSessionEntityTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
