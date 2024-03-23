@@ -1251,7 +1251,8 @@ def test_report_phishing(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == phishingprotection.ReportPhishingRequest()
+        request = phishingprotection.ReportPhishingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, phishingprotection.ReportPhishingResponse)
@@ -1268,6 +1269,54 @@ def test_report_phishing_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.report_phishing), "__call__") as call:
         client.report_phishing()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == phishingprotection.ReportPhishingRequest()
+
+
+def test_report_phishing_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PhishingProtectionServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = phishingprotection.ReportPhishingRequest(
+        parent="parent_value",
+        uri="uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report_phishing), "__call__") as call:
+        client.report_phishing(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == phishingprotection.ReportPhishingRequest(
+            parent="parent_value",
+            uri="uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_report_phishing_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PhishingProtectionServiceV1Beta1AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report_phishing), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            phishingprotection.ReportPhishingResponse()
+        )
+        response = await client.report_phishing()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == phishingprotection.ReportPhishingRequest()
@@ -1298,7 +1347,8 @@ async def test_report_phishing_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == phishingprotection.ReportPhishingRequest()
+        request = phishingprotection.ReportPhishingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, phishingprotection.ReportPhishingResponse)

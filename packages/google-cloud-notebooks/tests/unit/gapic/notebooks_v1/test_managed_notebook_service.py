@@ -1188,7 +1188,8 @@ def test_list_runtimes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ListRuntimesRequest()
+        request = managed_service.ListRuntimesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuntimesPager)
@@ -1207,6 +1208,57 @@ def test_list_runtimes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
         client.list_runtimes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.ListRuntimesRequest()
+
+
+def test_list_runtimes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.ListRuntimesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
+        client.list_runtimes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.ListRuntimesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_runtimes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.ListRuntimesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_runtimes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.ListRuntimesRequest()
@@ -1239,7 +1291,8 @@ async def test_list_runtimes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ListRuntimesRequest()
+        request = managed_service.ListRuntimesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuntimesAsyncPager)
@@ -1615,7 +1668,8 @@ def test_get_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.GetRuntimeRequest()
+        request = managed_service.GetRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, runtime.Runtime)
@@ -1635,6 +1689,56 @@ def test_get_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
         client.get_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.GetRuntimeRequest()
+
+
+def test_get_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.GetRuntimeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
+        client.get_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.GetRuntimeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            runtime.Runtime(
+                name="name_value",
+                state=runtime.Runtime.State.STARTING,
+                health_state=runtime.Runtime.HealthState.HEALTHY,
+            )
+        )
+        response = await client.get_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.GetRuntimeRequest()
@@ -1668,7 +1772,8 @@ async def test_get_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.GetRuntimeRequest()
+        request = managed_service.GetRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, runtime.Runtime)
@@ -1847,7 +1952,8 @@ def test_create_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.CreateRuntimeRequest()
+        request = managed_service.CreateRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1864,6 +1970,56 @@ def test_create_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
         client.create_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.CreateRuntimeRequest()
+
+
+def test_create_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.CreateRuntimeRequest(
+        parent="parent_value",
+        runtime_id="runtime_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
+        client.create_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.CreateRuntimeRequest(
+            parent="parent_value",
+            runtime_id="runtime_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.CreateRuntimeRequest()
@@ -1893,7 +2049,8 @@ async def test_create_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.CreateRuntimeRequest()
+        request = managed_service.CreateRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2093,7 +2250,8 @@ def test_update_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpdateRuntimeRequest()
+        request = managed_service.UpdateRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2110,6 +2268,52 @@ def test_update_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
         client.update_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.UpdateRuntimeRequest()
+
+
+def test_update_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.UpdateRuntimeRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
+        client.update_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.UpdateRuntimeRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.UpdateRuntimeRequest()
@@ -2139,7 +2343,8 @@ async def test_update_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpdateRuntimeRequest()
+        request = managed_service.UpdateRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2329,7 +2534,8 @@ def test_delete_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DeleteRuntimeRequest()
+        request = managed_service.DeleteRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2346,6 +2552,54 @@ def test_delete_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
         client.delete_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.DeleteRuntimeRequest()
+
+
+def test_delete_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.DeleteRuntimeRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
+        client.delete_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.DeleteRuntimeRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.DeleteRuntimeRequest()
@@ -2375,7 +2629,8 @@ async def test_delete_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DeleteRuntimeRequest()
+        request = managed_service.DeleteRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2555,7 +2810,8 @@ def test_start_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StartRuntimeRequest()
+        request = managed_service.StartRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2572,6 +2828,54 @@ def test_start_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
         client.start_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.StartRuntimeRequest()
+
+
+def test_start_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.StartRuntimeRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
+        client.start_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.StartRuntimeRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.StartRuntimeRequest()
@@ -2601,7 +2905,8 @@ async def test_start_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StartRuntimeRequest()
+        request = managed_service.StartRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2781,7 +3086,8 @@ def test_stop_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StopRuntimeRequest()
+        request = managed_service.StopRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2798,6 +3104,54 @@ def test_stop_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
         client.stop_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.StopRuntimeRequest()
+
+
+def test_stop_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.StopRuntimeRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
+        client.stop_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.StopRuntimeRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.stop_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.StopRuntimeRequest()
@@ -2827,7 +3181,8 @@ async def test_stop_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StopRuntimeRequest()
+        request = managed_service.StopRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3007,7 +3362,8 @@ def test_switch_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.SwitchRuntimeRequest()
+        request = managed_service.SwitchRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3024,6 +3380,56 @@ def test_switch_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
         client.switch_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.SwitchRuntimeRequest()
+
+
+def test_switch_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.SwitchRuntimeRequest(
+        name="name_value",
+        machine_type="machine_type_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
+        client.switch_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.SwitchRuntimeRequest(
+            name="name_value",
+            machine_type="machine_type_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_switch_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.switch_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.SwitchRuntimeRequest()
@@ -3053,7 +3459,8 @@ async def test_switch_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.SwitchRuntimeRequest()
+        request = managed_service.SwitchRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3233,7 +3640,8 @@ def test_reset_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ResetRuntimeRequest()
+        request = managed_service.ResetRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3250,6 +3658,54 @@ def test_reset_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
         client.reset_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.ResetRuntimeRequest()
+
+
+def test_reset_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.ResetRuntimeRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
+        client.reset_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.ResetRuntimeRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reset_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.ResetRuntimeRequest()
@@ -3279,7 +3735,8 @@ async def test_reset_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ResetRuntimeRequest()
+        request = managed_service.ResetRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3459,7 +3916,8 @@ def test_upgrade_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpgradeRuntimeRequest()
+        request = managed_service.UpgradeRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3476,6 +3934,54 @@ def test_upgrade_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
         client.upgrade_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.UpgradeRuntimeRequest()
+
+
+def test_upgrade_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.UpgradeRuntimeRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
+        client.upgrade_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.UpgradeRuntimeRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_upgrade_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.upgrade_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.UpgradeRuntimeRequest()
@@ -3505,7 +4011,8 @@ async def test_upgrade_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpgradeRuntimeRequest()
+        request = managed_service.UpgradeRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3687,7 +4194,8 @@ def test_report_runtime_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ReportRuntimeEventRequest()
+        request = managed_service.ReportRuntimeEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3706,6 +4214,58 @@ def test_report_runtime_event_empty_call():
         type(client.transport.report_runtime_event), "__call__"
     ) as call:
         client.report_runtime_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.ReportRuntimeEventRequest()
+
+
+def test_report_runtime_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.ReportRuntimeEventRequest(
+        name="name_value",
+        vm_id="vm_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_runtime_event), "__call__"
+    ) as call:
+        client.report_runtime_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.ReportRuntimeEventRequest(
+            name="name_value",
+            vm_id="vm_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_report_runtime_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_runtime_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.report_runtime_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.ReportRuntimeEventRequest()
@@ -3738,7 +4298,8 @@ async def test_report_runtime_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ReportRuntimeEventRequest()
+        request = managed_service.ReportRuntimeEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3930,7 +4491,8 @@ def test_refresh_runtime_token_internal(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
+        request = managed_service.RefreshRuntimeTokenInternalRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_service.RefreshRuntimeTokenInternalResponse)
@@ -3950,6 +4512,60 @@ def test_refresh_runtime_token_internal_empty_call():
         type(client.transport.refresh_runtime_token_internal), "__call__"
     ) as call:
         client.refresh_runtime_token_internal()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
+
+
+def test_refresh_runtime_token_internal_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.RefreshRuntimeTokenInternalRequest(
+        name="name_value",
+        vm_id="vm_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        client.refresh_runtime_token_internal(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest(
+            name="name_value",
+            vm_id="vm_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.RefreshRuntimeTokenInternalResponse(
+                access_token="access_token_value",
+            )
+        )
+        response = await client.refresh_runtime_token_internal()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
@@ -3984,7 +4600,8 @@ async def test_refresh_runtime_token_internal_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
+        request = managed_service.RefreshRuntimeTokenInternalRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_service.RefreshRuntimeTokenInternalResponse)
@@ -4183,7 +4800,8 @@ def test_diagnose_runtime(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DiagnoseRuntimeRequest()
+        request = managed_service.DiagnoseRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4200,6 +4818,52 @@ def test_diagnose_runtime_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
         client.diagnose_runtime()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.DiagnoseRuntimeRequest()
+
+
+def test_diagnose_runtime_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = managed_service.DiagnoseRuntimeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
+        client.diagnose_runtime(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.DiagnoseRuntimeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_diagnose_runtime_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.diagnose_runtime()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == managed_service.DiagnoseRuntimeRequest()
@@ -4229,7 +4893,8 @@ async def test_diagnose_runtime_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DiagnoseRuntimeRequest()
+        request = managed_service.DiagnoseRuntimeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

@@ -1123,7 +1123,8 @@ def test_list_tag_bindings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.ListTagBindingsRequest()
+        request = tag_bindings.ListTagBindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTagBindingsPager)
@@ -1143,6 +1144,60 @@ def test_list_tag_bindings_empty_call():
         type(client.transport.list_tag_bindings), "__call__"
     ) as call:
         client.list_tag_bindings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListTagBindingsRequest()
+
+
+def test_list_tag_bindings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tag_bindings.ListTagBindingsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tag_bindings), "__call__"
+    ) as call:
+        client.list_tag_bindings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListTagBindingsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tag_bindings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tag_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tag_bindings.ListTagBindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tag_bindings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tag_bindings.ListTagBindingsRequest()
@@ -1176,7 +1231,8 @@ async def test_list_tag_bindings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.ListTagBindingsRequest()
+        request = tag_bindings.ListTagBindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTagBindingsAsyncPager)
@@ -1497,7 +1553,8 @@ def test_create_tag_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.CreateTagBindingRequest()
+        request = tag_bindings.CreateTagBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1516,6 +1573,52 @@ def test_create_tag_binding_empty_call():
         type(client.transport.create_tag_binding), "__call__"
     ) as call:
         client.create_tag_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.CreateTagBindingRequest()
+
+
+def test_create_tag_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tag_bindings.CreateTagBindingRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_binding), "__call__"
+    ) as call:
+        client.create_tag_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.CreateTagBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_tag_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_tag_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tag_bindings.CreateTagBindingRequest()
@@ -1547,7 +1650,8 @@ async def test_create_tag_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.CreateTagBindingRequest()
+        request = tag_bindings.CreateTagBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1672,7 +1776,8 @@ def test_delete_tag_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.DeleteTagBindingRequest()
+        request = tag_bindings.DeleteTagBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1691,6 +1796,56 @@ def test_delete_tag_binding_empty_call():
         type(client.transport.delete_tag_binding), "__call__"
     ) as call:
         client.delete_tag_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.DeleteTagBindingRequest()
+
+
+def test_delete_tag_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tag_bindings.DeleteTagBindingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_binding), "__call__"
+    ) as call:
+        client.delete_tag_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.DeleteTagBindingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_tag_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tag_bindings.DeleteTagBindingRequest()
@@ -1722,7 +1877,8 @@ async def test_delete_tag_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.DeleteTagBindingRequest()
+        request = tag_bindings.DeleteTagBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1914,7 +2070,8 @@ def test_list_effective_tags(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.ListEffectiveTagsRequest()
+        request = tag_bindings.ListEffectiveTagsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEffectiveTagsPager)
@@ -1934,6 +2091,60 @@ def test_list_effective_tags_empty_call():
         type(client.transport.list_effective_tags), "__call__"
     ) as call:
         client.list_effective_tags()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListEffectiveTagsRequest()
+
+
+def test_list_effective_tags_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tag_bindings.ListEffectiveTagsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        client.list_effective_tags(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListEffectiveTagsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tag_bindings.ListEffectiveTagsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_effective_tags()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tag_bindings.ListEffectiveTagsRequest()
@@ -1967,7 +2178,8 @@ async def test_list_effective_tags_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.ListEffectiveTagsRequest()
+        request = tag_bindings.ListEffectiveTagsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEffectiveTagsAsyncPager)

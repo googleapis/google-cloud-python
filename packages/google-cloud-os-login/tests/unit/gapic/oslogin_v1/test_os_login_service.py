@@ -1159,7 +1159,8 @@ def test_create_ssh_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.CreateSshPublicKeyRequest()
+        request = oslogin.CreateSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -1182,6 +1183,61 @@ def test_create_ssh_public_key_empty_call():
         type(client.transport.create_ssh_public_key), "__call__"
     ) as call:
         client.create_ssh_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.CreateSshPublicKeyRequest()
+
+
+def test_create_ssh_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.CreateSshPublicKeyRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        client.create_ssh_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.CreateSshPublicKeyRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.SshPublicKey(
+                key="key_value",
+                expiration_time_usec=2144,
+                fingerprint="fingerprint_value",
+                name="name_value",
+            )
+        )
+        response = await client.create_ssh_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.CreateSshPublicKeyRequest()
@@ -1218,7 +1274,8 @@ async def test_create_ssh_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.CreateSshPublicKeyRequest()
+        request = oslogin.CreateSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -1418,7 +1475,8 @@ def test_delete_posix_account(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.DeletePosixAccountRequest()
+        request = oslogin.DeletePosixAccountRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1437,6 +1495,54 @@ def test_delete_posix_account_empty_call():
         type(client.transport.delete_posix_account), "__call__"
     ) as call:
         client.delete_posix_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.DeletePosixAccountRequest()
+
+
+def test_delete_posix_account_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.DeletePosixAccountRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_posix_account), "__call__"
+    ) as call:
+        client.delete_posix_account(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.DeletePosixAccountRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_posix_account_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_posix_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_posix_account()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.DeletePosixAccountRequest()
@@ -1466,7 +1572,8 @@ async def test_delete_posix_account_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.DeletePosixAccountRequest()
+        request = oslogin.DeletePosixAccountRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1652,7 +1759,8 @@ def test_delete_ssh_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.DeleteSshPublicKeyRequest()
+        request = oslogin.DeleteSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1671,6 +1779,54 @@ def test_delete_ssh_public_key_empty_call():
         type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         client.delete_ssh_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.DeleteSshPublicKeyRequest()
+
+
+def test_delete_ssh_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.DeleteSshPublicKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ssh_public_key), "__call__"
+    ) as call:
+        client.delete_ssh_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.DeleteSshPublicKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_ssh_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.DeleteSshPublicKeyRequest()
@@ -1700,7 +1856,8 @@ async def test_delete_ssh_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.DeleteSshPublicKeyRequest()
+        request = oslogin.DeleteSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1888,7 +2045,8 @@ def test_get_login_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.GetLoginProfileRequest()
+        request = oslogin.GetLoginProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.LoginProfile)
@@ -1908,6 +2066,62 @@ def test_get_login_profile_empty_call():
         type(client.transport.get_login_profile), "__call__"
     ) as call:
         client.get_login_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.GetLoginProfileRequest()
+
+
+def test_get_login_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.GetLoginProfileRequest(
+        name="name_value",
+        project_id="project_id_value",
+        system_id="system_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_login_profile), "__call__"
+    ) as call:
+        client.get_login_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.GetLoginProfileRequest(
+            name="name_value",
+            project_id="project_id_value",
+            system_id="system_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_login_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_login_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            oslogin.LoginProfile(
+                name="name_value",
+            )
+        )
+        response = await client.get_login_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.GetLoginProfileRequest()
@@ -1941,7 +2155,8 @@ async def test_get_login_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.GetLoginProfileRequest()
+        request = oslogin.GetLoginProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.LoginProfile)
@@ -2137,7 +2352,8 @@ def test_get_ssh_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.GetSshPublicKeyRequest()
+        request = oslogin.GetSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -2160,6 +2376,61 @@ def test_get_ssh_public_key_empty_call():
         type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         client.get_ssh_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.GetSshPublicKeyRequest()
+
+
+def test_get_ssh_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.GetSshPublicKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ssh_public_key), "__call__"
+    ) as call:
+        client.get_ssh_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.GetSshPublicKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_ssh_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.SshPublicKey(
+                key="key_value",
+                expiration_time_usec=2144,
+                fingerprint="fingerprint_value",
+                name="name_value",
+            )
+        )
+        response = await client.get_ssh_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.GetSshPublicKeyRequest()
@@ -2196,7 +2467,8 @@ async def test_get_ssh_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.GetSshPublicKeyRequest()
+        request = oslogin.GetSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -2388,7 +2660,8 @@ def test_import_ssh_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.ImportSshPublicKeyRequest()
+        request = oslogin.ImportSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
@@ -2408,6 +2681,60 @@ def test_import_ssh_public_key_empty_call():
         type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         client.import_ssh_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.ImportSshPublicKeyRequest()
+
+
+def test_import_ssh_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.ImportSshPublicKeyRequest(
+        parent="parent_value",
+        project_id="project_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_ssh_public_key), "__call__"
+    ) as call:
+        client.import_ssh_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.ImportSshPublicKeyRequest(
+            parent="parent_value",
+            project_id="project_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_ssh_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            oslogin.ImportSshPublicKeyResponse(
+                details="details_value",
+            )
+        )
+        response = await client.import_ssh_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.ImportSshPublicKeyRequest()
@@ -2441,7 +2768,8 @@ async def test_import_ssh_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.ImportSshPublicKeyRequest()
+        request = oslogin.ImportSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
@@ -2657,7 +2985,8 @@ def test_update_ssh_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.UpdateSshPublicKeyRequest()
+        request = oslogin.UpdateSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -2680,6 +3009,61 @@ def test_update_ssh_public_key_empty_call():
         type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         client.update_ssh_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.UpdateSshPublicKeyRequest()
+
+
+def test_update_ssh_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OsLoginServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oslogin.UpdateSshPublicKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ssh_public_key), "__call__"
+    ) as call:
+        client.update_ssh_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == oslogin.UpdateSshPublicKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_ssh_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsLoginServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ssh_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.SshPublicKey(
+                key="key_value",
+                expiration_time_usec=2144,
+                fingerprint="fingerprint_value",
+                name="name_value",
+            )
+        )
+        response = await client.update_ssh_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == oslogin.UpdateSshPublicKeyRequest()
@@ -2716,7 +3100,8 @@ async def test_update_ssh_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.UpdateSshPublicKeyRequest()
+        request = oslogin.UpdateSshPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
