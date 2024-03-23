@@ -1200,7 +1200,8 @@ def test_check(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_controller.CheckRequest()
+        request = service_controller.CheckRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service_controller.CheckResponse)
@@ -1220,6 +1221,58 @@ def test_check_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.check), "__call__") as call:
         client.check()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_controller.CheckRequest()
+
+
+def test_check_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_controller.CheckRequest(
+        service_name="service_name_value",
+        service_config_id="service_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.check), "__call__") as call:
+        client.check(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_controller.CheckRequest(
+            service_name="service_name_value",
+            service_config_id="service_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_check_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.check), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_controller.CheckResponse(
+                operation_id="operation_id_value",
+                service_config_id="service_config_id_value",
+                service_rollout_id="service_rollout_id_value",
+            )
+        )
+        response = await client.check()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_controller.CheckRequest()
@@ -1253,7 +1306,8 @@ async def test_check_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_controller.CheckRequest()
+        request = service_controller.CheckRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service_controller.CheckResponse)
@@ -1357,7 +1411,8 @@ def test_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_controller.ReportRequest()
+        request = service_controller.ReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service_controller.ReportResponse)
@@ -1376,6 +1431,57 @@ def test_report_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.report), "__call__") as call:
         client.report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_controller.ReportRequest()
+
+
+def test_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service_controller.ReportRequest(
+        service_name="service_name_value",
+        service_config_id="service_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report), "__call__") as call:
+        client.report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service_controller.ReportRequest(
+            service_name="service_name_value",
+            service_config_id="service_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_controller.ReportResponse(
+                service_config_id="service_config_id_value",
+                service_rollout_id="service_rollout_id_value",
+            )
+        )
+        response = await client.report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service_controller.ReportRequest()
@@ -1408,7 +1514,8 @@ async def test_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service_controller.ReportRequest()
+        request = service_controller.ReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service_controller.ReportResponse)

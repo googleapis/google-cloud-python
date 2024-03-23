@@ -1270,10 +1270,10 @@ def test_list_merchant_center_account_links(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest()
+        request = (
+            merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1295,6 +1295,63 @@ def test_list_merchant_center_account_links_empty_call():
         type(client.transport.list_merchant_center_account_links), "__call__"
     ) as call:
         client.list_merchant_center_account_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest()
+        )
+
+
+def test_list_merchant_center_account_links_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MerchantCenterAccountLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest(
+            parent="parent_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_merchant_center_account_links), "__call__"
+    ) as call:
+        client.list_merchant_center_account_links(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_merchant_center_account_links_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MerchantCenterAccountLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_merchant_center_account_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
+        )
+        response = await client.list_merchant_center_account_links()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1330,10 +1387,10 @@ async def test_list_merchant_center_account_links_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest()
+        request = (
+            merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1536,10 +1593,10 @@ def test_create_merchant_center_account_link(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
+        request = (
+            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1558,6 +1615,63 @@ def test_create_merchant_center_account_link_empty_call():
         type(client.transport.create_merchant_center_account_link), "__call__"
     ) as call:
         client.create_merchant_center_account_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
+        )
+
+
+def test_create_merchant_center_account_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MerchantCenterAccountLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(
+            parent="parent_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_merchant_center_account_link), "__call__"
+    ) as call:
+        client.create_merchant_center_account_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_merchant_center_account_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MerchantCenterAccountLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_merchant_center_account_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_merchant_center_account_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1593,10 +1707,10 @@ async def test_create_merchant_center_account_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
+        request = (
+            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1812,10 +1926,10 @@ def test_delete_merchant_center_account_link(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
+        request = (
+            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1834,6 +1948,61 @@ def test_delete_merchant_center_account_link_empty_call():
         type(client.transport.delete_merchant_center_account_link), "__call__"
     ) as call:
         client.delete_merchant_center_account_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
+        )
+
+
+def test_delete_merchant_center_account_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MerchantCenterAccountLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(
+            name="name_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_merchant_center_account_link), "__call__"
+    ) as call:
+        client.delete_merchant_center_account_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_merchant_center_account_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MerchantCenterAccountLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_merchant_center_account_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_merchant_center_account_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1867,10 +2036,10 @@ async def test_delete_merchant_center_account_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
+        request = (
+            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

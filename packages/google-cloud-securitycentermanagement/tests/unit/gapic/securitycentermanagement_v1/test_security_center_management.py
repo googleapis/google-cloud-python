@@ -1235,10 +1235,10 @@ def test_list_effective_security_health_analytics_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        request = (
+            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1261,6 +1261,69 @@ def test_list_effective_security_health_analytics_custom_modules_empty_call():
         "__call__",
     ) as call:
         client.list_effective_security_health_analytics_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+
+def test_list_effective_security_health_analytics_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        client.list_effective_security_health_analytics_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = (
+            await client.list_effective_security_health_analytics_custom_modules()
+        )
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1301,10 +1364,10 @@ async def test_list_effective_security_health_analytics_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        request = (
+            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1746,10 +1809,10 @@ def test_get_effective_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1778,6 +1841,67 @@ def test_get_effective_security_health_analytics_custom_module_empty_call():
         "__call__",
     ) as call:
         client.get_effective_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+def test_get_effective_security_health_analytics_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.get_effective_security_health_analytics_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.EffectiveSecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                enablement_state=security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_effective_security_health_analytics_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -1820,10 +1944,10 @@ async def test_get_effective_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -2044,10 +2168,10 @@ def test_list_security_health_analytics_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
+        request = (
+            security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecurityHealthAnalyticsCustomModulesPager)
@@ -2067,6 +2191,67 @@ def test_list_security_health_analytics_custom_modules_empty_call():
         type(client.transport.list_security_health_analytics_custom_modules), "__call__"
     ) as call:
         client.list_security_health_analytics_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+
+def test_list_security_health_analytics_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        client.list_security_health_analytics_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_security_health_analytics_custom_modules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -2104,10 +2289,10 @@ async def test_list_security_health_analytics_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
+        request = (
+            security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -2531,10 +2716,10 @@ def test_list_descendant_security_health_analytics_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        request = (
+            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -2557,6 +2742,69 @@ def test_list_descendant_security_health_analytics_custom_modules_empty_call():
         "__call__",
     ) as call:
         client.list_descendant_security_health_analytics_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+
+def test_list_descendant_security_health_analytics_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        client.list_descendant_security_health_analytics_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = (
+            await client.list_descendant_security_health_analytics_custom_modules()
+        )
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -2599,10 +2847,10 @@ async def test_list_descendant_security_health_analytics_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        request = (
+            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3045,10 +3293,10 @@ def test_get_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3077,6 +3325,67 @@ def test_get_security_health_analytics_custom_module_empty_call():
         type(client.transport.get_security_health_analytics_custom_module), "__call__"
     ) as call:
         client.get_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+def test_get_security_health_analytics_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        client.get_security_health_analytics_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.SecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                display_name="display_name_value",
+                enablement_state=security_center_management.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                last_editor="last_editor_value",
+                ancestor_module="ancestor_module_value",
+            )
+        )
+        response = await client.get_security_health_analytics_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -3118,10 +3427,10 @@ async def test_get_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3336,10 +3645,10 @@ def test_create_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3369,6 +3678,71 @@ def test_create_security_health_analytics_custom_module_empty_call():
         "__call__",
     ) as call:
         client.create_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+def test_create_security_health_analytics_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(
+            parent="parent_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.create_security_health_analytics_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.SecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                display_name="display_name_value",
+                enablement_state=security_center_management.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                last_editor="last_editor_value",
+                ancestor_module="ancestor_module_value",
+            )
+        )
+        response = await client.create_security_health_analytics_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -3411,10 +3785,10 @@ async def test_create_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3659,10 +4033,10 @@ def test_update_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3692,6 +4066,68 @@ def test_update_security_health_analytics_custom_module_empty_call():
         "__call__",
     ) as call:
         client.update_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+def test_update_security_health_analytics_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.update_security_health_analytics_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.SecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                display_name="display_name_value",
+                enablement_state=security_center_management.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                last_editor="last_editor_value",
+                ancestor_module="ancestor_module_value",
+            )
+        )
+        response = await client.update_security_health_analytics_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -3734,10 +4170,10 @@ async def test_update_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -3976,10 +4412,10 @@ def test_delete_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3999,6 +4435,63 @@ def test_delete_security_health_analytics_custom_module_empty_call():
         "__call__",
     ) as call:
         client.delete_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+def test_delete_security_health_analytics_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(
+            name="name_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.delete_security_health_analytics_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_security_health_analytics_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -4033,10 +4526,10 @@ async def test_delete_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4235,10 +4728,10 @@ def test_simulate_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -4261,6 +4754,65 @@ def test_simulate_security_health_analytics_custom_module_empty_call():
         "__call__",
     ) as call:
         client.simulate_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+def test_simulate_security_health_analytics_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(
+            parent="parent_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.simulate_security_health_analytics_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        response = await client.simulate_security_health_analytics_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -4299,10 +4851,10 @@ async def test_simulate_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        request = (
+            security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -4558,10 +5110,10 @@ def test_list_effective_event_threat_detection_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        request = (
+            security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -4584,6 +5136,67 @@ def test_list_effective_event_threat_detection_custom_modules_empty_call():
         "__call__",
     ) as call:
         client.list_effective_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        )
+
+
+def test_list_effective_event_threat_detection_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        client.list_effective_event_threat_detection_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_effective_event_threat_detection_custom_modules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -4624,10 +5237,10 @@ async def test_list_effective_event_threat_detection_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
+        request = (
+            security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -5065,10 +5678,10 @@ def test_get_effective_event_threat_detection_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -5098,6 +5711,71 @@ def test_get_effective_event_threat_detection_custom_module_empty_call():
         "__call__",
     ) as call:
         client.get_effective_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_get_effective_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        client.get_effective_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_event_threat_detection_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.EffectiveEventThreatDetectionCustomModule(
+                name="name_value",
+                enablement_state=security_center_management.EffectiveEventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_effective_event_threat_detection_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -5142,10 +5820,10 @@ async def test_get_effective_event_threat_detection_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -5367,10 +6045,10 @@ def test_list_event_threat_detection_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEventThreatDetectionCustomModulesRequest()
+        request = (
+            security_center_management.ListEventThreatDetectionCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesPager)
@@ -5390,6 +6068,65 @@ def test_list_event_threat_detection_custom_modules_empty_call():
         type(client.transport.list_event_threat_detection_custom_modules), "__call__"
     ) as call:
         client.list_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ListEventThreatDetectionCustomModulesRequest()
+        )
+
+
+def test_list_event_threat_detection_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.ListEventThreatDetectionCustomModulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        client.list_event_threat_detection_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ListEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_threat_detection_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ListEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_event_threat_detection_custom_modules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -5427,10 +6164,10 @@ async def test_list_event_threat_detection_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEventThreatDetectionCustomModulesRequest()
+        request = (
+            security_center_management.ListEventThreatDetectionCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesAsyncPager)
@@ -5838,10 +6575,10 @@ def test_list_descendant_event_threat_detection_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
+        request = (
+            security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -5864,6 +6601,67 @@ def test_list_descendant_event_threat_detection_custom_modules_empty_call():
         "__call__",
     ) as call:
         client.list_descendant_event_threat_detection_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
+        )
+
+
+def test_list_descendant_event_threat_detection_custom_modules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        client.list_descendant_event_threat_detection_custom_modules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_event_threat_detection_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_descendant_event_threat_detection_custom_modules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -5904,10 +6702,10 @@ async def test_list_descendant_event_threat_detection_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
+        request = (
+            security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -6344,10 +7142,10 @@ def test_get_event_threat_detection_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.GetEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -6378,6 +7176,69 @@ def test_get_event_threat_detection_custom_module_empty_call():
         type(client.transport.get_event_threat_detection_custom_module), "__call__"
     ) as call:
         client.get_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.GetEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_get_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.GetEventThreatDetectionCustomModuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        client.get_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.GetEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=security_center_management.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.get_event_threat_detection_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -6421,10 +7282,10 @@ async def test_get_event_threat_detection_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.GetEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -6642,10 +7503,10 @@ def test_create_event_threat_detection_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.CreateEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.CreateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -6676,6 +7537,69 @@ def test_create_event_threat_detection_custom_module_empty_call():
         type(client.transport.create_event_threat_detection_custom_module), "__call__"
     ) as call:
         client.create_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.CreateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_create_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.CreateEventThreatDetectionCustomModuleRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        client.create_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.CreateEventThreatDetectionCustomModuleRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=security_center_management.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.create_event_threat_detection_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -6719,10 +7643,10 @@ async def test_create_event_threat_detection_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.CreateEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.CreateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -6962,10 +7886,10 @@ def test_update_event_threat_detection_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -6996,6 +7920,66 @@ def test_update_event_threat_detection_custom_module_empty_call():
         type(client.transport.update_event_threat_detection_custom_module), "__call__"
     ) as call:
         client.update_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_update_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        client.update_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.EventThreatDetectionCustomModule(
+                name="name_value",
+                ancestor_module="ancestor_module_value",
+                enablement_state=security_center_management.EventThreatDetectionCustomModule.EnablementState.ENABLED,
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                last_editor="last_editor_value",
+            )
+        )
+        response = await client.update_event_threat_detection_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -7039,10 +8023,10 @@ async def test_update_event_threat_detection_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -7274,10 +8258,10 @@ def test_delete_event_threat_detection_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7296,6 +8280,59 @@ def test_delete_event_threat_detection_custom_module_empty_call():
         type(client.transport.delete_event_threat_detection_custom_module), "__call__"
     ) as call:
         client.delete_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_delete_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = security_center_management.DeleteEventThreatDetectionCustomModuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        client.delete_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.DeleteEventThreatDetectionCustomModuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_event_threat_detection_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -7329,10 +8366,10 @@ async def test_delete_event_threat_detection_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7522,10 +8559,10 @@ def test_validate_event_threat_detection_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -7547,6 +8584,67 @@ def test_validate_event_threat_detection_custom_module_empty_call():
         type(client.transport.validate_event_threat_detection_custom_module), "__call__"
     ) as call:
         client.validate_event_threat_detection_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
+        )
+
+
+def test_validate_event_threat_detection_custom_module_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = (
+        security_center_management.ValidateEventThreatDetectionCustomModuleRequest(
+            parent="parent_value",
+            raw_text="raw_text_value",
+            type_="type__value",
+        )
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        client.validate_event_threat_detection_custom_module(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[
+            0
+        ] == security_center_management.ValidateEventThreatDetectionCustomModuleRequest(
+            parent="parent_value",
+            raw_text="raw_text_value",
+            type_="type__value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterManagementAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_event_threat_detection_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_center_management.ValidateEventThreatDetectionCustomModuleResponse()
+        )
+        response = await client.validate_event_threat_detection_custom_module()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert (
@@ -7582,10 +8680,10 @@ async def test_validate_event_threat_detection_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
+        request = (
+            security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(

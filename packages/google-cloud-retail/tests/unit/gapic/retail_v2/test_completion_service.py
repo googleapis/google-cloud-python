@@ -1193,7 +1193,8 @@ def test_complete_query(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.CompleteQueryRequest()
+        request = completion_service.CompleteQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
@@ -1211,6 +1212,64 @@ def test_complete_query_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         client.complete_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == completion_service.CompleteQueryRequest()
+
+
+def test_complete_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompletionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = completion_service.CompleteQueryRequest(
+        catalog="catalog_value",
+        query="query_value",
+        visitor_id="visitor_id_value",
+        device_type="device_type_value",
+        dataset="dataset_value",
+        entity="entity_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+        client.complete_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == completion_service.CompleteQueryRequest(
+            catalog="catalog_value",
+            query="query_value",
+            visitor_id="visitor_id_value",
+            device_type="device_type_value",
+            dataset="dataset_value",
+            entity="entity_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_complete_query_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompletionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            completion_service.CompleteQueryResponse(
+                attribution_token="attribution_token_value",
+            )
+        )
+        response = await client.complete_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == completion_service.CompleteQueryRequest()
@@ -1243,7 +1302,8 @@ async def test_complete_query_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.CompleteQueryRequest()
+        request = completion_service.CompleteQueryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
@@ -1344,7 +1404,8 @@ def test_import_completion_data(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportCompletionDataRequest()
+        request = import_config.ImportCompletionDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1363,6 +1424,58 @@ def test_import_completion_data_empty_call():
         type(client.transport.import_completion_data), "__call__"
     ) as call:
         client.import_completion_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == import_config.ImportCompletionDataRequest()
+
+
+def test_import_completion_data_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompletionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = import_config.ImportCompletionDataRequest(
+        parent="parent_value",
+        notification_pubsub_topic="notification_pubsub_topic_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_completion_data), "__call__"
+    ) as call:
+        client.import_completion_data(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == import_config.ImportCompletionDataRequest(
+            parent="parent_value",
+            notification_pubsub_topic="notification_pubsub_topic_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_completion_data_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompletionServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_completion_data), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_completion_data()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == import_config.ImportCompletionDataRequest()
@@ -1395,7 +1508,8 @@ async def test_import_completion_data_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportCompletionDataRequest()
+        request = import_config.ImportCompletionDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

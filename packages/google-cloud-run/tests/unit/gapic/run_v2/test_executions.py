@@ -1132,7 +1132,8 @@ def test_get_execution(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.GetExecutionRequest()
+        request = execution.GetExecutionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, execution.Execution)
@@ -1166,6 +1167,70 @@ def test_get_execution_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         client.get_execution()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.GetExecutionRequest()
+
+
+def test_get_execution_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = execution.GetExecutionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
+        client.get_execution(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.GetExecutionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_execution_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ExecutionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            execution.Execution(
+                name="name_value",
+                uid="uid_value",
+                generation=1068,
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                job="job_value",
+                parallelism=1174,
+                task_count=1083,
+                reconciling=True,
+                observed_generation=2021,
+                running_count=1417,
+                succeeded_count=1581,
+                failed_count=1261,
+                cancelled_count=1571,
+                retried_count=1399,
+                log_uri="log_uri_value",
+                satisfies_pzs=True,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_execution()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == execution.GetExecutionRequest()
@@ -1213,7 +1278,8 @@ async def test_get_execution_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.GetExecutionRequest()
+        request = execution.GetExecutionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, execution.Execution)
@@ -1408,7 +1474,8 @@ def test_list_executions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.ListExecutionsRequest()
+        request = execution.ListExecutionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExecutionsPager)
@@ -1426,6 +1493,56 @@ def test_list_executions_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         client.list_executions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.ListExecutionsRequest()
+
+
+def test_list_executions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = execution.ListExecutionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
+        client.list_executions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.ListExecutionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_executions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ExecutionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            execution.ListExecutionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_executions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == execution.ListExecutionsRequest()
@@ -1457,7 +1574,8 @@ async def test_list_executions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.ListExecutionsRequest()
+        request = execution.ListExecutionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExecutionsAsyncPager)
@@ -1828,7 +1946,8 @@ def test_delete_execution(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.DeleteExecutionRequest()
+        request = execution.DeleteExecutionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1845,6 +1964,54 @@ def test_delete_execution_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_execution), "__call__") as call:
         client.delete_execution()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.DeleteExecutionRequest()
+
+
+def test_delete_execution_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = execution.DeleteExecutionRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_execution), "__call__") as call:
+        client.delete_execution(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.DeleteExecutionRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_execution_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ExecutionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_execution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_execution()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == execution.DeleteExecutionRequest()
@@ -1874,7 +2041,8 @@ async def test_delete_execution_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.DeleteExecutionRequest()
+        request = execution.DeleteExecutionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2054,7 +2222,8 @@ def test_cancel_execution(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.CancelExecutionRequest()
+        request = execution.CancelExecutionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2071,6 +2240,54 @@ def test_cancel_execution_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         client.cancel_execution()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.CancelExecutionRequest()
+
+
+def test_cancel_execution_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = execution.CancelExecutionRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
+        client.cancel_execution(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == execution.CancelExecutionRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_execution_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ExecutionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.cancel_execution()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == execution.CancelExecutionRequest()
@@ -2100,7 +2317,8 @@ async def test_cancel_execution_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == execution.CancelExecutionRequest()
+        request = execution.CancelExecutionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

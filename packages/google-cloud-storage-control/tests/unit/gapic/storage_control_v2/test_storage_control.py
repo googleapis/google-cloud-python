@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import re
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -1126,6 +1127,10 @@ def test_create_folder(request_type, transport: str = "grpc"):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -1139,7 +1144,9 @@ def test_create_folder(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.CreateFolderRequest()
+        request = storage_control.CreateFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_control.Folder)
@@ -1160,6 +1167,78 @@ def test_create_folder_empty_call():
         client.create_folder()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.CreateFolderRequest()
+
+
+def test_create_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.CreateFolderRequest(
+        parent="parent_value",
+        folder_id="folder_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
+        client.create_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.CreateFolderRequest(
+            parent="parent_value",
+            folder_id="folder_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.Folder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.create_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_control.CreateFolderRequest()
 
 
@@ -1175,6 +1254,10 @@ async def test_create_folder_async(
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -1190,7 +1273,9 @@ async def test_create_folder_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.CreateFolderRequest()
+        request = storage_control.CreateFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_control.Folder)
@@ -1345,6 +1430,10 @@ def test_delete_folder(request_type, transport: str = "grpc"):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -1355,7 +1444,9 @@ def test_delete_folder(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.DeleteFolderRequest()
+        request = storage_control.DeleteFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1374,6 +1465,71 @@ def test_delete_folder_empty_call():
         client.delete_folder()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.DeleteFolderRequest()
+
+
+def test_delete_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.DeleteFolderRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
+        client.delete_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.DeleteFolderRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_control.DeleteFolderRequest()
 
 
@@ -1389,6 +1545,10 @@ async def test_delete_folder_async(
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -1399,7 +1559,9 @@ async def test_delete_folder_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.DeleteFolderRequest()
+        request = storage_control.DeleteFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1532,6 +1694,10 @@ def test_get_folder(request_type, transport: str = "grpc"):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -1545,7 +1711,9 @@ def test_get_folder(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetFolderRequest()
+        request = storage_control.GetFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_control.Folder)
@@ -1566,6 +1734,76 @@ def test_get_folder_empty_call():
         client.get_folder()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetFolderRequest()
+
+
+def test_get_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetFolderRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
+        client.get_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetFolderRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.Folder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.get_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_control.GetFolderRequest()
 
 
@@ -1581,6 +1819,10 @@ async def test_get_folder_async(
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -1596,7 +1838,9 @@ async def test_get_folder_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetFolderRequest()
+        request = storage_control.GetFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_control.Folder)
@@ -1745,7 +1989,8 @@ def test_list_folders(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.ListFoldersRequest()
+        request = storage_control.ListFoldersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFoldersPager)
@@ -1763,6 +2008,64 @@ def test_list_folders_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
         client.list_folders()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.ListFoldersRequest()
+
+
+def test_list_folders_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ListFoldersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        prefix="prefix_value",
+        delimiter="delimiter_value",
+        lexicographic_start="lexicographic_start_value",
+        lexicographic_end="lexicographic_end_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
+        client.list_folders(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storage_control.ListFoldersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            prefix="prefix_value",
+            delimiter="delimiter_value",
+            lexicographic_start="lexicographic_start_value",
+            lexicographic_end="lexicographic_end_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_folders_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListFoldersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_folders()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storage_control.ListFoldersRequest()
@@ -1794,7 +2097,8 @@ async def test_list_folders_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.ListFoldersRequest()
+        request = storage_control.ListFoldersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFoldersAsyncPager)
@@ -2115,6 +2419,10 @@ def test_rename_folder(request_type, transport: str = "grpc"):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
@@ -2125,7 +2433,9 @@ def test_rename_folder(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.RenameFolderRequest()
+        request = storage_control.RenameFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2144,6 +2454,75 @@ def test_rename_folder_empty_call():
         client.rename_folder()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.RenameFolderRequest()
+
+
+def test_rename_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.RenameFolderRequest(
+        name="name_value",
+        destination_folder_id="destination_folder_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
+        client.rename_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.RenameFolderRequest(
+            name="name_value",
+            destination_folder_id="destination_folder_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.rename_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_control.RenameFolderRequest()
 
 
@@ -2159,6 +2538,10 @@ async def test_rename_folder_async(
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
@@ -2171,7 +2554,9 @@ async def test_rename_folder_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.RenameFolderRequest()
+        request = storage_control.RenameFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2316,6 +2701,10 @@ def test_get_storage_layout(request_type, transport: str = "grpc"):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2332,7 +2721,9 @@ def test_get_storage_layout(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetStorageLayoutRequest()
+        request = storage_control.GetStorageLayoutRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_control.StorageLayout)
@@ -2356,6 +2747,83 @@ def test_get_storage_layout_empty_call():
         client.get_storage_layout()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetStorageLayoutRequest()
+
+
+def test_get_storage_layout_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetStorageLayoutRequest(
+        name="name_value",
+        prefix="prefix_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_storage_layout), "__call__"
+    ) as call:
+        client.get_storage_layout(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetStorageLayoutRequest(
+            name="name_value",
+            prefix="prefix_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_storage_layout_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_storage_layout), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.StorageLayout(
+                name="name_value",
+                location="location_value",
+                location_type="location_type_value",
+            )
+        )
+        response = await client.get_storage_layout()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
         assert args[0] == storage_control.GetStorageLayoutRequest()
 
 
@@ -2372,6 +2840,10 @@ async def test_get_storage_layout_async(
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2390,7 +2862,9 @@ async def test_get_storage_layout_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetStorageLayoutRequest()
+        request = storage_control.GetStorageLayoutRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_control.StorageLayout)
