@@ -3,7 +3,7 @@ google-api-core
 googleapis-common-protos
 jinja2
 MarkupSafe
-protobuf
+protobuf<5 # See https://github.com/googleapis/gapic-generator-python/issues/1996
 pypandoc
 PyYAML
 grpc-google-iam-v1
