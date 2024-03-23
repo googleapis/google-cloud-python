@@ -1240,7 +1240,8 @@ def test_list_notifications(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListNotificationsRequest()
+        request = service.ListNotificationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotificationsPager)
@@ -1261,6 +1262,63 @@ def test_list_notifications_empty_call():
         type(client.transport.list_notifications), "__call__"
     ) as call:
         client.list_notifications()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListNotificationsRequest()
+
+
+def test_list_notifications_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListNotificationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_notifications), "__call__"
+    ) as call:
+        client.list_notifications(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListNotificationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_notifications_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_notifications), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListNotificationsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_notifications()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListNotificationsRequest()
@@ -1295,7 +1353,8 @@ async def test_list_notifications_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListNotificationsRequest()
+        request = service.ListNotificationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotificationsAsyncPager)
@@ -1686,7 +1745,8 @@ def test_get_notification(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetNotificationRequest()
+        request = service.GetNotificationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Notification)
@@ -1708,6 +1768,57 @@ def test_get_notification_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_notification), "__call__") as call:
         client.get_notification()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetNotificationRequest()
+
+
+def test_get_notification_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetNotificationRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_notification), "__call__") as call:
+        client.get_notification(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetNotificationRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_notification_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_notification), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Notification(
+                name="name_value",
+                notification_type=service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY,
+            )
+        )
+        response = await client.get_notification()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetNotificationRequest()
@@ -1740,7 +1851,8 @@ async def test_get_notification_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetNotificationRequest()
+        request = service.GetNotificationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Notification)
@@ -1928,7 +2040,8 @@ def test_get_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSettingsRequest()
+        request = service.GetSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Settings)
@@ -1947,6 +2060,55 @@ def test_get_settings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
         client.get_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSettingsRequest()
+
+
+def test_get_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetSettingsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        client.get_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSettingsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Settings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetSettingsRequest()
@@ -1979,7 +2141,8 @@ async def test_get_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSettingsRequest()
+        request = service.GetSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Settings)
@@ -2160,7 +2323,8 @@ def test_update_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSettingsRequest()
+        request = service.UpdateSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Settings)
@@ -2179,6 +2343,51 @@ def test_update_settings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
         client.update_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSettingsRequest()
+
+
+def test_update_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.UpdateSettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        client.update_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Settings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.update_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UpdateSettingsRequest()
@@ -2211,7 +2420,8 @@ async def test_update_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSettingsRequest()
+        request = service.UpdateSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Settings)

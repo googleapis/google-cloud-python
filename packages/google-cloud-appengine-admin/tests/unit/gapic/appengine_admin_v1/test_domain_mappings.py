@@ -1163,7 +1163,8 @@ def test_list_domain_mappings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.ListDomainMappingsRequest()
+        request = appengine.ListDomainMappingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDomainMappingsPager)
@@ -1183,6 +1184,60 @@ def test_list_domain_mappings_empty_call():
         type(client.transport.list_domain_mappings), "__call__"
     ) as call:
         client.list_domain_mappings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.ListDomainMappingsRequest()
+
+
+def test_list_domain_mappings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DomainMappingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = appengine.ListDomainMappingsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_domain_mappings), "__call__"
+    ) as call:
+        client.list_domain_mappings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.ListDomainMappingsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_domain_mappings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DomainMappingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_domain_mappings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            appengine.ListDomainMappingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_domain_mappings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == appengine.ListDomainMappingsRequest()
@@ -1216,7 +1271,8 @@ async def test_list_domain_mappings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.ListDomainMappingsRequest()
+        request = appengine.ListDomainMappingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDomainMappingsAsyncPager)
@@ -1522,7 +1578,8 @@ def test_get_domain_mapping(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.GetDomainMappingRequest()
+        request = appengine.GetDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domain_mapping.DomainMapping)
@@ -1543,6 +1600,59 @@ def test_get_domain_mapping_empty_call():
         type(client.transport.get_domain_mapping), "__call__"
     ) as call:
         client.get_domain_mapping()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.GetDomainMappingRequest()
+
+
+def test_get_domain_mapping_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DomainMappingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = appengine.GetDomainMappingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_domain_mapping), "__call__"
+    ) as call:
+        client.get_domain_mapping(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.GetDomainMappingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_domain_mapping_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DomainMappingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_domain_mapping), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            domain_mapping.DomainMapping(
+                name="name_value",
+                id="id_value",
+            )
+        )
+        response = await client.get_domain_mapping()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == appengine.GetDomainMappingRequest()
@@ -1577,7 +1687,8 @@ async def test_get_domain_mapping_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.GetDomainMappingRequest()
+        request = appengine.GetDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domain_mapping.DomainMapping)
@@ -1683,7 +1794,8 @@ def test_create_domain_mapping(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.CreateDomainMappingRequest()
+        request = appengine.CreateDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1702,6 +1814,56 @@ def test_create_domain_mapping_empty_call():
         type(client.transport.create_domain_mapping), "__call__"
     ) as call:
         client.create_domain_mapping()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.CreateDomainMappingRequest()
+
+
+def test_create_domain_mapping_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DomainMappingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = appengine.CreateDomainMappingRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_domain_mapping), "__call__"
+    ) as call:
+        client.create_domain_mapping(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.CreateDomainMappingRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_domain_mapping_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DomainMappingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_domain_mapping), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_domain_mapping()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == appengine.CreateDomainMappingRequest()
@@ -1733,7 +1895,8 @@ async def test_create_domain_mapping_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.CreateDomainMappingRequest()
+        request = appengine.CreateDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1837,7 +2000,8 @@ def test_update_domain_mapping(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.UpdateDomainMappingRequest()
+        request = appengine.UpdateDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1856,6 +2020,56 @@ def test_update_domain_mapping_empty_call():
         type(client.transport.update_domain_mapping), "__call__"
     ) as call:
         client.update_domain_mapping()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.UpdateDomainMappingRequest()
+
+
+def test_update_domain_mapping_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DomainMappingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = appengine.UpdateDomainMappingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_domain_mapping), "__call__"
+    ) as call:
+        client.update_domain_mapping(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.UpdateDomainMappingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_domain_mapping_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DomainMappingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_domain_mapping), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_domain_mapping()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == appengine.UpdateDomainMappingRequest()
@@ -1887,7 +2101,8 @@ async def test_update_domain_mapping_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.UpdateDomainMappingRequest()
+        request = appengine.UpdateDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1991,7 +2206,8 @@ def test_delete_domain_mapping(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.DeleteDomainMappingRequest()
+        request = appengine.DeleteDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2010,6 +2226,56 @@ def test_delete_domain_mapping_empty_call():
         type(client.transport.delete_domain_mapping), "__call__"
     ) as call:
         client.delete_domain_mapping()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.DeleteDomainMappingRequest()
+
+
+def test_delete_domain_mapping_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DomainMappingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = appengine.DeleteDomainMappingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_domain_mapping), "__call__"
+    ) as call:
+        client.delete_domain_mapping(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == appengine.DeleteDomainMappingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_domain_mapping_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DomainMappingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_domain_mapping), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_domain_mapping()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == appengine.DeleteDomainMappingRequest()
@@ -2041,7 +2307,8 @@ async def test_delete_domain_mapping_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.DeleteDomainMappingRequest()
+        request = appengine.DeleteDomainMappingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

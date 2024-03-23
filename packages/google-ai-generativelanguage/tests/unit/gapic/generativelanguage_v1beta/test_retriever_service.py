@@ -1178,7 +1178,8 @@ def test_create_corpus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateCorpusRequest()
+        request = retriever_service.CreateCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Corpus)
@@ -1197,6 +1198,51 @@ def test_create_corpus_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
         client.create_corpus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.CreateCorpusRequest()
+
+
+def test_create_corpus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.CreateCorpusRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
+        client.create_corpus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.CreateCorpusRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_corpus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Corpus(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_corpus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.CreateCorpusRequest()
@@ -1229,7 +1275,8 @@ async def test_create_corpus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateCorpusRequest()
+        request = retriever_service.CreateCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Corpus)
@@ -1351,7 +1398,8 @@ def test_get_corpus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetCorpusRequest()
+        request = retriever_service.GetCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Corpus)
@@ -1370,6 +1418,55 @@ def test_get_corpus_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
         client.get_corpus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.GetCorpusRequest()
+
+
+def test_get_corpus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.GetCorpusRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
+        client.get_corpus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.GetCorpusRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_corpus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Corpus(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_corpus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.GetCorpusRequest()
@@ -1402,7 +1499,8 @@ async def test_get_corpus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetCorpusRequest()
+        request = retriever_service.GetCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Corpus)
@@ -1583,7 +1681,8 @@ def test_update_corpus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateCorpusRequest()
+        request = retriever_service.UpdateCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Corpus)
@@ -1602,6 +1701,51 @@ def test_update_corpus_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
         client.update_corpus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.UpdateCorpusRequest()
+
+
+def test_update_corpus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.UpdateCorpusRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
+        client.update_corpus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.UpdateCorpusRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_corpus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Corpus(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_corpus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.UpdateCorpusRequest()
@@ -1634,7 +1778,8 @@ async def test_update_corpus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateCorpusRequest()
+        request = retriever_service.UpdateCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Corpus)
@@ -1822,7 +1967,8 @@ def test_delete_corpus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteCorpusRequest()
+        request = retriever_service.DeleteCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1839,6 +1985,50 @@ def test_delete_corpus_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
         client.delete_corpus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.DeleteCorpusRequest()
+
+
+def test_delete_corpus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.DeleteCorpusRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
+        client.delete_corpus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.DeleteCorpusRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_corpus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_corpus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.DeleteCorpusRequest()
@@ -1866,7 +2056,8 @@ async def test_delete_corpus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteCorpusRequest()
+        request = retriever_service.DeleteCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2044,7 +2235,8 @@ def test_list_corpora(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListCorporaRequest()
+        request = retriever_service.ListCorporaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCorporaPager)
@@ -2062,6 +2254,54 @@ def test_list_corpora_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
         client.list_corpora()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.ListCorporaRequest()
+
+
+def test_list_corpora_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.ListCorporaRequest(
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
+        client.list_corpora(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.ListCorporaRequest(
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_corpora_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.ListCorporaResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_corpora()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.ListCorporaRequest()
@@ -2093,7 +2333,8 @@ async def test_list_corpora_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListCorporaRequest()
+        request = retriever_service.ListCorporaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCorporaAsyncPager)
@@ -2318,7 +2559,8 @@ def test_query_corpus(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.QueryCorpusRequest()
+        request = retriever_service.QueryCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.QueryCorpusResponse)
@@ -2335,6 +2577,54 @@ def test_query_corpus_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_corpus), "__call__") as call:
         client.query_corpus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.QueryCorpusRequest()
+
+
+def test_query_corpus_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.QueryCorpusRequest(
+        name="name_value",
+        query="query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_corpus), "__call__") as call:
+        client.query_corpus(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.QueryCorpusRequest(
+            name="name_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_corpus_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.QueryCorpusResponse()
+        )
+        response = await client.query_corpus()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.QueryCorpusRequest()
@@ -2364,7 +2654,8 @@ async def test_query_corpus_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.QueryCorpusRequest()
+        request = retriever_service.QueryCorpusRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.QueryCorpusResponse)
@@ -2465,7 +2756,8 @@ def test_create_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateDocumentRequest()
+        request = retriever_service.CreateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Document)
@@ -2484,6 +2776,55 @@ def test_create_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_document), "__call__") as call:
         client.create_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.CreateDocumentRequest()
+
+
+def test_create_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.CreateDocumentRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_document), "__call__") as call:
+        client.create_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.CreateDocumentRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Document(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.CreateDocumentRequest()
@@ -2517,7 +2858,8 @@ async def test_create_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateDocumentRequest()
+        request = retriever_service.CreateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Document)
@@ -2708,7 +3050,8 @@ def test_get_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetDocumentRequest()
+        request = retriever_service.GetDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Document)
@@ -2727,6 +3070,55 @@ def test_get_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_document), "__call__") as call:
         client.get_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.GetDocumentRequest()
+
+
+def test_get_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.GetDocumentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_document), "__call__") as call:
+        client.get_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.GetDocumentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Document(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.GetDocumentRequest()
@@ -2759,7 +3151,8 @@ async def test_get_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetDocumentRequest()
+        request = retriever_service.GetDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Document)
@@ -2940,7 +3333,8 @@ def test_update_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateDocumentRequest()
+        request = retriever_service.UpdateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Document)
@@ -2959,6 +3353,51 @@ def test_update_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
         client.update_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.UpdateDocumentRequest()
+
+
+def test_update_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.UpdateDocumentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_document), "__call__") as call:
+        client.update_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.UpdateDocumentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Document(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.UpdateDocumentRequest()
@@ -2992,7 +3431,8 @@ async def test_update_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateDocumentRequest()
+        request = retriever_service.UpdateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Document)
@@ -3180,7 +3620,8 @@ def test_delete_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteDocumentRequest()
+        request = retriever_service.DeleteDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3197,6 +3638,50 @@ def test_delete_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
         client.delete_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.DeleteDocumentRequest()
+
+
+def test_delete_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.DeleteDocumentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
+        client.delete_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.DeleteDocumentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.DeleteDocumentRequest()
@@ -3225,7 +3710,8 @@ async def test_delete_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteDocumentRequest()
+        request = retriever_service.DeleteDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3403,7 +3889,8 @@ def test_list_documents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListDocumentsRequest()
+        request = retriever_service.ListDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentsPager)
@@ -3421,6 +3908,56 @@ def test_list_documents_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
         client.list_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.ListDocumentsRequest()
+
+
+def test_list_documents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.ListDocumentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        client.list_documents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.ListDocumentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_documents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.ListDocumentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_documents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.ListDocumentsRequest()
@@ -3452,7 +3989,8 @@ async def test_list_documents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListDocumentsRequest()
+        request = retriever_service.ListDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentsAsyncPager)
@@ -3823,7 +4361,8 @@ def test_query_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.QueryDocumentRequest()
+        request = retriever_service.QueryDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.QueryDocumentResponse)
@@ -3840,6 +4379,54 @@ def test_query_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_document), "__call__") as call:
         client.query_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.QueryDocumentRequest()
+
+
+def test_query_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.QueryDocumentRequest(
+        name="name_value",
+        query="query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_document), "__call__") as call:
+        client.query_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.QueryDocumentRequest(
+            name="name_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.QueryDocumentResponse()
+        )
+        response = await client.query_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.QueryDocumentRequest()
@@ -3869,7 +4456,8 @@ async def test_query_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.QueryDocumentRequest()
+        request = retriever_service.QueryDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.QueryDocumentResponse)
@@ -3970,7 +4558,8 @@ def test_create_chunk(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateChunkRequest()
+        request = retriever_service.CreateChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Chunk)
@@ -3989,6 +4578,55 @@ def test_create_chunk_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_chunk), "__call__") as call:
         client.create_chunk()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.CreateChunkRequest()
+
+
+def test_create_chunk_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.CreateChunkRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_chunk), "__call__") as call:
+        client.create_chunk(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.CreateChunkRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_chunk_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_chunk), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Chunk(
+                name="name_value",
+                state=retriever.Chunk.State.STATE_PENDING_PROCESSING,
+            )
+        )
+        response = await client.create_chunk()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.CreateChunkRequest()
@@ -4021,7 +4659,8 @@ async def test_create_chunk_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateChunkRequest()
+        request = retriever_service.CreateChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Chunk)
@@ -4211,7 +4850,8 @@ def test_batch_create_chunks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchCreateChunksRequest()
+        request = retriever_service.BatchCreateChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.BatchCreateChunksResponse)
@@ -4230,6 +4870,56 @@ def test_batch_create_chunks_empty_call():
         type(client.transport.batch_create_chunks), "__call__"
     ) as call:
         client.batch_create_chunks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.BatchCreateChunksRequest()
+
+
+def test_batch_create_chunks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.BatchCreateChunksRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_chunks), "__call__"
+    ) as call:
+        client.batch_create_chunks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.BatchCreateChunksRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_chunks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_chunks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.BatchCreateChunksResponse()
+        )
+        response = await client.batch_create_chunks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.BatchCreateChunksRequest()
@@ -4262,7 +4952,8 @@ async def test_batch_create_chunks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchCreateChunksRequest()
+        request = retriever_service.BatchCreateChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.BatchCreateChunksResponse)
@@ -4367,7 +5058,8 @@ def test_get_chunk(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetChunkRequest()
+        request = retriever_service.GetChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Chunk)
@@ -4386,6 +5078,55 @@ def test_get_chunk_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
         client.get_chunk()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.GetChunkRequest()
+
+
+def test_get_chunk_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.GetChunkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
+        client.get_chunk(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.GetChunkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_chunk_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Chunk(
+                name="name_value",
+                state=retriever.Chunk.State.STATE_PENDING_PROCESSING,
+            )
+        )
+        response = await client.get_chunk()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.GetChunkRequest()
@@ -4418,7 +5159,8 @@ async def test_get_chunk_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetChunkRequest()
+        request = retriever_service.GetChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Chunk)
@@ -4599,7 +5341,8 @@ def test_update_chunk(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateChunkRequest()
+        request = retriever_service.UpdateChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Chunk)
@@ -4618,6 +5361,51 @@ def test_update_chunk_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_chunk), "__call__") as call:
         client.update_chunk()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.UpdateChunkRequest()
+
+
+def test_update_chunk_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.UpdateChunkRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_chunk), "__call__") as call:
+        client.update_chunk(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.UpdateChunkRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_chunk_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_chunk), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever.Chunk(
+                name="name_value",
+                state=retriever.Chunk.State.STATE_PENDING_PROCESSING,
+            )
+        )
+        response = await client.update_chunk()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.UpdateChunkRequest()
@@ -4650,7 +5438,8 @@ async def test_update_chunk_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateChunkRequest()
+        request = retriever_service.UpdateChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever.Chunk)
@@ -4840,7 +5629,8 @@ def test_batch_update_chunks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchUpdateChunksRequest()
+        request = retriever_service.BatchUpdateChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.BatchUpdateChunksResponse)
@@ -4859,6 +5649,56 @@ def test_batch_update_chunks_empty_call():
         type(client.transport.batch_update_chunks), "__call__"
     ) as call:
         client.batch_update_chunks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.BatchUpdateChunksRequest()
+
+
+def test_batch_update_chunks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.BatchUpdateChunksRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_chunks), "__call__"
+    ) as call:
+        client.batch_update_chunks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.BatchUpdateChunksRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_update_chunks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_chunks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.BatchUpdateChunksResponse()
+        )
+        response = await client.batch_update_chunks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.BatchUpdateChunksRequest()
@@ -4891,7 +5731,8 @@ async def test_batch_update_chunks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchUpdateChunksRequest()
+        request = retriever_service.BatchUpdateChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.BatchUpdateChunksResponse)
@@ -4993,7 +5834,8 @@ def test_delete_chunk(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteChunkRequest()
+        request = retriever_service.DeleteChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5010,6 +5852,50 @@ def test_delete_chunk_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_chunk), "__call__") as call:
         client.delete_chunk()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.DeleteChunkRequest()
+
+
+def test_delete_chunk_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.DeleteChunkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_chunk), "__call__") as call:
+        client.delete_chunk(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.DeleteChunkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_chunk_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_chunk), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_chunk()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.DeleteChunkRequest()
@@ -5037,7 +5923,8 @@ async def test_delete_chunk_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteChunkRequest()
+        request = retriever_service.DeleteChunkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5215,7 +6102,8 @@ def test_batch_delete_chunks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchDeleteChunksRequest()
+        request = retriever_service.BatchDeleteChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5234,6 +6122,54 @@ def test_batch_delete_chunks_empty_call():
         type(client.transport.batch_delete_chunks), "__call__"
     ) as call:
         client.batch_delete_chunks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.BatchDeleteChunksRequest()
+
+
+def test_batch_delete_chunks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.BatchDeleteChunksRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_chunks), "__call__"
+    ) as call:
+        client.batch_delete_chunks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.BatchDeleteChunksRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_chunks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_chunks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.batch_delete_chunks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.BatchDeleteChunksRequest()
@@ -5264,7 +6200,8 @@ async def test_batch_delete_chunks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchDeleteChunksRequest()
+        request = retriever_service.BatchDeleteChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5366,7 +6303,8 @@ def test_list_chunks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListChunksRequest()
+        request = retriever_service.ListChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChunksPager)
@@ -5384,6 +6322,56 @@ def test_list_chunks_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
         client.list_chunks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.ListChunksRequest()
+
+
+def test_list_chunks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RetrieverServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = retriever_service.ListChunksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
+        client.list_chunks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == retriever_service.ListChunksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_chunks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RetrieverServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            retriever_service.ListChunksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_chunks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == retriever_service.ListChunksRequest()
@@ -5415,7 +6403,8 @@ async def test_list_chunks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListChunksRequest()
+        request = retriever_service.ListChunksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChunksAsyncPager)
