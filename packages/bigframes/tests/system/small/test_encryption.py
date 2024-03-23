@@ -146,9 +146,6 @@ def test_df_apis(bq_cmek, session_with_bq_cmek, scalars_table_id):
         pytest.param(
             None,
             id="default_engine",
-            marks=pytest.mark.skip(
-                reason="Internal issue 327544164, cmek does not propagate to the dataframe."
-            ),
         ),
     ],
 )
@@ -207,9 +204,6 @@ def test_to_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
     assert output_table_dataset.default_encryption_configuration is None
 
 
-@pytest.mark.skip(
-    reason="Internal issue 327544164, cmek does not propagate to the dataframe."
-)
 def test_read_pandas(bq_cmek, session_with_bq_cmek):
     if not bq_cmek:
         pytest.skip("no cmek set for testing")
