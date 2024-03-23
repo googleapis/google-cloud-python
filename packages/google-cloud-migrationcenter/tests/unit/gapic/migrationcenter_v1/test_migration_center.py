@@ -1185,7 +1185,8 @@ def test_list_assets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListAssetsRequest()
+        request = migrationcenter.ListAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
@@ -1204,6 +1205,61 @@ def test_list_assets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
         client.list_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListAssetsRequest()
+
+
+def test_list_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListAssetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        client.list_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListAssetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_assets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListAssetsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListAssetsRequest()
@@ -1236,7 +1292,8 @@ async def test_list_assets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListAssetsRequest()
+        request = migrationcenter.ListAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
@@ -1612,7 +1669,8 @@ def test_get_asset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetAssetRequest()
+        request = migrationcenter.GetAssetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Asset)
@@ -1632,6 +1690,56 @@ def test_get_asset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
         client.get_asset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetAssetRequest()
+
+
+def test_get_asset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetAssetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        client.get_asset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetAssetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_asset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.Asset(
+                name="name_value",
+                sources=["sources_value"],
+                assigned_groups=["assigned_groups_value"],
+            )
+        )
+        response = await client.get_asset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetAssetRequest()
@@ -1665,7 +1773,8 @@ async def test_get_asset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetAssetRequest()
+        request = migrationcenter.GetAssetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Asset)
@@ -1852,7 +1961,8 @@ def test_update_asset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateAssetRequest()
+        request = migrationcenter.UpdateAssetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Asset)
@@ -1872,6 +1982,56 @@ def test_update_asset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
         client.update_asset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateAssetRequest()
+
+
+def test_update_asset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.UpdateAssetRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        client.update_asset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateAssetRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_asset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.Asset(
+                name="name_value",
+                sources=["sources_value"],
+                assigned_groups=["assigned_groups_value"],
+            )
+        )
+        response = await client.update_asset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.UpdateAssetRequest()
@@ -1905,7 +2065,8 @@ async def test_update_asset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateAssetRequest()
+        request = migrationcenter.UpdateAssetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Asset)
@@ -2100,7 +2261,8 @@ def test_batch_update_assets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.BatchUpdateAssetsRequest()
+        request = migrationcenter.BatchUpdateAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.BatchUpdateAssetsResponse)
@@ -2119,6 +2281,56 @@ def test_batch_update_assets_empty_call():
         type(client.transport.batch_update_assets), "__call__"
     ) as call:
         client.batch_update_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.BatchUpdateAssetsRequest()
+
+
+def test_batch_update_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.BatchUpdateAssetsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_assets), "__call__"
+    ) as call:
+        client.batch_update_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.BatchUpdateAssetsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_update_assets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_assets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.BatchUpdateAssetsResponse()
+        )
+        response = await client.batch_update_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.BatchUpdateAssetsRequest()
@@ -2151,7 +2363,8 @@ async def test_batch_update_assets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.BatchUpdateAssetsRequest()
+        request = migrationcenter.BatchUpdateAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.BatchUpdateAssetsResponse)
@@ -2373,7 +2586,8 @@ def test_delete_asset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteAssetRequest()
+        request = migrationcenter.DeleteAssetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2390,6 +2604,52 @@ def test_delete_asset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
         client.delete_asset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteAssetRequest()
+
+
+def test_delete_asset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteAssetRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        client.delete_asset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteAssetRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_asset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_asset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteAssetRequest()
@@ -2417,7 +2677,8 @@ async def test_delete_asset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteAssetRequest()
+        request = migrationcenter.DeleteAssetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2595,7 +2856,8 @@ def test_batch_delete_assets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.BatchDeleteAssetsRequest()
+        request = migrationcenter.BatchDeleteAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2614,6 +2876,54 @@ def test_batch_delete_assets_empty_call():
         type(client.transport.batch_delete_assets), "__call__"
     ) as call:
         client.batch_delete_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.BatchDeleteAssetsRequest()
+
+
+def test_batch_delete_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.BatchDeleteAssetsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_assets), "__call__"
+    ) as call:
+        client.batch_delete_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.BatchDeleteAssetsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_assets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_assets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.batch_delete_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.BatchDeleteAssetsRequest()
@@ -2644,7 +2954,8 @@ async def test_batch_delete_assets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.BatchDeleteAssetsRequest()
+        request = migrationcenter.BatchDeleteAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2840,7 +3151,8 @@ def test_report_asset_frames(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ReportAssetFramesRequest()
+        request = migrationcenter.ReportAssetFramesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ReportAssetFramesResponse)
@@ -2859,6 +3171,58 @@ def test_report_asset_frames_empty_call():
         type(client.transport.report_asset_frames), "__call__"
     ) as call:
         client.report_asset_frames()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ReportAssetFramesRequest()
+
+
+def test_report_asset_frames_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ReportAssetFramesRequest(
+        parent="parent_value",
+        source="source_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_asset_frames), "__call__"
+    ) as call:
+        client.report_asset_frames(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ReportAssetFramesRequest(
+            parent="parent_value",
+            source="source_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_report_asset_frames_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_asset_frames), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ReportAssetFramesResponse()
+        )
+        response = await client.report_asset_frames()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ReportAssetFramesRequest()
@@ -2891,7 +3255,8 @@ async def test_report_asset_frames_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ReportAssetFramesRequest()
+        request = migrationcenter.ReportAssetFramesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ReportAssetFramesResponse)
@@ -2995,7 +3360,8 @@ def test_aggregate_assets_values(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.AggregateAssetsValuesRequest()
+        request = migrationcenter.AggregateAssetsValuesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.AggregateAssetsValuesResponse)
@@ -3014,6 +3380,58 @@ def test_aggregate_assets_values_empty_call():
         type(client.transport.aggregate_assets_values), "__call__"
     ) as call:
         client.aggregate_assets_values()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.AggregateAssetsValuesRequest()
+
+
+def test_aggregate_assets_values_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.AggregateAssetsValuesRequest(
+        parent="parent_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_assets_values), "__call__"
+    ) as call:
+        client.aggregate_assets_values(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.AggregateAssetsValuesRequest(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_aggregate_assets_values_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_assets_values), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.AggregateAssetsValuesResponse()
+        )
+        response = await client.aggregate_assets_values()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.AggregateAssetsValuesRequest()
@@ -3046,7 +3464,8 @@ async def test_aggregate_assets_values_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.AggregateAssetsValuesRequest()
+        request = migrationcenter.AggregateAssetsValuesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.AggregateAssetsValuesResponse)
@@ -3150,7 +3569,8 @@ def test_create_import_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateImportJobRequest()
+        request = migrationcenter.CreateImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3169,6 +3589,60 @@ def test_create_import_job_empty_call():
         type(client.transport.create_import_job), "__call__"
     ) as call:
         client.create_import_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateImportJobRequest()
+
+
+def test_create_import_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreateImportJobRequest(
+        parent="parent_value",
+        import_job_id="import_job_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_import_job), "__call__"
+    ) as call:
+        client.create_import_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateImportJobRequest(
+            parent="parent_value",
+            import_job_id="import_job_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_import_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_import_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_import_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreateImportJobRequest()
@@ -3200,7 +3674,8 @@ async def test_create_import_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateImportJobRequest()
+        request = migrationcenter.CreateImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3411,7 +3886,8 @@ def test_list_import_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListImportJobsRequest()
+        request = migrationcenter.ListImportJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListImportJobsPager)
@@ -3430,6 +3906,61 @@ def test_list_import_jobs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
         client.list_import_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListImportJobsRequest()
+
+
+def test_list_import_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListImportJobsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
+        client.list_import_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListImportJobsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_import_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListImportJobsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_import_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListImportJobsRequest()
@@ -3462,7 +3993,8 @@ async def test_list_import_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListImportJobsRequest()
+        request = migrationcenter.ListImportJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListImportJobsAsyncPager)
@@ -3839,7 +4371,8 @@ def test_get_import_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetImportJobRequest()
+        request = migrationcenter.GetImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ImportJob)
@@ -3863,6 +4396,57 @@ def test_get_import_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
         client.get_import_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetImportJobRequest()
+
+
+def test_get_import_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetImportJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
+        client.get_import_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetImportJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_import_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ImportJob(
+                name="name_value",
+                display_name="display_name_value",
+                state=migrationcenter.ImportJob.ImportJobState.IMPORT_JOB_STATE_PENDING,
+                asset_source="asset_source_value",
+            )
+        )
+        response = await client.get_import_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetImportJobRequest()
@@ -3897,7 +4481,8 @@ async def test_get_import_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetImportJobRequest()
+        request = migrationcenter.GetImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ImportJob)
@@ -4086,7 +4671,8 @@ def test_delete_import_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteImportJobRequest()
+        request = migrationcenter.DeleteImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4105,6 +4691,58 @@ def test_delete_import_job_empty_call():
         type(client.transport.delete_import_job), "__call__"
     ) as call:
         client.delete_import_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteImportJobRequest()
+
+
+def test_delete_import_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteImportJobRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_import_job), "__call__"
+    ) as call:
+        client.delete_import_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteImportJobRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_import_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_import_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_import_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteImportJobRequest()
@@ -4136,7 +4774,8 @@ async def test_delete_import_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteImportJobRequest()
+        request = migrationcenter.DeleteImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4326,7 +4965,8 @@ def test_update_import_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateImportJobRequest()
+        request = migrationcenter.UpdateImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4345,6 +4985,56 @@ def test_update_import_job_empty_call():
         type(client.transport.update_import_job), "__call__"
     ) as call:
         client.update_import_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateImportJobRequest()
+
+
+def test_update_import_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.UpdateImportJobRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_import_job), "__call__"
+    ) as call:
+        client.update_import_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateImportJobRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_import_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_import_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_import_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.UpdateImportJobRequest()
@@ -4376,7 +5066,8 @@ async def test_update_import_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateImportJobRequest()
+        request = migrationcenter.UpdateImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4576,7 +5267,8 @@ def test_validate_import_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ValidateImportJobRequest()
+        request = migrationcenter.ValidateImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4595,6 +5287,58 @@ def test_validate_import_job_empty_call():
         type(client.transport.validate_import_job), "__call__"
     ) as call:
         client.validate_import_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ValidateImportJobRequest()
+
+
+def test_validate_import_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ValidateImportJobRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_import_job), "__call__"
+    ) as call:
+        client.validate_import_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ValidateImportJobRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_validate_import_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.validate_import_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.validate_import_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ValidateImportJobRequest()
@@ -4627,7 +5371,8 @@ async def test_validate_import_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ValidateImportJobRequest()
+        request = migrationcenter.ValidateImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4815,7 +5560,8 @@ def test_run_import_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.RunImportJobRequest()
+        request = migrationcenter.RunImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4832,6 +5578,54 @@ def test_run_import_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_import_job), "__call__") as call:
         client.run_import_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.RunImportJobRequest()
+
+
+def test_run_import_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.RunImportJobRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_import_job), "__call__") as call:
+        client.run_import_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.RunImportJobRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_import_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_import_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.run_import_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.RunImportJobRequest()
@@ -4861,7 +5655,8 @@ async def test_run_import_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.RunImportJobRequest()
+        request = migrationcenter.RunImportJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5048,7 +5843,8 @@ def test_get_import_data_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetImportDataFileRequest()
+        request = migrationcenter.GetImportDataFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ImportDataFile)
@@ -5074,6 +5870,61 @@ def test_get_import_data_file_empty_call():
         type(client.transport.get_import_data_file), "__call__"
     ) as call:
         client.get_import_data_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetImportDataFileRequest()
+
+
+def test_get_import_data_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetImportDataFileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_import_data_file), "__call__"
+    ) as call:
+        client.get_import_data_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetImportDataFileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_import_data_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_import_data_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ImportDataFile(
+                name="name_value",
+                display_name="display_name_value",
+                format_=migrationcenter.ImportJobFormat.IMPORT_JOB_FORMAT_RVTOOLS_XLSX,
+                state=migrationcenter.ImportDataFile.State.CREATING,
+            )
+        )
+        response = await client.get_import_data_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetImportDataFileRequest()
@@ -5111,7 +5962,8 @@ async def test_get_import_data_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetImportDataFileRequest()
+        request = migrationcenter.GetImportDataFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ImportDataFile)
@@ -5311,7 +6163,8 @@ def test_list_import_data_files(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListImportDataFilesRequest()
+        request = migrationcenter.ListImportDataFilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListImportDataFilesPager)
@@ -5332,6 +6185,65 @@ def test_list_import_data_files_empty_call():
         type(client.transport.list_import_data_files), "__call__"
     ) as call:
         client.list_import_data_files()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListImportDataFilesRequest()
+
+
+def test_list_import_data_files_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListImportDataFilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_import_data_files), "__call__"
+    ) as call:
+        client.list_import_data_files(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListImportDataFilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_import_data_files_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_import_data_files), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListImportDataFilesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_import_data_files()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListImportDataFilesRequest()
@@ -5367,7 +6279,8 @@ async def test_list_import_data_files_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListImportDataFilesRequest()
+        request = migrationcenter.ListImportDataFilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListImportDataFilesAsyncPager)
@@ -5757,7 +6670,8 @@ def test_create_import_data_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateImportDataFileRequest()
+        request = migrationcenter.CreateImportDataFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5776,6 +6690,60 @@ def test_create_import_data_file_empty_call():
         type(client.transport.create_import_data_file), "__call__"
     ) as call:
         client.create_import_data_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateImportDataFileRequest()
+
+
+def test_create_import_data_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreateImportDataFileRequest(
+        parent="parent_value",
+        import_data_file_id="import_data_file_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_import_data_file), "__call__"
+    ) as call:
+        client.create_import_data_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateImportDataFileRequest(
+            parent="parent_value",
+            import_data_file_id="import_data_file_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_import_data_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_import_data_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_import_data_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreateImportDataFileRequest()
@@ -5808,7 +6776,8 @@ async def test_create_import_data_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateImportDataFileRequest()
+        request = migrationcenter.CreateImportDataFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6018,7 +6987,8 @@ def test_delete_import_data_file(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteImportDataFileRequest()
+        request = migrationcenter.DeleteImportDataFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6037,6 +7007,58 @@ def test_delete_import_data_file_empty_call():
         type(client.transport.delete_import_data_file), "__call__"
     ) as call:
         client.delete_import_data_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteImportDataFileRequest()
+
+
+def test_delete_import_data_file_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteImportDataFileRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_import_data_file), "__call__"
+    ) as call:
+        client.delete_import_data_file(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteImportDataFileRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_import_data_file_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_import_data_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_import_data_file()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteImportDataFileRequest()
@@ -6069,7 +7091,8 @@ async def test_delete_import_data_file_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteImportDataFileRequest()
+        request = migrationcenter.DeleteImportDataFileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6260,7 +7283,8 @@ def test_list_groups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListGroupsRequest()
+        request = migrationcenter.ListGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupsPager)
@@ -6279,6 +7303,61 @@ def test_list_groups_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         client.list_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListGroupsRequest()
+
+
+def test_list_groups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListGroupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
+        client.list_groups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListGroupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_groups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListGroupsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_groups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListGroupsRequest()
@@ -6311,7 +7390,8 @@ async def test_list_groups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListGroupsRequest()
+        request = migrationcenter.ListGroupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupsAsyncPager)
@@ -6687,7 +7767,8 @@ def test_get_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetGroupRequest()
+        request = migrationcenter.GetGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Group)
@@ -6707,6 +7788,56 @@ def test_get_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         client.get_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetGroupRequest()
+
+
+def test_get_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetGroupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
+        client.get_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetGroupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.Group(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetGroupRequest()
@@ -6740,7 +7871,8 @@ async def test_get_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetGroupRequest()
+        request = migrationcenter.GetGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Group)
@@ -6923,7 +8055,8 @@ def test_create_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateGroupRequest()
+        request = migrationcenter.CreateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6940,6 +8073,56 @@ def test_create_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         client.create_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateGroupRequest()
+
+
+def test_create_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreateGroupRequest(
+        parent="parent_value",
+        group_id="group_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
+        client.create_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateGroupRequest(
+            parent="parent_value",
+            group_id="group_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreateGroupRequest()
@@ -6969,7 +8152,8 @@ async def test_create_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateGroupRequest()
+        request = migrationcenter.CreateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7169,7 +8353,8 @@ def test_update_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateGroupRequest()
+        request = migrationcenter.UpdateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7186,6 +8371,52 @@ def test_update_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         client.update_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateGroupRequest()
+
+
+def test_update_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.UpdateGroupRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        client.update_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateGroupRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.UpdateGroupRequest()
@@ -7215,7 +8446,8 @@ async def test_update_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateGroupRequest()
+        request = migrationcenter.UpdateGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7405,7 +8637,8 @@ def test_delete_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteGroupRequest()
+        request = migrationcenter.DeleteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7422,6 +8655,54 @@ def test_delete_group_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         client.delete_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteGroupRequest()
+
+
+def test_delete_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteGroupRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
+        client.delete_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteGroupRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteGroupRequest()
@@ -7451,7 +8732,8 @@ async def test_delete_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteGroupRequest()
+        request = migrationcenter.DeleteGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7633,7 +8915,8 @@ def test_add_assets_to_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.AddAssetsToGroupRequest()
+        request = migrationcenter.AddAssetsToGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7652,6 +8935,58 @@ def test_add_assets_to_group_empty_call():
         type(client.transport.add_assets_to_group), "__call__"
     ) as call:
         client.add_assets_to_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.AddAssetsToGroupRequest()
+
+
+def test_add_assets_to_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.AddAssetsToGroupRequest(
+        group="group_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_assets_to_group), "__call__"
+    ) as call:
+        client.add_assets_to_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.AddAssetsToGroupRequest(
+            group="group_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_add_assets_to_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_assets_to_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.add_assets_to_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.AddAssetsToGroupRequest()
@@ -7684,7 +9019,8 @@ async def test_add_assets_to_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.AddAssetsToGroupRequest()
+        request = migrationcenter.AddAssetsToGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7874,7 +9210,8 @@ def test_remove_assets_from_group(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.RemoveAssetsFromGroupRequest()
+        request = migrationcenter.RemoveAssetsFromGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7893,6 +9230,58 @@ def test_remove_assets_from_group_empty_call():
         type(client.transport.remove_assets_from_group), "__call__"
     ) as call:
         client.remove_assets_from_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.RemoveAssetsFromGroupRequest()
+
+
+def test_remove_assets_from_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.RemoveAssetsFromGroupRequest(
+        group="group_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_assets_from_group), "__call__"
+    ) as call:
+        client.remove_assets_from_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.RemoveAssetsFromGroupRequest(
+            group="group_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_remove_assets_from_group_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_assets_from_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.remove_assets_from_group()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.RemoveAssetsFromGroupRequest()
@@ -7925,7 +9314,8 @@ async def test_remove_assets_from_group_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.RemoveAssetsFromGroupRequest()
+        request = migrationcenter.RemoveAssetsFromGroupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8118,7 +9508,8 @@ def test_list_error_frames(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListErrorFramesRequest()
+        request = migrationcenter.ListErrorFramesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListErrorFramesPager)
@@ -8139,6 +9530,61 @@ def test_list_error_frames_empty_call():
         type(client.transport.list_error_frames), "__call__"
     ) as call:
         client.list_error_frames()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListErrorFramesRequest()
+
+
+def test_list_error_frames_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListErrorFramesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_error_frames), "__call__"
+    ) as call:
+        client.list_error_frames(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListErrorFramesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_error_frames_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_error_frames), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListErrorFramesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_error_frames()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListErrorFramesRequest()
@@ -8173,7 +9619,8 @@ async def test_list_error_frames_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListErrorFramesRequest()
+        request = migrationcenter.ListErrorFramesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListErrorFramesAsyncPager)
@@ -8563,7 +10010,8 @@ def test_get_error_frame(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetErrorFrameRequest()
+        request = migrationcenter.GetErrorFrameRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ErrorFrame)
@@ -8581,6 +10029,54 @@ def test_get_error_frame_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_error_frame), "__call__") as call:
         client.get_error_frame()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetErrorFrameRequest()
+
+
+def test_get_error_frame_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetErrorFrameRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_error_frame), "__call__") as call:
+        client.get_error_frame(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetErrorFrameRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_error_frame_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_error_frame), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ErrorFrame(
+                name="name_value",
+            )
+        )
+        response = await client.get_error_frame()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetErrorFrameRequest()
@@ -8612,7 +10108,8 @@ async def test_get_error_frame_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetErrorFrameRequest()
+        request = migrationcenter.GetErrorFrameRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ErrorFrame)
@@ -8796,7 +10293,8 @@ def test_list_sources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListSourcesRequest()
+        request = migrationcenter.ListSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSourcesPager)
@@ -8815,6 +10313,61 @@ def test_list_sources_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
         client.list_sources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListSourcesRequest()
+
+
+def test_list_sources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListSourcesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
+        client.list_sources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListSourcesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListSourcesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_sources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListSourcesRequest()
@@ -8847,7 +10400,8 @@ async def test_list_sources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListSourcesRequest()
+        request = migrationcenter.ListSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSourcesAsyncPager)
@@ -9229,7 +10783,8 @@ def test_get_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetSourceRequest()
+        request = migrationcenter.GetSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Source)
@@ -9255,6 +10810,62 @@ def test_get_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
         client.get_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetSourceRequest()
+
+
+def test_get_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetSourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_source), "__call__") as call:
+        client.get_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetSourceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.Source(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                type_=migrationcenter.Source.SourceType.SOURCE_TYPE_UPLOAD,
+                priority=898,
+                managed=True,
+                pending_frame_count=2007,
+                error_frame_count=1820,
+                state=migrationcenter.Source.State.ACTIVE,
+            )
+        )
+        response = await client.get_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetSourceRequest()
@@ -9294,7 +10905,8 @@ async def test_get_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetSourceRequest()
+        request = migrationcenter.GetSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Source)
@@ -9483,7 +11095,8 @@ def test_create_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateSourceRequest()
+        request = migrationcenter.CreateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9500,6 +11113,56 @@ def test_create_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
         client.create_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateSourceRequest()
+
+
+def test_create_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreateSourceRequest(
+        parent="parent_value",
+        source_id="source_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_source), "__call__") as call:
+        client.create_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateSourceRequest(
+            parent="parent_value",
+            source_id="source_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreateSourceRequest()
@@ -9529,7 +11192,8 @@ async def test_create_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateSourceRequest()
+        request = migrationcenter.CreateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9729,7 +11393,8 @@ def test_update_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateSourceRequest()
+        request = migrationcenter.UpdateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9746,6 +11411,52 @@ def test_update_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
         client.update_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateSourceRequest()
+
+
+def test_update_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.UpdateSourceRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_source), "__call__") as call:
+        client.update_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateSourceRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.UpdateSourceRequest()
@@ -9775,7 +11486,8 @@ async def test_update_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateSourceRequest()
+        request = migrationcenter.UpdateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9965,7 +11677,8 @@ def test_delete_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteSourceRequest()
+        request = migrationcenter.DeleteSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9982,6 +11695,54 @@ def test_delete_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
         client.delete_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteSourceRequest()
+
+
+def test_delete_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteSourceRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
+        client.delete_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteSourceRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteSourceRequest()
@@ -10011,7 +11772,8 @@ async def test_delete_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteSourceRequest()
+        request = migrationcenter.DeleteSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10196,7 +11958,8 @@ def test_list_preference_sets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListPreferenceSetsRequest()
+        request = migrationcenter.ListPreferenceSetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPreferenceSetsPager)
@@ -10217,6 +11980,63 @@ def test_list_preference_sets_empty_call():
         type(client.transport.list_preference_sets), "__call__"
     ) as call:
         client.list_preference_sets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListPreferenceSetsRequest()
+
+
+def test_list_preference_sets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListPreferenceSetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_preference_sets), "__call__"
+    ) as call:
+        client.list_preference_sets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListPreferenceSetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_preference_sets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_preference_sets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListPreferenceSetsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_preference_sets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListPreferenceSetsRequest()
@@ -10252,7 +12072,8 @@ async def test_list_preference_sets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListPreferenceSetsRequest()
+        request = migrationcenter.ListPreferenceSetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPreferenceSetsAsyncPager)
@@ -10646,7 +12467,8 @@ def test_get_preference_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetPreferenceSetRequest()
+        request = migrationcenter.GetPreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.PreferenceSet)
@@ -10668,6 +12490,60 @@ def test_get_preference_set_empty_call():
         type(client.transport.get_preference_set), "__call__"
     ) as call:
         client.get_preference_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetPreferenceSetRequest()
+
+
+def test_get_preference_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetPreferenceSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_preference_set), "__call__"
+    ) as call:
+        client.get_preference_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetPreferenceSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_preference_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_preference_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.PreferenceSet(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_preference_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetPreferenceSetRequest()
@@ -10704,7 +12580,8 @@ async def test_get_preference_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetPreferenceSetRequest()
+        request = migrationcenter.GetPreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.PreferenceSet)
@@ -10897,7 +12774,8 @@ def test_create_preference_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreatePreferenceSetRequest()
+        request = migrationcenter.CreatePreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10916,6 +12794,60 @@ def test_create_preference_set_empty_call():
         type(client.transport.create_preference_set), "__call__"
     ) as call:
         client.create_preference_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreatePreferenceSetRequest()
+
+
+def test_create_preference_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreatePreferenceSetRequest(
+        parent="parent_value",
+        preference_set_id="preference_set_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_preference_set), "__call__"
+    ) as call:
+        client.create_preference_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreatePreferenceSetRequest(
+            parent="parent_value",
+            preference_set_id="preference_set_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_preference_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_preference_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_preference_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreatePreferenceSetRequest()
@@ -10948,7 +12880,8 @@ async def test_create_preference_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreatePreferenceSetRequest()
+        request = migrationcenter.CreatePreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11158,7 +13091,8 @@ def test_update_preference_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdatePreferenceSetRequest()
+        request = migrationcenter.UpdatePreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11177,6 +13111,56 @@ def test_update_preference_set_empty_call():
         type(client.transport.update_preference_set), "__call__"
     ) as call:
         client.update_preference_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdatePreferenceSetRequest()
+
+
+def test_update_preference_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.UpdatePreferenceSetRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_preference_set), "__call__"
+    ) as call:
+        client.update_preference_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdatePreferenceSetRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_preference_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_preference_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_preference_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.UpdatePreferenceSetRequest()
@@ -11209,7 +13193,8 @@ async def test_update_preference_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdatePreferenceSetRequest()
+        request = migrationcenter.UpdatePreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11409,7 +13394,8 @@ def test_delete_preference_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeletePreferenceSetRequest()
+        request = migrationcenter.DeletePreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11428,6 +13414,58 @@ def test_delete_preference_set_empty_call():
         type(client.transport.delete_preference_set), "__call__"
     ) as call:
         client.delete_preference_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeletePreferenceSetRequest()
+
+
+def test_delete_preference_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeletePreferenceSetRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_preference_set), "__call__"
+    ) as call:
+        client.delete_preference_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeletePreferenceSetRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_preference_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_preference_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_preference_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeletePreferenceSetRequest()
@@ -11460,7 +13498,8 @@ async def test_delete_preference_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeletePreferenceSetRequest()
+        request = migrationcenter.DeletePreferenceSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11651,7 +13690,8 @@ def test_get_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetSettingsRequest()
+        request = migrationcenter.GetSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Settings)
@@ -11670,6 +13710,55 @@ def test_get_settings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
         client.get_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetSettingsRequest()
+
+
+def test_get_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetSettingsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        client.get_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetSettingsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.Settings(
+                name="name_value",
+                preference_set="preference_set_value",
+            )
+        )
+        response = await client.get_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetSettingsRequest()
@@ -11702,7 +13791,8 @@ async def test_get_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetSettingsRequest()
+        request = migrationcenter.GetSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Settings)
@@ -11884,7 +13974,8 @@ def test_update_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateSettingsRequest()
+        request = migrationcenter.UpdateSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11901,6 +13992,52 @@ def test_update_settings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
         client.update_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateSettingsRequest()
+
+
+def test_update_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.UpdateSettingsRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        client.update_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.UpdateSettingsRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.UpdateSettingsRequest()
@@ -11930,7 +14067,8 @@ async def test_update_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.UpdateSettingsRequest()
+        request = migrationcenter.UpdateSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12122,7 +14260,8 @@ def test_create_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateReportConfigRequest()
+        request = migrationcenter.CreateReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12141,6 +14280,60 @@ def test_create_report_config_empty_call():
         type(client.transport.create_report_config), "__call__"
     ) as call:
         client.create_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateReportConfigRequest()
+
+
+def test_create_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreateReportConfigRequest(
+        parent="parent_value",
+        report_config_id="report_config_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_report_config), "__call__"
+    ) as call:
+        client.create_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateReportConfigRequest(
+            parent="parent_value",
+            report_config_id="report_config_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreateReportConfigRequest()
@@ -12173,7 +14366,8 @@ async def test_create_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateReportConfigRequest()
+        request = migrationcenter.CreateReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12387,7 +14581,8 @@ def test_get_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetReportConfigRequest()
+        request = migrationcenter.GetReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ReportConfig)
@@ -12409,6 +14604,60 @@ def test_get_report_config_empty_call():
         type(client.transport.get_report_config), "__call__"
     ) as call:
         client.get_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetReportConfigRequest()
+
+
+def test_get_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetReportConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_report_config), "__call__"
+    ) as call:
+        client.get_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetReportConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ReportConfig(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetReportConfigRequest()
@@ -12444,7 +14693,8 @@ async def test_get_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetReportConfigRequest()
+        request = migrationcenter.GetReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.ReportConfig)
@@ -12640,7 +14890,8 @@ def test_list_report_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListReportConfigsRequest()
+        request = migrationcenter.ListReportConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportConfigsPager)
@@ -12661,6 +14912,65 @@ def test_list_report_configs_empty_call():
         type(client.transport.list_report_configs), "__call__"
     ) as call:
         client.list_report_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListReportConfigsRequest()
+
+
+def test_list_report_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListReportConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_report_configs), "__call__"
+    ) as call:
+        client.list_report_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListReportConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_report_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_report_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListReportConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_report_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListReportConfigsRequest()
@@ -12696,7 +15006,8 @@ async def test_list_report_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListReportConfigsRequest()
+        request = migrationcenter.ListReportConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportConfigsAsyncPager)
@@ -13086,7 +15397,8 @@ def test_delete_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteReportConfigRequest()
+        request = migrationcenter.DeleteReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13105,6 +15417,58 @@ def test_delete_report_config_empty_call():
         type(client.transport.delete_report_config), "__call__"
     ) as call:
         client.delete_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteReportConfigRequest()
+
+
+def test_delete_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteReportConfigRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_report_config), "__call__"
+    ) as call:
+        client.delete_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteReportConfigRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteReportConfigRequest()
@@ -13137,7 +15501,8 @@ async def test_delete_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteReportConfigRequest()
+        request = migrationcenter.DeleteReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13325,7 +15690,8 @@ def test_create_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateReportRequest()
+        request = migrationcenter.CreateReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13342,6 +15708,56 @@ def test_create_report_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_report), "__call__") as call:
         client.create_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateReportRequest()
+
+
+def test_create_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.CreateReportRequest(
+        parent="parent_value",
+        report_id="report_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_report), "__call__") as call:
+        client.create_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.CreateReportRequest(
+            parent="parent_value",
+            report_id="report_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_report), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.CreateReportRequest()
@@ -13371,7 +15787,8 @@ async def test_create_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.CreateReportRequest()
+        request = migrationcenter.CreateReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13577,7 +15994,8 @@ def test_get_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetReportRequest()
+        request = migrationcenter.GetReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Report)
@@ -13599,6 +16017,58 @@ def test_get_report_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_report), "__call__") as call:
         client.get_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetReportRequest()
+
+
+def test_get_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.GetReportRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_report), "__call__") as call:
+        client.get_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.GetReportRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_report), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.Report(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                type_=migrationcenter.Report.Type.TOTAL_COST_OF_OWNERSHIP,
+                state=migrationcenter.Report.State.PENDING,
+            )
+        )
+        response = await client.get_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.GetReportRequest()
@@ -13634,7 +16104,8 @@ async def test_get_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.GetReportRequest()
+        request = migrationcenter.GetReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, migrationcenter.Report)
@@ -13822,7 +16293,8 @@ def test_list_reports(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListReportsRequest()
+        request = migrationcenter.ListReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportsPager)
@@ -13841,6 +16313,61 @@ def test_list_reports_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_reports), "__call__") as call:
         client.list_reports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListReportsRequest()
+
+
+def test_list_reports_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.ListReportsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_reports), "__call__") as call:
+        client.list_reports(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.ListReportsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_reports_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_reports), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migrationcenter.ListReportsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.ListReportsRequest()
@@ -13873,7 +16400,8 @@ async def test_list_reports_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.ListReportsRequest()
+        request = migrationcenter.ListReportsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportsAsyncPager)
@@ -14245,7 +16773,8 @@ def test_delete_report(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteReportRequest()
+        request = migrationcenter.DeleteReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14262,6 +16791,54 @@ def test_delete_report_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_report), "__call__") as call:
         client.delete_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteReportRequest()
+
+
+def test_delete_report_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MigrationCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = migrationcenter.DeleteReportRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_report), "__call__") as call:
+        client.delete_report(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == migrationcenter.DeleteReportRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_report_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MigrationCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_report), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == migrationcenter.DeleteReportRequest()
@@ -14291,7 +16868,8 @@ async def test_delete_report_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == migrationcenter.DeleteReportRequest()
+        request = migrationcenter.DeleteReportRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

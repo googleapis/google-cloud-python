@@ -1127,7 +1127,8 @@ def test_create_snooze(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.CreateSnoozeRequest()
+        request = snooze_service.CreateSnoozeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_snooze.Snooze)
@@ -1146,6 +1147,55 @@ def test_create_snooze_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snooze), "__call__") as call:
         client.create_snooze()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.CreateSnoozeRequest()
+
+
+def test_create_snooze_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SnoozeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snooze_service.CreateSnoozeRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snooze), "__call__") as call:
+        client.create_snooze(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.CreateSnoozeRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_snooze_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SnoozeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_snooze), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_snooze.Snooze(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_snooze()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snooze_service.CreateSnoozeRequest()
@@ -1178,7 +1228,8 @@ async def test_create_snooze_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.CreateSnoozeRequest()
+        request = snooze_service.CreateSnoozeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_snooze.Snooze)
@@ -1368,7 +1419,8 @@ def test_list_snoozes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.ListSnoozesRequest()
+        request = snooze_service.ListSnoozesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSnoozesPager)
@@ -1386,6 +1438,58 @@ def test_list_snoozes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snoozes), "__call__") as call:
         client.list_snoozes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.ListSnoozesRequest()
+
+
+def test_list_snoozes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SnoozeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snooze_service.ListSnoozesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snoozes), "__call__") as call:
+        client.list_snoozes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.ListSnoozesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_snoozes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SnoozeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snoozes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            snooze_service.ListSnoozesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_snoozes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snooze_service.ListSnoozesRequest()
@@ -1417,7 +1521,8 @@ async def test_list_snoozes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.ListSnoozesRequest()
+        request = snooze_service.ListSnoozesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSnoozesAsyncPager)
@@ -1791,7 +1896,8 @@ def test_get_snooze(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.GetSnoozeRequest()
+        request = snooze_service.GetSnoozeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, snooze.Snooze)
@@ -1810,6 +1916,55 @@ def test_get_snooze_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snooze), "__call__") as call:
         client.get_snooze()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.GetSnoozeRequest()
+
+
+def test_get_snooze_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SnoozeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snooze_service.GetSnoozeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snooze), "__call__") as call:
+        client.get_snooze(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.GetSnoozeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_snooze_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SnoozeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snooze), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            snooze.Snooze(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_snooze()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snooze_service.GetSnoozeRequest()
@@ -1842,7 +1997,8 @@ async def test_get_snooze_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.GetSnoozeRequest()
+        request = snooze_service.GetSnoozeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, snooze.Snooze)
@@ -2023,7 +2179,8 @@ def test_update_snooze(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.UpdateSnoozeRequest()
+        request = snooze_service.UpdateSnoozeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_snooze.Snooze)
@@ -2042,6 +2199,51 @@ def test_update_snooze_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snooze), "__call__") as call:
         client.update_snooze()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.UpdateSnoozeRequest()
+
+
+def test_update_snooze_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SnoozeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = snooze_service.UpdateSnoozeRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snooze), "__call__") as call:
+        client.update_snooze(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == snooze_service.UpdateSnoozeRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_snooze_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SnoozeServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_snooze), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_snooze.Snooze(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_snooze()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == snooze_service.UpdateSnoozeRequest()
@@ -2074,7 +2276,8 @@ async def test_update_snooze_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snooze_service.UpdateSnoozeRequest()
+        request = snooze_service.UpdateSnoozeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_snooze.Snooze)

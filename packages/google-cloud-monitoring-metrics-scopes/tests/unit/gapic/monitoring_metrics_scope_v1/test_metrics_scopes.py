@@ -1135,7 +1135,8 @@ def test_get_metrics_scope(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.GetMetricsScopeRequest()
+        request = metrics_scopes.GetMetricsScopeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metrics_scope.MetricsScope)
@@ -1155,6 +1156,58 @@ def test_get_metrics_scope_empty_call():
         type(client.transport.get_metrics_scope), "__call__"
     ) as call:
         client.get_metrics_scope()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.GetMetricsScopeRequest()
+
+
+def test_get_metrics_scope_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsScopesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metrics_scopes.GetMetricsScopeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_metrics_scope), "__call__"
+    ) as call:
+        client.get_metrics_scope(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.GetMetricsScopeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_metrics_scope_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsScopesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_metrics_scope), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metrics_scope.MetricsScope(
+                name="name_value",
+            )
+        )
+        response = await client.get_metrics_scope()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metrics_scopes.GetMetricsScopeRequest()
@@ -1188,7 +1241,8 @@ async def test_get_metrics_scope_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.GetMetricsScopeRequest()
+        request = metrics_scopes.GetMetricsScopeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metrics_scope.MetricsScope)
@@ -1381,7 +1435,8 @@ def test_list_metrics_scopes_by_monitored_project(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.ListMetricsScopesByMonitoredProjectRequest()
+        request = metrics_scopes.ListMetricsScopesByMonitoredProjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1402,6 +1457,56 @@ def test_list_metrics_scopes_by_monitored_project_empty_call():
         type(client.transport.list_metrics_scopes_by_monitored_project), "__call__"
     ) as call:
         client.list_metrics_scopes_by_monitored_project()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.ListMetricsScopesByMonitoredProjectRequest()
+
+
+def test_list_metrics_scopes_by_monitored_project_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsScopesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metrics_scopes.ListMetricsScopesByMonitoredProjectRequest(
+        monitored_resource_container="monitored_resource_container_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_metrics_scopes_by_monitored_project), "__call__"
+    ) as call:
+        client.list_metrics_scopes_by_monitored_project(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.ListMetricsScopesByMonitoredProjectRequest(
+            monitored_resource_container="monitored_resource_container_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_metrics_scopes_by_monitored_project_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsScopesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_metrics_scopes_by_monitored_project), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metrics_scopes.ListMetricsScopesByMonitoredProjectResponse()
+        )
+        response = await client.list_metrics_scopes_by_monitored_project()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metrics_scopes.ListMetricsScopesByMonitoredProjectRequest()
@@ -1434,7 +1539,8 @@ async def test_list_metrics_scopes_by_monitored_project_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.ListMetricsScopesByMonitoredProjectRequest()
+        request = metrics_scopes.ListMetricsScopesByMonitoredProjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -1475,7 +1581,8 @@ def test_create_monitored_project(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.CreateMonitoredProjectRequest()
+        request = metrics_scopes.CreateMonitoredProjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1494,6 +1601,56 @@ def test_create_monitored_project_empty_call():
         type(client.transport.create_monitored_project), "__call__"
     ) as call:
         client.create_monitored_project()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.CreateMonitoredProjectRequest()
+
+
+def test_create_monitored_project_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsScopesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metrics_scopes.CreateMonitoredProjectRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_monitored_project), "__call__"
+    ) as call:
+        client.create_monitored_project(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.CreateMonitoredProjectRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_monitored_project_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsScopesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_monitored_project), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_monitored_project()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metrics_scopes.CreateMonitoredProjectRequest()
@@ -1526,7 +1683,8 @@ async def test_create_monitored_project_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.CreateMonitoredProjectRequest()
+        request = metrics_scopes.CreateMonitoredProjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1726,7 +1884,8 @@ def test_delete_monitored_project(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.DeleteMonitoredProjectRequest()
+        request = metrics_scopes.DeleteMonitoredProjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1745,6 +1904,56 @@ def test_delete_monitored_project_empty_call():
         type(client.transport.delete_monitored_project), "__call__"
     ) as call:
         client.delete_monitored_project()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.DeleteMonitoredProjectRequest()
+
+
+def test_delete_monitored_project_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MetricsScopesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = metrics_scopes.DeleteMonitoredProjectRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_monitored_project), "__call__"
+    ) as call:
+        client.delete_monitored_project(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metrics_scopes.DeleteMonitoredProjectRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_monitored_project_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricsScopesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_monitored_project), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_monitored_project()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == metrics_scopes.DeleteMonitoredProjectRequest()
@@ -1777,7 +1986,8 @@ async def test_delete_monitored_project_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metrics_scopes.DeleteMonitoredProjectRequest()
+        request = metrics_scopes.DeleteMonitoredProjectRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
