@@ -1084,7 +1084,8 @@ def test_search_nearby(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.SearchNearbyRequest()
+        request = places_service.SearchNearbyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.SearchNearbyResponse)
@@ -1101,6 +1102,54 @@ def test_search_nearby_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
         client.search_nearby()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchNearbyRequest()
+
+
+def test_search_nearby_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = places_service.SearchNearbyRequest(
+        language_code="language_code_value",
+        region_code="region_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
+        client.search_nearby(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchNearbyRequest(
+            language_code="language_code_value",
+            region_code="region_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_nearby_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.SearchNearbyResponse()
+        )
+        response = await client.search_nearby()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == places_service.SearchNearbyRequest()
@@ -1130,7 +1179,8 @@ async def test_search_nearby_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.SearchNearbyRequest()
+        request = places_service.SearchNearbyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.SearchNearbyResponse)
@@ -1167,7 +1217,8 @@ def test_search_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.SearchTextRequest()
+        request = places_service.SearchTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.SearchTextResponse)
@@ -1184,6 +1235,58 @@ def test_search_text_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_text), "__call__") as call:
         client.search_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchTextRequest()
+
+
+def test_search_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = places_service.SearchTextRequest(
+        text_query="text_query_value",
+        language_code="language_code_value",
+        region_code="region_code_value",
+        included_type="included_type_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_text), "__call__") as call:
+        client.search_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchTextRequest(
+            text_query="text_query_value",
+            language_code="language_code_value",
+            region_code="region_code_value",
+            included_type="included_type_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.SearchTextResponse()
+        )
+        response = await client.search_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == places_service.SearchTextRequest()
@@ -1213,7 +1316,8 @@ async def test_search_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.SearchTextRequest()
+        request = places_service.SearchTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.SearchTextResponse)
@@ -1253,7 +1357,8 @@ def test_get_photo_media(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.GetPhotoMediaRequest()
+        request = places_service.GetPhotoMediaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.PhotoMedia)
@@ -1272,6 +1377,55 @@ def test_get_photo_media_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
         client.get_photo_media()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPhotoMediaRequest()
+
+
+def test_get_photo_media_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = places_service.GetPhotoMediaRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        client.get_photo_media(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPhotoMediaRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_photo_media_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.PhotoMedia(
+                name="name_value",
+                photo_uri="photo_uri_value",
+            )
+        )
+        response = await client.get_photo_media()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == places_service.GetPhotoMediaRequest()
@@ -1304,7 +1458,8 @@ async def test_get_photo_media_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.GetPhotoMediaRequest()
+        request = places_service.GetPhotoMediaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.PhotoMedia)
@@ -1528,7 +1683,8 @@ def test_get_place(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.GetPlaceRequest()
+        request = places_service.GetPlaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, place.Place)
@@ -1586,6 +1742,100 @@ def test_get_place_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_place), "__call__") as call:
         client.get_place()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPlaceRequest()
+
+
+def test_get_place_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = places_service.GetPlaceRequest(
+        name="name_value",
+        language_code="language_code_value",
+        region_code="region_code_value",
+        session_token="session_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        client.get_place(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPlaceRequest(
+            name="name_value",
+            language_code="language_code_value",
+            region_code="region_code_value",
+            session_token="session_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_place_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            place.Place(
+                name="name_value",
+                id="id_value",
+                types=["types_value"],
+                primary_type="primary_type_value",
+                national_phone_number="national_phone_number_value",
+                international_phone_number="international_phone_number_value",
+                formatted_address="formatted_address_value",
+                short_formatted_address="short_formatted_address_value",
+                rating=0.645,
+                google_maps_uri="google_maps_uri_value",
+                website_uri="website_uri_value",
+                utc_offset_minutes=1942,
+                adr_format_address="adr_format_address_value",
+                business_status=place.Place.BusinessStatus.OPERATIONAL,
+                price_level=place.PriceLevel.PRICE_LEVEL_FREE,
+                user_rating_count=1835,
+                icon_mask_base_uri="icon_mask_base_uri_value",
+                icon_background_color="icon_background_color_value",
+                takeout=True,
+                delivery=True,
+                dine_in=True,
+                curbside_pickup=True,
+                reservable=True,
+                serves_breakfast=True,
+                serves_lunch=True,
+                serves_dinner=True,
+                serves_beer=True,
+                serves_wine=True,
+                serves_brunch=True,
+                serves_vegetarian_food=True,
+                outdoor_seating=True,
+                live_music=True,
+                menu_for_children=True,
+                serves_cocktails=True,
+                serves_dessert=True,
+                serves_coffee=True,
+                good_for_children=True,
+                allows_dogs=True,
+                restroom=True,
+                good_for_groups=True,
+                good_for_watching_sports=True,
+            )
+        )
+        response = await client.get_place()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == places_service.GetPlaceRequest()
@@ -1657,7 +1907,8 @@ async def test_get_place_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.GetPlaceRequest()
+        request = places_service.GetPlaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, place.Place)
@@ -1876,7 +2127,8 @@ def test_autocomplete_places(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.AutocompletePlacesRequest()
+        request = places_service.AutocompletePlacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.AutocompletePlacesResponse)
@@ -1895,6 +2147,62 @@ def test_autocomplete_places_empty_call():
         type(client.transport.autocomplete_places), "__call__"
     ) as call:
         client.autocomplete_places()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.AutocompletePlacesRequest()
+
+
+def test_autocomplete_places_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = places_service.AutocompletePlacesRequest(
+        input="input_value",
+        language_code="language_code_value",
+        region_code="region_code_value",
+        session_token="session_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.autocomplete_places), "__call__"
+    ) as call:
+        client.autocomplete_places(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.AutocompletePlacesRequest(
+            input="input_value",
+            language_code="language_code_value",
+            region_code="region_code_value",
+            session_token="session_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_autocomplete_places_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.autocomplete_places), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.AutocompletePlacesResponse()
+        )
+        response = await client.autocomplete_places()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == places_service.AutocompletePlacesRequest()
@@ -1927,7 +2235,8 @@ async def test_autocomplete_places_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.AutocompletePlacesRequest()
+        request = places_service.AutocompletePlacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.AutocompletePlacesResponse)

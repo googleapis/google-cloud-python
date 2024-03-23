@@ -1190,7 +1190,8 @@ def test_get_css_product(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_products.GetCssProductRequest()
+        request = css_products.GetCssProductRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, css_products.CssProduct)
@@ -1211,6 +1212,57 @@ def test_get_css_product_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_css_product), "__call__") as call:
         client.get_css_product()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_products.GetCssProductRequest()
+
+
+def test_get_css_product_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CssProductsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = css_products.GetCssProductRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_css_product), "__call__") as call:
+        client.get_css_product(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_products.GetCssProductRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_css_product_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CssProductsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_css_product), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            css_products.CssProduct(
+                name="name_value",
+                raw_provided_id="raw_provided_id_value",
+                content_language="content_language_value",
+                feed_label="feed_label_value",
+            )
+        )
+        response = await client.get_css_product()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == css_products.GetCssProductRequest()
@@ -1245,7 +1297,8 @@ async def test_get_css_product_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_products.GetCssProductRequest()
+        request = css_products.GetCssProductRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, css_products.CssProduct)
@@ -1433,7 +1486,8 @@ def test_list_css_products(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_products.ListCssProductsRequest()
+        request = css_products.ListCssProductsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCssProductsPager)
@@ -1453,6 +1507,60 @@ def test_list_css_products_empty_call():
         type(client.transport.list_css_products), "__call__"
     ) as call:
         client.list_css_products()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_products.ListCssProductsRequest()
+
+
+def test_list_css_products_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CssProductsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = css_products.ListCssProductsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_css_products), "__call__"
+    ) as call:
+        client.list_css_products(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_products.ListCssProductsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_css_products_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CssProductsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_css_products), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            css_products.ListCssProductsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_css_products()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == css_products.ListCssProductsRequest()
@@ -1486,7 +1594,8 @@ async def test_list_css_products_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_products.ListCssProductsRequest()
+        request = css_products.ListCssProductsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCssProductsAsyncPager)

@@ -1140,7 +1140,8 @@ def test_create_vehicle(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.CreateVehicleRequest()
+        request = vehicle_api.CreateVehicleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicles.Vehicle)
@@ -1165,6 +1166,63 @@ def test_create_vehicle_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
         client.create_vehicle()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.CreateVehicleRequest()
+
+
+def test_create_vehicle_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.CreateVehicleRequest(
+        parent="parent_value",
+        vehicle_id="vehicle_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
+        client.create_vehicle(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.CreateVehicleRequest(
+            parent="parent_value",
+            vehicle_id="vehicle_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_vehicle_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicles.Vehicle(
+                name="name_value",
+                vehicle_state=vehicles.VehicleState.OFFLINE,
+                supported_trip_types=[fleetengine.TripType.SHARED],
+                current_trips=["current_trips_value"],
+                maximum_capacity=1707,
+                current_route_segment="current_route_segment_value",
+                back_to_back_enabled=True,
+                navigation_status=fleetengine.NavigationStatus.NO_GUIDANCE,
+            )
+        )
+        response = await client.create_vehicle()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.CreateVehicleRequest()
@@ -1203,7 +1261,8 @@ async def test_create_vehicle_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.CreateVehicleRequest()
+        request = vehicle_api.CreateVehicleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicles.Vehicle)
@@ -1281,7 +1340,8 @@ def test_get_vehicle(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.GetVehicleRequest()
+        request = vehicle_api.GetVehicleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicles.Vehicle)
@@ -1306,6 +1366,61 @@ def test_get_vehicle_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
         client.get_vehicle()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.GetVehicleRequest()
+
+
+def test_get_vehicle_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.GetVehicleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
+        client.get_vehicle(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.GetVehicleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vehicle_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicles.Vehicle(
+                name="name_value",
+                vehicle_state=vehicles.VehicleState.OFFLINE,
+                supported_trip_types=[fleetengine.TripType.SHARED],
+                current_trips=["current_trips_value"],
+                maximum_capacity=1707,
+                current_route_segment="current_route_segment_value",
+                back_to_back_enabled=True,
+                navigation_status=fleetengine.NavigationStatus.NO_GUIDANCE,
+            )
+        )
+        response = await client.get_vehicle()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.GetVehicleRequest()
@@ -1344,7 +1459,8 @@ async def test_get_vehicle_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.GetVehicleRequest()
+        request = vehicle_api.GetVehicleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicles.Vehicle)
@@ -1422,7 +1538,8 @@ def test_update_vehicle(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleRequest()
+        request = vehicle_api.UpdateVehicleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicles.Vehicle)
@@ -1447,6 +1564,61 @@ def test_update_vehicle_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
         client.update_vehicle()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.UpdateVehicleRequest()
+
+
+def test_update_vehicle_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.UpdateVehicleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
+        client.update_vehicle(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.UpdateVehicleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_vehicle_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicles.Vehicle(
+                name="name_value",
+                vehicle_state=vehicles.VehicleState.OFFLINE,
+                supported_trip_types=[fleetengine.TripType.SHARED],
+                current_trips=["current_trips_value"],
+                maximum_capacity=1707,
+                current_route_segment="current_route_segment_value",
+                back_to_back_enabled=True,
+                navigation_status=fleetengine.NavigationStatus.NO_GUIDANCE,
+            )
+        )
+        response = await client.update_vehicle()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleRequest()
@@ -1485,7 +1657,8 @@ async def test_update_vehicle_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleRequest()
+        request = vehicle_api.UpdateVehicleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicles.Vehicle)
@@ -1561,7 +1734,8 @@ def test_update_vehicle_location(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleLocationRequest()
+        request = vehicle_api.UpdateVehicleLocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, fleetengine.VehicleLocation)
@@ -1584,6 +1758,61 @@ def test_update_vehicle_location_empty_call():
         type(client.transport.update_vehicle_location), "__call__"
     ) as call:
         client.update_vehicle_location()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.UpdateVehicleLocationRequest()
+
+
+def test_update_vehicle_location_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.UpdateVehicleLocationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vehicle_location), "__call__"
+    ) as call:
+        client.update_vehicle_location(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.UpdateVehicleLocationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_vehicle_location_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vehicle_location), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            fleetengine.VehicleLocation(
+                location_sensor=fleetengine.LocationSensor.GPS,
+                raw_location_sensor=fleetengine.LocationSensor.GPS,
+                supplemental_location_sensor=fleetengine.LocationSensor.GPS,
+                road_snapped=True,
+            )
+        )
+        response = await client.update_vehicle_location()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleLocationRequest()
@@ -1621,7 +1850,8 @@ async def test_update_vehicle_location_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleLocationRequest()
+        request = vehicle_api.UpdateVehicleLocationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, fleetengine.VehicleLocation)
@@ -1690,7 +1920,8 @@ def test_update_vehicle_attributes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleAttributesRequest()
+        request = vehicle_api.UpdateVehicleAttributesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.UpdateVehicleAttributesResponse)
@@ -1709,6 +1940,56 @@ def test_update_vehicle_attributes_empty_call():
         type(client.transport.update_vehicle_attributes), "__call__"
     ) as call:
         client.update_vehicle_attributes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.UpdateVehicleAttributesRequest()
+
+
+def test_update_vehicle_attributes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.UpdateVehicleAttributesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vehicle_attributes), "__call__"
+    ) as call:
+        client.update_vehicle_attributes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.UpdateVehicleAttributesRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_vehicle_attributes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vehicle_attributes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicle_api.UpdateVehicleAttributesResponse()
+        )
+        response = await client.update_vehicle_attributes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.UpdateVehicleAttributesRequest()
@@ -1741,7 +2022,8 @@ async def test_update_vehicle_attributes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleAttributesRequest()
+        request = vehicle_api.UpdateVehicleAttributesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.UpdateVehicleAttributesResponse)
@@ -1809,7 +2091,8 @@ def test_list_vehicles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.ListVehiclesRequest()
+        request = vehicle_api.ListVehiclesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVehiclesPager)
@@ -1828,6 +2111,59 @@ def test_list_vehicles_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
         client.list_vehicles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.ListVehiclesRequest()
+
+
+def test_list_vehicles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.ListVehiclesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
+        client.list_vehicles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.ListVehiclesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_vehicles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicle_api.ListVehiclesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_vehicles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.ListVehiclesRequest()
@@ -1860,7 +2196,8 @@ async def test_list_vehicles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.ListVehiclesRequest()
+        request = vehicle_api.ListVehiclesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVehiclesAsyncPager)
@@ -2110,7 +2447,8 @@ def test_search_vehicles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest()
+        request = vehicle_api.SearchVehiclesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.SearchVehiclesResponse)
@@ -2127,6 +2465,56 @@ def test_search_vehicles_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
         client.search_vehicles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.SearchVehiclesRequest()
+
+
+def test_search_vehicles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.SearchVehiclesRequest(
+        parent="parent_value",
+        trip_id="trip_id_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
+        client.search_vehicles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.SearchVehiclesRequest(
+            parent="parent_value",
+            trip_id="trip_id_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_vehicles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicle_api.SearchVehiclesResponse()
+        )
+        response = await client.search_vehicles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.SearchVehiclesRequest()
@@ -2156,7 +2544,8 @@ async def test_search_vehicles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest()
+        request = vehicle_api.SearchVehiclesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.SearchVehiclesResponse)
@@ -2219,7 +2608,8 @@ def test_search_fuzzed_vehicles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest()
+        request = vehicle_api.SearchVehiclesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.SearchVehiclesResponse)
@@ -2238,6 +2628,60 @@ def test_search_fuzzed_vehicles_empty_call():
         type(client.transport.search_fuzzed_vehicles), "__call__"
     ) as call:
         client.search_fuzzed_vehicles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.SearchVehiclesRequest()
+
+
+def test_search_fuzzed_vehicles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VehicleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vehicle_api.SearchVehiclesRequest(
+        parent="parent_value",
+        trip_id="trip_id_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_fuzzed_vehicles), "__call__"
+    ) as call:
+        client.search_fuzzed_vehicles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vehicle_api.SearchVehiclesRequest(
+            parent="parent_value",
+            trip_id="trip_id_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_fuzzed_vehicles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VehicleServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_fuzzed_vehicles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vehicle_api.SearchVehiclesResponse()
+        )
+        response = await client.search_fuzzed_vehicles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vehicle_api.SearchVehiclesRequest()
@@ -2269,7 +2713,8 @@ async def test_search_fuzzed_vehicles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest()
+        request = vehicle_api.SearchVehiclesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.SearchVehiclesResponse)
