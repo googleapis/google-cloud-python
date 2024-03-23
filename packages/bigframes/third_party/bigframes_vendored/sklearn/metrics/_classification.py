@@ -128,6 +128,22 @@ def recall_score(
 
     The best value is 1 and the worst value is 0.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])
+        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
+        >>> recall_score = bigframes.ml.metrics.recall_score(y_true, y_pred, average=None)
+        >>> recall_score
+        0    1
+        1    0
+        2    0
+        dtype: int64
+
+
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):
             Ground truth (correct) target values.
@@ -137,6 +153,7 @@ def recall_score(
                 default='binary'):
             This parameter is required for multiclass/multilabel targets.
             Possible values are 'None', 'micro', 'macro', 'samples', 'weighted', 'binary'.
+            Only average=None is supported.
 
     Returns:
         float (if average is not None) or Series of float of shape n_unique_labels,): Recall
@@ -160,6 +177,21 @@ def precision_score(
 
     The best value is 1 and the worst value is 0.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])
+        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
+        >>> precision_score = bigframes.ml.metrics.precision_score(y_true, y_pred, average=None)
+        >>> precision_score
+        0    0.666667
+        1    0.000000
+        2    0.000000
+        dtype: float64
+
     Args:
         y_true: Series or DataFrame of shape (n_samples,)
             Ground truth (correct) target values.
@@ -169,6 +201,7 @@ def precision_score(
                 default='binary'
             This parameter is required for multiclass/multilabel targets.
             Possible values are 'None', 'micro', 'macro', 'samples', 'weighted', 'binary'.
+            Only average=None is supported.
 
     Returns:
         precision: float (if average is not None) or Series of float of shape \
@@ -194,6 +227,21 @@ def f1_score(
     In the multi-class and multi-label case, this is the average of
     the F1 score of each class with weighting depending on the ``average``
     parameter.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])
+        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
+        >>> f1_score = bigframes.ml.metrics.f1_score(y_true, y_pred, average=None)
+        >>> f1_score
+        0    0.8
+        1    0.0
+        2    0.0
+        dtype: float64
 
     Args:
         y_true: Series or DataFrame of shape (n_samples,)
