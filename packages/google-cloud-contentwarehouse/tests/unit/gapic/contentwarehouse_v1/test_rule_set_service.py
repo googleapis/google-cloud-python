@@ -1153,7 +1153,8 @@ def test_create_rule_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.CreateRuleSetRequest()
+        request = ruleset_service_request.CreateRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, rule_engine.RuleSet)
@@ -1173,6 +1174,56 @@ def test_create_rule_set_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rule_set), "__call__") as call:
         client.create_rule_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.CreateRuleSetRequest()
+
+
+def test_create_rule_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RuleSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ruleset_service_request.CreateRuleSetRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_rule_set), "__call__") as call:
+        client.create_rule_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.CreateRuleSetRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_rule_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RuleSetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_rule_set), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            rule_engine.RuleSet(
+                name="name_value",
+                description="description_value",
+                source="source_value",
+            )
+        )
+        response = await client.create_rule_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ruleset_service_request.CreateRuleSetRequest()
@@ -1207,7 +1258,8 @@ async def test_create_rule_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.CreateRuleSetRequest()
+        request = ruleset_service_request.CreateRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, rule_engine.RuleSet)
@@ -1400,7 +1452,8 @@ def test_get_rule_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.GetRuleSetRequest()
+        request = ruleset_service_request.GetRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, rule_engine.RuleSet)
@@ -1420,6 +1473,56 @@ def test_get_rule_set_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rule_set), "__call__") as call:
         client.get_rule_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.GetRuleSetRequest()
+
+
+def test_get_rule_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RuleSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ruleset_service_request.GetRuleSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rule_set), "__call__") as call:
+        client.get_rule_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.GetRuleSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_rule_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RuleSetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rule_set), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            rule_engine.RuleSet(
+                name="name_value",
+                description="description_value",
+                source="source_value",
+            )
+        )
+        response = await client.get_rule_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ruleset_service_request.GetRuleSetRequest()
@@ -1454,7 +1557,8 @@ async def test_get_rule_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.GetRuleSetRequest()
+        request = ruleset_service_request.GetRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, rule_engine.RuleSet)
@@ -1637,7 +1741,8 @@ def test_update_rule_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.UpdateRuleSetRequest()
+        request = ruleset_service_request.UpdateRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, rule_engine.RuleSet)
@@ -1657,6 +1762,56 @@ def test_update_rule_set_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_rule_set), "__call__") as call:
         client.update_rule_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.UpdateRuleSetRequest()
+
+
+def test_update_rule_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RuleSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ruleset_service_request.UpdateRuleSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_rule_set), "__call__") as call:
+        client.update_rule_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.UpdateRuleSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_rule_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RuleSetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_rule_set), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            rule_engine.RuleSet(
+                name="name_value",
+                description="description_value",
+                source="source_value",
+            )
+        )
+        response = await client.update_rule_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ruleset_service_request.UpdateRuleSetRequest()
@@ -1691,7 +1846,8 @@ async def test_update_rule_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.UpdateRuleSetRequest()
+        request = ruleset_service_request.UpdateRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, rule_engine.RuleSet)
@@ -1880,7 +2036,8 @@ def test_delete_rule_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.DeleteRuleSetRequest()
+        request = ruleset_service_request.DeleteRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1897,6 +2054,50 @@ def test_delete_rule_set_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_rule_set), "__call__") as call:
         client.delete_rule_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.DeleteRuleSetRequest()
+
+
+def test_delete_rule_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RuleSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ruleset_service_request.DeleteRuleSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_rule_set), "__call__") as call:
+        client.delete_rule_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.DeleteRuleSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_rule_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RuleSetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_rule_set), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_rule_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ruleset_service_request.DeleteRuleSetRequest()
@@ -1925,7 +2126,8 @@ async def test_delete_rule_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.DeleteRuleSetRequest()
+        request = ruleset_service_request.DeleteRuleSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2103,7 +2305,8 @@ def test_list_rule_sets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.ListRuleSetsRequest()
+        request = ruleset_service_request.ListRuleSetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuleSetsPager)
@@ -2121,6 +2324,56 @@ def test_list_rule_sets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rule_sets), "__call__") as call:
         client.list_rule_sets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.ListRuleSetsRequest()
+
+
+def test_list_rule_sets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RuleSetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = ruleset_service_request.ListRuleSetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_rule_sets), "__call__") as call:
+        client.list_rule_sets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ruleset_service_request.ListRuleSetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_rule_sets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RuleSetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_rule_sets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ruleset_service_request.ListRuleSetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_rule_sets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == ruleset_service_request.ListRuleSetsRequest()
@@ -2153,7 +2406,8 @@ async def test_list_rule_sets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.ListRuleSetsRequest()
+        request = ruleset_service_request.ListRuleSetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuleSetsAsyncPager)

@@ -1181,7 +1181,8 @@ def test_create_data_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest()
+        request = gcd_data_taxonomy.CreateDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1200,6 +1201,58 @@ def test_create_data_taxonomy_empty_call():
         type(client.transport.create_data_taxonomy), "__call__"
     ) as call:
         client.create_data_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest()
+
+
+def test_create_data_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_data_taxonomy.CreateDataTaxonomyRequest(
+        parent="parent_value",
+        data_taxonomy_id="data_taxonomy_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_taxonomy), "__call__"
+    ) as call:
+        client.create_data_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest(
+            parent="parent_value",
+            data_taxonomy_id="data_taxonomy_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_data_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_data_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest()
@@ -1232,7 +1285,8 @@ async def test_create_data_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest()
+        request = gcd_data_taxonomy.CreateDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1442,7 +1496,8 @@ def test_update_data_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+        request = gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1461,6 +1516,52 @@ def test_update_data_taxonomy_empty_call():
         type(client.transport.update_data_taxonomy), "__call__"
     ) as call:
         client.update_data_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+
+
+def test_update_data_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_taxonomy), "__call__"
+    ) as call:
+        client.update_data_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_data_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_data_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
@@ -1493,7 +1594,8 @@ async def test_update_data_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+        request = gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1693,7 +1795,8 @@ def test_delete_data_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest()
+        request = data_taxonomy.DeleteDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1712,6 +1815,58 @@ def test_delete_data_taxonomy_empty_call():
         type(client.transport.delete_data_taxonomy), "__call__"
     ) as call:
         client.delete_data_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest()
+
+
+def test_delete_data_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.DeleteDataTaxonomyRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_taxonomy), "__call__"
+    ) as call:
+        client.delete_data_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_data_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_data_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest()
@@ -1744,7 +1899,8 @@ async def test_delete_data_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest()
+        request = data_taxonomy.DeleteDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1937,7 +2093,8 @@ def test_list_data_taxonomies(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataTaxonomiesRequest()
+        request = data_taxonomy.ListDataTaxonomiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataTaxonomiesPager)
@@ -1958,6 +2115,65 @@ def test_list_data_taxonomies_empty_call():
         type(client.transport.list_data_taxonomies), "__call__"
     ) as call:
         client.list_data_taxonomies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.ListDataTaxonomiesRequest()
+
+
+def test_list_data_taxonomies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.ListDataTaxonomiesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_taxonomies), "__call__"
+    ) as call:
+        client.list_data_taxonomies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.ListDataTaxonomiesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_taxonomies_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_taxonomies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.ListDataTaxonomiesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        response = await client.list_data_taxonomies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.ListDataTaxonomiesRequest()
@@ -1993,7 +2209,8 @@ async def test_list_data_taxonomies_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataTaxonomiesRequest()
+        request = data_taxonomy.ListDataTaxonomiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataTaxonomiesAsyncPager)
@@ -2391,7 +2608,8 @@ def test_get_data_taxonomy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataTaxonomyRequest()
+        request = data_taxonomy.GetDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_taxonomy.DataTaxonomy)
@@ -2417,6 +2635,64 @@ def test_get_data_taxonomy_empty_call():
         type(client.transport.get_data_taxonomy), "__call__"
     ) as call:
         client.get_data_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.GetDataTaxonomyRequest()
+
+
+def test_get_data_taxonomy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.GetDataTaxonomyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_taxonomy), "__call__"
+    ) as call:
+        client.get_data_taxonomy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.GetDataTaxonomyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_taxonomy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.DataTaxonomy(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                attribute_count=1628,
+                etag="etag_value",
+                class_count=1182,
+            )
+        )
+        response = await client.get_data_taxonomy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.GetDataTaxonomyRequest()
@@ -2456,7 +2732,8 @@ async def test_get_data_taxonomy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataTaxonomyRequest()
+        request = data_taxonomy.GetDataTaxonomyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_taxonomy.DataTaxonomy)
@@ -2653,7 +2930,8 @@ def test_create_data_attribute_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest()
+        request = data_taxonomy.CreateDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2672,6 +2950,58 @@ def test_create_data_attribute_binding_empty_call():
         type(client.transport.create_data_attribute_binding), "__call__"
     ) as call:
         client.create_data_attribute_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest()
+
+
+def test_create_data_attribute_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.CreateDataAttributeBindingRequest(
+        parent="parent_value",
+        data_attribute_binding_id="data_attribute_binding_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute_binding), "__call__"
+    ) as call:
+        client.create_data_attribute_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest(
+            parent="parent_value",
+            data_attribute_binding_id="data_attribute_binding_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_data_attribute_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_data_attribute_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest()
@@ -2704,7 +3034,8 @@ async def test_create_data_attribute_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest()
+        request = data_taxonomy.CreateDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2922,7 +3253,8 @@ def test_update_data_attribute_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
+        request = data_taxonomy.UpdateDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2941,6 +3273,52 @@ def test_update_data_attribute_binding_empty_call():
         type(client.transport.update_data_attribute_binding), "__call__"
     ) as call:
         client.update_data_attribute_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
+
+
+def test_update_data_attribute_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.UpdateDataAttributeBindingRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute_binding), "__call__"
+    ) as call:
+        client.update_data_attribute_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_data_attribute_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_data_attribute_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
@@ -2973,7 +3351,8 @@ async def test_update_data_attribute_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
+        request = data_taxonomy.UpdateDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3181,7 +3560,8 @@ def test_delete_data_attribute_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest()
+        request = data_taxonomy.DeleteDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3200,6 +3580,58 @@ def test_delete_data_attribute_binding_empty_call():
         type(client.transport.delete_data_attribute_binding), "__call__"
     ) as call:
         client.delete_data_attribute_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest()
+
+
+def test_delete_data_attribute_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.DeleteDataAttributeBindingRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute_binding), "__call__"
+    ) as call:
+        client.delete_data_attribute_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_data_attribute_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_data_attribute_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest()
@@ -3232,7 +3664,8 @@ async def test_delete_data_attribute_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest()
+        request = data_taxonomy.DeleteDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3425,7 +3858,8 @@ def test_list_data_attribute_bindings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest()
+        request = data_taxonomy.ListDataAttributeBindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataAttributeBindingsPager)
@@ -3446,6 +3880,65 @@ def test_list_data_attribute_bindings_empty_call():
         type(client.transport.list_data_attribute_bindings), "__call__"
     ) as call:
         client.list_data_attribute_bindings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest()
+
+
+def test_list_data_attribute_bindings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.ListDataAttributeBindingsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attribute_bindings), "__call__"
+    ) as call:
+        client.list_data_attribute_bindings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_attribute_bindings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attribute_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.ListDataAttributeBindingsResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        response = await client.list_data_attribute_bindings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest()
@@ -3481,7 +3974,8 @@ async def test_list_data_attribute_bindings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest()
+        request = data_taxonomy.ListDataAttributeBindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataAttributeBindingsAsyncPager)
@@ -3879,7 +4373,8 @@ def test_get_data_attribute_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeBindingRequest()
+        request = data_taxonomy.GetDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_taxonomy.DataAttributeBinding)
@@ -3904,6 +4399,63 @@ def test_get_data_attribute_binding_empty_call():
         type(client.transport.get_data_attribute_binding), "__call__"
     ) as call:
         client.get_data_attribute_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.GetDataAttributeBindingRequest()
+
+
+def test_get_data_attribute_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.GetDataAttributeBindingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute_binding), "__call__"
+    ) as call:
+        client.get_data_attribute_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.GetDataAttributeBindingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_attribute_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.DataAttributeBinding(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                etag="etag_value",
+                attributes=["attributes_value"],
+            )
+        )
+        response = await client.get_data_attribute_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.GetDataAttributeBindingRequest()
@@ -3943,7 +4495,8 @@ async def test_get_data_attribute_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeBindingRequest()
+        request = data_taxonomy.GetDataAttributeBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_taxonomy.DataAttributeBinding)
@@ -4139,7 +4692,8 @@ def test_create_data_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeRequest()
+        request = data_taxonomy.CreateDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4158,6 +4712,58 @@ def test_create_data_attribute_empty_call():
         type(client.transport.create_data_attribute), "__call__"
     ) as call:
         client.create_data_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.CreateDataAttributeRequest()
+
+
+def test_create_data_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.CreateDataAttributeRequest(
+        parent="parent_value",
+        data_attribute_id="data_attribute_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute), "__call__"
+    ) as call:
+        client.create_data_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.CreateDataAttributeRequest(
+            parent="parent_value",
+            data_attribute_id="data_attribute_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_data_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_data_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.CreateDataAttributeRequest()
@@ -4190,7 +4796,8 @@ async def test_create_data_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeRequest()
+        request = data_taxonomy.CreateDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4400,7 +5007,8 @@ def test_update_data_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
+        request = data_taxonomy.UpdateDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4419,6 +5027,52 @@ def test_update_data_attribute_empty_call():
         type(client.transport.update_data_attribute), "__call__"
     ) as call:
         client.update_data_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
+
+
+def test_update_data_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.UpdateDataAttributeRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute), "__call__"
+    ) as call:
+        client.update_data_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_data_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_data_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
@@ -4451,7 +5105,8 @@ async def test_update_data_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
+        request = data_taxonomy.UpdateDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4651,7 +5306,8 @@ def test_delete_data_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeRequest()
+        request = data_taxonomy.DeleteDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4670,6 +5326,58 @@ def test_delete_data_attribute_empty_call():
         type(client.transport.delete_data_attribute), "__call__"
     ) as call:
         client.delete_data_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.DeleteDataAttributeRequest()
+
+
+def test_delete_data_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.DeleteDataAttributeRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute), "__call__"
+    ) as call:
+        client.delete_data_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.DeleteDataAttributeRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_data_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_data_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.DeleteDataAttributeRequest()
@@ -4702,7 +5410,8 @@ async def test_delete_data_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeRequest()
+        request = data_taxonomy.DeleteDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4895,7 +5604,8 @@ def test_list_data_attributes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributesRequest()
+        request = data_taxonomy.ListDataAttributesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataAttributesPager)
@@ -4916,6 +5626,65 @@ def test_list_data_attributes_empty_call():
         type(client.transport.list_data_attributes), "__call__"
     ) as call:
         client.list_data_attributes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.ListDataAttributesRequest()
+
+
+def test_list_data_attributes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.ListDataAttributesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attributes), "__call__"
+    ) as call:
+        client.list_data_attributes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.ListDataAttributesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_attributes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attributes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.ListDataAttributesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        response = await client.list_data_attributes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.ListDataAttributesRequest()
@@ -4951,7 +5720,8 @@ async def test_list_data_attributes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributesRequest()
+        request = data_taxonomy.ListDataAttributesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataAttributesAsyncPager)
@@ -5349,7 +6119,8 @@ def test_get_data_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeRequest()
+        request = data_taxonomy.GetDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_taxonomy.DataAttribute)
@@ -5375,6 +6146,64 @@ def test_get_data_attribute_empty_call():
         type(client.transport.get_data_attribute), "__call__"
     ) as call:
         client.get_data_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.GetDataAttributeRequest()
+
+
+def test_get_data_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_taxonomy.GetDataAttributeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute), "__call__"
+    ) as call:
+        client.get_data_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_taxonomy.GetDataAttributeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.DataAttribute(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                parent_id="parent_id_value",
+                attribute_count=1628,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_data_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_taxonomy.GetDataAttributeRequest()
@@ -5414,7 +6243,8 @@ async def test_get_data_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeRequest()
+        request = data_taxonomy.GetDataAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_taxonomy.DataAttribute)

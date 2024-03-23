@@ -1230,7 +1230,8 @@ def test_create_autoscaling_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.CreateAutoscalingPolicyRequest()
+        request = autoscaling_policies.CreateAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
@@ -1251,6 +1252,59 @@ def test_create_autoscaling_policy_empty_call():
         type(client.transport.create_autoscaling_policy), "__call__"
     ) as call:
         client.create_autoscaling_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.CreateAutoscalingPolicyRequest()
+
+
+def test_create_autoscaling_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = autoscaling_policies.CreateAutoscalingPolicyRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_autoscaling_policy), "__call__"
+    ) as call:
+        client.create_autoscaling_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.CreateAutoscalingPolicyRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_autoscaling_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AutoscalingPolicyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_autoscaling_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autoscaling_policies.AutoscalingPolicy(
+                id="id_value",
+                name="name_value",
+            )
+        )
+        response = await client.create_autoscaling_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == autoscaling_policies.CreateAutoscalingPolicyRequest()
@@ -1286,7 +1340,8 @@ async def test_create_autoscaling_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.CreateAutoscalingPolicyRequest()
+        request = autoscaling_policies.CreateAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
@@ -1491,7 +1546,8 @@ def test_update_autoscaling_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.UpdateAutoscalingPolicyRequest()
+        request = autoscaling_policies.UpdateAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
@@ -1512,6 +1568,55 @@ def test_update_autoscaling_policy_empty_call():
         type(client.transport.update_autoscaling_policy), "__call__"
     ) as call:
         client.update_autoscaling_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.UpdateAutoscalingPolicyRequest()
+
+
+def test_update_autoscaling_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = autoscaling_policies.UpdateAutoscalingPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_autoscaling_policy), "__call__"
+    ) as call:
+        client.update_autoscaling_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.UpdateAutoscalingPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_autoscaling_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AutoscalingPolicyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_autoscaling_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autoscaling_policies.AutoscalingPolicy(
+                id="id_value",
+                name="name_value",
+            )
+        )
+        response = await client.update_autoscaling_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == autoscaling_policies.UpdateAutoscalingPolicyRequest()
@@ -1547,7 +1652,8 @@ async def test_update_autoscaling_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.UpdateAutoscalingPolicyRequest()
+        request = autoscaling_policies.UpdateAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
@@ -1742,7 +1848,8 @@ def test_get_autoscaling_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.GetAutoscalingPolicyRequest()
+        request = autoscaling_policies.GetAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
@@ -1763,6 +1870,59 @@ def test_get_autoscaling_policy_empty_call():
         type(client.transport.get_autoscaling_policy), "__call__"
     ) as call:
         client.get_autoscaling_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.GetAutoscalingPolicyRequest()
+
+
+def test_get_autoscaling_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = autoscaling_policies.GetAutoscalingPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autoscaling_policy), "__call__"
+    ) as call:
+        client.get_autoscaling_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.GetAutoscalingPolicyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_autoscaling_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AutoscalingPolicyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autoscaling_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autoscaling_policies.AutoscalingPolicy(
+                id="id_value",
+                name="name_value",
+            )
+        )
+        response = await client.get_autoscaling_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == autoscaling_policies.GetAutoscalingPolicyRequest()
@@ -1798,7 +1958,8 @@ async def test_get_autoscaling_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.GetAutoscalingPolicyRequest()
+        request = autoscaling_policies.GetAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
@@ -1992,7 +2153,8 @@ def test_list_autoscaling_policies(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.ListAutoscalingPoliciesRequest()
+        request = autoscaling_policies.ListAutoscalingPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutoscalingPoliciesPager)
@@ -2012,6 +2174,60 @@ def test_list_autoscaling_policies_empty_call():
         type(client.transport.list_autoscaling_policies), "__call__"
     ) as call:
         client.list_autoscaling_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.ListAutoscalingPoliciesRequest()
+
+
+def test_list_autoscaling_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = autoscaling_policies.ListAutoscalingPoliciesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_autoscaling_policies), "__call__"
+    ) as call:
+        client.list_autoscaling_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.ListAutoscalingPoliciesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_autoscaling_policies_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AutoscalingPolicyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_autoscaling_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            autoscaling_policies.ListAutoscalingPoliciesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_autoscaling_policies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == autoscaling_policies.ListAutoscalingPoliciesRequest()
@@ -2046,7 +2262,8 @@ async def test_list_autoscaling_policies_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.ListAutoscalingPoliciesRequest()
+        request = autoscaling_policies.ListAutoscalingPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutoscalingPoliciesAsyncPager)
@@ -2439,7 +2656,8 @@ def test_delete_autoscaling_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.DeleteAutoscalingPolicyRequest()
+        request = autoscaling_policies.DeleteAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2458,6 +2676,54 @@ def test_delete_autoscaling_policy_empty_call():
         type(client.transport.delete_autoscaling_policy), "__call__"
     ) as call:
         client.delete_autoscaling_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.DeleteAutoscalingPolicyRequest()
+
+
+def test_delete_autoscaling_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AutoscalingPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = autoscaling_policies.DeleteAutoscalingPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_autoscaling_policy), "__call__"
+    ) as call:
+        client.delete_autoscaling_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == autoscaling_policies.DeleteAutoscalingPolicyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_autoscaling_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AutoscalingPolicyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_autoscaling_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_autoscaling_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == autoscaling_policies.DeleteAutoscalingPolicyRequest()
@@ -2488,7 +2754,8 @@ async def test_delete_autoscaling_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autoscaling_policies.DeleteAutoscalingPolicyRequest()
+        request = autoscaling_policies.DeleteAutoscalingPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
