@@ -209,6 +209,37 @@ def test_scatter(scalars_dfs):
     )
 
 
+@pytest.mark.parametrize(
+    ("c"),
+    [
+        pytest.param("red", id="red"),
+        pytest.param("c", id="int_column"),
+        pytest.param("species", id="color_column"),
+        pytest.param(3, id="column_index"),
+    ],
+)
+def test_scatter_args_c(c):
+    data = {
+        "a": [1, 2, 3],
+        "b": [1, 2, 3],
+        "c": [1, 2, 3],
+        "species": ["r", "g", "b"],
+    }
+    df = bpd.DataFrame(data)
+    pd_df = pd.DataFrame(data)
+
+    ax = df.plot.scatter(x="a", y="b", c=c)
+    pd_ax = pd_df.plot.scatter(x="a", y="b", c=c)
+    assert len(ax.collections[0].get_facecolor()) == len(
+        pd_ax.collections[0].get_facecolor()
+    )
+    for idx in range(len(ax.collections[0].get_facecolor())):
+        tm.assert_numpy_array_equal(
+            ax.collections[0].get_facecolor()[idx],
+            pd_ax.collections[0].get_facecolor()[idx],
+        )
+
+
 def test_sampling_plot_args_n():
     df = bpd.DataFrame(np.arange(bf_mpl.DEFAULT_SAMPLING_N * 10), columns=["one"])
     ax = df.plot.line()

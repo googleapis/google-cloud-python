@@ -14,6 +14,12 @@
 
 import abc
 import typing
+import uuid
+
+import pandas as pd
+
+import bigframes.constants as constants
+import bigframes.dtypes as dtypes
 
 DEFAULT_SAMPLING_N = 1000
 DEFAULT_SAMPLING_STATE = 0
@@ -44,12 +50,13 @@ class SamplingPlot(MPLPlot):
 
     def __init__(self, data, **kwargs) -> None:
         self.kwargs = kwargs
-        self.data = self._compute_plot_data(data)
+        self.data = data
 
     def generate(self) -> None:
-        self.axes = self.data.plot(kind=self._kind, **self.kwargs)
+        plot_data = self._compute_plot_data()
+        self.axes = plot_data.plot(kind=self._kind, **self.kwargs)
 
-    def _compute_plot_data(self, data):
+    def _compute_sample_data(self, data):
         # TODO: Cache the sampling data in the PlotAccessor.
         sampling_n = self.kwargs.pop("sampling_n", DEFAULT_SAMPLING_N)
         sampling_random_state = self.kwargs.pop(
@@ -60,6 +67,9 @@ class SamplingPlot(MPLPlot):
             random_state=sampling_random_state,
             sort=False,
         ).to_pandas()
+
+    def _compute_plot_data(self):
+        return self._compute_sample_data(self.data)
 
 
 class LinePlot(SamplingPlot):
@@ -78,3 +88,45 @@ class ScatterPlot(SamplingPlot):
     @property
     def _kind(self) -> typing.Literal["scatter"]:
         return "scatter"
+
+    def __init__(self, data, **kwargs) -> None:
+        super().__init__(data, **kwargs)
+
+        c = self.kwargs.get("c", None)
+        if self._is_sequence_arg(c):
+            raise NotImplementedError(
+                f"Only support a single color string or a column name/posision. {constants.FEEDBACK_LINK}"
+            )
+
+    def _compute_plot_data(self):
+        sample = self._compute_sample_data(self.data)
+
+        # Works around a pandas bug:
+        # https://github.com/pandas-dev/pandas/commit/45b937d64f6b7b6971856a47e379c7c87af7e00a
+        c = self.kwargs.get("c", None)
+        if pd.core.dtypes.common.is_integer(c):
+            c = self.data.columns[c]
+        if self._is_column_name(c, sample) and sample[c].dtype == dtypes.STRING_DTYPE:
+            sample[c] = sample[c].astype("object")
+
+        return sample
+
+    def _is_sequence_arg(self, arg):
+        return (
+            arg is not None
+            and not isinstance(arg, str)
+            and isinstance(arg, typing.Iterable)
+        )
+
+    def _is_column_name(self, arg, data):
+        return (
+            arg is not None
+            and pd.core.dtypes.common.is_hashable(arg)
+            and arg in data.columns
+        )
+
+    def _generate_new_column_name(self, data):
+        col_name = None
+        while col_name is None or col_name in data.columns:
+            col_name = f"plot_temp_{str(uuid.uuid4())[:8]}"
+        return col_name

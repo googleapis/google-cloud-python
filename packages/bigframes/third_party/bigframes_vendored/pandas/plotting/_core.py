@@ -266,10 +266,6 @@ class PlotAccessor:
 
                 - A single color string referred to by name, RGB or RGBA code,
                   for instance 'red' or '#a98d19'.
-                - A sequence of color strings referred to by name, RGB or RGBA
-                  code, which will be used for each point's color recursively. For
-                  instance ['green','yellow'] all points will be filled in green or
-                  yellow, alternatively.
                 - A column name or position whose values will be used to color the
                   marker points according to a colormap.
 
