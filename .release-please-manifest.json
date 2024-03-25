@@ -105,7 +105,7 @@
     "packages/google-cloud-monitoring-metrics-scopes": "1.6.3",
     "packages/google-cloud-netapp": "0.3.9",
     "packages/google-cloud-network-connectivity": "2.4.3",
-    "packages/google-cloud-network-management": "1.15.1",
+    "packages/google-cloud-network-management": "1.16.0",
     "packages/google-cloud-network-security": "0.9.9",
     "packages/google-cloud-network-services": "0.5.10",
     "packages/google-cloud-notebooks": "1.10.3",
