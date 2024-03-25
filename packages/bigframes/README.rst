@@ -232,16 +232,18 @@ you must enable the following APIs:
 * The BigQuery Connection API (bigqueryconnection.googleapis.com)
 * The Vertex AI API (aiplatform.googleapis.com)
 
-and you must be granted the following IAM roles:
+and you must be granted the following IAM roles in the project:
 
 * BigQuery Data Editor (roles/bigquery.dataEditor)
 * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
-* Service Account User (roles/iam.serviceAccountUser) on the
-  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration>`__
-  ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
+* Service Account User (roles/iam.serviceAccountUser)
 * Vertex AI User (roles/aiplatform.user)
 * Project IAM Admin (roles/resourcemanager.projectIamAdmin) if using default
-  BigQuery connection, or Browser (roles/browser) if using a pre-created connection
+  BigQuery connection, or Browser (roles/browser) if using a pre-configured connection.
+  This requirement can be avoided by setting
+  ``bigframes.pandas.options.bigquery.skip_bq_connection_check`` option to ``True``,
+  in which case the connection (default or pre-configured) would be
+  used as-is without any existence or permission check.
 
 
 ML locations
@@ -288,11 +290,17 @@ into `BigQuery remote functions
 <https://cloud.google.com/bigquery/docs/remote-functions>`_ . Creating a remote
 function in BigQuery DataFrames (See `code samples
 <https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes>`_)
-creates a BigQuery remote function, a `BigQuery
-connection
-<https://cloud.google.com/bigquery/docs/create-cloud-resource-connection>`_ ,
-and a `Cloud Functions (2nd gen) function
-<https://cloud.google.com/functions/docs/concepts/overview>`_ .
+creates:
+
+1. A `Cloud Functions (2nd gen) function <https://cloud.google.com/functions/docs/concepts/overview>`_.
+2. A `BigQuery connection <https://cloud.google.com/bigquery/docs/create-cloud-resource-connection>`_.
+   If the BigQuery connection is created, the BigQuery service will
+   create a
+   `Google Cloud-managed IAM service account <https://cloud.google.com/bigquery/docs/working-with-connections#before_you_begin>`_
+   and attach it to the connection. You can use a pre-configured BigQuery
+   connection if you prefer, in which case the connection creation is skipped.
+3. A BigQuery remote function that talks to the cloud function (1) using the BigQuery
+   connection (2).
 
 BigQuery connections are created in the same location as the BigQuery
 DataFrames session, using the name you provide in the custom function
@@ -331,17 +339,19 @@ To use BigQuery DataFrames remote functions, you must enable the following APIs:
 * The Cloud Resource Manager API (cloudresourcemanager.googleapis.com)
 
 To use BigQuery DataFrames remote functions, you must be granted the
-following IAM roles:
+following IAM roles in the project:
 
 * BigQuery Data Editor (roles/bigquery.dataEditor)
 * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
 * Cloud Functions Developer (roles/cloudfunctions.developer)
-* Service Account User (roles/iam.serviceAccountUser) on the
-  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration>`__
-  ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
+* Service Account User (roles/iam.serviceAccountUser)
 * Storage Object Viewer (roles/storage.objectViewer)
 * Project IAM Admin (roles/resourcemanager.projectIamAdmin) if using default
-  BigQuery connection, or Browser (roles/browser) if using a pre-created connection
+  BigQuery connection, or Browser (roles/browser) if using a pre-configured connection.
+  This requirement can be avoided by setting
+  ``bigframes.pandas.options.bigquery.skip_bq_connection_check`` option to ``True``,
+  in which case the connection (default or pre-configured) would be
+  used as-is without any existence or permission check.
 
 **Limitations**
 
