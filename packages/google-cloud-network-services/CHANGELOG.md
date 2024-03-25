@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.9...google-cloud-network-services-v0.5.10) (2024-03-25)
+
+
+### Features
+
+* [google-cloud-network-services] publish DEP proto ([#12503](https://github.com/googleapis/google-cloud-python/issues/12503)) ([f17c4fc](https://github.com/googleapis/google-cloud-python/commit/f17c4fce8c7e4a23738e4f59ffd7ff2e73baf9aa))
+
 ## [0.5.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.8...google-cloud-network-services-v0.5.9) (2024-03-05)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.15.0...google-cloud-network-management-v1.15.1) (2024-03-25)
+
+
+### Documentation
+
+* deprecate legacy fields related to load balancing ([f21d210](https://github.com/googleapis/google-cloud-python/commit/f21d210630716cecc17ac96584a89dd7f6c402a9))
+* update comments for fields related to load balancing ([f21d210](https://github.com/googleapis/google-cloud-python/commit/f21d210630716cecc17ac96584a89dd7f6c402a9))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.14.0...google-cloud-network-management-v1.15.0) (2024-03-22)
 
 
