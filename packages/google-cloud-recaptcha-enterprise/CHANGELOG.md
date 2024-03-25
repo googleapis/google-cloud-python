@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.18.1...google-cloud-recaptcha-enterprise-v1.19.0) (2024-03-25)
+
+
+### Features
+
+* Add `CLOUDFLARE` enum to `WafService` message of firewalls supported by reCAPTCHA Enterprise ([#12498](https://github.com/googleapis/google-cloud-python/issues/12498)) ([ca58b4d](https://github.com/googleapis/google-cloud-python/commit/ca58b4db7cb8ea713a2fe7822b1299fbd90b528d))
+
 ## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.18.0...google-cloud-recaptcha-enterprise-v1.18.1) (2024-03-05)
 
 
