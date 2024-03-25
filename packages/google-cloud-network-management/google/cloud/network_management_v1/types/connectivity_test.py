@@ -42,7 +42,7 @@ class ConnectivityTest(proto.Message):
     Attributes:
         name (str):
             Required. Unique name of the resource using the form:
-            ``projects/{project_id}/locations/global/connectivityTests/{test}``
+            ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
         description (str):
             The user-supplied description of the
             Connectivity Test. Maximum of 512 characters.
@@ -132,6 +132,9 @@ class ConnectivityTest(proto.Message):
             creating a new test, updating an existing test,
             or triggering a one-time rerun of an existing
             test.
+        bypass_firewall_checks (bool):
+            Whether the test should skip firewall
+            checking. If not provided, we assume false.
     """
 
     name: str = proto.Field(
@@ -189,6 +192,10 @@ class ConnectivityTest(proto.Message):
         number=14,
         message="ProbingDetails",
     )
+    bypass_firewall_checks: bool = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
 
 
 class Endpoint(proto.Message):
@@ -214,7 +221,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-            projects/{project}/global/forwardingRules/{id}
+             projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):
@@ -478,6 +485,10 @@ class ReachabilityDetails(proto.Message):
                 network, and the reachability result contains
                 multiple traces. For some traces, a packet could
                 be delivered, and for others, it would not be.
+                This result is also assigned to configuration
+                analysis of return path if on its own it should
+                be REACHABLE, but configuration analysis of
+                forward path is AMBIGUOUS.
             UNDETERMINED (5):
                 The configuration analysis did not complete. Possible
                 reasons are:
