@@ -38,7 +38,13 @@ _APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/{ibis.__ver
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
 # Regions for which Regional Endpoints (REPs) are supported
-_REP_SUPPORTED_REGIONS = {"me-central2"}
+_REP_SUPPORTED_REGIONS = {
+    "me-central2",
+    "europe-west9",
+    "europe-west3",
+    "us-east4",
+    "us-west1",
+}
 
 
 # BigQuery is a REST API, which requires the protocol as part of the URL.
