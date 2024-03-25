@@ -4,6 +4,68 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.0.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.26.0...v1.0.0) (2024-03-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename model parameter `min_rel_progress` to `tol`
+* `early_stop` setting no longer supported, always uses `True`
+* rename model parameter `n_parallell_trees` to `n_estimators`
+* rename `class_weights` to `class_weight`
+* rename `learn_rate` to `learning_rate`
+* PCA `n_components` supports float value and `None`, default to `None`
+* rename various ml model parameters for consistency with sklearn (https://github.com/googleapis/python-bigquery-dataframes/pull/491)
+
+### Features
+
+* Add configuration option to read_gbq ([#401](https://github.com/googleapis/python-bigquery-dataframes/issues/401)) ([85cede2](https://github.com/googleapis/python-bigquery-dataframes/commit/85cede22587a9fe1dae888721492f9390dc46d70))
+* Add ml ARIMAPlus model params ([#488](https://github.com/googleapis/python-bigquery-dataframes/issues/488)) ([352cb85](https://github.com/googleapis/python-bigquery-dataframes/commit/352cb850d23e41a2278edf0df584b89ee9619aab))
+* Add ml KMeans model params ([#477](https://github.com/googleapis/python-bigquery-dataframes/issues/477)) ([23a8d9a](https://github.com/googleapis/python-bigquery-dataframes/commit/23a8d9a32e1619aff92c8dfabb7bcdd54c314bd5))
+* Add ml LogisticRegression model params ([#481](https://github.com/googleapis/python-bigquery-dataframes/issues/481)) ([f959b65](https://github.com/googleapis/python-bigquery-dataframes/commit/f959b653a0e82b5bfd21f9e994031cf6d25c281a))
+* Add ml PCA model params ([#474](https://github.com/googleapis/python-bigquery-dataframes/issues/474)) ([fb5d83b](https://github.com/googleapis/python-bigquery-dataframes/commit/fb5d83b1e35c465cff486e6cf7862e5b32e3c65a))
+* Add params for LinearRegression model ([#464](https://github.com/googleapis/python-bigquery-dataframes/issues/464)) ([21b2188](https://github.com/googleapis/python-bigquery-dataframes/commit/21b2188cd0ca85485b5171ee9e46da4c924e2ff8))
+* Add support for Python 3.12 ([#231](https://github.com/googleapis/python-bigquery-dataframes/issues/231)) ([df2976f](https://github.com/googleapis/python-bigquery-dataframes/commit/df2976fa9fd0319b824128d0ccf2ebb20f381caa))
+* Allow assigning directly to Series.name property ([#495](https://github.com/googleapis/python-bigquery-dataframes/issues/495)) ([ad0e99e](https://github.com/googleapis/python-bigquery-dataframes/commit/ad0e99eddb1dddd3d439cea7db1e4f222b45c6b9))
+* Ensure `Series.str.len()` can get length of array columns ([#497](https://github.com/googleapis/python-bigquery-dataframes/issues/497)) ([10c0446](https://github.com/googleapis/python-bigquery-dataframes/commit/10c044686228e5c6f3868c1eb10454f6a086ac8b))
+* Option to use bq connection without check ([#460](https://github.com/googleapis/python-bigquery-dataframes/issues/460)) ([0b3f8e5](https://github.com/googleapis/python-bigquery-dataframes/commit/0b3f8e5ce63f75ba99ee8cf29226a0fd38bef99f))
+* PCA `n_components` supports float value and `None`, default to `None` ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Rename `class_weights` to `class_weight` ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Rename `learn_rate` to `learning_rate` ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Rename model parameter `min_rel_progress` to `tol` ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Rename model parameter `n_parallell_trees` to `n_estimators` ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Rename various ml model parameters for consistency with sklearn (https://github.com/googleapis/python-bigquery-dataframes/pull/491) ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Support BQ regional endpoints for europe-west9, europe-west3, us-east4, and us-west1 ([#504](https://github.com/googleapis/python-bigquery-dataframes/issues/504)) ([fbada4a](https://github.com/googleapis/python-bigquery-dataframes/commit/fbada4a70688c5d13fa35d1843b0c4252c5ced72))
+* Support dataframe.cov ([#498](https://github.com/googleapis/python-bigquery-dataframes/issues/498)) ([c4beafd](https://github.com/googleapis/python-bigquery-dataframes/commit/c4beafdf0c1ba88b306ca96fa3ca46b86debaa4c))
+* Support Series.dt.floor ([#493](https://github.com/googleapis/python-bigquery-dataframes/issues/493)) ([2dd01c2](https://github.com/googleapis/python-bigquery-dataframes/commit/2dd01c25e9f01c03979c61e71d3c5cd9f0bd4c96))
+* Support Series.dt.normalize ([#483](https://github.com/googleapis/python-bigquery-dataframes/issues/483)) ([0bf1e91](https://github.com/googleapis/python-bigquery-dataframes/commit/0bf1e916c2b636ec02ac010190e89d38e88fce4b))
+* Update plot sample to 1000 rows ([#458](https://github.com/googleapis/python-bigquery-dataframes/issues/458)) ([60d4a7b](https://github.com/googleapis/python-bigquery-dataframes/commit/60d4a7bbac867256f8bbfd3053c7dd2645c1b062))
+
+
+### Bug Fixes
+
+* `early_stop` setting no longer supported, always uses `True` ([65c6f47](https://github.com/googleapis/python-bigquery-dataframes/commit/65c6f4736d1a5552835e4cec8b777b2c0f3dd8da))
+* Fix -1 offset lookups failing ([#463](https://github.com/googleapis/python-bigquery-dataframes/issues/463)) ([2dfb9c2](https://github.com/googleapis/python-bigquery-dataframes/commit/2dfb9c24d07841d785e41b33573c5f3a218efeea))
+* Plot.scatter `c` argument functionalities ([#494](https://github.com/googleapis/python-bigquery-dataframes/issues/494)) ([d6ee994](https://github.com/googleapis/python-bigquery-dataframes/commit/d6ee994c17e0b1dd6768b09ee81d2c902f601b76))
+* Properly support format param for numerical input. ([#486](https://github.com/googleapis/python-bigquery-dataframes/issues/486)) ([ae20c35](https://github.com/googleapis/python-bigquery-dataframes/commit/ae20c3583d5526777548b5d594ecca6034bb49ec))
+* Renable to_csv and to_json related tests ([#468](https://github.com/googleapis/python-bigquery-dataframes/issues/468)) ([2b9a01d](https://github.com/googleapis/python-bigquery-dataframes/commit/2b9a01de0adb8d41fbe73ce94b1acc8d22f507b5))
+* Sampling plot cannot preserve ordering if index is not ordered ([#475](https://github.com/googleapis/python-bigquery-dataframes/issues/475)) ([a5345fe](https://github.com/googleapis/python-bigquery-dataframes/commit/a5345fe8943667a89fcba48ce31aa8ecfc283f92))
+* Use actual BigQuery types rather than ibis types in to_pandas ([#500](https://github.com/googleapis/python-bigquery-dataframes/issues/500)) ([82b4f91](https://github.com/googleapis/python-bigquery-dataframes/commit/82b4f91db365fe06d8bd0bf938f880a48091104e))
+
+
+### Dependencies
+
+* Support pandas 2.2 ([#492](https://github.com/googleapis/python-bigquery-dataframes/issues/492)) ([e2cf50e](https://github.com/googleapis/python-bigquery-dataframes/commit/e2cf50e053f7163d1654c4b5621cc93e922d5148))
+
+
+### Documentation
+
+* Add code samples for metrics.{accuracy_score, confusion_matrix} ([#478](https://github.com/googleapis/python-bigquery-dataframes/issues/478)) ([3e3329a](https://github.com/googleapis/python-bigquery-dataframes/commit/3e3329a37c1020bd3e6d4d5e980103c63ab0c337))
+* Add code samples for metrics.{recall_score, precision_score, f11_score} ([#502](https://github.com/googleapis/python-bigquery-dataframes/issues/502)) ([370fe90](https://github.com/googleapis/python-bigquery-dataframes/commit/370fe9087848862d02f0e5a333fcb4cd37cf5ca0))
+* Improve API documentation ([#489](https://github.com/googleapis/python-bigquery-dataframes/issues/489)) ([751266e](https://github.com/googleapis/python-bigquery-dataframes/commit/751266e056ac566ef5b6e40fbbca84ed95e7a7a9))
+* Update bigquery connection documentation ([#499](https://github.com/googleapis/python-bigquery-dataframes/issues/499)) ([4bfe094](https://github.com/googleapis/python-bigquery-dataframes/commit/4bfe094fdf2f7e1af72cc939558713a499760129))
+* Update LLM + K-means notebook to handle partial failures ([#496](https://github.com/googleapis/python-bigquery-dataframes/issues/496)) ([97afad9](https://github.com/googleapis/python-bigquery-dataframes/commit/97afad96f80c1815db8ad34f0ff62095631036c2))
+
 ## [0.26.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.25.0...v0.26.0) (2024-03-20)
 
 
