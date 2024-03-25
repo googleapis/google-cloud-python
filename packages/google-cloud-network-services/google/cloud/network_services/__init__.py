@@ -18,6 +18,12 @@ from google.cloud.network_services import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.network_services_v1.services.dep_service.async_client import (
+    DepServiceAsyncClient,
+)
+from google.cloud.network_services_v1.services.dep_service.client import (
+    DepServiceClient,
+)
 from google.cloud.network_services_v1.services.network_services.async_client import (
     NetworkServicesAsyncClient,
 )
@@ -28,6 +34,25 @@ from google.cloud.network_services_v1.types.common import (
     EndpointMatcher,
     OperationMetadata,
     TrafficPortSelector,
+)
+from google.cloud.network_services_v1.types.dep import (
+    CreateLbRouteExtensionRequest,
+    CreateLbTrafficExtensionRequest,
+    DeleteLbRouteExtensionRequest,
+    DeleteLbTrafficExtensionRequest,
+    EventType,
+    ExtensionChain,
+    GetLbRouteExtensionRequest,
+    GetLbTrafficExtensionRequest,
+    LbRouteExtension,
+    LbTrafficExtension,
+    ListLbRouteExtensionsRequest,
+    ListLbRouteExtensionsResponse,
+    ListLbTrafficExtensionsRequest,
+    ListLbTrafficExtensionsResponse,
+    LoadBalancingScheme,
+    UpdateLbRouteExtensionRequest,
+    UpdateLbTrafficExtensionRequest,
 )
 from google.cloud.network_services_v1.types.endpoint_policy import (
     CreateEndpointPolicyRequest,
@@ -102,11 +127,30 @@ from google.cloud.network_services_v1.types.tls_route import (
 )
 
 __all__ = (
+    "DepServiceClient",
+    "DepServiceAsyncClient",
     "NetworkServicesClient",
     "NetworkServicesAsyncClient",
     "EndpointMatcher",
     "OperationMetadata",
     "TrafficPortSelector",
+    "CreateLbRouteExtensionRequest",
+    "CreateLbTrafficExtensionRequest",
+    "DeleteLbRouteExtensionRequest",
+    "DeleteLbTrafficExtensionRequest",
+    "ExtensionChain",
+    "GetLbRouteExtensionRequest",
+    "GetLbTrafficExtensionRequest",
+    "LbRouteExtension",
+    "LbTrafficExtension",
+    "ListLbRouteExtensionsRequest",
+    "ListLbRouteExtensionsResponse",
+    "ListLbTrafficExtensionsRequest",
+    "ListLbTrafficExtensionsResponse",
+    "UpdateLbRouteExtensionRequest",
+    "UpdateLbTrafficExtensionRequest",
+    "EventType",
+    "LoadBalancingScheme",
     "CreateEndpointPolicyRequest",
     "DeleteEndpointPolicyRequest",
     "EndpointPolicy",
