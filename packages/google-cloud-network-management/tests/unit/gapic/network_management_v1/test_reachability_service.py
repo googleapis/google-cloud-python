@@ -1745,6 +1745,7 @@ def test_get_connectivity_test(request_type, transport: str = "grpc"):
             protocol="protocol_value",
             related_projects=["related_projects_value"],
             display_name="display_name_value",
+            bypass_firewall_checks=True,
         )
         response = client.get_connectivity_test(request)
 
@@ -1761,6 +1762,7 @@ def test_get_connectivity_test(request_type, transport: str = "grpc"):
     assert response.protocol == "protocol_value"
     assert response.related_projects == ["related_projects_value"]
     assert response.display_name == "display_name_value"
+    assert response.bypass_firewall_checks is True
 
 
 def test_get_connectivity_test_empty_call():
@@ -1829,6 +1831,7 @@ async def test_get_connectivity_test_empty_call_async():
                 protocol="protocol_value",
                 related_projects=["related_projects_value"],
                 display_name="display_name_value",
+                bypass_firewall_checks=True,
             )
         )
         response = await client.get_connectivity_test()
@@ -1863,6 +1866,7 @@ async def test_get_connectivity_test_async(
                 protocol="protocol_value",
                 related_projects=["related_projects_value"],
                 display_name="display_name_value",
+                bypass_firewall_checks=True,
             )
         )
         response = await client.get_connectivity_test(request)
@@ -1880,6 +1884,7 @@ async def test_get_connectivity_test_async(
     assert response.protocol == "protocol_value"
     assert response.related_projects == ["related_projects_value"]
     assert response.display_name == "display_name_value"
+    assert response.bypass_firewall_checks is True
 
 
 @pytest.mark.asyncio
@@ -3525,6 +3530,7 @@ def test_get_connectivity_test_rest(request_type):
             protocol="protocol_value",
             related_projects=["related_projects_value"],
             display_name="display_name_value",
+            bypass_firewall_checks=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -3545,6 +3551,7 @@ def test_get_connectivity_test_rest(request_type):
     assert response.protocol == "protocol_value"
     assert response.related_projects == ["related_projects_value"]
     assert response.display_name == "display_name_value"
+    assert response.bypass_firewall_checks is True
 
 
 def test_get_connectivity_test_rest_required_fields(
@@ -4074,6 +4081,7 @@ def test_create_connectivity_test_rest(request_type):
                             "storage_bucket": {"bucket": "bucket_value"},
                         }
                     ],
+                    "forward_trace_id": 1679,
                 }
             ],
         },
@@ -4092,6 +4100,7 @@ def test_create_connectivity_test_rest(request_type):
                 "metropolitan_area": "metropolitan_area_value"
             },
         },
+        "bypass_firewall_checks": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4733,6 +4742,7 @@ def test_update_connectivity_test_rest(request_type):
                             "storage_bucket": {"bucket": "bucket_value"},
                         }
                     ],
+                    "forward_trace_id": 1679,
                 }
             ],
         },
@@ -4751,6 +4761,7 @@ def test_update_connectivity_test_rest(request_type):
                 "metropolitan_area": "metropolitan_area_value"
             },
         },
+        "bypass_firewall_checks": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

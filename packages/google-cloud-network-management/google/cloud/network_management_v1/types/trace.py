@@ -130,6 +130,12 @@ class Trace(proto.Message):
             within the simulated network state machine. It
             is critical to preserve the order of the steps
             and avoid reordering or sorting them.
+        forward_trace_id (int):
+            ID of trace. For forward traces, this ID is
+            unique for each trace. For return traces, it
+            matches ID of associated forward trace. A single
+            forward trace can be associated with none, one
+            or more than one return trace.
     """
 
     endpoint_info: "EndpointInfo" = proto.Field(
@@ -141,6 +147,10 @@ class Trace(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Step",
+    )
+    forward_trace_id: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
 
 
@@ -332,6 +342,14 @@ class Step(proto.Message):
                 Initial state: packet originating from a
                 Cloud Run revision. A CloudRunRevisionInfo is
                 populated with starting revision information.
+            START_FROM_STORAGE_BUCKET (29):
+                Initial state: packet originating from a Storage Bucket.
+                Used only for return traces. The storage_bucket information
+                is populated.
+            START_FROM_PSC_PUBLISHED_SERVICE (30):
+                Initial state: packet originating from a
+                published service that uses Private Service
+                Connect. Used only for return traces.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -396,6 +414,8 @@ class Step(proto.Message):
         START_FROM_CLOUD_FUNCTION = 23
         START_FROM_APP_ENGINE_VERSION = 25
         START_FROM_CLOUD_RUN_REVISION = 26
+        START_FROM_STORAGE_BUCKET = 29
+        START_FROM_PSC_PUBLISHED_SERVICE = 30
         APPLY_INGRESS_FIREWALL_RULE = 4
         APPLY_EGRESS_FIREWALL_RULE = 5
         APPLY_ROUTE = 6
@@ -734,6 +754,11 @@ class FirewallInfo(proto.Message):
                 Regional network firewall policy rule. For details, see
                 `Regional network firewall
                 policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
+            TRACKING_STATE (101):
+                Tracking state for response traffic created when request
+                traffic goes through allow firewall rule. For details, see
+                `firewall rules
+                specifications <https://cloud.google.com/firewall/docs/firewalls#specifications>`__
         """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
@@ -742,6 +767,7 @@ class FirewallInfo(proto.Message):
         SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
         NETWORK_FIREWALL_POLICY_RULE = 5
         NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
+        TRACKING_STATE = 101
 
     display_name: str = proto.Field(
         proto.STRING,
@@ -1893,7 +1919,7 @@ class DropInfo(proto.Message):
             ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND (43):
                 Route's next hop resource is not found.
             ROUTE_NEXT_HOP_INSTANCE_WRONG_NETWORK (49):
-                Route's next hop instance doesn't hace a NIC
+                Route's next hop instance doesn't have a NIC
                 in the route's network.
             ROUTE_NEXT_HOP_INSTANCE_NON_PRIMARY_IP (50):
                 Route's next hop IP address is not a primary
