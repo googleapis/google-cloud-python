@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.15.1...google-cloud-network-management-v1.16.0) (2024-03-25)
+
+
+### Features
+
+* [google-cloud-network-management] add new fields and enum values related to round-trip ([#12504](https://github.com/googleapis/google-cloud-python/issues/12504)) ([1eaecfd](https://github.com/googleapis/google-cloud-python/commit/1eaecfde2b29b350c805ed1a47c2c29785bc3d6e))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.15.0...google-cloud-network-management-v1.15.1) (2024-03-25)
 
 
