@@ -32,8 +32,20 @@ Users can also get a dry run of the job by accessing the query_job property befo
 User can execute the job by calling .to_pandas()
     >>> # df.to_pandas()
 
-Reset option
+Reset repr_mode option
     >>> bpd.options.display.repr_mode = "head"
+
+Can also set the progress_bar option to see the progress bar in terminal,
+    >>> bpd.options.display.progress_bar = "terminal"
+
+notebook,
+    >>> bpd.options.display.progress_bar = "notebook"
+
+or just remove it.
+    >>> bpd.options.display.progress_bar = None
+
+Setting to default value "auto" will detect and show progress bar automatically.
+    >>> bpd.options.display.progress_bar = "auto"
 
 Attributes:
     max_columns (int, default 20):
