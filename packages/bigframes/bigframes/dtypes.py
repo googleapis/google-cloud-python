@@ -682,6 +682,17 @@ def ibis_type_from_python_type(t: type) -> ibis_dtypes.DataType:
 
 
 def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> ibis_dtypes.DataType:
+    """Convert bq type to ibis. Only to be used for remote functions, does not handle all types."""
     if tk not in SUPPORTED_IO_BIGQUERY_TYPEKINDS:
         raise UnsupportedTypeError(tk, SUPPORTED_IO_BIGQUERY_TYPEKINDS)
     return third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)
+
+
+def bf_type_from_type_kind(bf_schema) -> Dict[str, Dtype]:
+    """Converts bigquery sql type to the default bigframes dtype."""
+    ibis_schema: ibis.Schema = third_party_ibis_bqtypes.BigQuerySchema.to_ibis(
+        bf_schema
+    )
+    return {
+        name: ibis_dtype_to_bigframes_dtype(type) for name, type in ibis_schema.items()
+    }

@@ -1889,8 +1889,10 @@ class Session(
     def _rows_to_dataframe(
         self, row_iterator: bigquery.table.RowIterator, dtypes: Dict
     ) -> pandas.DataFrame:
+        # Can ignore inferred datatype until dtype emulation breaks 1:1 mapping between BQ types and bigframes types
+        dtypes_from_bq = bigframes.dtypes.bf_type_from_type_kind(row_iterator.schema)
         arrow_table = row_iterator.to_arrow()
-        return bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
+        return bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes_from_bq)
 
     def _start_generic_job(self, job: formatting_helpers.GenericJob):
         if bigframes.options.display.progress_bar is not None:
