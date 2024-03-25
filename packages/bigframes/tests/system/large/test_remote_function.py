@@ -1047,7 +1047,7 @@ def test_remote_function_via_session_context_connection_setter(
         # unique dataset_id, even though the cloud function would be reused, the bq
         # remote function would still be created, making use of the bq connection
         # set in the BigQueryOptions above.
-        @session.remote_function([int], int, dataset=dataset_id)
+        @session.remote_function([int], int, dataset=dataset_id, reuse=False)
         def square(x):
             return x * x
 
@@ -1084,7 +1084,7 @@ def test_remote_function_via_session_context_connection_setter(
 def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
     try:
 
-        @session.remote_function([int], int, dataset=dataset_id)
+        @session.remote_function([int], int, dataset=dataset_id, reuse=False)
         def square(x):
             return x * x
 
@@ -1121,7 +1121,7 @@ def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
 def test_remote_function_runtime_error(session, scalars_dfs, dataset_id):
     try:
 
-        @session.remote_function([int], int, dataset=dataset_id)
+        @session.remote_function([int], int, dataset=dataset_id, reuse=False)
         def square(x):
             return x * x
 
