@@ -1159,7 +1159,8 @@ def test_export_entities(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ExportEntitiesRequest()
+        request = datastore_admin.ExportEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1176,6 +1177,54 @@ def test_export_entities_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_entities), "__call__") as call:
         client.export_entities()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.ExportEntitiesRequest()
+
+
+def test_export_entities_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastore_admin.ExportEntitiesRequest(
+        project_id="project_id_value",
+        output_url_prefix="output_url_prefix_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_entities), "__call__") as call:
+        client.export_entities(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.ExportEntitiesRequest(
+            project_id="project_id_value",
+            output_url_prefix="output_url_prefix_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_entities_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_entities), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_entities()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastore_admin.ExportEntitiesRequest()
@@ -1205,7 +1254,8 @@ async def test_export_entities_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ExportEntitiesRequest()
+        request = datastore_admin.ExportEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1415,7 +1465,8 @@ def test_import_entities(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ImportEntitiesRequest()
+        request = datastore_admin.ImportEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1432,6 +1483,54 @@ def test_import_entities_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_entities), "__call__") as call:
         client.import_entities()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.ImportEntitiesRequest()
+
+
+def test_import_entities_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastore_admin.ImportEntitiesRequest(
+        project_id="project_id_value",
+        input_url="input_url_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_entities), "__call__") as call:
+        client.import_entities(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.ImportEntitiesRequest(
+            project_id="project_id_value",
+            input_url="input_url_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_entities_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_entities), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_entities()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastore_admin.ImportEntitiesRequest()
@@ -1461,7 +1560,8 @@ async def test_import_entities_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ImportEntitiesRequest()
+        request = datastore_admin.ImportEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1671,7 +1771,8 @@ def test_create_index(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.CreateIndexRequest()
+        request = datastore_admin.CreateIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1688,6 +1789,52 @@ def test_create_index_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         client.create_index()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.CreateIndexRequest()
+
+
+def test_create_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastore_admin.CreateIndexRequest(
+        project_id="project_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
+        client.create_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.CreateIndexRequest(
+            project_id="project_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_index_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_index()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastore_admin.CreateIndexRequest()
@@ -1717,7 +1864,8 @@ async def test_create_index_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.CreateIndexRequest()
+        request = datastore_admin.CreateIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1815,7 +1963,8 @@ def test_delete_index(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.DeleteIndexRequest()
+        request = datastore_admin.DeleteIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1832,6 +1981,54 @@ def test_delete_index_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         client.delete_index()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.DeleteIndexRequest()
+
+
+def test_delete_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastore_admin.DeleteIndexRequest(
+        project_id="project_id_value",
+        index_id="index_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
+        client.delete_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.DeleteIndexRequest(
+            project_id="project_id_value",
+            index_id="index_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_index_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_index()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastore_admin.DeleteIndexRequest()
@@ -1861,7 +2058,8 @@ async def test_delete_index_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.DeleteIndexRequest()
+        request = datastore_admin.DeleteIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1967,7 +2165,8 @@ def test_get_index(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.GetIndexRequest()
+        request = datastore_admin.GetIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, index.Index)
@@ -1989,6 +2188,60 @@ def test_get_index_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         client.get_index()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.GetIndexRequest()
+
+
+def test_get_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastore_admin.GetIndexRequest(
+        project_id="project_id_value",
+        index_id="index_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
+        client.get_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.GetIndexRequest(
+            project_id="project_id_value",
+            index_id="index_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_index_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            index.Index(
+                project_id="project_id_value",
+                index_id="index_id_value",
+                kind="kind_value",
+                ancestor=index.Index.AncestorMode.NONE,
+                state=index.Index.State.CREATING,
+            )
+        )
+        response = await client.get_index()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastore_admin.GetIndexRequest()
@@ -2024,7 +2277,8 @@ async def test_get_index_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.GetIndexRequest()
+        request = datastore_admin.GetIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, index.Index)
@@ -2129,7 +2383,8 @@ def test_list_indexes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ListIndexesRequest()
+        request = datastore_admin.ListIndexesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesPager)
@@ -2147,6 +2402,58 @@ def test_list_indexes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         client.list_indexes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.ListIndexesRequest()
+
+
+def test_list_indexes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastore_admin.ListIndexesRequest(
+        project_id="project_id_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
+        client.list_indexes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore_admin.ListIndexesRequest(
+            project_id="project_id_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_indexes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastore_admin.ListIndexesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_indexes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == datastore_admin.ListIndexesRequest()
@@ -2178,7 +2485,8 @@ async def test_list_indexes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ListIndexesRequest()
+        request = datastore_admin.ListIndexesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesAsyncPager)
