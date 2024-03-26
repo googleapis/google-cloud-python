@@ -234,7 +234,12 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
     def predict(
         self, X=None, *, horizon: int = 3, confidence_level: float = 0.95
     ) -> bpd.DataFrame:
-        """Predict the closest cluster for each sample in X.
+        """Forecast time series at future horizon.
+
+        .. note::
+
+            Output matches that of the BigQuery ML.FORECAST function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-forecast
 
         Args:
             X (default None):
