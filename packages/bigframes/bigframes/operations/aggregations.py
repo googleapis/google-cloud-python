@@ -139,10 +139,7 @@ class ProductOp(UnaryAggregateOp):
     name: ClassVar[str] = "product"
 
     def output_type(self, *input_types: dtypes.ExpressionType):
-        if pd.api.types.is_bool_dtype(input_types[0]):
-            return dtypes.INT_DTYPE
-        else:
-            return input_types[0]
+        return dtypes.FLOAT_DTYPE
 
 
 @dataclasses.dataclass(frozen=True)

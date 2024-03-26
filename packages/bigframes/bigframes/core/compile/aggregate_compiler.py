@@ -190,7 +190,7 @@ def _(
         .else_(magnitude * pow(-1, negative_count_parity))
         .end()
     )
-    return float_result.cast(column.type())  # type: ignore
+    return float_result
 
 
 @compile_unary_agg.register

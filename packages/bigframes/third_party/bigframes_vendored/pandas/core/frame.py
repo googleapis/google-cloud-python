@@ -4416,10 +4416,10 @@ class DataFrame(generic.NDFrame):
             [3 rows x 2 columns]
 
             >>> df.cumprod()
-                A	B
-            0	3	1
-            1	3	2
-            2	6	6
+                 A    B
+            0  3.0  1.0
+            1  3.0  2.0
+            2  6.0  6.0
             <BLANKLINE>
             [3 rows x 2 columns]
 

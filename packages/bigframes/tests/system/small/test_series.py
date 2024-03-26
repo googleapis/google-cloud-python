@@ -1481,7 +1481,7 @@ def test_groupby_prod(scalars_dfs):
     bf_series = scalars_df[col_name].groupby(scalars_df["int64_col"]).prod()
     pd_series = (
         scalars_pandas_df[col_name].groupby(scalars_pandas_df["int64_col"]).prod()
-    )
+    ).astype(pd.Float64Dtype())
     # TODO(swast): Update groupby to use index based on group by key(s).
     bf_result = bf_series.to_pandas()
     assert_series_equal(
