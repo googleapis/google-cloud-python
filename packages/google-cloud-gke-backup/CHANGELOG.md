@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.7...google-cloud-gke-backup-v0.5.8) (2024-03-26)
+
+
+### Features
+
+* add backup indexing ([cbe3118](https://github.com/googleapis/google-cloud-python/commit/cbe311847fdb38dc012ca868ccba8521cfedb916))
+* add smart scheduling ([cbe3118](https://github.com/googleapis/google-cloud-python/commit/cbe311847fdb38dc012ca868ccba8521cfedb916))
+
+
+### Documentation
+
+* add output only and optional api field behavior label ([cbe3118](https://github.com/googleapis/google-cloud-python/commit/cbe311847fdb38dc012ca868ccba8521cfedb916))
+* remove the next id annotation ([cbe3118](https://github.com/googleapis/google-cloud-python/commit/cbe311847fdb38dc012ca868ccba8521cfedb916))
+* update retention policy and cron schedule comment to include new constraints from smart scheduling ([cbe3118](https://github.com/googleapis/google-cloud-python/commit/cbe311847fdb38dc012ca868ccba8521cfedb916))
+
 ## [0.5.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.6...google-cloud-gke-backup-v0.5.7) (2024-03-05)
 
 
