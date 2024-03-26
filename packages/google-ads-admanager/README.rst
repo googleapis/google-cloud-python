@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Google Ad Manager
+===================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Google Ad Manager`_: Manage your Ad Manager inventory, run reports and more.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-ads-admanager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-ads-admanager.svg
    :target: https://pypi.org/project/google-ads-admanager/
-.. _: 
+.. _Google Ad Manager: https://developers.google.com/ad-manager/api/beta
 .. _Client Library Documentation: https://googleapis.dev/python/google-ads-admanager/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://developers.google.com/ad-manager/api/beta
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Google Ad Manager.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Google Ad Manager.:  https://developers.google.com/ad-manager/api/beta
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Google Ad Manager
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Google Ad Manager Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Google Ad Manager Product documentation:  https://developers.google.com/ad-manager/api/beta
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
