@@ -1192,7 +1192,8 @@ def test_list_group_stats(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.ListGroupStatsRequest()
+        request = error_stats_service.ListGroupStatsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupStatsPager)
@@ -1210,6 +1211,56 @@ def test_list_group_stats_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
         client.list_group_stats()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == error_stats_service.ListGroupStatsRequest()
+
+
+def test_list_group_stats_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = error_stats_service.ListGroupStatsRequest(
+        project_name="project_name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
+        client.list_group_stats(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == error_stats_service.ListGroupStatsRequest(
+            project_name="project_name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_group_stats_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ErrorStatsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            error_stats_service.ListGroupStatsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_group_stats()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == error_stats_service.ListGroupStatsRequest()
@@ -1242,7 +1293,8 @@ async def test_list_group_stats_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.ListGroupStatsRequest()
+        request = error_stats_service.ListGroupStatsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupStatsAsyncPager)
@@ -1639,7 +1691,8 @@ def test_list_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.ListEventsRequest()
+        request = error_stats_service.ListEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventsPager)
@@ -1657,6 +1710,58 @@ def test_list_events_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
         client.list_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == error_stats_service.ListEventsRequest()
+
+
+def test_list_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = error_stats_service.ListEventsRequest(
+        project_name="project_name_value",
+        group_id="group_id_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        client.list_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == error_stats_service.ListEventsRequest(
+            project_name="project_name_value",
+            group_id="group_id_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ErrorStatsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            error_stats_service.ListEventsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == error_stats_service.ListEventsRequest()
@@ -1688,7 +1793,8 @@ async def test_list_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.ListEventsRequest()
+        request = error_stats_service.ListEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventsAsyncPager)
@@ -2069,7 +2175,8 @@ def test_delete_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.DeleteEventsRequest()
+        request = error_stats_service.DeleteEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, error_stats_service.DeleteEventsResponse)
@@ -2086,6 +2193,52 @@ def test_delete_events_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
         client.delete_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == error_stats_service.DeleteEventsRequest()
+
+
+def test_delete_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ErrorStatsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = error_stats_service.DeleteEventsRequest(
+        project_name="project_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
+        client.delete_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == error_stats_service.DeleteEventsRequest(
+            project_name="project_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ErrorStatsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            error_stats_service.DeleteEventsResponse()
+        )
+        response = await client.delete_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == error_stats_service.DeleteEventsRequest()
@@ -2116,7 +2269,8 @@ async def test_delete_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.DeleteEventsRequest()
+        request = error_stats_service.DeleteEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, error_stats_service.DeleteEventsResponse)

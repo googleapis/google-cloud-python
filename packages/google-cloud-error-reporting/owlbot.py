@@ -43,6 +43,7 @@ for library in s.get_staging_dirs(default_version):
             "google/cloud/errorreporting/",
             "setup.py",
             "testing/constraints-3.7.txt",
+            "testing/constraints-3.8.txt",
         ],
     )
 s.remove_staging_dirs()
