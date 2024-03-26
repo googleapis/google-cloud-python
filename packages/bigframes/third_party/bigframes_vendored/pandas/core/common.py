@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import Callable, TYPE_CHECKING
 
+from bigframes_vendored.pandas.core.dtypes.inference import iterable_not_string
+
 if TYPE_CHECKING:
     from bigframes_vendored.pandas.pandas._typing import T
 
@@ -40,3 +42,27 @@ def pipe(
         return func(*args, **kwargs)
     else:
         return func(obj, *args, **kwargs)
+
+
+def flatten(line):
+    """
+    Flatten an arbitrarily nested sequence.
+
+    Parameters
+    ----------
+    line : sequence
+        The non string sequence to flatten
+
+    Notes
+    -----
+    This doesn't consider strings sequences.
+
+    Returns
+    -------
+    flattened : generator
+    """
+    for element in line:
+        if iterable_not_string(element):
+            yield from flatten(element)
+        else:
+            yield element

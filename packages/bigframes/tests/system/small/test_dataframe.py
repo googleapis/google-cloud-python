@@ -3822,6 +3822,44 @@ def test_df_to_orc(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
+@skip_legacy_pandas
+@pytest.mark.parametrize(
+    ("expr",),
+    [
+        ("new_col = int64_col + int64_too",),
+        ("new_col = (rowindex > 3) | bool_col",),
+        ("int64_too = bool_col\nnew_col2 = rowindex",),
+    ],
+)
+def test_df_eval(scalars_dfs, expr):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.eval(expr).to_pandas()
+    pd_result = scalars_pandas_df.eval(expr)
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+@skip_legacy_pandas
+@pytest.mark.parametrize(
+    ("expr",),
+    [
+        ("int64_col > int64_too",),
+        ("bool_col",),
+        ("((int64_col - int64_too) % @local_var) == 0",),
+    ],
+)
+def test_df_query(scalars_dfs, expr):
+    # local_var is referenced in expressions
+    local_var = 3  # NOQA
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.query(expr).to_pandas()
+    pd_result = scalars_pandas_df.query(expr)
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
 @pytest.mark.parametrize(
     ("subset", "normalize", "ascending", "dropna"),
     [
