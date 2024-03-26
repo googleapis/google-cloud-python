@@ -13,10 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import BatchServiceClient
-from .async_client import BatchServiceAsyncClient
+import proto  # type: ignore
 
-__all__ = (
-    'BatchServiceClient',
-    'BatchServiceAsyncClient',
+__protobuf__ = proto.module(
+    package="google.cloud.batch.v1alpha",
+    manifest={},
 )
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))
