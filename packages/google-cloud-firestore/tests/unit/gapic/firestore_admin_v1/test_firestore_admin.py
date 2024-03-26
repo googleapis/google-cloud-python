@@ -1172,7 +1172,8 @@ def test_create_index(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.CreateIndexRequest()
+        request = firestore_admin.CreateIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1189,6 +1190,52 @@ def test_create_index_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         client.create_index()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.CreateIndexRequest()
+
+
+def test_create_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.CreateIndexRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
+        client.create_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.CreateIndexRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_index_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_index()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.CreateIndexRequest()
@@ -1218,7 +1265,8 @@ async def test_create_index_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.CreateIndexRequest()
+        request = firestore_admin.CreateIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1410,7 +1458,8 @@ def test_list_indexes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListIndexesRequest()
+        request = firestore_admin.ListIndexesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesPager)
@@ -1428,6 +1477,58 @@ def test_list_indexes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         client.list_indexes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListIndexesRequest()
+
+
+def test_list_indexes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ListIndexesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
+        client.list_indexes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListIndexesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_indexes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firestore_admin.ListIndexesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_indexes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ListIndexesRequest()
@@ -1459,7 +1560,8 @@ async def test_list_indexes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListIndexesRequest()
+        request = firestore_admin.ListIndexesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesAsyncPager)
@@ -1835,7 +1937,8 @@ def test_get_index(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetIndexRequest()
+        request = firestore_admin.GetIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, index.Index)
@@ -1856,6 +1959,57 @@ def test_get_index_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         client.get_index()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetIndexRequest()
+
+
+def test_get_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.GetIndexRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
+        client.get_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetIndexRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_index_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            index.Index(
+                name="name_value",
+                query_scope=index.Index.QueryScope.COLLECTION,
+                api_scope=index.Index.ApiScope.DATASTORE_MODE_API,
+                state=index.Index.State.CREATING,
+            )
+        )
+        response = await client.get_index()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.GetIndexRequest()
@@ -1890,7 +2044,8 @@ async def test_get_index_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetIndexRequest()
+        request = firestore_admin.GetIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, index.Index)
@@ -2070,7 +2225,8 @@ def test_delete_index(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteIndexRequest()
+        request = firestore_admin.DeleteIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2087,6 +2243,50 @@ def test_delete_index_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         client.delete_index()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteIndexRequest()
+
+
+def test_delete_index_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.DeleteIndexRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
+        client.delete_index(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteIndexRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_index_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_index()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.DeleteIndexRequest()
@@ -2114,7 +2314,8 @@ async def test_delete_index_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteIndexRequest()
+        request = firestore_admin.DeleteIndexRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2292,7 +2493,8 @@ def test_get_field(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetFieldRequest()
+        request = firestore_admin.GetFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, field.Field)
@@ -2310,6 +2512,54 @@ def test_get_field_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         client.get_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetFieldRequest()
+
+
+def test_get_field_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.GetFieldRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
+        client.get_field(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetFieldRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_field_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            field.Field(
+                name="name_value",
+            )
+        )
+        response = await client.get_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.GetFieldRequest()
@@ -2341,7 +2591,8 @@ async def test_get_field_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetFieldRequest()
+        request = firestore_admin.GetFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, field.Field)
@@ -2518,7 +2769,8 @@ def test_update_field(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.UpdateFieldRequest()
+        request = firestore_admin.UpdateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2535,6 +2787,48 @@ def test_update_field_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         client.update_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.UpdateFieldRequest()
+
+
+def test_update_field_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.UpdateFieldRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
+        client.update_field(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.UpdateFieldRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_field_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.UpdateFieldRequest()
@@ -2564,7 +2858,8 @@ async def test_update_field_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.UpdateFieldRequest()
+        request = firestore_admin.UpdateFieldRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2746,7 +3041,8 @@ def test_list_fields(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListFieldsRequest()
+        request = firestore_admin.ListFieldsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFieldsPager)
@@ -2764,6 +3060,58 @@ def test_list_fields_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         client.list_fields()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListFieldsRequest()
+
+
+def test_list_fields_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ListFieldsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
+        client.list_fields(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListFieldsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_fields_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firestore_admin.ListFieldsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_fields()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ListFieldsRequest()
@@ -2795,7 +3143,8 @@ async def test_list_fields_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListFieldsRequest()
+        request = firestore_admin.ListFieldsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFieldsAsyncPager)
@@ -3166,7 +3515,8 @@ def test_export_documents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ExportDocumentsRequest()
+        request = firestore_admin.ExportDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3183,6 +3533,54 @@ def test_export_documents_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         client.export_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ExportDocumentsRequest()
+
+
+def test_export_documents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ExportDocumentsRequest(
+        name="name_value",
+        output_uri_prefix="output_uri_prefix_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
+        client.export_documents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ExportDocumentsRequest(
+            name="name_value",
+            output_uri_prefix="output_uri_prefix_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_documents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_documents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ExportDocumentsRequest()
@@ -3212,7 +3610,8 @@ async def test_export_documents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ExportDocumentsRequest()
+        request = firestore_admin.ExportDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3392,7 +3791,8 @@ def test_import_documents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ImportDocumentsRequest()
+        request = firestore_admin.ImportDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3409,6 +3809,54 @@ def test_import_documents_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         client.import_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ImportDocumentsRequest()
+
+
+def test_import_documents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ImportDocumentsRequest(
+        name="name_value",
+        input_uri_prefix="input_uri_prefix_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        client.import_documents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ImportDocumentsRequest(
+            name="name_value",
+            input_uri_prefix="input_uri_prefix_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_documents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_documents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ImportDocumentsRequest()
@@ -3438,7 +3886,8 @@ async def test_import_documents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ImportDocumentsRequest()
+        request = firestore_admin.ImportDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3618,7 +4067,8 @@ def test_create_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.CreateDatabaseRequest()
+        request = firestore_admin.CreateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3635,6 +4085,54 @@ def test_create_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_database), "__call__") as call:
         client.create_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.CreateDatabaseRequest()
+
+
+def test_create_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.CreateDatabaseRequest(
+        parent="parent_value",
+        database_id="database_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        client.create_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.CreateDatabaseRequest(
+            parent="parent_value",
+            database_id="database_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.CreateDatabaseRequest()
@@ -3664,7 +4162,8 @@ async def test_create_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.CreateDatabaseRequest()
+        request = firestore_admin.CreateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3875,7 +4374,8 @@ def test_get_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetDatabaseRequest()
+        request = firestore_admin.GetDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, database.Database)
@@ -3916,6 +4416,63 @@ def test_get_database_empty_call():
         assert args[0] == firestore_admin.GetDatabaseRequest()
 
 
+def test_get_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.GetDatabaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        client.get_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetDatabaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            database.Database(
+                name="name_value",
+                uid="uid_value",
+                location_id="location_id_value",
+                type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
+                concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
+                point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
+                app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
+                key_prefix="key_prefix_value",
+                delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetDatabaseRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_database_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.GetDatabaseRequest
@@ -3951,7 +4508,8 @@ async def test_get_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetDatabaseRequest()
+        request = firestore_admin.GetDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, database.Database)
@@ -4148,7 +4706,8 @@ def test_list_databases(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListDatabasesRequest()
+        request = firestore_admin.ListDatabasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListDatabasesResponse)
@@ -4166,6 +4725,54 @@ def test_list_databases_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
         client.list_databases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListDatabasesRequest()
+
+
+def test_list_databases_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ListDatabasesRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        client.list_databases(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListDatabasesRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_databases_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firestore_admin.ListDatabasesResponse(
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_databases()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ListDatabasesRequest()
@@ -4197,7 +4804,8 @@ async def test_list_databases_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListDatabasesRequest()
+        request = firestore_admin.ListDatabasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListDatabasesResponse)
@@ -4378,7 +4986,8 @@ def test_update_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.UpdateDatabaseRequest()
+        request = firestore_admin.UpdateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4395,6 +5004,48 @@ def test_update_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
         client.update_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.UpdateDatabaseRequest()
+
+
+def test_update_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.UpdateDatabaseRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        client.update_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.UpdateDatabaseRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.UpdateDatabaseRequest()
@@ -4424,7 +5075,8 @@ async def test_update_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.UpdateDatabaseRequest()
+        request = firestore_admin.UpdateDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4614,7 +5266,8 @@ def test_delete_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteDatabaseRequest()
+        request = firestore_admin.DeleteDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4631,6 +5284,54 @@ def test_delete_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
         client.delete_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteDatabaseRequest()
+
+
+def test_delete_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.DeleteDatabaseRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        client.delete_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteDatabaseRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.DeleteDatabaseRequest()
@@ -4660,7 +5361,8 @@ async def test_delete_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteDatabaseRequest()
+        request = firestore_admin.DeleteDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4845,7 +5547,8 @@ def test_get_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetBackupRequest()
+        request = firestore_admin.GetBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup.Backup)
@@ -4866,6 +5569,57 @@ def test_get_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
         client.get_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetBackupRequest()
+
+
+def test_get_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.GetBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetBackupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.Backup(
+                name="name_value",
+                database="database_value",
+                database_uid="database_uid_value",
+                state=backup.Backup.State.CREATING,
+            )
+        )
+        response = await client.get_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.GetBackupRequest()
@@ -4900,7 +5654,8 @@ async def test_get_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetBackupRequest()
+        request = firestore_admin.GetBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup.Backup)
@@ -5082,7 +5837,8 @@ def test_list_backups(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListBackupsRequest()
+        request = firestore_admin.ListBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListBackupsResponse)
@@ -5100,6 +5856,54 @@ def test_list_backups_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
         client.list_backups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListBackupsRequest()
+
+
+def test_list_backups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ListBackupsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListBackupsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firestore_admin.ListBackupsResponse(
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backups()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ListBackupsRequest()
@@ -5131,7 +5935,8 @@ async def test_list_backups_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListBackupsRequest()
+        request = firestore_admin.ListBackupsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListBackupsResponse)
@@ -5312,7 +6117,8 @@ def test_delete_backup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteBackupRequest()
+        request = firestore_admin.DeleteBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5329,6 +6135,50 @@ def test_delete_backup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
         client.delete_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteBackupRequest()
+
+
+def test_delete_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.DeleteBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteBackupRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_backup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.DeleteBackupRequest()
@@ -5356,7 +6206,8 @@ async def test_delete_backup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteBackupRequest()
+        request = firestore_admin.DeleteBackupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5532,7 +6383,8 @@ def test_restore_database(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.RestoreDatabaseRequest()
+        request = firestore_admin.RestoreDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5549,6 +6401,56 @@ def test_restore_database_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
         client.restore_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.RestoreDatabaseRequest()
+
+
+def test_restore_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.RestoreDatabaseRequest(
+        parent="parent_value",
+        database_id="database_id_value",
+        backup="backup_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
+        client.restore_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.RestoreDatabaseRequest(
+            parent="parent_value",
+            database_id="database_id_value",
+            backup="backup_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_restore_database_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.restore_database()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.RestoreDatabaseRequest()
@@ -5578,7 +6480,8 @@ async def test_restore_database_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.RestoreDatabaseRequest()
+        request = firestore_admin.RestoreDatabaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5680,7 +6583,8 @@ def test_create_backup_schedule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.CreateBackupScheduleRequest()
+        request = firestore_admin.CreateBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schedule.BackupSchedule)
@@ -5700,6 +6604,58 @@ def test_create_backup_schedule_empty_call():
         type(client.transport.create_backup_schedule), "__call__"
     ) as call:
         client.create_backup_schedule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.CreateBackupScheduleRequest()
+
+
+def test_create_backup_schedule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.CreateBackupScheduleRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_schedule), "__call__"
+    ) as call:
+        client.create_backup_schedule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.CreateBackupScheduleRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_backup_schedule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schedule.BackupSchedule(
+                name="name_value",
+            )
+        )
+        response = await client.create_backup_schedule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.CreateBackupScheduleRequest()
@@ -5734,7 +6690,8 @@ async def test_create_backup_schedule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.CreateBackupScheduleRequest()
+        request = firestore_admin.CreateBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schedule.BackupSchedule)
@@ -5937,7 +6894,8 @@ def test_get_backup_schedule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetBackupScheduleRequest()
+        request = firestore_admin.GetBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schedule.BackupSchedule)
@@ -5957,6 +6915,58 @@ def test_get_backup_schedule_empty_call():
         type(client.transport.get_backup_schedule), "__call__"
     ) as call:
         client.get_backup_schedule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetBackupScheduleRequest()
+
+
+def test_get_backup_schedule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.GetBackupScheduleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_schedule), "__call__"
+    ) as call:
+        client.get_backup_schedule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.GetBackupScheduleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_schedule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schedule.BackupSchedule(
+                name="name_value",
+            )
+        )
+        response = await client.get_backup_schedule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.GetBackupScheduleRequest()
@@ -5991,7 +7001,8 @@ async def test_get_backup_schedule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.GetBackupScheduleRequest()
+        request = firestore_admin.GetBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schedule.BackupSchedule)
@@ -6182,7 +7193,8 @@ def test_list_backup_schedules(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListBackupSchedulesRequest()
+        request = firestore_admin.ListBackupSchedulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListBackupSchedulesResponse)
@@ -6201,6 +7213,56 @@ def test_list_backup_schedules_empty_call():
         type(client.transport.list_backup_schedules), "__call__"
     ) as call:
         client.list_backup_schedules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListBackupSchedulesRequest()
+
+
+def test_list_backup_schedules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.ListBackupSchedulesRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_schedules), "__call__"
+    ) as call:
+        client.list_backup_schedules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.ListBackupSchedulesRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backup_schedules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_schedules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firestore_admin.ListBackupSchedulesResponse()
+        )
+        response = await client.list_backup_schedules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.ListBackupSchedulesRequest()
@@ -6233,7 +7295,8 @@ async def test_list_backup_schedules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.ListBackupSchedulesRequest()
+        request = firestore_admin.ListBackupSchedulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListBackupSchedulesResponse)
@@ -6425,7 +7488,8 @@ def test_update_backup_schedule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.UpdateBackupScheduleRequest()
+        request = firestore_admin.UpdateBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schedule.BackupSchedule)
@@ -6445,6 +7509,54 @@ def test_update_backup_schedule_empty_call():
         type(client.transport.update_backup_schedule), "__call__"
     ) as call:
         client.update_backup_schedule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.UpdateBackupScheduleRequest()
+
+
+def test_update_backup_schedule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.UpdateBackupScheduleRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_schedule), "__call__"
+    ) as call:
+        client.update_backup_schedule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.UpdateBackupScheduleRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_backup_schedule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            schedule.BackupSchedule(
+                name="name_value",
+            )
+        )
+        response = await client.update_backup_schedule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.UpdateBackupScheduleRequest()
@@ -6479,7 +7591,8 @@ async def test_update_backup_schedule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.UpdateBackupScheduleRequest()
+        request = firestore_admin.UpdateBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schedule.BackupSchedule)
@@ -6680,7 +7793,8 @@ def test_delete_backup_schedule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteBackupScheduleRequest()
+        request = firestore_admin.DeleteBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6699,6 +7813,54 @@ def test_delete_backup_schedule_empty_call():
         type(client.transport.delete_backup_schedule), "__call__"
     ) as call:
         client.delete_backup_schedule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteBackupScheduleRequest()
+
+
+def test_delete_backup_schedule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firestore_admin.DeleteBackupScheduleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_schedule), "__call__"
+    ) as call:
+        client.delete_backup_schedule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteBackupScheduleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_schedule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_backup_schedule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == firestore_admin.DeleteBackupScheduleRequest()
@@ -6729,7 +7891,8 @@ async def test_delete_backup_schedule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore_admin.DeleteBackupScheduleRequest()
+        request = firestore_admin.DeleteBackupScheduleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6908,7 +8071,14 @@ def test_create_index_rest(request_type):
         "name": "name_value",
         "query_scope": 1,
         "api_scope": 1,
-        "fields": [{"field_path": "field_path_value", "order": 1, "array_config": 1}],
+        "fields": [
+            {
+                "field_path": "field_path_value",
+                "order": 1,
+                "array_config": 1,
+                "vector_config": {"dimension": 966, "flat": {}},
+            }
+        ],
         "state": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -8417,6 +9587,7 @@ def test_update_field_rest(request_type):
                             "field_path": "field_path_value",
                             "order": 1,
                             "array_config": 1,
+                            "vector_config": {"dimension": 966, "flat": {}},
                         }
                     ],
                     "state": 1,

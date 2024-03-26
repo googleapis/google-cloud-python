@@ -178,6 +178,11 @@ class Index(proto.Message):
                 ``array_value``\ s.
 
                 This field is a member of `oneof`_ ``value_mode``.
+            vector_config (google.cloud.firestore_admin_v1.types.Index.IndexField.VectorConfig):
+                Indicates that this field supports nearest
+                neighbors and distance operations on vector.
+
+                This field is a member of `oneof`_ ``value_mode``.
         """
 
         class Order(proto.Enum):
@@ -211,6 +216,41 @@ class Index(proto.Message):
             ARRAY_CONFIG_UNSPECIFIED = 0
             CONTAINS = 1
 
+        class VectorConfig(proto.Message):
+            r"""The index configuration to support vector search operations
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                dimension (int):
+                    Required. The vector dimension this
+                    configuration applies to.
+                    The resulting index will only include vectors of
+                    this dimension, and can be used for vector
+                    search with the same dimension.
+                flat (google.cloud.firestore_admin_v1.types.Index.IndexField.VectorConfig.FlatIndex):
+                    Indicates the vector index is a flat index.
+
+                    This field is a member of `oneof`_ ``type``.
+            """
+
+            class FlatIndex(proto.Message):
+                r"""An index that stores vectors in a flat data structure, and
+                supports exhaustive search.
+
+                """
+
+            dimension: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            flat: "Index.IndexField.VectorConfig.FlatIndex" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="type",
+                message="Index.IndexField.VectorConfig.FlatIndex",
+            )
+
         field_path: str = proto.Field(
             proto.STRING,
             number=1,
@@ -226,6 +266,12 @@ class Index(proto.Message):
             number=3,
             oneof="value_mode",
             enum="Index.IndexField.ArrayConfig",
+        )
+        vector_config: "Index.IndexField.VectorConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="value_mode",
+            message="Index.IndexField.VectorConfig",
         )
 
     name: str = proto.Field(
