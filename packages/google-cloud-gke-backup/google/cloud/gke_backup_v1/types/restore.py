@@ -34,7 +34,7 @@ __protobuf__ = proto.module(
 class Restore(proto.Message):
     r"""Represents both a request to Restore some portion of a Backup
     into a target GKE cluster and a record of the restore operation
-    itself. Next id: 18
+    itself.
 
     Attributes:
         name (str):
@@ -219,7 +219,6 @@ class Restore(proto.Message):
 
 class RestoreConfig(proto.Message):
     r"""Configuration of a restore.
-    Next id: 12
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -230,25 +229,26 @@ class RestoreConfig(proto.Message):
 
     Attributes:
         volume_data_restore_policy (google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicy):
-            Specifies the mechanism to be used to restore volume data.
-            Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (will be
-            treated as NO_VOLUME_DATA_RESTORATION).
+            Optional. Specifies the mechanism to be used to restore
+            volume data. Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED
+            (will be treated as NO_VOLUME_DATA_RESTORATION).
         cluster_resource_conflict_policy (google.cloud.gke_backup_v1.types.RestoreConfig.ClusterResourceConflictPolicy):
-            Defines the behavior for handling the situation where
-            cluster-scoped resources being restored already exist in the
-            target cluster. This MUST be set to a value other than
-            CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if
+            Optional. Defines the behavior for handling the situation
+            where cluster-scoped resources being restored already exist
+            in the target cluster. This MUST be set to a value other
+            than CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if
             [cluster_resource_restore_scope][google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_restore_scope]
             is not empty.
         namespaced_resource_restore_mode (google.cloud.gke_backup_v1.types.RestoreConfig.NamespacedResourceRestoreMode):
-            Defines the behavior for handling the situation where sets
-            of namespaced resources being restored already exist in the
-            target cluster. This MUST be set to a value other than
-            NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
+            Optional. Defines the behavior for handling the situation
+            where sets of namespaced resources being restored already
+            exist in the target cluster. This MUST be set to a value
+            other than NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
         cluster_resource_restore_scope (google.cloud.gke_backup_v1.types.RestoreConfig.ClusterResourceRestoreScope):
-            Identifies the cluster-scoped resources to
-            restore from the Backup. Not specifying it means
-            NO cluster resource will be restored.
+            Optional. Identifies the cluster-scoped
+            resources to restore from the Backup. Not
+            specifying it means NO cluster resource will be
+            restored.
         all_namespaces (bool):
             Restore all namespaced resources in the
             Backup if set to "True". Specifying this field
@@ -281,18 +281,18 @@ class RestoreConfig(proto.Message):
 
             This field is a member of `oneof`_ ``namespaced_resource_restore_scope``.
         substitution_rules (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.SubstitutionRule]):
-            A list of transformation rules to be applied
-            against Kubernetes resources as they are
-            selected for restoration from a Backup. Rules
-            are executed in order defined - this order
+            Optional. A list of transformation rules to
+            be applied against Kubernetes resources as they
+            are selected for restoration from a Backup.
+            Rules are executed in order defined - this order
             matters, as changes made by a rule may impact
             the filtering logic of subsequent rules. An
             empty list means no substitution will occur.
         transformation_rules (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.TransformationRule]):
-            A list of transformation rules to be applied
-            against Kubernetes resources as they are
-            selected for restoration from a Backup. Rules
-            are executed in order defined - this order
+            Optional. A list of transformation rules to
+            be applied against Kubernetes resources as they
+            are selected for restoration from a Backup.
+            Rules are executed in order defined - this order
             matters, as changes made by a rule may impact
             the filtering logic of subsequent rules. An
             empty list means no transformation will occur.
@@ -393,12 +393,15 @@ class RestoreConfig(proto.Message):
 
         Attributes:
             resource_group (str):
-                API group string of a Kubernetes resource,
-                e.g. "apiextensions.k8s.io", "storage.k8s.io",
-                etc. Note: use empty string for core API group
+                Optional. API group string of a Kubernetes
+                resource, e.g. "apiextensions.k8s.io",
+                "storage.k8s.io", etc. Note: use empty string
+                for core API group
             resource_kind (str):
-                Kind of a Kubernetes resource, e.g.
-                "CustomResourceDefinition", "StorageClass", etc.
+                Optional. Kind of a Kubernetes resource, must
+                be in UpperCamelCase (PascalCase) and singular
+                form. E.g. "CustomResourceDefinition",
+                "StorageClass", etc.
         """
 
         resource_group: str = proto.Field(
@@ -433,27 +436,28 @@ class RestoreConfig(proto.Message):
 
         Attributes:
             selected_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
-                A list of cluster-scoped resource group kinds
-                to restore from the backup. If specified, only
-                the selected resources will be restored.
-                Mutually exclusive to any other field in the
-                message.
+                Optional. A list of cluster-scoped resource
+                group kinds to restore from the backup. If
+                specified, only the selected resources will be
+                restored. Mutually exclusive to any other field
+                in the message.
             excluded_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
-                A list of cluster-scoped resource group kinds
-                to NOT restore from the backup. If specified,
-                all valid cluster-scoped resources will be
-                restored except for those specified in the list.
+                Optional. A list of cluster-scoped resource
+                group kinds to NOT restore from the backup. If
+                specified, all valid cluster-scoped resources
+                will be restored except for those specified in
+                the list. Mutually exclusive to any other field
+                in the message.
+            all_group_kinds (bool):
+                Optional. If True, all valid cluster-scoped
+                resources will be restored. Mutually exclusive
+                to any other field in the message.
+            no_group_kinds (bool):
+                Optional. If True, no cluster-scoped
+                resources will be restored. This has the same
+                restore scope as if the message is not defined.
                 Mutually exclusive to any other field in the
                 message.
-            all_group_kinds (bool):
-                If True, all valid cluster-scoped resources
-                will be restored. Mutually exclusive to any
-                other field in the message.
-            no_group_kinds (bool):
-                If True, no cluster-scoped resources will be
-                restored. This has the same restore scope as if
-                the message is not defined. Mutually exclusive
-                to any other field in the message.
         """
 
         selected_group_kinds: MutableSequence[
@@ -487,23 +491,25 @@ class RestoreConfig(proto.Message):
 
         Attributes:
             target_namespaces (MutableSequence[str]):
-                (Filtering parameter) Any resource subject to
-                substitution must be contained within one of the
-                listed Kubernetes Namespace in the Backup. If
-                this field is not provided, no namespace
-                filtering will be performed (all resources in
-                all Namespaces, including all cluster-scoped
-                resources, will be candidates for substitution).
+                Optional. (Filtering parameter) Any resource
+                subject to substitution must be contained within
+                one of the listed Kubernetes Namespace in the
+                Backup. If this field is not provided, no
+                namespace filtering will be performed (all
+                resources in all Namespaces, including all
+                cluster-scoped resources, will be candidates for
+                substitution).
                 To mix cluster-scoped and namespaced resources
                 in the same rule, use an empty string ("") as
                 one of the target namespaces.
             target_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
-                (Filtering parameter) Any resource subject to
-                substitution must belong to one of the listed
-                "types". If this field is not provided, no type
-                filtering will be performed (all resources of
-                all types matching previous filtering parameters
-                will be candidates for substitution).
+                Optional. (Filtering parameter) Any resource
+                subject to substitution must belong to one of
+                the listed "types". If this field is not
+                provided, no type filtering will be performed
+                (all resources of all types matching previous
+                filtering parameters will be candidates for
+                substitution).
             target_json_path (str):
                 Required. This is a [JSONPath]
                 (https://kubernetes.io/docs/reference/kubectl/jsonpath/)
@@ -514,7 +520,8 @@ class RestoreConfig(proto.Message):
                 identifier (identifies exactly which fields out of the
                 candidate resources will be modified).
             original_value_pattern (str):
-                (Filtering parameter) This is a [regular expression]
+                Optional. (Filtering parameter) This is a [regular
+                expression]
                 (https://en.wikipedia.org/wiki/Regular_expression) that is
                 compared against the fields matched by the target_json_path
                 expression (and must also have passed the previous filters).
@@ -525,11 +532,11 @@ class RestoreConfig(proto.Message):
                 (e.g., "", rather than unspecified) value for this field
                 will only match empty fields.
             new_value (str):
-                This is the new value to set for any fields
-                that pass the filtering and selection criteria.
-                To remove a value from a Kubernetes resource,
-                either leave this field unspecified, or set it
-                to the empty string ("").
+                Optional. This is the new value to set for
+                any fields that pass the filtering and selection
+                criteria. To remove a value from a Kubernetes
+                resource, either leave this field unspecified,
+                or set it to the empty string ("").
         """
 
         target_namespaces: MutableSequence[str] = proto.RepeatedField(
@@ -566,16 +573,18 @@ class RestoreConfig(proto.Message):
                 Required. op specifies the operation to
                 perform.
             from_path (str):
-                A string containing a JSON Pointer value that
-                references the location in the target document
-                to move the value from.
+                Optional. A string containing a JSON Pointer
+                value that references the location in the target
+                document to move the value from.
             path (str):
-                A string containing a JSON-Pointer value that
-                references a location within the target document
-                where the operation is performed.
+                Optional. A string containing a JSON-Pointer
+                value that references a location within the
+                target document where the operation is
+                performed.
             value (str):
-                A string that specifies the desired value in
-                string format to use for transformation.
+                Optional. A string that specifies the desired
+                value in string format to use for
+                transformation.
         """
 
         class Op(proto.Enum):
@@ -652,26 +661,24 @@ class RestoreConfig(proto.Message):
 
         Attributes:
             namespaces (MutableSequence[str]):
-                (Filtering parameter) Any resource subject to
-                transformation must be contained within one of
-                the listed Kubernetes Namespace in the Backup.
-                If this field is not provided, no namespace
-                filtering will be performed (all resources in
-                all Namespaces, including all cluster-scoped
-                resources, will be candidates for
+                Optional. (Filtering parameter) Any resource
+                subject to transformation must be contained
+                within one of the listed Kubernetes Namespace in
+                the Backup. If this field is not provided, no
+                namespace filtering will be performed (all
+                resources in all Namespaces, including all
+                cluster-scoped resources, will be candidates for
                 transformation).
-                To mix cluster-scoped and namespaced resources
-                in the same rule, use an empty string ("") as
-                one of the target namespaces.
             group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
-                (Filtering parameter) Any resource subject to
-                transformation must belong to one of the listed
-                "types". If this field is not provided, no type
-                filtering will be performed (all resources of
-                all types matching previous filtering parameters
-                will be candidates for transformation).
+                Optional. (Filtering parameter) Any resource
+                subject to transformation must belong to one of
+                the listed "types". If this field is not
+                provided, no type filtering will be performed
+                (all resources of all types matching previous
+                filtering parameters will be candidates for
+                transformation).
             json_path (str):
-                This is a [JSONPath]
+                Optional. This is a [JSONPath]
                 (https://github.com/json-path/JsonPath/blob/master/README.md)
                 expression that matches specific fields of candidate
                 resources and it operates as a filtering parameter
@@ -709,15 +716,15 @@ class RestoreConfig(proto.Message):
                 operation could affect the outcome of the second
                 operation.
             resource_filter (google.cloud.gke_backup_v1.types.RestoreConfig.ResourceFilter):
-                This field is used to specify a set of fields
-                that should be used to determine which resources
-                in backup should be acted upon by the supplied
-                transformation rule actions, and this will
-                ensure that only specific resources are affected
-                by transformation rule actions.
+                Optional. This field is used to specify a set
+                of fields that should be used to determine which
+                resources in backup should be acted upon by the
+                supplied transformation rule actions, and this
+                will ensure that only specific resources are
+                affected by transformation rule actions.
             description (str):
-                The description is a user specified string
-                description of the transformation rule.
+                Optional. The description is a user specified
+                string description of the transformation rule.
         """
 
         field_actions: MutableSequence[

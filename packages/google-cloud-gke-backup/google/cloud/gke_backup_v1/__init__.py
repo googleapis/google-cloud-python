@@ -20,7 +20,7 @@ __version__ = package_version.__version__
 
 from .services.backup_for_gke import BackupForGKEAsyncClient, BackupForGKEClient
 from .types.backup import Backup
-from .types.backup_plan import BackupPlan
+from .types.backup_plan import BackupPlan, ExclusionWindow, RpoConfig
 from .types.common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces
 from .types.gkebackup import (
     CreateBackupPlanRequest,
@@ -31,6 +31,8 @@ from .types.gkebackup import (
     DeleteBackupRequest,
     DeleteRestorePlanRequest,
     DeleteRestoreRequest,
+    GetBackupIndexDownloadUrlRequest,
+    GetBackupIndexDownloadUrlResponse,
     GetBackupPlanRequest,
     GetBackupRequest,
     GetRestorePlanRequest,
@@ -73,6 +75,9 @@ __all__ = (
     "DeleteRestorePlanRequest",
     "DeleteRestoreRequest",
     "EncryptionKey",
+    "ExclusionWindow",
+    "GetBackupIndexDownloadUrlRequest",
+    "GetBackupIndexDownloadUrlResponse",
     "GetBackupPlanRequest",
     "GetBackupRequest",
     "GetRestorePlanRequest",
@@ -98,6 +103,7 @@ __all__ = (
     "Restore",
     "RestoreConfig",
     "RestorePlan",
+    "RpoConfig",
     "UpdateBackupPlanRequest",
     "UpdateBackupRequest",
     "UpdateRestorePlanRequest",

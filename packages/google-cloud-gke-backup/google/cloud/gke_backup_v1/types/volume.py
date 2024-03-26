@@ -35,7 +35,6 @@ class VolumeBackup(proto.Message):
     r"""Represents the backup of a specific persistent volume as a
     component of a Backup - both the record of the operation and a
     pointer to the underlying storage-specific artifacts.
-    Next id: 14
 
     Attributes:
         name (str):
@@ -208,7 +207,7 @@ class VolumeBackup(proto.Message):
 
 class VolumeRestore(proto.Message):
     r"""Represents the operation of restoring a volume from a
-    VolumeBackup. Next id: 13
+    VolumeBackup.
 
     Attributes:
         name (str):

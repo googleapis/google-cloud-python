@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from .backup import Backup
-from .backup_plan import BackupPlan
+from .backup_plan import BackupPlan, ExclusionWindow, RpoConfig
 from .common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces
 from .gkebackup import (
     CreateBackupPlanRequest,
@@ -25,6 +25,8 @@ from .gkebackup import (
     DeleteBackupRequest,
     DeleteRestorePlanRequest,
     DeleteRestoreRequest,
+    GetBackupIndexDownloadUrlRequest,
+    GetBackupIndexDownloadUrlResponse,
     GetBackupPlanRequest,
     GetBackupRequest,
     GetRestorePlanRequest,
@@ -56,6 +58,8 @@ from .volume import VolumeBackup, VolumeRestore
 __all__ = (
     "Backup",
     "BackupPlan",
+    "ExclusionWindow",
+    "RpoConfig",
     "EncryptionKey",
     "NamespacedName",
     "NamespacedNames",
@@ -68,6 +72,8 @@ __all__ = (
     "DeleteBackupRequest",
     "DeleteRestorePlanRequest",
     "DeleteRestoreRequest",
+    "GetBackupIndexDownloadUrlRequest",
+    "GetBackupIndexDownloadUrlResponse",
     "GetBackupPlanRequest",
     "GetBackupRequest",
     "GetRestorePlanRequest",

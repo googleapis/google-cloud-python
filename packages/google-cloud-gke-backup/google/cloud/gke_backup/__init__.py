@@ -23,7 +23,11 @@ from google.cloud.gke_backup_v1.services.backup_for_gke.async_client import (
 )
 from google.cloud.gke_backup_v1.services.backup_for_gke.client import BackupForGKEClient
 from google.cloud.gke_backup_v1.types.backup import Backup
-from google.cloud.gke_backup_v1.types.backup_plan import BackupPlan
+from google.cloud.gke_backup_v1.types.backup_plan import (
+    BackupPlan,
+    ExclusionWindow,
+    RpoConfig,
+)
 from google.cloud.gke_backup_v1.types.common import (
     EncryptionKey,
     NamespacedName,
@@ -39,6 +43,8 @@ from google.cloud.gke_backup_v1.types.gkebackup import (
     DeleteBackupRequest,
     DeleteRestorePlanRequest,
     DeleteRestoreRequest,
+    GetBackupIndexDownloadUrlRequest,
+    GetBackupIndexDownloadUrlResponse,
     GetBackupPlanRequest,
     GetBackupRequest,
     GetRestorePlanRequest,
@@ -72,6 +78,8 @@ __all__ = (
     "BackupForGKEAsyncClient",
     "Backup",
     "BackupPlan",
+    "ExclusionWindow",
+    "RpoConfig",
     "EncryptionKey",
     "NamespacedName",
     "NamespacedNames",
@@ -84,6 +92,8 @@ __all__ = (
     "DeleteBackupRequest",
     "DeleteRestorePlanRequest",
     "DeleteRestoreRequest",
+    "GetBackupIndexDownloadUrlRequest",
+    "GetBackupIndexDownloadUrlResponse",
     "GetBackupPlanRequest",
     "GetBackupRequest",
     "GetRestorePlanRequest",
