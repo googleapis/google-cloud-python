@@ -27,6 +27,29 @@ def auc(x, y) -> float:
     way to summarize a precision-recall curve, see
     :func:`average_precision_score`.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> x = bpd.DataFrame([1, 1, 2, 2])
+        >>> y = bpd.DataFrame([2, 3, 4, 5])
+        >>> auc = bigframes.ml.metrics.auc(x, y)
+        >>> auc
+        3.5
+
+        The input can be Series:
+
+        >>> df = bpd.DataFrame(
+        ...     {"x": [1, 1, 2, 2],
+        ...      "y": [2, 3, 4, 5],}
+        ... )
+        >>> auc = bigframes.ml.metrics.auc(df["x"], df["y"])
+        >>> auc
+        3.5
+
+
     Args:
         x (Series or DataFrame of shape (n_samples,)):
             X coordinates. These must be either monotonic increasing or monotonic
@@ -43,6 +66,28 @@ def auc(x, y) -> float:
 def roc_auc_score(y_true, y_score) -> float:
     """Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC) \
     from prediction scores.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([0, 0, 1, 1, 0, 1, 0, 1, 1, 1])
+        >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45])
+        >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(y_true, y_score)
+        >>> roc_auc_score
+        0.625
+
+    The input can be Series:
+
+        >>> df = bpd.DataFrame(
+        ...     {"y_true": [0, 0, 1, 1, 0, 1, 0, 1, 1, 1],
+        ...      "y_score": [0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45],}
+        ... )
+        >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(df["y_true"], df["y_score"])
+        >>> roc_auc_score
+        0.625
 
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):
@@ -71,6 +116,39 @@ def roc_curve(
     drop_intermediate: bool = True,
 ):
     """Compute Receiver operating characteristic (ROC).
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([1, 1, 2, 2])
+        >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8])
+        >>> fpr, tpr, thresholds = bigframes.ml.metrics.roc_curve(y_true, y_score, drop_intermediate=False)
+        >>> fpr
+        0    0.0
+        1    0.0
+        2    0.0
+        3    0.0
+        4    0.0
+        Name: fpr, dtype: Float64
+
+        >>> tpr
+        0         0.0
+        1    0.333333
+        2         0.5
+        3    0.833333
+        4         1.0
+        Name: tpr, dtype: Float64
+
+        >>> thresholds
+        0     inf
+        1     0.8
+        2     0.4
+        3    0.35
+        4     0.1
+        Name: thresholds, dtype: Float64
 
     Args:
         y_true: Series or DataFrame of shape (n_samples,)
