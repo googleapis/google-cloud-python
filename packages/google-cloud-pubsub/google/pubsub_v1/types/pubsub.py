@@ -222,7 +222,7 @@ class IngestionDataSourceSettings(proto.Message):
                        ``gcp_service_account``.
                 PUBLISH_PERMISSION_DENIED (3):
                     Permission denied encountered while publishing to the topic.
-                    This can happen due to Pub/Sub SA has not been granted the
+                    This can happen if the Pub/Sub SA has not been granted the
                     `appropriate publish
                     permissions <https://cloud.google.com/pubsub/docs/access-control#pubsub.publisher>`__
                 STREAM_NOT_FOUND (4):
@@ -1394,6 +1394,11 @@ class CloudStorageConfig(proto.Message):
             See the `object naming
             requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
             Must not end in "/".
+        filename_datetime_format (str):
+            Optional. User-provided format string specifying how to
+            represent datetimes in Cloud Storage filenames. See the
+            `datetime format
+            guidance <https://cloud.google.com/pubsub/docs/create-cloudstorage-subscription#file_names>`__.
         text_config (google.pubsub_v1.types.CloudStorageConfig.TextConfig):
             Optional. If set, message data will be
             written to Cloud Storage in text format.
@@ -1486,6 +1491,10 @@ class CloudStorageConfig(proto.Message):
     filename_suffix: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filename_datetime_format: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
     text_config: TextConfig = proto.Field(
         proto.MESSAGE,
