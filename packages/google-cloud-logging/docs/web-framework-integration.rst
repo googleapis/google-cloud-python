@@ -18,15 +18,12 @@ Flask
 
 Flask integration has been tested to work with the following versions of Flask:
 
-===============  ==============
-Python version   Flask versions
-===============  ==============
-3.7              >=1.0.0
-3.8              >=1.0.0
-3.9              >=1.0.0
-3.10             >=1.0.3
-3.11             >=1.0.3
-3.12             >=1.0.3
-===============  ==============
+- Python 3.7 - 3.9:
+
+ - Flask >=1.0.0
+
+- Python >=3.10:
+
+ - Flask >=1.0.3
 
 Be sure to :doc:`set up logging </std-lib-integration>` before declaring the Flask app.
