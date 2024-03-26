@@ -26,7 +26,7 @@ class DatelikeOps:
             0      August 15, 2014, 08:15:12 AM
             1    February 29, 2012, 02:15:12 AM
             2      August 15, 2015, 03:15:12 AM
-            Name: 0, dtype: string
+            dtype: string
 
         Args:
             date_format (str):

@@ -20,7 +20,6 @@ import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetim
 import pandas as pd
 
 import bigframes.constants as constants
-import bigframes.core.global_session as global_session
 import bigframes.dataframe
 import bigframes.operations as ops
 import bigframes.series
@@ -52,21 +51,7 @@ def to_datetime(
             f"to datetime is not implemented. {constants.FEEDBACK_LINK}"
         )
 
-    if not isinstance(arg, bigframes.series.Series):
-        # This block ensures compatibility with local data formats, including
-        # iterables and pandas.Series
-        # TODO: Currently, data upload is performed using pandas DataFrames
-        # combined with the `read_pandas` method due to the BigFrames DataFrame
-        # constructor's limitations in handling various data types. Plan to update
-        # the upload process to utilize the BigFrames DataFrame constructor directly
-        # once it is enhanced for more related datatypes.
-        arg = global_session.with_default_session(
-            bigframes.session.Session.read_pandas, pd.DataFrame(arg)
-        )
-        if len(arg.columns) != 1:
-            raise ValueError("Input must be 1-dimensional.")
-
-        arg = arg[arg.columns[0]]
+    arg = bigframes.series.Series(arg)
 
     if not utc and arg.dtype not in ("Int64", "Float64"):  # type: ignore
         raise NotImplementedError(
