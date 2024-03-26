@@ -1,5 +1,20 @@
 {
     "packages": {
+        "packages/google-ads-admanager": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-ads-admanager",
+            "extra-files": [
+                "google/ads/admanager/gapic_version.py",
+                "google/ads/admanager_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.ads.admanager.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-ai-generativelanguage": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
