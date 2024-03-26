@@ -9208,6 +9208,8 @@ class MeshCertificates(proto.Message):
 class DatabaseEncryption(proto.Message):
     r"""Configuration of etcd encryption.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key_name (str):
             Name of CloudKMS key to use for the
@@ -9215,6 +9217,19 @@ class DatabaseEncryption(proto.Message):
             projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key
         state (google.cloud.container_v1beta1.types.DatabaseEncryption.State):
             The desired state of etcd encryption.
+        current_state (google.cloud.container_v1beta1.types.DatabaseEncryption.CurrentState):
+            Output only. The current state of etcd
+            encryption.
+
+            This field is a member of `oneof`_ ``_current_state``.
+        decryption_keys (MutableSequence[str]):
+            Output only. Keys in use by the cluster for decrypting
+            existing objects, in addition to the key in ``key_name``.
+
+            Each item is a CloudKMS key resource.
+        last_operation_errors (MutableSequence[google.cloud.container_v1beta1.types.DatabaseEncryption.OperationError]):
+            Output only. Records errors seen during
+            DatabaseEncryption update operations.
     """
 
     class State(proto.Enum):
@@ -9234,6 +9249,68 @@ class DatabaseEncryption(proto.Message):
         ENCRYPTED = 1
         DECRYPTED = 2
 
+    class CurrentState(proto.Enum):
+        r"""Current State of etcd encryption.
+
+        Values:
+            CURRENT_STATE_UNSPECIFIED (0):
+                Should never be set
+            CURRENT_STATE_ENCRYPTED (7):
+                Secrets in etcd are encrypted.
+            CURRENT_STATE_DECRYPTED (2):
+                Secrets in etcd are stored in plain text (at
+                etcd level) - this is unrelated to Compute
+                Engine level full disk encryption.
+            CURRENT_STATE_ENCRYPTION_PENDING (3):
+                Encryption (or re-encryption with a different
+                CloudKMS key) of Secrets is in progress.
+            CURRENT_STATE_ENCRYPTION_ERROR (4):
+                Encryption (or re-encryption with a different
+                CloudKMS key) of Secrets in etcd encountered an
+                error.
+            CURRENT_STATE_DECRYPTION_PENDING (5):
+                De-crypting Secrets to plain text in etcd is
+                in progress.
+            CURRENT_STATE_DECRYPTION_ERROR (6):
+                De-crypting Secrets to plain text in etcd
+                encountered an error.
+        """
+        CURRENT_STATE_UNSPECIFIED = 0
+        CURRENT_STATE_ENCRYPTED = 7
+        CURRENT_STATE_DECRYPTED = 2
+        CURRENT_STATE_ENCRYPTION_PENDING = 3
+        CURRENT_STATE_ENCRYPTION_ERROR = 4
+        CURRENT_STATE_DECRYPTION_PENDING = 5
+        CURRENT_STATE_DECRYPTION_ERROR = 6
+
+    class OperationError(proto.Message):
+        r"""OperationError records errors seen from CloudKMS keys
+        encountered during updates to DatabaseEncryption configuration.
+
+        Attributes:
+            key_name (str):
+                CloudKMS key resource that had the error.
+            error_message (str):
+                Description of the error seen during the
+                operation.
+            timestamp (google.protobuf.timestamp_pb2.Timestamp):
+                Time when the CloudKMS error was seen.
+        """
+
+        key_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        error_message: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        timestamp: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+
     key_name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -9242,6 +9319,21 @@ class DatabaseEncryption(proto.Message):
         proto.ENUM,
         number=2,
         enum=State,
+    )
+    current_state: CurrentState = proto.Field(
+        proto.ENUM,
+        number=3,
+        optional=True,
+        enum=CurrentState,
+    )
+    decryption_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    last_operation_errors: MutableSequence[OperationError] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=OperationError,
     )
 
 
