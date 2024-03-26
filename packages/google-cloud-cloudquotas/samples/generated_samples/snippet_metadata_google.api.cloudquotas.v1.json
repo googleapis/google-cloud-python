@@ -68,12 +68,12 @@
       "regionTag": "cloudquotas_v1_generated_CloudQuotas_CreateQuotaPreference_async",
       "segments": [
         {
-          "end": 58,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 58,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -83,18 +83,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 55,
-          "start": 53,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 59,
-          "start": 56,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -156,12 +156,12 @@
       "regionTag": "cloudquotas_v1_generated_CloudQuotas_CreateQuotaPreference_sync",
       "segments": [
         {
-          "end": 58,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 58,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -171,18 +171,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 52,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 55,
-          "start": 53,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 59,
-          "start": 56,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -885,12 +885,12 @@
       "regionTag": "cloudquotas_v1_generated_CloudQuotas_UpdateQuotaPreference_async",
       "segments": [
         {
-          "end": 57,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -900,18 +900,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 51,
+          "end": 50,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 52,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -969,12 +969,12 @@
       "regionTag": "cloudquotas_v1_generated_CloudQuotas_UpdateQuotaPreference_sync",
       "segments": [
         {
-          "end": 57,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 57,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -984,18 +984,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 51,
+          "end": 50,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 54,
-          "start": 52,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 58,
-          "start": 55,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
