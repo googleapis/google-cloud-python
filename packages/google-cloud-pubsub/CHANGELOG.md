@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.21.0](https://github.com/googleapis/python-pubsub/compare/v2.20.3...v2.21.0) (2024-03-26)
+
+
+### Features
+
+* Add custom datetime format for Cloud Storage subscriptions ([#1131](https://github.com/googleapis/python-pubsub/issues/1131)) ([4da6744](https://github.com/googleapis/python-pubsub/commit/4da67441ddab01a173620d8c03bc640271c785c6))
+
 ## [2.20.3](https://github.com/googleapis/python-pubsub/compare/v2.20.2...v2.20.3) (2024-03-21)
 
 
