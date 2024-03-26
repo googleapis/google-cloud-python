@@ -246,11 +246,16 @@ tanh_op = create_unary_op(name="tanh", type_rule=op_typing.REAL_NUMERIC)
 arcsinh_op = create_unary_op(name="arcsinh", type_rule=op_typing.REAL_NUMERIC)
 arccosh_op = create_unary_op(name="arccosh", type_rule=op_typing.REAL_NUMERIC)
 arctanh_op = create_unary_op(name="arctanh", type_rule=op_typing.REAL_NUMERIC)
+arctan2_op = create_binary_op(name="arctan2", type_rule=op_typing.REAL_NUMERIC)
 ## Numeric Ops
+floor_op = create_unary_op(name="floor", type_rule=op_typing.REAL_NUMERIC)
+ceil_op = create_unary_op(name="ceil", type_rule=op_typing.REAL_NUMERIC)
 abs_op = create_unary_op(name="abs", type_rule=op_typing.INPUT_TYPE)
 exp_op = create_unary_op(name="exp", type_rule=op_typing.REAL_NUMERIC)
+expm1_op = create_unary_op(name="expm1", type_rule=op_typing.REAL_NUMERIC)
 ln_op = create_unary_op(name="log", type_rule=op_typing.REAL_NUMERIC)
 log10_op = create_unary_op(name="log10", type_rule=op_typing.REAL_NUMERIC)
+log1p_op = create_unary_op(name="log1p", type_rule=op_typing.REAL_NUMERIC)
 sqrt_op = create_unary_op(name="sqrt", type_rule=op_typing.REAL_NUMERIC)
 
 
@@ -540,6 +545,10 @@ NUMPY_TO_OP: typing.Final = {
     np.log10: log10_op,
     np.sqrt: sqrt_op,
     np.abs: abs_op,
+    np.floor: floor_op,
+    np.ceil: ceil_op,
+    np.log1p: log1p_op,
+    np.expm1: expm1_op,
 }
 
 
@@ -549,4 +558,5 @@ NUMPY_TO_BINOP: typing.Final = {
     np.multiply: mul_op,
     np.divide: div_op,
     np.power: pow_op,
+    np.arctan2: arctan2_op,
 }

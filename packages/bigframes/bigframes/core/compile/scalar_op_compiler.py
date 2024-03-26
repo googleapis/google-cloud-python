@@ -257,6 +257,13 @@ def arctan_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.NumericValue, x).atan()
 
 
+@scalar_op_compiler.register_binary_op(ops.arctan2_op)
+def arctan2_op_impl(x: ibis_types.Value, y: ibis_types.Value):
+    return typing.cast(ibis_types.NumericValue, x).atan2(
+        typing.cast(ibis_types.NumericValue, y)
+    )
+
+
 # Hyperbolic trig functions
 # BQ has these functions, but Ibis doesn't
 @scalar_op_compiler.register_unary_op(ops.sinh_op)
@@ -319,6 +326,30 @@ def arctanh_op_impl(x: ibis_types.Value):
 
 
 # Numeric Ops
+@scalar_op_compiler.register_unary_op(ops.floor_op)
+def floor_op_impl(x: ibis_types.Value):
+    x_numeric = typing.cast(ibis_types.NumericValue, x)
+    if x_numeric.type().is_integer():
+        return x_numeric.cast(ibis_dtypes.Float64())
+    if x_numeric.type().is_floating():
+        # Default ibis impl tries to cast to integer, which doesn't match pandas and can overflow
+        return float_floor(x_numeric)
+    else:  # numeric
+        return x_numeric.floor()
+
+
+@scalar_op_compiler.register_unary_op(ops.ceil_op)
+def ceil_op_impl(x: ibis_types.Value):
+    x_numeric = typing.cast(ibis_types.NumericValue, x)
+    if x_numeric.type().is_integer():
+        return x_numeric.cast(ibis_dtypes.Float64())
+    if x_numeric.type().is_floating():
+        # Default ibis impl tries to cast to integer, which doesn't match pandas and can overflow
+        return float_ceil(x_numeric)
+    else:  # numeric
+        return x_numeric.ceil()
+
+
 @scalar_op_compiler.register_unary_op(ops.abs_op)
 def abs_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.NumericValue, x).abs()
@@ -347,11 +378,21 @@ def ln_op_impl(x: ibis_types.Value):
     return (~domain).ifelse(out_of_domain, numeric_value.ln())
 
 
+@scalar_op_compiler.register_unary_op(ops.log1p_op)
+def log1p_op_impl(x: ibis_types.Value):
+    return ln_op_impl(_ibis_num(1) + x)
+
+
 @scalar_op_compiler.register_unary_op(ops.exp_op)
 def exp_op_impl(x: ibis_types.Value):
     numeric_value = typing.cast(ibis_types.NumericValue, x)
     domain = numeric_value < _FLOAT64_EXP_BOUND
     return (~domain).ifelse(_INF, numeric_value.exp())
+
+
+@scalar_op_compiler.register_unary_op(ops.expm1_op)
+def expm1_op_impl(x: ibis_types.Value):
+    return exp_op_impl(x) - _ibis_num(1)
 
 
 @scalar_op_compiler.register_unary_op(ops.invert_op)
@@ -1318,3 +1359,16 @@ def _ibis_num(number: float):
 @ibis.udf.scalar.builtin
 def timestamp(a: str) -> ibis_dtypes.timestamp:
     """Convert string to timestamp."""
+
+
+# Need these because ibis otherwise tries to do casts to int that can fail
+@ibis.udf.scalar.builtin(name="floor")
+def float_floor(a: float) -> float:
+    """Convert string to timestamp."""
+    return 0  # pragma: NO COVER
+
+
+@ibis.udf.scalar.builtin(name="ceil")
+def float_ceil(a: float) -> float:
+    """Convert string to timestamp."""
+    return 0  # pragma: NO COVER

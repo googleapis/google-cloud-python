@@ -56,6 +56,10 @@ def test_series_ufuncs(floats_pd, floats_bf, opname):
         ("log10",),
         ("sqrt",),
         ("abs",),
+        ("floor",),
+        ("ceil",),
+        ("expm1",),
+        ("log1p",),
     ],
 )
 def test_df_ufuncs(scalars_dfs, opname):
@@ -77,6 +81,7 @@ def test_df_ufuncs(scalars_dfs, opname):
         ("multiply",),
         ("divide",),
         ("power",),
+        ("arctan2",),
     ],
 )
 def test_series_binary_ufuncs(floats_product_pd, floats_product_bf, opname):
@@ -110,6 +115,23 @@ def test_df_binary_ufuncs(scalars_dfs, opname):
     )
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("x", "y"),
+    [
+        ("int64_col", "int64_col"),
+        ("float64_col", "int64_col"),
+    ],
+)
+def test_series_atan2(scalars_dfs, x, y):
+    # Test atan2 separately as pandas errors when passing entire df as input, so pass only series
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = np.arctan2(scalars_df[x], scalars_df[y]).to_pandas()
+    pd_result = np.arctan2(scalars_pandas_df[x], scalars_pandas_df[y])
+
+    pd.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_series_binary_ufuncs_reverse(scalars_dfs):
