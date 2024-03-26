@@ -884,6 +884,37 @@ class BackupForGKEGrpcTransport(BackupForGKETransport):
             )
         return self._stubs["get_volume_restore"]
 
+    @property
+    def get_backup_index_download_url(
+        self,
+    ) -> Callable[
+        [gkebackup.GetBackupIndexDownloadUrlRequest],
+        gkebackup.GetBackupIndexDownloadUrlResponse,
+    ]:
+        r"""Return a callable for the get backup index download url method over gRPC.
+
+        Retrieve the link to the backupIndex.
+
+        Returns:
+            Callable[[~.GetBackupIndexDownloadUrlRequest],
+                    ~.GetBackupIndexDownloadUrlResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_index_download_url" not in self._stubs:
+            self._stubs[
+                "get_backup_index_download_url"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupIndexDownloadUrl",
+                request_serializer=gkebackup.GetBackupIndexDownloadUrlRequest.serialize,
+                response_deserializer=gkebackup.GetBackupIndexDownloadUrlResponse.deserialize,
+            )
+        return self._stubs["get_backup_index_download_url"]
+
     def close(self):
         self.grpc_channel.close()
 

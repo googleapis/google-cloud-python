@@ -47,10 +47,14 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -1972,6 +1976,8 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
             protected_pod_count=2036,
             state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
             state_reason="state_reason_value",
+            rpo_risk_level=1504,
+            rpo_risk_reason="rpo_risk_reason_value",
         )
         response = client.get_backup_plan(request)
 
@@ -1992,6 +1998,8 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
     assert response.protected_pod_count == 2036
     assert response.state == backup_plan.BackupPlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
+    assert response.rpo_risk_level == 1504
+    assert response.rpo_risk_reason == "rpo_risk_reason_value"
 
 
 def test_get_backup_plan_empty_call():
@@ -2058,6 +2066,8 @@ async def test_get_backup_plan_empty_call_async():
                 protected_pod_count=2036,
                 state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
                 state_reason="state_reason_value",
+                rpo_risk_level=1504,
+                rpo_risk_reason="rpo_risk_reason_value",
             )
         )
         response = await client.get_backup_plan()
@@ -2093,6 +2103,8 @@ async def test_get_backup_plan_async(
                 protected_pod_count=2036,
                 state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
                 state_reason="state_reason_value",
+                rpo_risk_level=1504,
+                rpo_risk_reason="rpo_risk_reason_value",
             )
         )
         response = await client.get_backup_plan(request)
@@ -2114,6 +2126,8 @@ async def test_get_backup_plan_async(
     assert response.protected_pod_count == 2036
     assert response.state == backup_plan.BackupPlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
+    assert response.rpo_risk_level == 1504
+    assert response.rpo_risk_reason == "rpo_risk_reason_value"
 
 
 @pytest.mark.asyncio
@@ -9626,6 +9640,307 @@ async def test_get_volume_restore_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        gkebackup.GetBackupIndexDownloadUrlRequest,
+        dict,
+    ],
+)
+def test_get_backup_index_download_url(request_type, transport: str = "grpc"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gkebackup.GetBackupIndexDownloadUrlResponse(
+            signed_url="signed_url_value",
+        )
+        response = client.get_backup_index_download_url(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = gkebackup.GetBackupIndexDownloadUrlRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gkebackup.GetBackupIndexDownloadUrlResponse)
+    assert response.signed_url == "signed_url_value"
+
+
+def test_get_backup_index_download_url_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        client.get_backup_index_download_url()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupIndexDownloadUrlRequest()
+
+
+def test_get_backup_index_download_url_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gkebackup.GetBackupIndexDownloadUrlRequest(
+        backup="backup_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        client.get_backup_index_download_url(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupIndexDownloadUrlRequest(
+            backup="backup_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_index_download_url_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.GetBackupIndexDownloadUrlResponse(
+                signed_url="signed_url_value",
+            )
+        )
+        response = await client.get_backup_index_download_url()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gkebackup.GetBackupIndexDownloadUrlRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_backup_index_download_url_async(
+    transport: str = "grpc_asyncio",
+    request_type=gkebackup.GetBackupIndexDownloadUrlRequest,
+):
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.GetBackupIndexDownloadUrlResponse(
+                signed_url="signed_url_value",
+            )
+        )
+        response = await client.get_backup_index_download_url(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = gkebackup.GetBackupIndexDownloadUrlRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gkebackup.GetBackupIndexDownloadUrlResponse)
+    assert response.signed_url == "signed_url_value"
+
+
+@pytest.mark.asyncio
+async def test_get_backup_index_download_url_async_from_dict():
+    await test_get_backup_index_download_url_async(request_type=dict)
+
+
+def test_get_backup_index_download_url_field_headers():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gkebackup.GetBackupIndexDownloadUrlRequest()
+
+    request.backup = "backup_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        call.return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+        client.get_backup_index_download_url(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "backup=backup_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_backup_index_download_url_field_headers_async():
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gkebackup.GetBackupIndexDownloadUrlRequest()
+
+    request.backup = "backup_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.GetBackupIndexDownloadUrlResponse()
+        )
+        await client.get_backup_index_download_url(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "backup=backup_value",
+    ) in kw["metadata"]
+
+
+def test_get_backup_index_download_url_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_backup_index_download_url(
+            backup="backup_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].backup
+        mock_val = "backup_value"
+        assert arg == mock_val
+
+
+def test_get_backup_index_download_url_flattened_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup_index_download_url(
+            gkebackup.GetBackupIndexDownloadUrlRequest(),
+            backup="backup_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_index_download_url_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_index_download_url), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gkebackup.GetBackupIndexDownloadUrlResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_backup_index_download_url(
+            backup="backup_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].backup
+        mock_val = "backup_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_backup_index_download_url_flattened_error_async():
+    client = BackupForGKEAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_backup_index_download_url(
+            gkebackup.GetBackupIndexDownloadUrlRequest(),
+            backup="backup_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gkebackup.CreateBackupPlanRequest,
         dict,
     ],
@@ -9651,7 +9966,32 @@ def test_create_backup_plan_rest(request_type):
             "locked": True,
         },
         "labels": {},
-        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
+        "backup_schedule": {
+            "cron_schedule": "cron_schedule_value",
+            "paused": True,
+            "rpo_config": {
+                "target_rpo_minutes": 1947,
+                "exclusion_windows": [
+                    {
+                        "start_time": {
+                            "hours": 561,
+                            "minutes": 773,
+                            "seconds": 751,
+                            "nanos": 543,
+                        },
+                        "duration": {"seconds": 751, "nanos": 543},
+                        "single_occurrence_date": {
+                            "year": 433,
+                            "month": 550,
+                            "day": 318,
+                        },
+                        "daily": True,
+                        "days_of_week": {"days_of_week": [1]},
+                    }
+                ],
+            },
+            "next_scheduled_backup_time": {},
+        },
         "etag": "etag_value",
         "deactivated": True,
         "backup_config": {
@@ -9673,6 +10013,8 @@ def test_create_backup_plan_rest(request_type):
         "protected_pod_count": 2036,
         "state": 1,
         "state_reason": "state_reason_value",
+        "rpo_risk_level": 1504,
+        "rpo_risk_reason": "rpo_risk_reason_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10387,6 +10729,8 @@ def test_get_backup_plan_rest(request_type):
             protected_pod_count=2036,
             state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
             state_reason="state_reason_value",
+            rpo_risk_level=1504,
+            rpo_risk_reason="rpo_risk_reason_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -10411,6 +10755,8 @@ def test_get_backup_plan_rest(request_type):
     assert response.protected_pod_count == 2036
     assert response.state == backup_plan.BackupPlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
+    assert response.rpo_risk_level == 1504
+    assert response.rpo_risk_reason == "rpo_risk_reason_value"
 
 
 def test_get_backup_plan_rest_required_fields(
@@ -10672,7 +11018,32 @@ def test_update_backup_plan_rest(request_type):
             "locked": True,
         },
         "labels": {},
-        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
+        "backup_schedule": {
+            "cron_schedule": "cron_schedule_value",
+            "paused": True,
+            "rpo_config": {
+                "target_rpo_minutes": 1947,
+                "exclusion_windows": [
+                    {
+                        "start_time": {
+                            "hours": 561,
+                            "minutes": 773,
+                            "seconds": 751,
+                            "nanos": 543,
+                        },
+                        "duration": {"seconds": 751, "nanos": 543},
+                        "single_occurrence_date": {
+                            "year": 433,
+                            "month": 550,
+                            "day": 318,
+                        },
+                        "daily": True,
+                        "days_of_week": {"days_of_week": [1]},
+                    }
+                ],
+            },
+            "next_scheduled_backup_time": {},
+        },
         "etag": "etag_value",
         "deactivated": True,
         "backup_config": {
@@ -10694,6 +11065,8 @@ def test_update_backup_plan_rest(request_type):
         "protected_pod_count": 2036,
         "state": 1,
         "state_reason": "state_reason_value",
+        "rpo_risk_level": 1504,
+        "rpo_risk_reason": "rpo_risk_reason_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -17699,6 +18072,281 @@ def test_get_volume_restore_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupIndexDownloadUrlRequest,
+        dict,
+    ],
+)
+def test_get_backup_index_download_url_rest(request_type):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.GetBackupIndexDownloadUrlResponse(
+            signed_url="signed_url_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gkebackup.GetBackupIndexDownloadUrlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup_index_download_url(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gkebackup.GetBackupIndexDownloadUrlResponse)
+    assert response.signed_url == "signed_url_value"
+
+
+def test_get_backup_index_download_url_rest_required_fields(
+    request_type=gkebackup.GetBackupIndexDownloadUrlRequest,
+):
+    transport_class = transports.BackupForGKERestTransport
+
+    request_init = {}
+    request_init["backup"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup_index_download_url._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backup"] = "backup_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup_index_download_url._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backup" in jsonified_request
+    assert jsonified_request["backup"] == "backup_value"
+
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gkebackup.GetBackupIndexDownloadUrlResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_backup_index_download_url(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_backup_index_download_url_rest_unset_required_fields():
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_backup_index_download_url._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("backup",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_index_download_url_rest_interceptors(null_interceptor):
+    transport = transports.BackupForGKERestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackupForGKERestInterceptor(),
+    )
+    client = BackupForGKEClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_backup_index_download_url"
+    ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "pre_get_backup_index_download_url"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gkebackup.GetBackupIndexDownloadUrlRequest.pb(
+            gkebackup.GetBackupIndexDownloadUrlRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gkebackup.GetBackupIndexDownloadUrlResponse.to_json(
+            gkebackup.GetBackupIndexDownloadUrlResponse()
+        )
+
+        request = gkebackup.GetBackupIndexDownloadUrlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+
+        client.get_backup_index_download_url(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_index_download_url_rest_bad_request(
+    transport: str = "rest", request_type=gkebackup.GetBackupIndexDownloadUrlRequest
+):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_backup_index_download_url(request)
+
+
+def test_get_backup_index_download_url_rest_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "backup": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            backup="backup_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gkebackup.GetBackupIndexDownloadUrlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_backup_index_download_url(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{backup=projects/*/locations/*/backupPlans/*/backups/*}:getBackupIndexDownloadUrl"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_backup_index_download_url_rest_flattened_error(transport: str = "rest"):
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup_index_download_url(
+            gkebackup.GetBackupIndexDownloadUrlRequest(),
+            backup="backup_value",
+        )
+
+
+def test_get_backup_index_download_url_rest_error():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BackupForGKEGrpcTransport(
@@ -17862,6 +18510,7 @@ def test_backup_for_gke_base_transport():
         "delete_restore",
         "list_volume_restores",
         "get_volume_restore",
+        "get_backup_index_download_url",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
@@ -18219,6 +18868,9 @@ def test_backup_for_gke_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_volume_restore._session
     session2 = client2.transport.get_volume_restore._session
+    assert session1 != session2
+    session1 = client1.transport.get_backup_index_download_url._session
+    session2 = client2.transport.get_backup_index_download_url._session
     assert session1 != session2
 
 
@@ -19113,7 +19765,7 @@ def test_delete_operation_rest_bad_request(
 
     request = request_type()
     request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -19140,7 +19792,7 @@ def test_delete_operation_rest(request_type):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request_init = {"name": "projects/sample1/locations/sample2"}
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:

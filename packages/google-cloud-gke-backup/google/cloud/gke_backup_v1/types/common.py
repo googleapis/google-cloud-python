@@ -35,7 +35,7 @@ class Namespaces(proto.Message):
 
     Attributes:
         namespaces (MutableSequence[str]):
-            A list of Kubernetes Namespaces
+            Optional. A list of Kubernetes Namespaces
     """
 
     namespaces: MutableSequence[str] = proto.RepeatedField(
@@ -49,9 +49,11 @@ class NamespacedName(proto.Message):
 
     Attributes:
         namespace (str):
-            The Namespace of the Kubernetes resource.
+            Optional. The Namespace of the Kubernetes
+            resource.
         name (str):
-            The name of the Kubernetes resource.
+            Optional. The name of the Kubernetes
+            resource.
     """
 
     namespace: str = proto.Field(
@@ -69,7 +71,8 @@ class NamespacedNames(proto.Message):
 
     Attributes:
         namespaced_names (MutableSequence[google.cloud.gke_backup_v1.types.NamespacedName]):
-            A list of namespaced Kubernetes resources.
+            Optional. A list of namespaced Kubernetes
+            resources.
     """
 
     namespaced_names: MutableSequence["NamespacedName"] = proto.RepeatedField(
@@ -85,7 +88,7 @@ class EncryptionKey(proto.Message):
 
     Attributes:
         gcp_kms_encryption_key (str):
-            Google Cloud KMS encryption key. Format:
+            Optional. Google Cloud KMS encryption key. Format:
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``
     """
 

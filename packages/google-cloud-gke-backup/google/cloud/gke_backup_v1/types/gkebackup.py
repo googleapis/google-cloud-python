@@ -61,6 +61,8 @@ __protobuf__ = proto.module(
         "ListVolumeRestoresRequest",
         "ListVolumeRestoresResponse",
         "GetVolumeRestoreRequest",
+        "GetBackupIndexDownloadUrlRequest",
+        "GetBackupIndexDownloadUrlResponse",
     },
 )
 
@@ -174,14 +176,14 @@ class ListBackupPlansRequest(proto.Message):
             Required. The location that contains the BackupPlans to
             list. Format: ``projects/*/locations/*``
         page_size (int):
-            The target number of results to return in a single response.
-            If not specified, a default value will be chosen by the
-            service. Note that the response may inclue a partial list
-            and a caller should only rely on the response's
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
             [next_page_token][google.cloud.gkebackup.v1.ListBackupPlansResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The value of
+            Optional. The value of
             [next_page_token][google.cloud.gkebackup.v1.ListBackupPlansResponse.next_page_token]
             received from a previous ``ListBackupPlans`` call. Provide
             this to retrieve the subsequent page in a multi-page list of
@@ -189,10 +191,10 @@ class ListBackupPlansRequest(proto.Message):
             ``ListBackupPlans`` must match the call that provided the
             page token.
         filter (str):
-            Field match expression used to filter the
-            results.
+            Optional. Field match expression used to
+            filter the results.
         order_by (str):
-            Field by which to sort the results.
+            Optional. Field by which to sort the results.
     """
 
     parent: str = proto.Field(
@@ -277,16 +279,17 @@ class UpdateBackupPlanRequest(proto.Message):
             contains updated fields. This may be sparsely populated if
             an ``update_mask`` is provided.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            This is used to specify the fields to be overwritten in the
-            BackupPlan targeted for update. The values for each of these
-            updated fields will be taken from the ``backup_plan``
-            provided with this request. Field names are relative to the
-            root of the resource (e.g., ``description``,
-            ``backup_config.include_volume_data``, etc.) If no
-            ``update_mask`` is provided, all fields in ``backup_plan``
-            will be written to the target BackupPlan resource. Note that
-            OUTPUT_ONLY and IMMUTABLE fields in ``backup_plan`` are
-            ignored and are not used to update the target BackupPlan.
+            Optional. This is used to specify the fields to be
+            overwritten in the BackupPlan targeted for update. The
+            values for each of these updated fields will be taken from
+            the ``backup_plan`` provided with this request. Field names
+            are relative to the root of the resource (e.g.,
+            ``description``, ``backup_config.include_volume_data``,
+            etc.) If no ``update_mask`` is provided, all fields in
+            ``backup_plan`` will be written to the target BackupPlan
+            resource. Note that OUTPUT_ONLY and IMMUTABLE fields in
+            ``backup_plan`` are ignored and are not used to update the
+            target BackupPlan.
     """
 
     backup_plan: gcg_backup_plan.BackupPlan = proto.Field(
@@ -309,8 +312,8 @@ class DeleteBackupPlanRequest(proto.Message):
             Required. Fully qualified BackupPlan name. Format:
             ``projects/*/locations/*/backupPlans/*``
         etag (str):
-            If provided, this value must match the current value of the
-            target BackupPlan's
+            Optional. If provided, this value must match the current
+            value of the target BackupPlan's
             [etag][google.cloud.gkebackup.v1.BackupPlan.etag] field or
             the request is rejected.
     """
@@ -333,10 +336,10 @@ class CreateBackupRequest(proto.Message):
             Required. The BackupPlan within which to create the Backup.
             Format: ``projects/*/locations/*/backupPlans/*``
         backup (google.cloud.gke_backup_v1.types.Backup):
-            The Backup resource to create.
+            Optional. The Backup resource to create.
         backup_id (str):
-            The client-provided short name for the Backup
-            resource. This name must:
+            Optional. The client-provided short name for
+            the Backup resource. This name must:
 
             - be between 1 and 63 characters long
               (inclusive)
@@ -371,14 +374,14 @@ class ListBackupsRequest(proto.Message):
             Required. The BackupPlan that contains the Backups to list.
             Format: ``projects/*/locations/*/backupPlans/*``
         page_size (int):
-            The target number of results to return in a single response.
-            If not specified, a default value will be chosen by the
-            service. Note that the response may inclue a partial list
-            and a caller should only rely on the response's
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
             [next_page_token][google.cloud.gkebackup.v1.ListBackupsResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The value of
+            Optional. The value of
             [next_page_token][google.cloud.gkebackup.v1.ListBackupsResponse.next_page_token]
             received from a previous ``ListBackups`` call. Provide this
             to retrieve the subsequent page in a multi-page list of
@@ -386,10 +389,10 @@ class ListBackupsRequest(proto.Message):
             ``ListBackups`` must match the call that provided the page
             token.
         filter (str):
-            Field match expression used to filter the
-            results.
+            Optional. Field match expression used to
+            filter the results.
         order_by (str):
-            Field by which to sort the results.
+            Optional. Field by which to sort the results.
     """
 
     parent: str = proto.Field(
@@ -468,15 +471,15 @@ class UpdateBackupRequest(proto.Message):
             updated fields. This may be sparsely populated if an
             ``update_mask`` is provided.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            This is used to specify the fields to be overwritten in the
-            Backup targeted for update. The values for each of these
-            updated fields will be taken from the ``backup_plan``
-            provided with this request. Field names are relative to the
-            root of the resource. If no ``update_mask`` is provided, all
-            fields in ``backup`` will be written to the target Backup
-            resource. Note that OUTPUT_ONLY and IMMUTABLE fields in
-            ``backup`` are ignored and are not used to update the target
-            Backup.
+            Optional. This is used to specify the fields to be
+            overwritten in the Backup targeted for update. The values
+            for each of these updated fields will be taken from the
+            ``backup_plan`` provided with this request. Field names are
+            relative to the root of the resource. If no ``update_mask``
+            is provided, all fields in ``backup`` will be written to the
+            target Backup resource. Note that OUTPUT_ONLY and IMMUTABLE
+            fields in ``backup`` are ignored and are not used to update
+            the target Backup.
     """
 
     backup: gcg_backup.Backup = proto.Field(
@@ -499,15 +502,15 @@ class DeleteBackupRequest(proto.Message):
             Required. Name of the Backup resource. Format:
             ``projects/*/locations/*/backupPlans/*/backups/*``
         etag (str):
-            If provided, this value must match the current value of the
-            target Backup's
+            Optional. If provided, this value must match the current
+            value of the target Backup's
             [etag][google.cloud.gkebackup.v1.Backup.etag] field or the
             request is rejected.
         force (bool):
-            If set to true, any VolumeBackups below this
-            Backup will also be deleted. Otherwise, the
-            request will only succeed if the Backup has no
-            VolumeBackups.
+            Optional. If set to true, any VolumeBackups
+            below this Backup will also be deleted.
+            Otherwise, the request will only succeed if the
+            Backup has no VolumeBackups.
     """
 
     name: str = proto.Field(
@@ -533,14 +536,14 @@ class ListVolumeBackupsRequest(proto.Message):
             list. Format:
             ``projects/*/locations/*/backupPlans/*/backups/*``
         page_size (int):
-            The target number of results to return in a single response.
-            If not specified, a default value will be chosen by the
-            service. Note that the response may inclue a partial list
-            and a caller should only rely on the response's
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
             [next_page_token][google.cloud.gkebackup.v1.ListVolumeBackupsResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The value of
+            Optional. The value of
             [next_page_token][google.cloud.gkebackup.v1.ListVolumeBackupsResponse.next_page_token]
             received from a previous ``ListVolumeBackups`` call. Provide
             this to retrieve the subsequent page in a multi-page list of
@@ -548,10 +551,10 @@ class ListVolumeBackupsRequest(proto.Message):
             ``ListVolumeBackups`` must match the call that provided the
             page token.
         filter (str):
-            Field match expression used to filter the
-            results.
+            Optional. Field match expression used to
+            filter the results.
         order_by (str):
-            Field by which to sort the results.
+            Optional. Field by which to sort the results.
     """
 
     parent: str = proto.Field(
@@ -668,14 +671,14 @@ class ListRestorePlansRequest(proto.Message):
             Required. The location that contains the RestorePlans to
             list. Format: ``projects/*/locations/*``
         page_size (int):
-            The target number of results to return in a single response.
-            If not specified, a default value will be chosen by the
-            service. Note that the response may inclue a partial list
-            and a caller should only rely on the response's
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
             [next_page_token][google.cloud.gkebackup.v1.ListRestorePlansResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The value of
+            Optional. The value of
             [next_page_token][google.cloud.gkebackup.v1.ListRestorePlansResponse.next_page_token]
             received from a previous ``ListRestorePlans`` call. Provide
             this to retrieve the subsequent page in a multi-page list of
@@ -683,10 +686,10 @@ class ListRestorePlansRequest(proto.Message):
             ``ListRestorePlans`` must match the call that provided the
             page token.
         filter (str):
-            Field match expression used to filter the
-            results.
+            Optional. Field match expression used to
+            filter the results.
         order_by (str):
-            Field by which to sort the results.
+            Optional. Field by which to sort the results.
     """
 
     parent: str = proto.Field(
@@ -771,15 +774,16 @@ class UpdateRestorePlanRequest(proto.Message):
             contains updated fields. This may be sparsely populated if
             an ``update_mask`` is provided.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            This is used to specify the fields to be overwritten in the
-            RestorePlan targeted for update. The values for each of
-            these updated fields will be taken from the ``restore_plan``
-            provided with this request. Field names are relative to the
-            root of the resource. If no ``update_mask`` is provided, all
-            fields in ``restore_plan`` will be written to the target
-            RestorePlan resource. Note that OUTPUT_ONLY and IMMUTABLE
-            fields in ``restore_plan`` are ignored and are not used to
-            update the target RestorePlan.
+            Optional. This is used to specify the fields to be
+            overwritten in the RestorePlan targeted for update. The
+            values for each of these updated fields will be taken from
+            the ``restore_plan`` provided with this request. Field names
+            are relative to the root of the resource. If no
+            ``update_mask`` is provided, all fields in ``restore_plan``
+            will be written to the target RestorePlan resource. Note
+            that OUTPUT_ONLY and IMMUTABLE fields in ``restore_plan``
+            are ignored and are not used to update the target
+            RestorePlan.
     """
 
     restore_plan: gcg_restore_plan.RestorePlan = proto.Field(
@@ -802,15 +806,15 @@ class DeleteRestorePlanRequest(proto.Message):
             Required. Fully qualified RestorePlan name. Format:
             ``projects/*/locations/*/restorePlans/*``
         etag (str):
-            If provided, this value must match the current value of the
-            target RestorePlan's
+            Optional. If provided, this value must match the current
+            value of the target RestorePlan's
             [etag][google.cloud.gkebackup.v1.RestorePlan.etag] field or
             the request is rejected.
         force (bool):
-            If set to true, any Restores below this
-            RestorePlan will also be deleted. Otherwise, the
-            request will only succeed if the RestorePlan has
-            no Restores.
+            Optional. If set to true, any Restores below
+            this RestorePlan will also be deleted.
+            Otherwise, the request will only succeed if the
+            RestorePlan has no Restores.
     """
 
     name: str = proto.Field(
@@ -873,14 +877,14 @@ class ListRestoresRequest(proto.Message):
             Required. The RestorePlan that contains the Restores to
             list. Format: ``projects/*/locations/*/restorePlans/*``
         page_size (int):
-            The target number of results to return in a single response.
-            If not specified, a default value will be chosen by the
-            service. Note that the response may inclue a partial list
-            and a caller should only rely on the response's
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
             [next_page_token][google.cloud.gkebackup.v1.ListRestoresResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The value of
+            Optional. The value of
             [next_page_token][google.cloud.gkebackup.v1.ListRestoresResponse.next_page_token]
             received from a previous ``ListRestores`` call. Provide this
             to retrieve the subsequent page in a multi-page list of
@@ -888,10 +892,10 @@ class ListRestoresRequest(proto.Message):
             ``ListRestores`` must match the call that provided the page
             token.
         filter (str):
-            Field match expression used to filter the
-            results.
+            Optional. Field match expression used to
+            filter the results.
         order_by (str):
-            Field by which to sort the results.
+            Optional. Field by which to sort the results.
     """
 
     parent: str = proto.Field(
@@ -976,15 +980,15 @@ class UpdateRestoreRequest(proto.Message):
             contains updated fields. This may be sparsely populated if
             an ``update_mask`` is provided.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            This is used to specify the fields to be overwritten in the
-            Restore targeted for update. The values for each of these
-            updated fields will be taken from the ``restore`` provided
-            with this request. Field names are relative to the root of
-            the resource. If no ``update_mask`` is provided, all fields
-            in ``restore`` will be written to the target Restore
-            resource. Note that OUTPUT_ONLY and IMMUTABLE fields in
-            ``restore`` are ignored and are not used to update the
-            target Restore.
+            Optional. This is used to specify the fields to be
+            overwritten in the Restore targeted for update. The values
+            for each of these updated fields will be taken from the
+            ``restore`` provided with this request. Field names are
+            relative to the root of the resource. If no ``update_mask``
+            is provided, all fields in ``restore`` will be written to
+            the target Restore resource. Note that OUTPUT_ONLY and
+            IMMUTABLE fields in ``restore`` are ignored and are not used
+            to update the target Restore.
     """
 
     restore: gcg_restore.Restore = proto.Field(
@@ -1007,15 +1011,15 @@ class DeleteRestoreRequest(proto.Message):
             Required. Full name of the Restore Format:
             ``projects/*/locations/*/restorePlans/*/restores/*``
         etag (str):
-            If provided, this value must match the current value of the
-            target Restore's
+            Optional. If provided, this value must match the current
+            value of the target Restore's
             [etag][google.cloud.gkebackup.v1.Restore.etag] field or the
             request is rejected.
         force (bool):
-            If set to true, any VolumeRestores below this
-            restore will also be deleted. Otherwise, the
-            request will only succeed if the restore has no
-            VolumeRestores.
+            Optional. If set to true, any VolumeRestores
+            below this restore will also be deleted.
+            Otherwise, the request will only succeed if the
+            restore has no VolumeRestores.
     """
 
     name: str = proto.Field(
@@ -1041,14 +1045,14 @@ class ListVolumeRestoresRequest(proto.Message):
             list. Format:
             ``projects/*/locations/*/restorePlans/*/restores/*``
         page_size (int):
-            The target number of results to return in a single response.
-            If not specified, a default value will be chosen by the
-            service. Note that the response may inclue a partial list
-            and a caller should only rely on the response's
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
             [next_page_token][google.cloud.gkebackup.v1.ListVolumeRestoresResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The value of
+            Optional. The value of
             [next_page_token][google.cloud.gkebackup.v1.ListVolumeRestoresResponse.next_page_token]
             received from a previous ``ListVolumeRestores`` call.
             Provide this to retrieve the subsequent page in a multi-page
@@ -1056,10 +1060,10 @@ class ListVolumeRestoresRequest(proto.Message):
             provided to ``ListVolumeRestores`` must match the call that
             provided the page token.
         filter (str):
-            Field match expression used to filter the
-            results.
+            Optional. Field match expression used to
+            filter the results.
         order_by (str):
-            Field by which to sort the results.
+            Optional. Field by which to sort the results.
     """
 
     parent: str = proto.Field(
@@ -1124,6 +1128,35 @@ class GetVolumeRestoreRequest(proto.Message):
     """
 
     name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetBackupIndexDownloadUrlRequest(proto.Message):
+    r"""Request message for GetBackupIndexDownloadUrl.
+
+    Attributes:
+        backup (str):
+            Required. Full name of Backup resource. Format:
+            projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
+    """
+
+    backup: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetBackupIndexDownloadUrlResponse(proto.Message):
+    r"""Response message for GetBackupIndexDownloadUrl.
+
+    Attributes:
+        signed_url (str):
+
+    """
+
+    signed_url: str = proto.Field(
         proto.STRING,
         number=1,
     )

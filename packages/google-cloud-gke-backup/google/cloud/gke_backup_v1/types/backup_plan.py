@@ -17,7 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
@@ -26,6 +30,8 @@ __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
     manifest={
         "BackupPlan",
+        "RpoConfig",
+        "ExclusionWindow",
     },
 )
 
@@ -49,8 +55,8 @@ class BackupPlan(proto.Message):
             Output only. The timestamp when this
             BackupPlan resource was last updated.
         description (str):
-            User specified descriptive string for this
-            BackupPlan.
+            Optional. User specified descriptive string
+            for this BackupPlan.
         cluster (str):
             Required. Immutable. The source cluster from which Backups
             will be created via this BackupPlan. Valid formats:
@@ -58,13 +64,14 @@ class BackupPlan(proto.Message):
             -  ``projects/*/locations/*/clusters/*``
             -  ``projects/*/zones/*/clusters/*``
         retention_policy (google.cloud.gke_backup_v1.types.BackupPlan.RetentionPolicy):
-            RetentionPolicy governs lifecycle of Backups
-            created under this plan.
+            Optional. RetentionPolicy governs lifecycle
+            of Backups created under this plan.
         labels (MutableMapping[str, str]):
-            A set of custom labels supplied by user.
+            Optional. A set of custom labels supplied by
+            user.
         backup_schedule (google.cloud.gke_backup_v1.types.BackupPlan.Schedule):
-            Defines a schedule for automatic Backup
-            creation via this BackupPlan.
+            Optional. Defines a schedule for automatic
+            Backup creation via this BackupPlan.
         etag (str):
             Output only. ``etag`` is used for optimistic concurrency
             control as a way to help prevent simultaneous updates of a
@@ -77,18 +84,19 @@ class BackupPlan(proto.Message):
             ``DeleteBackupPlan`` to ensure that their change will be
             applied to the same version of the resource.
         deactivated (bool):
-            This flag indicates whether this BackupPlan
-            has been deactivated. Setting this field to True
-            locks the BackupPlan such that no further
-            updates will be allowed (except deletes),
-            including the deactivated field itself. It also
-            prevents any new Backups from being created via
-            this BackupPlan (including scheduled Backups).
+            Optional. This flag indicates whether this
+            BackupPlan has been deactivated. Setting this
+            field to True locks the BackupPlan such that no
+            further updates will be allowed (except
+            deletes), including the deactivated field
+            itself. It also prevents any new Backups from
+            being created via this BackupPlan (including
+            scheduled Backups).
 
             Default: False
         backup_config (google.cloud.gke_backup_v1.types.BackupPlan.BackupConfig):
-            Defines the configuration of Backups created
-            via this BackupPlan.
+            Optional. Defines the configuration of
+            Backups created via this BackupPlan.
         protected_pod_count (int):
             Output only. The number of Kubernetes Pods
             backed up in the last successful Backup created
@@ -102,6 +110,15 @@ class BackupPlan(proto.Message):
         state_reason (str):
             Output only. Human-readable description of why BackupPlan is
             in the current ``state``
+        rpo_risk_level (int):
+            Output only. A number that represents the
+            current risk level of this BackupPlan from RPO
+            perspective with 1 being no risk and 5 being
+            highest risk.
+        rpo_risk_reason (str):
+            Output only. Human-readable description of why the
+            BackupPlan is in the current rpo_risk_level and action items
+            if any.
     """
 
     class State(proto.Enum):
@@ -140,38 +157,42 @@ class BackupPlan(proto.Message):
 
         Attributes:
             backup_delete_lock_days (int):
-                Minimum age for Backups created via this BackupPlan (in
-                days). This field MUST be an integer value between 0-90
-                (inclusive). A Backup created under this BackupPlan will NOT
-                be deletable until it reaches Backup's (create_time +
-                backup_delete_lock_days). Updating this field of a
-                BackupPlan does NOT affect existing Backups under it.
+                Optional. Minimum age for Backups created via this
+                BackupPlan (in days). This field MUST be an integer value
+                between 0-90 (inclusive). A Backup created under this
+                BackupPlan will NOT be deletable until it reaches Backup's
+                (create_time + backup_delete_lock_days). Updating this field
+                of a BackupPlan does NOT affect existing Backups under it.
                 Backups created AFTER a successful update will inherit the
                 new value.
 
                 Default: 0 (no delete blocking)
             backup_retain_days (int):
-                The default maximum age of a Backup created via this
-                BackupPlan. This field MUST be an integer value >= 0 and <=
-                365. If specified, a Backup created under this BackupPlan
-                will be automatically deleted after its age reaches
-                (create_time + backup_retain_days). If not specified,
-                Backups created under this BackupPlan will NOT be subject to
-                automatic deletion. Updating this field does NOT affect
-                existing Backups under it. Backups created AFTER a
+                Optional. The default maximum age of a Backup created via
+                this BackupPlan. This field MUST be an integer value >= 0
+                and <= 365. If specified, a Backup created under this
+                BackupPlan will be automatically deleted after its age
+                reaches (create_time + backup_retain_days). If not
+                specified, Backups created under this BackupPlan will NOT be
+                subject to automatic deletion. Updating this field does NOT
+                affect existing Backups under it. Backups created AFTER a
                 successful update will automatically pick up the new value.
                 NOTE: backup_retain_days must be >=
                 [backup_delete_lock_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_delete_lock_days].
                 If
                 [cron_schedule][google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule]
                 is defined, then this must be <= 360 \* the creation
-                interval.
+                interval. If
+                [rpo_config][google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config]
+                is defined, then this must be <= 360 \*
+                [target_rpo_minutes][Schedule.rpo_config.target_rpo_minutes]
+                / (1440minutes/day).
 
                 Default: 0 (no automatic deletion)
             locked (bool):
-                This flag denotes whether the retention policy of this
-                BackupPlan is locked. If set to True, no further update is
-                allowed on this policy, including the ``locked`` field
+                Optional. This flag denotes whether the retention policy of
+                this BackupPlan is locked. If set to True, no further update
+                is allowed on this policy, including the ``locked`` field
                 itself.
 
                 Default: False
@@ -196,18 +217,35 @@ class BackupPlan(proto.Message):
 
         Attributes:
             cron_schedule (str):
-                A standard `cron <https://wikipedia.com/wiki/cron>`__ string
-                that defines a repeating schedule for creating Backups via
-                this BackupPlan. If this is defined, then
+                Optional. A standard
+                `cron <https://wikipedia.com/wiki/cron>`__ string that
+                defines a repeating schedule for creating Backups via this
+                BackupPlan. This is mutually exclusive with the
+                [rpo_config][google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config]
+                field since at most one schedule can be defined for a
+                BackupPlan. If this is defined, then
                 [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
                 must also be defined.
 
                 Default (empty): no automatic backup creation will occur.
             paused (bool):
-                This flag denotes whether automatic Backup
-                creation is paused for this BackupPlan.
+                Optional. This flag denotes whether automatic
+                Backup creation is paused for this BackupPlan.
 
                 Default: False
+            rpo_config (google.cloud.gke_backup_v1.types.RpoConfig):
+                Optional. Defines the RPO schedule configuration for this
+                BackupPlan. This is mutually exclusive with the
+                [cron_schedule][google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule]
+                field since at most one schedule can be defined for a
+                BackupPLan. If this is defined, then
+                [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
+                must also be defined.
+
+                Default (empty): no automatic backup creation will occur.
+            next_scheduled_backup_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. Start time of next scheduled backup under this
+                BackupPlan by either cron_schedule or rpo config.
         """
 
         cron_schedule: str = proto.Field(
@@ -217,6 +255,16 @@ class BackupPlan(proto.Message):
         paused: bool = proto.Field(
             proto.BOOL,
             number=2,
+        )
+        rpo_config: "RpoConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="RpoConfig",
+        )
+        next_scheduled_backup_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
         )
 
     class BackupConfig(proto.Message):
@@ -246,22 +294,22 @@ class BackupPlan(proto.Message):
 
                 This field is a member of `oneof`_ ``backup_scope``.
             include_volume_data (bool):
-                This flag specifies whether volume data
-                should be backed up when PVCs are included in
-                the scope of a Backup.
+                Optional. This flag specifies whether volume
+                data should be backed up when PVCs are included
+                in the scope of a Backup.
 
                 Default: False
             include_secrets (bool):
-                This flag specifies whether Kubernetes Secret
-                resources should be included when they fall into
-                the scope of Backups.
+                Optional. This flag specifies whether
+                Kubernetes Secret resources should be included
+                when they fall into the scope of Backups.
 
                 Default: False
             encryption_key (google.cloud.gke_backup_v1.types.EncryptionKey):
-                This defines a customer managed encryption
-                key that will be used to encrypt the "config"
-                portion (the Kubernetes resources) of Backups
-                created via this plan.
+                Optional. This defines a customer managed
+                encryption key that will be used to encrypt the
+                "config" portion (the Kubernetes resources) of
+                Backups created via this plan.
 
                 Default (empty): Config backup artifacts will
                 not be encrypted.
@@ -364,6 +412,139 @@ class BackupPlan(proto.Message):
     state_reason: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    rpo_risk_level: int = proto.Field(
+        proto.INT32,
+        number=16,
+    )
+    rpo_risk_reason: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+
+
+class RpoConfig(proto.Message):
+    r"""Defines RPO scheduling configuration for automatically
+    creating Backups via this BackupPlan.
+
+    Attributes:
+        target_rpo_minutes (int):
+            Required. Defines the target RPO for the
+            BackupPlan in minutes, which means the target
+            maximum data loss in time that is acceptable for
+            this BackupPlan. This must be at least 60, i.e.,
+            1 hour, and at most 86400, i.e., 60 days.
+        exclusion_windows (MutableSequence[google.cloud.gke_backup_v1.types.ExclusionWindow]):
+            Optional. User specified time windows during which backup
+            can NOT happen for this BackupPlan - backups should start
+            and finish outside of any given exclusion window. Note:
+            backup jobs will be scheduled to start and finish outside
+            the duration of the window as much as possible, but running
+            jobs will not get canceled when it runs into the window. All
+            the time and date values in exclusion_windows entry in the
+            API are in UTC. We only allow <=1 recurrence (daily or
+            weekly) exclusion window for a BackupPlan while no
+            restriction on number of single occurrence windows.
+    """
+
+    target_rpo_minutes: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    exclusion_windows: MutableSequence["ExclusionWindow"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ExclusionWindow",
+    )
+
+
+class ExclusionWindow(proto.Message):
+    r"""Defines a time window during which no backup should
+    happen. All time and date are in UTC.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        start_time (google.type.timeofday_pb2.TimeOfDay):
+            Required. Specifies the start time of the
+            window using time of the day in UTC.
+        duration (google.protobuf.duration_pb2.Duration):
+            Required. Specifies duration of the window. Restrictions for
+            duration based on the recurrence type to allow some time for
+            backup to happen:
+
+            -  single_occurrence_date: no restriction, but UI may warn
+               about this when duration >= target RPO
+            -  daily window: duration < 24 hours
+            -  weekly window:
+
+               -  days of week includes all seven days of a week:
+                  duration < 24 hours
+               -  all other weekly window: duration < 168 hours (i.e.,
+                  24 \* 7 hours)
+        single_occurrence_date (google.type.date_pb2.Date):
+            No recurrence. The exclusion window occurs
+            only once and on this date in UTC.
+
+            This field is a member of `oneof`_ ``recurrence``.
+        daily (bool):
+            The exclusion window occurs every day if set
+            to "True". Specifying this field to "False" is
+            an error.
+
+            This field is a member of `oneof`_ ``recurrence``.
+        days_of_week (google.cloud.gke_backup_v1.types.ExclusionWindow.DayOfWeekList):
+            The exclusion window occurs on these days of
+            each week in UTC.
+
+            This field is a member of `oneof`_ ``recurrence``.
+    """
+
+    class DayOfWeekList(proto.Message):
+        r"""Holds repeated DaysOfWeek values as a container.
+
+        Attributes:
+            days_of_week (MutableSequence[google.type.dayofweek_pb2.DayOfWeek]):
+                Optional. A list of days of week.
+        """
+
+        days_of_week: MutableSequence[dayofweek_pb2.DayOfWeek] = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum=dayofweek_pb2.DayOfWeek,
+        )
+
+    start_time: timeofday_pb2.TimeOfDay = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timeofday_pb2.TimeOfDay,
+    )
+    duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    single_occurrence_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="recurrence",
+        message=date_pb2.Date,
+    )
+    daily: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        oneof="recurrence",
+    )
+    days_of_week: DayOfWeekList = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="recurrence",
+        message=DayOfWeekList,
     )
 
 

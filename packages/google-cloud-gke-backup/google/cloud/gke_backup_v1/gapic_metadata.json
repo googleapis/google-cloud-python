@@ -55,6 +55,11 @@
                 "get_backup"
               ]
             },
+            "GetBackupIndexDownloadUrl": {
+              "methods": [
+                "get_backup_index_download_url"
+              ]
+            },
             "GetBackupPlan": {
               "methods": [
                 "get_backup_plan"
@@ -180,6 +185,11 @@
                 "get_backup"
               ]
             },
+            "GetBackupIndexDownloadUrl": {
+              "methods": [
+                "get_backup_index_download_url"
+              ]
+            },
             "GetBackupPlan": {
               "methods": [
                 "get_backup_plan"
@@ -303,6 +313,11 @@
             "GetBackup": {
               "methods": [
                 "get_backup"
+              ]
+            },
+            "GetBackupIndexDownloadUrl": {
+              "methods": [
+                "get_backup_index_download_url"
               ]
             },
             "GetBackupPlan": {

@@ -33,7 +33,7 @@ __protobuf__ = proto.module(
 class RestorePlan(proto.Message):
     r"""The configuration of a potential series of Restore operations
     to be performed against Backups belong to a particular
-    BackupPlan. Next id: 13
+    BackupPlan.
 
     Attributes:
         name (str):
@@ -50,8 +50,8 @@ class RestorePlan(proto.Message):
             Output only. The timestamp when this
             RestorePlan resource was last updated.
         description (str):
-            User specified descriptive string for this
-            RestorePlan.
+            Optional. User specified descriptive string
+            for this RestorePlan.
         backup_plan (str):
             Required. Immutable. A reference to the
             [BackupPlan][google.cloud.gkebackup.v1.BackupPlan] from
@@ -70,7 +70,8 @@ class RestorePlan(proto.Message):
             Required. Configuration of Restores created
             via this RestorePlan.
         labels (MutableMapping[str, str]):
-            A set of custom labels supplied by user.
+            Optional. A set of custom labels supplied by
+            user.
         etag (str):
             Output only. ``etag`` is used for optimistic concurrency
             control as a way to help prevent simultaneous updates of a

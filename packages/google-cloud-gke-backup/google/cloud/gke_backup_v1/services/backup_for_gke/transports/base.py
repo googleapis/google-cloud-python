@@ -365,6 +365,20 @@ class BackupForGKETransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_backup_index_download_url: gapic_v1.method.wrap_method(
+                self.get_backup_index_download_url,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -607,6 +621,18 @@ class BackupForGKETransport(abc.ABC):
     ) -> Callable[
         [gkebackup.GetVolumeRestoreRequest],
         Union[volume.VolumeRestore, Awaitable[volume.VolumeRestore]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_index_download_url(
+        self,
+    ) -> Callable[
+        [gkebackup.GetBackupIndexDownloadUrlRequest],
+        Union[
+            gkebackup.GetBackupIndexDownloadUrlResponse,
+            Awaitable[gkebackup.GetBackupIndexDownloadUrlResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -1285,13 +1285,14 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                This is used to specify the fields to be overwritten in
-                the BackupPlan targeted for update. The values for each
-                of these updated fields will be taken from the
-                ``backup_plan`` provided with this request. Field names
-                are relative to the root of the resource (e.g.,
-                ``description``, ``backup_config.include_volume_data``,
-                etc.) If no ``update_mask`` is provided, all fields in
+                Optional. This is used to specify the fields to be
+                overwritten in the BackupPlan targeted for update. The
+                values for each of these updated fields will be taken
+                from the ``backup_plan`` provided with this request.
+                Field names are relative to the root of the resource
+                (e.g., ``description``,
+                ``backup_config.include_volume_data``, etc.) If no
+                ``update_mask`` is provided, all fields in
                 ``backup_plan`` will be written to the target BackupPlan
                 resource. Note that OUTPUT_ONLY and IMMUTABLE fields in
                 ``backup_plan`` are ignored and are not used to update
@@ -1553,13 +1554,16 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup (google.cloud.gke_backup_v1.types.Backup):
-                The Backup resource to create.
+                Optional. The Backup resource to
+                create.
+
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup_id (str):
-                The client-provided short name for
-                the Backup resource. This name must:
+                Optional. The client-provided short
+                name for the Backup resource. This name
+                must:
 
                 - be between 1 and 63 characters long
                   (inclusive)
@@ -1587,7 +1591,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                    some portion of the state of a GKE cluster, the
                    record of the backup operation itself, and an anchor
                    for the underlying artifacts that comprise the Backup
-                   (the config backup and VolumeBackups). Next id: 28
+                   (the config backup and VolumeBackups).
 
         """
         # Create or coerce a protobuf request object.
@@ -1825,8 +1829,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 the record of the backup operation
                 itself, and an anchor for the underlying
                 artifacts that comprise the Backup (the
-                config backup and VolumeBackups). Next
-                id: 28
+                config backup and VolumeBackups).
 
         """
         # Create or coerce a protobuf request object.
@@ -1931,12 +1934,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                This is used to specify the fields to be overwritten in
-                the Backup targeted for update. The values for each of
-                these updated fields will be taken from the
-                ``backup_plan`` provided with this request. Field names
-                are relative to the root of the resource. If no
-                ``update_mask`` is provided, all fields in ``backup``
+                Optional. This is used to specify the fields to be
+                overwritten in the Backup targeted for update. The
+                values for each of these updated fields will be taken
+                from the ``backup_plan`` provided with this request.
+                Field names are relative to the root of the resource. If
+                no ``update_mask`` is provided, all fields in ``backup``
                 will be written to the target Backup resource. Note that
                 OUTPUT_ONLY and IMMUTABLE fields in ``backup`` are
                 ignored and are not used to update the target Backup.
@@ -1958,7 +1961,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                    some portion of the state of a GKE cluster, the
                    record of the backup operation itself, and an anchor
                    for the underlying artifacts that comprise the Backup
-                   (the config backup and VolumeBackups). Next id: 28
+                   (the config backup and VolumeBackups).
 
         """
         # Create or coerce a protobuf request object.
@@ -2324,7 +2327,6 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 Backup - both the record of the
                 operation and a pointer to the
                 underlying storage-specific artifacts.
-                Next id: 14
 
         """
         # Create or coerce a protobuf request object.
@@ -2469,7 +2471,6 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.RestorePlan` The configuration of a potential series of Restore operations to be performed
                    against Backups belong to a particular BackupPlan.
-                   Next id: 13
 
         """
         # Create or coerce a protobuf request object.
@@ -2704,7 +2705,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The configuration of a potential
                 series of Restore operations to be
                 performed against Backups belong to a
-                particular BackupPlan. Next id: 13
+                particular BackupPlan.
 
         """
         # Create or coerce a protobuf request object.
@@ -2812,12 +2813,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                This is used to specify the fields to be overwritten in
-                the RestorePlan targeted for update. The values for each
-                of these updated fields will be taken from the
-                ``restore_plan`` provided with this request. Field names
-                are relative to the root of the resource. If no
-                ``update_mask`` is provided, all fields in
+                Optional. This is used to specify the fields to be
+                overwritten in the RestorePlan targeted for update. The
+                values for each of these updated fields will be taken
+                from the ``restore_plan`` provided with this request.
+                Field names are relative to the root of the resource. If
+                no ``update_mask`` is provided, all fields in
                 ``restore_plan`` will be written to the target
                 RestorePlan resource. Note that OUTPUT_ONLY and
                 IMMUTABLE fields in ``restore_plan`` are ignored and are
@@ -2838,7 +2839,6 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.RestorePlan` The configuration of a potential series of Restore operations to be performed
                    against Backups belong to a particular BackupPlan.
-                   Next id: 13
 
         """
         # Create or coerce a protobuf request object.
@@ -3120,7 +3120,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.Restore` Represents both a request to Restore some portion of a Backup into
                    a target GKE cluster and a record of the restore
-                   operation itself. Next id: 18
+                   operation itself.
 
         """
         # Create or coerce a protobuf request object.
@@ -3355,7 +3355,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 Represents both a request to Restore
                 some portion of a Backup into a target
                 GKE cluster and a record of the restore
-                operation itself. Next id: 18
+                operation itself.
 
         """
         # Create or coerce a protobuf request object.
@@ -3460,15 +3460,15 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                This is used to specify the fields to be overwritten in
-                the Restore targeted for update. The values for each of
-                these updated fields will be taken from the ``restore``
-                provided with this request. Field names are relative to
-                the root of the resource. If no ``update_mask`` is
-                provided, all fields in ``restore`` will be written to
-                the target Restore resource. Note that OUTPUT_ONLY and
-                IMMUTABLE fields in ``restore`` are ignored and are not
-                used to update the target Restore.
+                Optional. This is used to specify the fields to be
+                overwritten in the Restore targeted for update. The
+                values for each of these updated fields will be taken
+                from the ``restore`` provided with this request. Field
+                names are relative to the root of the resource. If no
+                ``update_mask`` is provided, all fields in ``restore``
+                will be written to the target Restore resource. Note
+                that OUTPUT_ONLY and IMMUTABLE fields in ``restore`` are
+                ignored and are not used to update the target Restore.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3485,7 +3485,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.Restore` Represents both a request to Restore some portion of a Backup into
                    a target GKE cluster and a record of the restore
-                   operation itself. Next id: 18
+                   operation itself.
 
         """
         # Create or coerce a protobuf request object.
@@ -3847,8 +3847,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
         Returns:
             google.cloud.gke_backup_v1.types.VolumeRestore:
                 Represents the operation of restoring
-                a volume from a VolumeBackup. Next id:
-                13
+                a volume from a VolumeBackup.
 
         """
         # Create or coerce a protobuf request object.
@@ -3880,6 +3879,115 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup_index_download_url(
+        self,
+        request: Optional[
+            Union[gkebackup.GetBackupIndexDownloadUrlRequest, dict]
+        ] = None,
+        *,
+        backup: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gkebackup.GetBackupIndexDownloadUrlResponse:
+        r"""Retrieve the link to the backupIndex.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            def sample_get_backup_index_download_url():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.GetBackupIndexDownloadUrlRequest(
+                    backup="backup_value",
+                )
+
+                # Make the request
+                response = client.get_backup_index_download_url(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.gke_backup_v1.types.GetBackupIndexDownloadUrlRequest, dict]):
+                The request object. Request message for
+                GetBackupIndexDownloadUrl.
+            backup (str):
+                Required. Full name of Backup resource. Format:
+                projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
+
+                This corresponds to the ``backup`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_backup_v1.types.GetBackupIndexDownloadUrlResponse:
+                Response message for
+                GetBackupIndexDownloadUrl.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([backup])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gkebackup.GetBackupIndexDownloadUrlRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gkebackup.GetBackupIndexDownloadUrlRequest):
+            request = gkebackup.GetBackupIndexDownloadUrlRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if backup is not None:
+                request.backup = backup
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_backup_index_download_url
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("backup", request.backup),)),
         )
 
         # Validate the universe domain.

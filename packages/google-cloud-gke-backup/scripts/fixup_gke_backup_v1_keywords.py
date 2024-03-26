@@ -48,6 +48,7 @@ class gke_backupCallTransformer(cst.CSTTransformer):
         'delete_restore': ('name', 'etag', 'force', ),
         'delete_restore_plan': ('name', 'etag', 'force', ),
         'get_backup': ('name', ),
+        'get_backup_index_download_url': ('backup', ),
         'get_backup_plan': ('name', ),
         'get_restore': ('name', ),
         'get_restore_plan': ('name', ),

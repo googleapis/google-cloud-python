@@ -35,7 +35,7 @@ class Backup(proto.Message):
     capture of some portion of the state of a GKE cluster, the
     record of the backup operation itself, and an anchor for the
     underlying artifacts that comprise the Backup (the config backup
-    and VolumeBackups). Next id: 28
+    and VolumeBackups).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -63,14 +63,15 @@ class Backup(proto.Message):
             or via a schedule in the BackupPlan. A value of
             True means that the Backup was created manually.
         labels (MutableMapping[str, str]):
-            A set of custom labels supplied by user.
+            Optional. A set of custom labels supplied by
+            user.
         delete_lock_days (int):
-            Minimum age for this Backup (in days). If this field is set
-            to a non-zero value, the Backup will be "locked" against
-            deletion (either manual or automatic deletion) for the
-            number of days provided (measured from the creation time of
-            the Backup). MUST be an integer value between 0-90
-            (inclusive).
+            Optional. Minimum age for this Backup (in days). If this
+            field is set to a non-zero value, the Backup will be
+            "locked" against deletion (either manual or automatic
+            deletion) for the number of days provided (measured from the
+            creation time of the Backup). MUST be an integer value
+            between 0-90 (inclusive).
 
             Defaults to parent BackupPlan's
             [backup_delete_lock_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_delete_lock_days]
@@ -81,7 +82,7 @@ class Backup(proto.Message):
             expire for this backup (calculated from create_time +
             [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]).
         retain_days (int):
-            The age (in days) after which this Backup will be
+            Optional. The age (in days) after which this Backup will be
             automatically deleted. Must be an integer value >= 0:
 
             -  If 0, no automatic deletion will occur for this Backup.
@@ -162,8 +163,8 @@ class Backup(proto.Message):
             ``DeleteBackup`` to ensure that their change will be applied
             to the same version of the resource.
         description (str):
-            User specified descriptive string for this
-            Backup.
+            Optional. User specified descriptive string
+            for this Backup.
         pod_count (int):
             Output only. The total number of Kubernetes
             Pods contained in the Backup.
@@ -215,8 +216,8 @@ class Backup(proto.Message):
 
         Attributes:
             cluster (str):
-                The source cluster from which this Backup was created. Valid
-                formats:
+                Output only. The source cluster from which this Backup was
+                created. Valid formats:
 
                 -  ``projects/*/locations/*/clusters/*``
                 -  ``projects/*/zones/*/clusters/*``
@@ -225,17 +226,17 @@ class Backup(proto.Message):
                 [cluster][google.cloud.gkebackup.v1.BackupPlan.cluster]
                 field.
             k8s_version (str):
-                The Kubernetes server version of the source
-                cluster.
+                Output only. The Kubernetes server version of
+                the source cluster.
             backup_crd_versions (MutableMapping[str, str]):
-                A list of the Backup for GKE CRD versions
-                found in the cluster.
+                Output only. A list of the Backup for GKE CRD
+                versions found in the cluster.
             gke_version (str):
-                GKE version
+                Output only. GKE version
 
                 This field is a member of `oneof`_ ``platform_version``.
             anthos_version (str):
-                Anthos version
+                Output only. Anthos version
 
                 This field is a member of `oneof`_ ``platform_version``.
         """
