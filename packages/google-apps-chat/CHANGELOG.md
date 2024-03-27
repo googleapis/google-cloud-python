@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.1...google-apps-chat-v0.1.2) (2024-03-27)
+
+
+### Features
+
+* [google-apps-chat] Launch AccessoryAction for GA ([#12517](https://github.com/googleapis/google-cloud-python/issues/12517)) ([a2113a8](https://github.com/googleapis/google-cloud-python/commit/a2113a80f398dcc94b55827330ec7ebbadc6fbf8))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.0...google-apps-chat-v0.1.1) (2024-03-22)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.44.0...google-cloud-container-v2.45.0) (2024-03-27)
+
+
+### Features
+
+* [google-cloud-container] add several fields to manage state of ([7a82f6f](https://github.com/googleapis/google-cloud-python/commit/7a82f6ffe9f51b32e0f76b9e9dafaddb5865d344))
+* [google-cloud-container] add several fields to manage state of database encryption update ([#12513](https://github.com/googleapis/google-cloud-python/issues/12513)) ([7a82f6f](https://github.com/googleapis/google-cloud-python/commit/7a82f6ffe9f51b32e0f76b9e9dafaddb5865d344))
+
 ## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.43.0...google-cloud-container-v2.44.0) (2024-03-22)
 
 
