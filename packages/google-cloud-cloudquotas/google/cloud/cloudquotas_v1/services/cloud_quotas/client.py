@@ -1201,7 +1201,6 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 quota_preference.quota_config.preferred_value = 1595
                 quota_preference.service = "service_value"
                 quota_preference.quota_id = "quota_id_value"
-                quota_preference.contact_email = "contact_email_value"
 
                 request = cloudquotas_v1.CreateQuotaPreferenceRequest(
                     parent="parent_value",
@@ -1339,7 +1338,6 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 quota_preference.quota_config.preferred_value = 1595
                 quota_preference.service = "service_value"
                 quota_preference.quota_id = "quota_id_value"
-                quota_preference.contact_email = "contact_email_value"
 
                 request = cloudquotas_v1.UpdateQuotaPreferenceRequest(
                     quota_preference=quota_preference,

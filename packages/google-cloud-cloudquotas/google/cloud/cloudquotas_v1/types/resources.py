@@ -111,16 +111,9 @@ class QuotaInfo(proto.Message):
             number of concurrent operations in flight at any
             given time.
         service_request_quota_uri (str):
-            URI to the page where the user can request more quotas for
-            the cloud service, such as
-            https://docs.google.com/spreadsheet/viewform?formkey=abc123&entry_0={email}&entry_1={id}.
-            Google Developers Console UI replace {email} with the
-            current user's e-mail, {id} with the current project number,
-            or organization ID with "organizations/" prefix. For
-            example,
-            https://docs.google.com/spreadsheet/viewform?formkey=abc123&entry_0=johndoe@gmail.com&entry_1=25463754,
-            or
-            https://docs.google.com/spreadsheet/viewform?formkey=abc123&entry_0=johndoe@gmail.com&entry_1=organizations/26474422.
+            URI to the page where users can request more
+            quota for the cloud service—for example,
+            https://console.cloud.google.com/iam-admin/quotas.
     """
 
     class ContainerType(proto.Enum):
@@ -309,16 +302,17 @@ class QuotaPreference(proto.Message):
             The reason / justification for this quota
             preference.
         contact_email (str):
-            Required. Input only. An email address that
-            can be used for quota related communication
-            between the Google Cloud and the user in case
-            the Google Cloud needs further information to
-            make a decision on whether the user preferred
-            quota can be granted.
+            Input only. An email address that can be used for quota
+            related communication between the Google Cloud and the user
+            in case the Google Cloud needs further information to make a
+            decision on whether the user preferred quota can be granted.
 
-            The Google account for the email address must
-            have quota update permission for the project,
-            folder or organization this quota preference is
+            The email address is optional for decrease quota
+            preferences. In another word, QuotaConfig.preferred_value is
+            smaller than the QuotaDetails.reset_value. It is required
+            for increase quota preferences. The Google account for the
+            email address must have quota update permission for the
+            project, folder or organization this quota preference is
             for.
     """
 
