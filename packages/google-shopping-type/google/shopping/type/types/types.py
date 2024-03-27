@@ -155,7 +155,7 @@ class ReportingContext(proto.Message):
     results on Google. They can represent the entire destination (for
     example, `Shopping
     ads <https://support.google.com/merchants/answer/6149970>`__) or a
-    subset of formats within a destination (for example, `Discovery
+    subset of formats within a destination (for example, `Demand Gen
     ads <https://support.google.com/merchants/answer/13389785>`__).
 
     """
@@ -170,8 +170,15 @@ class ReportingContext(proto.Message):
                 `Shopping
                 ads <https://support.google.com/merchants/answer/6149970>`__.
             DISCOVERY_ADS (2):
-                `Discovery and Demand Gen
+                Deprecated: Use ``DEMAND_GEN_ADS`` instead. `Discovery and
+                Demand Gen
                 ads <https://support.google.com/merchants/answer/13389785>`__.
+            DEMAND_GEN_ADS (13):
+                `Demand Gen
+                ads <https://support.google.com/merchants/answer/13389785>`__.
+            DEMAND_GEN_ADS_DISCOVER_SURFACE (14):
+                `Demand Gen ads on Discover
+                surface <https://support.google.com/merchants/answer/13389785>`__.
             VIDEO_ADS (3):
                 `Video
                 ads <https://support.google.com/google-ads/answer/6340491>`__.
@@ -206,6 +213,8 @@ class ReportingContext(proto.Message):
         REPORTING_CONTEXT_ENUM_UNSPECIFIED = 0
         SHOPPING_ADS = 1
         DISCOVERY_ADS = 2
+        DEMAND_GEN_ADS = 13
+        DEMAND_GEN_ADS_DISCOVER_SURFACE = 14
         VIDEO_ADS = 3
         DISPLAY_ADS = 4
         LOCAL_INVENTORY_ADS = 5
