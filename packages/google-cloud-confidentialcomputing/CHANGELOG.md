@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.7...google-cloud-confidentialcomputing-v0.4.8) (2024-03-27)
+
+
+### Features
+
+* [google-cloud-confidentialcomputing] Add additional `TokenType` options (`TOKEN_TYPE_PKI` and `TOKEN_TYPE_LIMITED_AWS`) ([#12515](https://github.com/googleapis/google-cloud-python/issues/12515)) ([60d87fa](https://github.com/googleapis/google-cloud-python/commit/60d87fab39cf9b19fee1679b52100310a42f19e5))
+
 ## [0.4.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.6...google-cloud-confidentialcomputing-v0.4.7) (2024-03-05)
 
 

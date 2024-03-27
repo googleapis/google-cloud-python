@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.32.1...google-cloud-dialogflow-cx-v1.33.0) (2024-03-27)
+
+
+### Features
+
+* added support for DataStoreConnection, DataStoreConnectionSettings ([ce2c9ed](https://github.com/googleapis/google-cloud-python/commit/ce2c9edf1d4377cd096c6a314b8e297cc44a2ca6))
+* added support for MultiLanguageSettings ([ce2c9ed](https://github.com/googleapis/google-cloud-python/commit/ce2c9edf1d4377cd096c6a314b8e297cc44a2ca6))
+* added support for PersonalizationSettings ([ce2c9ed](https://github.com/googleapis/google-cloud-python/commit/ce2c9edf1d4377cd096c6a314b8e297cc44a2ca6))
+* added support for SpeechSettings ([ce2c9ed](https://github.com/googleapis/google-cloud-python/commit/ce2c9edf1d4377cd096c6a314b8e297cc44a2ca6))
+* added support for Webhook OAuthConfig, and ServiceAgentAuth Settings. ([ce2c9ed](https://github.com/googleapis/google-cloud-python/commit/ce2c9edf1d4377cd096c6a314b8e297cc44a2ca6))
+
+
+### Documentation
+
+* clarified wording around quota usage ([ce2c9ed](https://github.com/googleapis/google-cloud-python/commit/ce2c9edf1d4377cd096c6a314b8e297cc44a2ca6))
+
 ## [1.32.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.32.0...google-cloud-dialogflow-cx-v1.32.1) (2024-03-05)
 
 

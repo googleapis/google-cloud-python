@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.5...google-cloud-cloudquotas-v0.1.6) (2024-03-27)
+
+
+### Documentation
+
+* update comment of `contact_email` to make it optional as opposed to required ([763c119](https://github.com/googleapis/google-cloud-python/commit/763c1199b9c5d6c9a6297bed6bb815e4c80432e3))
+* update sample URL in field for `service_request_quota_uri` ([763c119](https://github.com/googleapis/google-cloud-python/commit/763c1199b9c5d6c9a6297bed6bb815e4c80432e3))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.4...google-cloud-cloudquotas-v0.1.5) (2024-03-22)
 
 
