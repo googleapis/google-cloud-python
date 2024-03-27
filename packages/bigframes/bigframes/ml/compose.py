@@ -23,7 +23,6 @@ from typing import List, Optional, Tuple, Union
 
 import bigframes_vendored.sklearn.compose._column_transformer
 
-from bigframes import constants
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, preprocessing, utils
 import bigframes.pandas as bpd
@@ -77,7 +76,6 @@ class ColumnTransformer(
             ]
         ] = []
 
-        column_set: set[str] = set()
         for entry in self.transformers:
             name, transformer, column_or_columns = entry
             columns = (
@@ -87,10 +85,6 @@ class ColumnTransformer(
             )
 
             for column in columns:
-                if column in column_set:
-                    raise NotImplementedError(
-                        f"Chained transformers on the same column isn't supported. {constants.FEEDBACK_LINK}"
-                    )
                 result.append((name, transformer, column))
 
         return result

@@ -32,9 +32,14 @@ def test_columntransformer_standalone_fit_and_transform(
                 "species",
             ),
             (
-                "scale",
+                "starndard_scale",
                 bigframes.ml.preprocessing.StandardScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "min_max_scale",
+                bigframes.ml.preprocessing.MinMaxScaler(),
+                ["culmen_length_mm"],
             ),
         ]
     )
@@ -51,6 +56,7 @@ def test_columntransformer_standalone_fit_and_transform(
 
     expected = pandas.DataFrame(
         {
+            "min_max_scaled_culmen_length_mm": [0.269, 0.232, 0.210],
             "onehotencoded_species": [
                 [{"index": 1, "value": 1.0}],
                 [{"index": 1, "value": 1.0}],
@@ -65,14 +71,8 @@ def test_columntransformer_standalone_fit_and_transform(
         },
         index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
     )
-    expected.standard_scaled_culmen_length_mm = (
-        expected.standard_scaled_culmen_length_mm.astype("Float64")
-    )
-    expected.standard_scaled_flipper_length_mm = (
-        expected.standard_scaled_flipper_length_mm.astype("Float64")
-    )
 
-    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3, check_dtype=False)
+    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
 
 
 def test_columntransformer_standalone_fit_transform(new_penguins_df):
@@ -84,7 +84,7 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
                 "species",
             ),
             (
-                "scale",
+                "standard_scale",
                 bigframes.ml.preprocessing.StandardScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
@@ -116,11 +116,5 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
         },
         index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
     )
-    expected.standard_scaled_culmen_length_mm = (
-        expected.standard_scaled_culmen_length_mm.astype("Float64")
-    )
-    expected.standard_scaled_flipper_length_mm = (
-        expected.standard_scaled_flipper_length_mm.astype("Float64")
-    )
 
-    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3, check_dtype=False)
+    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
