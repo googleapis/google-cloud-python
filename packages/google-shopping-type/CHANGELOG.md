@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.4...google-shopping-type-v0.1.5) (2024-03-27)
+
+
+### Features
+
+* Add DEMAND_GEN_ADS and DEMAND_GEN_ADS_DISCOVER_SURFACE in ReportingContextEnum ([42b7bb4](https://github.com/googleapis/google-cloud-python/commit/42b7bb4f5ecfa377d391adfa4dab855e134b69dc))
+
+
+### Documentation
+
+* Deprecate DISCOVERY_ADS and document the new enum values ([42b7bb4](https://github.com/googleapis/google-cloud-python/commit/42b7bb4f5ecfa377d391adfa4dab855e134b69dc))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.3...google-shopping-type-v0.1.4) (2024-03-05)
 
 
