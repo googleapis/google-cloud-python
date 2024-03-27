@@ -341,8 +341,8 @@ def run_system(
     pytest_cmd.extend(extra_pytest_options)
     session.run(
         *pytest_cmd,
-        test_folder,
         *session.posargs,
+        test_folder,
     )
 
 

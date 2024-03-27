@@ -2783,6 +2783,12 @@ def test_string_astype_float():
 
 
 def test_string_astype_date():
+    if int(pa.__version__.split(".")[0]) < 15:
+        pytest.skip(
+            "Avoid pyarrow.lib.ArrowNotImplementedError: "
+            "Unsupported cast from string to date32 using function cast_date32."
+        )
+
     pd_series = pd.Series(["2014-08-15", "2215-08-15", "2016-02-29"]).astype(
         pd.ArrowDtype(pa.string())
     )
