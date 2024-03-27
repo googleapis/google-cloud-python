@@ -1060,8 +1060,7 @@ class ChatServiceAsyncClient:
                 -  ``cards_v2`` (Requires `app
                    authentication </chat/api/guides/auth/service-accounts>`__.)
 
-                -  Developer Preview: ``accessory_widgets`` (Requires
-                   `app
+                -  ``accessory_widgets`` (Requires `app
                    authentication </chat/api/guides/auth/service-accounts>`__.)
 
                 This corresponds to the ``update_mask`` field

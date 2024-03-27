@@ -53,6 +53,7 @@ from google.apps.chat_v1.types.membership import (
     Membership,
 )
 from google.apps.chat_v1.types.message import (
+    AccessoryWidget,
     ActionResponse,
     AttachedGif,
     CardWithId,
@@ -122,6 +123,7 @@ __all__ = (
     "ListMembershipsRequest",
     "ListMembershipsResponse",
     "Membership",
+    "AccessoryWidget",
     "ActionResponse",
     "AttachedGif",
     "CardWithId",
