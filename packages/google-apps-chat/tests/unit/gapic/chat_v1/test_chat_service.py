@@ -8281,6 +8281,7 @@ def test_create_message_rest(request_type):
         "deletion_metadata": {"deletion_type": 1},
         "quoted_message_metadata": {"name": "name_value", "last_update_time": {}},
         "attached_gifs": [{"uri": "uri_value"}],
+        "accessory_widgets": [{"button_list": {}}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10223,6 +10224,7 @@ def test_update_message_rest(request_type):
         "deletion_metadata": {"deletion_type": 1},
         "quoted_message_metadata": {"name": "name_value", "last_update_time": {}},
         "attached_gifs": [{"uri": "uri_value"}],
+        "accessory_widgets": [{"button_list": {}}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

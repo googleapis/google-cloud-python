@@ -50,6 +50,7 @@ from .types.membership import (
     Membership,
 )
 from .types.message import (
+    AccessoryWidget,
     ActionResponse,
     AttachedGif,
     CardWithId,
@@ -94,6 +95,7 @@ from .types.widgets import WidgetMarkup
 
 __all__ = (
     "ChatServiceAsyncClient",
+    "AccessoryWidget",
     "ActionResponse",
     "ActionStatus",
     "Annotation",
