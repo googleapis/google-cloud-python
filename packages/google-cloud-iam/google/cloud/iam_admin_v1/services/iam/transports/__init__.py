@@ -1,4 +1,5 @@
-# Copyright 2021 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,21 +12,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from collections import OrderedDict
+from typing import Dict, Type
 
+from .base import IAMTransport
+from .grpc import IAMGrpcTransport
+from .grpc_asyncio import IAMGrpcAsyncIOTransport
 
-deep-remove-regex:
-  - /owl-bot-staging
+# Compile a registry of transports.
+_transport_registry = OrderedDict()  # type: Dict[str, Type[IAMTransport]]
+_transport_registry["grpc"] = IAMGrpcTransport
+_transport_registry["grpc_asyncio"] = IAMGrpcAsyncIOTransport
 
-deep-copy-regex:
-  - source: /google/iam/admin/(v.*)/.*-py
-    dest: /owl-bot-staging/google-cloud-iam/$1
-  - source: /google/iam/credentials/(v.*)/.*-py
-    dest: /owl-bot-staging/google-cloud-iam/$1
-  - source: /google/iam/v2beta/.*-py
-    dest: /owl-bot-staging/google-cloud-iam/$1
-  - source: /google/iam/v2/.*-py
-    dest: /owl-bot-staging/google-cloud-iam/$1
-
-begin-after-commit-hash: 130ce904e5d546c312943d10f48799590f9c0f66
-
-api-name: google-cloud-iam
+__all__ = (
+    "IAMTransport",
+    "IAMGrpcTransport",
+    "IAMGrpcAsyncIOTransport",
+)
