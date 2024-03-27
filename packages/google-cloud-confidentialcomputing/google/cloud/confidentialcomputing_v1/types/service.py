@@ -70,9 +70,15 @@ class TokenType(proto.Enum):
             Unspecified token type
         TOKEN_TYPE_OIDC (1):
             OpenID Connect (OIDC) token type
+        TOKEN_TYPE_PKI (2):
+            Public Key Infrastructure (PKI) token type
+        TOKEN_TYPE_LIMITED_AWS (3):
+            Limited claim token type for AWS integration
     """
     TOKEN_TYPE_UNSPECIFIED = 0
     TOKEN_TYPE_OIDC = 1
+    TOKEN_TYPE_PKI = 2
+    TOKEN_TYPE_LIMITED_AWS = 3
 
 
 class Challenge(proto.Message):
