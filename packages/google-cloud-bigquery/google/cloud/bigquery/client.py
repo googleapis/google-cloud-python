@@ -882,6 +882,35 @@ class Client(ClientWithProject):
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> Policy:
+        """Return the access control policy for a table resource.
+
+        Args:
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                google.cloud.bigquery.table.TableListItem, \
+                str, \
+            ]):
+                The table to get the access control policy for.
+                If a string is passed in, this method attempts to create a
+                table reference from a string using
+                :func:`~google.cloud.bigquery.table.TableReference.from_string`.
+            requested_policy_version (int):
+                Optional. The maximum policy version that will be used to format the policy.
+
+                Only version ``1`` is currently supported.
+
+                See: https://cloud.google.com/bigquery/docs/reference/rest/v2/GetPolicyOptions
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+
+        Returns:
+            google.api_core.iam.Policy:
+                The access control policy.
+        """
         table = _table_arg_to_table_ref(table, default_project=self.project)
 
         if requested_policy_version != 1:
@@ -910,7 +939,53 @@ class Client(ClientWithProject):
         updateMask: Optional[str] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
+        *,
+        fields: Sequence[str] = (),
     ) -> Policy:
+        """Return the access control policy for a table resource.
+
+        Args:
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                google.cloud.bigquery.table.TableListItem, \
+                str, \
+            ]):
+                The table to get the access control policy for.
+                If a string is passed in, this method attempts to create a
+                table reference from a string using
+                :func:`~google.cloud.bigquery.table.TableReference.from_string`.
+            policy (google.api_core.iam.Policy):
+                The access control policy to set.
+            updateMask (Optional[str]):
+                Mask as defined by
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/setIamPolicy#body.request_body.FIELDS.update_mask
+
+                Incompatible with ``fields``.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+            fields (Sequence[str]):
+                Which properties to set on the policy. See:
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/setIamPolicy#body.request_body.FIELDS.update_mask
+
+                Incompatible with ``updateMask``.
+
+        Returns:
+            google.api_core.iam.Policy:
+                The updated access control policy.
+        """
+        if updateMask is not None and not fields:
+            update_mask = updateMask
+        elif updateMask is not None and fields:
+            raise ValueError("Cannot set both fields and updateMask")
+        elif fields:
+            update_mask = ",".join(fields)
+        else:
+            update_mask = None
+
         table = _table_arg_to_table_ref(table, default_project=self.project)
 
         if not isinstance(policy, (Policy)):
@@ -918,8 +993,8 @@ class Client(ClientWithProject):
 
         body = {"policy": policy.to_api_repr()}
 
-        if updateMask is not None:
-            body["updateMask"] = updateMask
+        if update_mask is not None:
+            body["updateMask"] = update_mask
 
         path = "{}:setIamPolicy".format(table.path)
         span_attributes = {"path": path}

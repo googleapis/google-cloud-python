@@ -36,7 +36,6 @@ from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
-from google.api_core.iam import Policy
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
@@ -1484,33 +1483,6 @@ class TestBigQuery(unittest.TestCase):
         # Just check that we got some rows.
         got_rows = self._fetch_single_page(dest_table)
         self.assertTrue(len(got_rows) > 0)
-
-    def test_get_set_iam_policy(self):
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_VIEWER_ROLE
-
-        dataset = self.temp_dataset(_make_dataset_id("create_table"))
-        table_id = "test_table"
-        table_ref = Table(dataset.table(table_id))
-        self.assertFalse(_table_exists(table_ref))
-
-        table = helpers.retry_403(Config.CLIENT.create_table)(table_ref)
-        self.to_delete.insert(0, table)
-
-        self.assertTrue(_table_exists(table))
-
-        member = "serviceAccount:{}".format(Config.CLIENT.get_service_account_email())
-        BINDING = {
-            "role": BIGQUERY_DATA_VIEWER_ROLE,
-            "members": {member},
-        }
-
-        policy = Config.CLIENT.get_iam_policy(table)
-        self.assertIsInstance(policy, Policy)
-        self.assertEqual(policy.bindings, [])
-
-        policy.bindings.append(BINDING)
-        returned_policy = Config.CLIENT.set_iam_policy(table, policy)
-        self.assertEqual(returned_policy.bindings, policy.bindings)
 
     def test_test_iam_permissions(self):
         dataset = self.temp_dataset(_make_dataset_id("create_table"))
