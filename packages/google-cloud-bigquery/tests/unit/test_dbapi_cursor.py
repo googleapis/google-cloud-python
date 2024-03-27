@@ -21,17 +21,7 @@ import pytest
 
 import google.cloud.bigquery.table as bq_table
 
-try:
-    import pyarrow
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
-
 from google.api_core import exceptions
-
-try:
-    from google.cloud import bigquery_storage
-except ImportError:  # pragma: NO COVER
-    bigquery_storage = None
 
 from tests.unit.helpers import _to_pyarrow
 
@@ -97,6 +87,8 @@ class TestCursor(unittest.TestCase):
         return mock_client
 
     def _mock_bqstorage_client(self, rows=None, stream_count=0):
+        from google.cloud import bigquery_storage
+
         if rows is None:
             rows = []
 
@@ -320,11 +312,9 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0], (1,))
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_fetchall_w_bqstorage_client_fetch_success(self):
+        pytest.importorskip("google.cloud.bigquery_storage")
+        pytest.importorskip("pyarrow")
         from google.cloud.bigquery import dbapi
 
         # use unordered data to also test any non-determenistic key order in dicts
@@ -380,10 +370,8 @@ class TestCursor(unittest.TestCase):
 
         self.assertEqual(sorted_row_data, expected_row_data)
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_fetchall_w_bqstorage_client_fetch_no_rows(self):
+        pytest.importorskip("google.cloud.bigquery_storage")
         from google.cloud.bigquery import dbapi
 
         mock_client = self._mock_client(
@@ -410,10 +398,8 @@ class TestCursor(unittest.TestCase):
         # check the data returned
         self.assertEqual(rows, [])
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_fetchall_w_bqstorage_client_fetch_error_no_fallback(self):
+        pytest.importorskip("google.cloud.bigquery_storage")
         from google.cloud.bigquery import dbapi
 
         row_data = [bq_table.Row([1.1, 1.2], {"foo": 0, "bar": 1})]
@@ -448,11 +434,10 @@ class TestCursor(unittest.TestCase):
         # the default client was not used
         mock_client.list_rows.assert_not_called()
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_fetchall_w_bqstorage_client_no_arrow_compression(self):
+        pytest.importorskip("google.cloud.bigquery_storage")
+        pytest.importorskip("pyarrow")
+        from google.cloud import bigquery_storage
         from google.cloud.bigquery import dbapi
 
         # Use unordered data to also test any non-determenistic key order in dicts.

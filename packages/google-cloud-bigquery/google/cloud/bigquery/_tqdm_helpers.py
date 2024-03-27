@@ -67,7 +67,7 @@ def get_progress_bar(progress_bar_type, description, total, unit):
             )
         elif progress_bar_type == "tqdm_gui":
             return tqdm.tqdm_gui(desc=description, total=total, unit=unit)
-    except (KeyError, TypeError):
+    except (KeyError, TypeError):  # pragma: NO COVER
         # Protect ourselves from any tqdm errors. In case of
         # unexpected tqdm behavior, just fall back to showing
         # no progress bar.

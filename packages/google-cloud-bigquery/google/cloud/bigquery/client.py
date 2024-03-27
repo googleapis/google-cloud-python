@@ -593,7 +593,7 @@ class Client(ClientWithProject):
             )
             return None
 
-        if bqstorage_client is None:
+        if bqstorage_client is None:  # pragma: NO COVER
             bqstorage_client = bigquery_storage.BigQueryReadClient(
                 credentials=self._credentials,
                 client_options=client_options,

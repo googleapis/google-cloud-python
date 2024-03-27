@@ -45,8 +45,9 @@ dependencies = [
 ]
 pyarrow_dependency = "pyarrow >= 3.0.0"
 extras = {
-    # Keep the no-op bqstorage extra for backward compatibility.
-    # See: https://github.com/googleapis/python-bigquery/issues/757
+    # bqstorage had a period where it was a required dependency, and has been
+    # moved back to optional due to bloat.  See
+    # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
     "bqstorage": [
         "google-cloud-bigquery-storage >= 2.6.0, <3.0.0dev",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
