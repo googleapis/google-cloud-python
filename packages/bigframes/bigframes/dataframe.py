@@ -307,6 +307,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self.to_numpy()
 
     @property
+    def bqclient(self) -> bigframes.Session:
+        """BigQuery REST API Client the DataFrame uses for operations."""
+        return self._session.bqclient
+
+    @property
     def _session(self) -> bigframes.Session:
         return self._get_block().expr.session
 
