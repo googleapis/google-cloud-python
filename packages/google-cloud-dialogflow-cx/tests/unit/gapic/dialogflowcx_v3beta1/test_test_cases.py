@@ -5655,6 +5655,12 @@ def test_create_test_case_rest(request_type):
                             ],
                             "advanced_settings": {
                                 "audio_export_gcs_destination": {"uri": "uri_value"},
+                                "speech_settings": {
+                                    "endpointer_sensitivity": 2402,
+                                    "no_speech_timeout": {},
+                                    "use_timeout_based_endpointing": True,
+                                    "models": {},
+                                },
                                 "dtmf_settings": {
                                     "enabled": True,
                                     "max_digits": 1065,
@@ -6256,6 +6262,12 @@ def test_update_test_case_rest(request_type):
                             ],
                             "advanced_settings": {
                                 "audio_export_gcs_destination": {"uri": "uri_value"},
+                                "speech_settings": {
+                                    "endpointer_sensitivity": 2402,
+                                    "no_speech_timeout": {},
+                                    "use_timeout_based_endpointing": True,
+                                    "models": {},
+                                },
                                 "dtmf_settings": {
                                     "enabled": True,
                                     "max_digits": 1065,
