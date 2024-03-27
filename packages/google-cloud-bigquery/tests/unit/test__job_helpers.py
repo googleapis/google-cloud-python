@@ -22,6 +22,7 @@ from google.api_core import retry as retries
 import pytest
 
 from google.cloud.bigquery.client import Client
+from google.cloud.bigquery import enums
 from google.cloud.bigquery import _job_helpers
 from google.cloud.bigquery.job import copy_ as job_copy
 from google.cloud.bigquery.job import extract as job_extract
@@ -1141,12 +1142,22 @@ def test_make_job_id_w_job_id_overrides_prefix():
             False,
             id="destination_encryption_configuration",
         ),
+        # priority="BATCH" is not supported. See:
+        # https://github.com/googleapis/python-bigquery/issues/1867
+        pytest.param(
+            job_query.QueryJobConfig(
+                priority=enums.QueryPriority.BATCH,
+            ),
+            False,
+            id="priority=BATCH",
+        ),
     ),
 )
-def test_supported_by_jobs_query(
+def test_supported_by_jobs_query_from_queryjobconfig(
     job_config: Optional[job_query.QueryJobConfig], expected: bool
 ):
-    assert _job_helpers._supported_by_jobs_query(job_config) == expected
+    request_body = _job_helpers._to_query_request(job_config, query="SELECT 1")
+    assert _job_helpers._supported_by_jobs_query(request_body) == expected
 
 
 def test_wait_or_cancel_no_exception():
