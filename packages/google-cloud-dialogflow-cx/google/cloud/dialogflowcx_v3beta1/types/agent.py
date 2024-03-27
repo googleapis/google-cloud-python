@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import (
@@ -122,15 +123,11 @@ class Agent(proto.Message):
         speech_to_text_settings (google.cloud.dialogflowcx_v3beta1.types.SpeechToTextSettings):
             Speech recognition related settings.
         start_flow (str):
-            Optional. Name of the start flow in this agent. A start flow
-            will be automatically created when the agent is created, and
-            can only be deleted by deleting the agent. Format:
+            Immutable. Name of the start flow in this agent. A start
+            flow will be automatically created when the agent is
+            created, and can only be deleted by deleting the agent.
+            Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
-            Currently only the default start flow with id
-            "00000000-0000-0000-0000-000000000000" is allowed.
-
-            Only one of ``start_flow`` or ``start_playbook`` should be
-            set, but not both.
         start_playbook (str):
             Optional. Name of the start playbook in this agent. A start
             playbook will be automatically created when the agent is
@@ -155,6 +152,11 @@ class Agent(proto.Message):
         enable_spell_correction (bool):
             Indicates if automatic spell correction is
             enabled in detect intent requests.
+        enable_multi_language_training (bool):
+            Optional. Enable training multi-lingual
+            models for this agent. These models will be
+            trained on all the languages supported by the
+            agent.
         locked (bool):
             Indicates whether the agent is locked for changes. If the
             agent is locked, modifications to the agent will be rejected
@@ -177,6 +179,9 @@ class Agent(proto.Message):
         answer_feedback_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.AnswerFeedbackSettings):
             Optional. Answer feedback collection
             settings.
+        personalization_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.PersonalizationSettings):
+            Optional. Settings for end user
+            personalization.
     """
 
     class GitIntegrationSettings(proto.Message):
@@ -272,6 +277,27 @@ class Agent(proto.Message):
             number=1,
         )
 
+    class PersonalizationSettings(proto.Message):
+        r"""Settings for end user personalization.
+
+        Attributes:
+            default_end_user_metadata (google.protobuf.struct_pb2.Struct):
+                Optional. Default end user metadata, used when processing
+                DetectIntent requests. Recommended to be filled as a
+                template instead of hard-coded value, for example { "age":
+                "$session.params.age" }. The data will be merged with the
+                [QueryParameters.end_user_metadata][google.cloud.dialogflow.cx.v3beta1.QueryParameters.end_user_metadata]
+                in
+                [DetectIntentRequest.query_params][google.cloud.dialogflow.cx.v3beta1.DetectIntentRequest.query_params]
+                during query processing.
+        """
+
+        default_end_user_metadata: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.Struct,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -325,6 +351,10 @@ class Agent(proto.Message):
         proto.BOOL,
         number=20,
     )
+    enable_multi_language_training: bool = proto.Field(
+        proto.BOOL,
+        number=40,
+    )
     locked: bool = proto.Field(
         proto.BOOL,
         number=27,
@@ -354,6 +384,11 @@ class Agent(proto.Message):
         proto.MESSAGE,
         number=38,
         message=AnswerFeedbackSettings,
+    )
+    personalization_settings: PersonalizationSettings = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message=PersonalizationSettings,
     )
 
 

@@ -116,6 +116,17 @@ class Webhook(proto.Message):
                         -signkey example.com.key \
                         -out example.com.crt \
                         -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+            oauth_config (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.OAuthConfig):
+                Optional. The OAuth configuration of the
+                webhook. If specified, Dialogflow will initiate
+                the OAuth client credential flow to exchange an
+                access token from the 3rd party platform and put
+                it in the auth header.
+            service_agent_auth (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.ServiceAgentAuth):
+                Optional. Indicate the auth token type generated from the
+                `Diglogflow service
+                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+                The generated token is sent in the Authorization header.
             webhook_type (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.WebhookType):
                 Optional. Type of the webhook.
             http_method (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.HttpMethod):
@@ -132,6 +143,33 @@ class Webhook(proto.Message):
                 - Key: session parameter name
                 - Value: field path in the webhook response
         """
+
+        class ServiceAgentAuth(proto.Enum):
+            r"""Indicate the auth token type generated from the `Diglogflow service
+            agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+
+            Values:
+                SERVICE_AGENT_AUTH_UNSPECIFIED (0):
+                    Service agent auth type unspecified. Default to ID_TOKEN.
+                NONE (1):
+                    No token used.
+                ID_TOKEN (2):
+                    Use `ID
+                    token <https://cloud.google.com/docs/authentication/token-types#id>`__
+                    generated from service agent. This can be used to access
+                    Cloud Function and Cloud Run after you grant Invoker role to
+                    ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
+                ACCESS_TOKEN (3):
+                    Use `access
+                    token <https://cloud.google.com/docs/authentication/token-types#access>`__
+                    generated from service agent. This can be used to access
+                    other Google Cloud APIs after you grant required roles to
+                    ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
+            """
+            SERVICE_AGENT_AUTH_UNSPECIFIED = 0
+            NONE = 1
+            ID_TOKEN = 2
+            ACCESS_TOKEN = 3
 
         class WebhookType(proto.Enum):
             r"""Represents the type of webhook configuration.
@@ -178,6 +216,41 @@ class Webhook(proto.Message):
             PATCH = 6
             OPTIONS = 7
 
+        class OAuthConfig(proto.Message):
+            r"""Represents configuration of OAuth client credential flow for
+            3rd party API authentication.
+
+            Attributes:
+                client_id (str):
+                    Required. The client ID provided by the 3rd
+                    party platform.
+                client_secret (str):
+                    Required. The client secret provided by the
+                    3rd party platform.
+                token_endpoint (str):
+                    Required. The token endpoint provided by the
+                    3rd party platform to exchange an access token.
+                scopes (MutableSequence[str]):
+                    Optional. The OAuth scopes to grant.
+            """
+
+            client_id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            client_secret: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            token_endpoint: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            scopes: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
+
         uri: str = proto.Field(
             proto.STRING,
             number=1,
@@ -198,6 +271,16 @@ class Webhook(proto.Message):
         allowed_ca_certs: MutableSequence[bytes] = proto.RepeatedField(
             proto.BYTES,
             number=5,
+        )
+        oauth_config: "Webhook.GenericWebService.OAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message="Webhook.GenericWebService.OAuthConfig",
+        )
+        service_agent_auth: "Webhook.GenericWebService.ServiceAgentAuth" = proto.Field(
+            proto.ENUM,
+            number=12,
+            enum="Webhook.GenericWebService.ServiceAgentAuth",
         )
         webhook_type: "Webhook.GenericWebService.WebhookType" = proto.Field(
             proto.ENUM,

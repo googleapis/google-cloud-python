@@ -51,7 +51,11 @@ from .changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
-from .data_store_connection import DataStoreConnection, DataStoreType
+from .data_store_connection import (
+    DataStoreConnection,
+    DataStoreConnectionSignals,
+    DataStoreType,
+)
 from .deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -375,6 +379,7 @@ __all__ = (
     "ListChangelogsRequest",
     "ListChangelogsResponse",
     "DataStoreConnection",
+    "DataStoreConnectionSignals",
     "DataStoreType",
     "Deployment",
     "GetDeploymentRequest",

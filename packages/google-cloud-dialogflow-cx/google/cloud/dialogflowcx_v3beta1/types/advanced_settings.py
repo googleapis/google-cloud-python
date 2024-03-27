@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import gcs
@@ -52,6 +53,14 @@ class AdvancedSettings(proto.Message):
 
             - Agent level
             - Flow level
+        speech_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings.SpeechSettings):
+            Settings for speech to text detection.
+            Exposed at the following levels:
+
+            - Agent level
+            - Flow level
+            - Page level
+            - Parameter level
         dtmf_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings.DtmfSettings):
             Settings for DTMF.
             Exposed at the following levels:
@@ -68,6 +77,45 @@ class AdvancedSettings(proto.Message):
 
             - Agent level.
     """
+
+    class SpeechSettings(proto.Message):
+        r"""Define behaviors of speech to text detection.
+
+        Attributes:
+            endpointer_sensitivity (int):
+                Sensitivity of the speech model that detects
+                the end of speech. Scale from 0 to 100.
+            no_speech_timeout (google.protobuf.duration_pb2.Duration):
+                Timeout before detecting no speech.
+            use_timeout_based_endpointing (bool):
+                Use timeout based endpointing, interpreting
+                endpointer sensitivy as seconds of timeout
+                value.
+            models (MutableMapping[str, str]):
+                Mapping from language to Speech-to-Text model. The mapped
+                Speech-to-Text model will be selected for requests from its
+                corresponding language. For more information, see `Speech
+                models <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
+        """
+
+        endpointer_sensitivity: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        no_speech_timeout: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
+        use_timeout_based_endpointing: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        models: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=5,
+        )
 
     class DtmfSettings(proto.Message):
         r"""Define behaviors for DTMF (dual tone multi frequency).
@@ -127,6 +175,11 @@ class AdvancedSettings(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gcs.GcsDestination,
+    )
+    speech_settings: SpeechSettings = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=SpeechSettings,
     )
     dtmf_settings: DtmfSettings = proto.Field(
         proto.MESSAGE,
