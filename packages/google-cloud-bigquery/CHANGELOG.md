@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.20.0](https://github.com/googleapis/python-bigquery/compare/v3.19.0...v3.20.0) (2024-03-27)
+
+
+### Features
+
+* Add `fields` parameter to `set_iam_policy` for consistency with update methods ([#1872](https://github.com/googleapis/python-bigquery/issues/1872)) ([08b1e6f](https://github.com/googleapis/python-bigquery/commit/08b1e6f9c41121907c345daedbae40ece18e8b6a))
+
+
+### Bug Fixes
+
+* Correct type checking ([#1848](https://github.com/googleapis/python-bigquery/issues/1848)) ([2660dbd](https://github.com/googleapis/python-bigquery/commit/2660dbd4821a89a1e20e3e1541504a409f1979aa))
+* Update error logging when converting to pyarrow column fails ([#1836](https://github.com/googleapis/python-bigquery/issues/1836)) ([0ac6e9b](https://github.com/googleapis/python-bigquery/commit/0ac6e9bf186945832f5dcdf5a4d95667b4da223e))
+* Updates a number of optional dependencies ([#1864](https://github.com/googleapis/python-bigquery/issues/1864)) ([c2496a1](https://github.com/googleapis/python-bigquery/commit/c2496a1014a7d99e805b3d0a66e4517165bd7e01))
+* Use an allowlist instead of denylist to determine when `query_and_wait` uses `jobs.query` API ([#1869](https://github.com/googleapis/python-bigquery/issues/1869)) ([e265db6](https://github.com/googleapis/python-bigquery/commit/e265db6a6a37d13056dcaac240c2cf3975dfd644))
+
 ## [3.19.0](https://github.com/googleapis/python-bigquery/compare/v3.18.0...v3.19.0) (2024-03-11)
 
 
