@@ -77,6 +77,7 @@ from google.auth import _helpers
 from google.auth import _service_account_info
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import iam
 from google.auth import jwt
 from google.auth import metrics
 from google.oauth2 import _client
@@ -595,8 +596,11 @@ class IDTokenCredentials(
             self._universe_domain = credentials.DEFAULT_UNIVERSE_DOMAIN
         else:
             self._universe_domain = universe_domain
+        self._iam_id_token_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(
+            "googleapis.com", self._universe_domain
+        )
 
-        if universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
+        if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             self._use_iam_endpoint = True
 
         if additional_claims is not None:
@@ -792,6 +796,7 @@ class IDTokenCredentials(
         jwt_credentials.refresh(request)
         self.token, self.expiry = _client.call_iam_generate_id_token_endpoint(
             request,
+            self._iam_id_token_endpoint,
             self.signer_email,
             self._target_audience,
             jwt_credentials.token.decode(),

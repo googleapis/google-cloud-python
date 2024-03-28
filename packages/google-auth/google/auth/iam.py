@@ -27,8 +27,23 @@ from google.auth import _helpers
 from google.auth import crypt
 from google.auth import exceptions
 
-_IAM_API_ROOT_URI = "https://iamcredentials.googleapis.com/v1"
-_SIGN_BLOB_URI = _IAM_API_ROOT_URI + "/projects/-/serviceAccounts/{}:signBlob?alt=json"
+
+_IAM_SCOPE = ["https://www.googleapis.com/auth/iam"]
+
+_IAM_ENDPOINT = (
+    "https://iamcredentials.googleapis.com/v1/projects/-"
+    + "/serviceAccounts/{}:generateAccessToken"
+)
+
+_IAM_SIGN_ENDPOINT = (
+    "https://iamcredentials.googleapis.com/v1/projects/-"
+    + "/serviceAccounts/{}:signBlob"
+)
+
+_IAM_IDTOKEN_ENDPOINT = (
+    "https://iamcredentials.googleapis.com/v1/"
+    + "projects/-/serviceAccounts/{}:generateIdToken"
+)
 
 
 class Signer(crypt.Signer):
@@ -67,7 +82,7 @@ class Signer(crypt.Signer):
         message = _helpers.to_bytes(message)
 
         method = "POST"
-        url = _SIGN_BLOB_URI.format(self._service_account_email)
+        url = _IAM_SIGN_ENDPOINT.format(self._service_account_email)
         headers = {"Content-Type": "application/json"}
         body = json.dumps(
             {"payload": base64.b64encode(message).decode("utf-8")}

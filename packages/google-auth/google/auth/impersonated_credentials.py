@@ -34,31 +34,14 @@ import json
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import iam
 from google.auth import jwt
 from google.auth import metrics
 
-_IAM_SCOPE = ["https://www.googleapis.com/auth/iam"]
-
-_IAM_ENDPOINT = (
-    "https://iamcredentials.googleapis.com/v1/projects/-"
-    + "/serviceAccounts/{}:generateAccessToken"
-)
-
-_IAM_SIGN_ENDPOINT = (
-    "https://iamcredentials.googleapis.com/v1/projects/-"
-    + "/serviceAccounts/{}:signBlob"
-)
-
-_IAM_IDTOKEN_ENDPOINT = (
-    "https://iamcredentials.googleapis.com/v1/"
-    + "projects/-/serviceAccounts/{}:generateIdToken"
-)
 
 _REFRESH_ERROR = "Unable to acquire impersonated credentials"
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
-
-_DEFAULT_TOKEN_URI = "https://oauth2.googleapis.com/token"
 
 
 def _make_iam_token_request(
@@ -83,7 +66,7 @@ def _make_iam_token_request(
             `iamcredentials.googleapis.com` is not enabled or the
             `Service Account Token Creator` is not assigned
     """
-    iam_endpoint = iam_endpoint_override or _IAM_ENDPOINT.format(principal)
+    iam_endpoint = iam_endpoint_override or iam._IAM_ENDPOINT.format(principal)
 
     body = json.dumps(body).encode("utf-8")
 
@@ -225,7 +208,9 @@ class Credentials(
         # added to refresh correctly. User credentials cannot have
         # their original scopes modified.
         if isinstance(self._source_credentials, credentials.Scoped):
-            self._source_credentials = self._source_credentials.with_scopes(_IAM_SCOPE)
+            self._source_credentials = self._source_credentials.with_scopes(
+                iam._IAM_SCOPE
+            )
             # If the source credential is service account and self signed jwt
             # is needed, we need to create a jwt credential inside it
             if (
@@ -290,7 +275,7 @@ class Credentials(
     def sign_bytes(self, message):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = _IAM_SIGN_ENDPOINT.format(self._target_principal)
+        iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.format(self._target_principal)
 
         body = {
             "payload": base64.b64encode(message).decode("utf-8"),
@@ -425,7 +410,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
     def refresh(self, request):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = _IAM_IDTOKEN_ENDPOINT.format(
+        iam_sign_endpoint = iam._IAM_IDTOKEN_ENDPOINT.format(
             self._target_credentials.signer_email
         )
 

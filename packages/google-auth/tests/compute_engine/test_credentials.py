@@ -499,7 +499,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.POST,
             "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob?alt=json",
+            "serviceAccounts/service-account@example.com:signBlob",
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
@@ -657,7 +657,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.POST,
             "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob?alt=json",
+            "serviceAccounts/service-account@example.com:signBlob",
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},

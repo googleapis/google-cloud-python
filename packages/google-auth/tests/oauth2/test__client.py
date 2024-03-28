@@ -24,6 +24,7 @@ import pytest  # type: ignore
 from google.auth import _helpers
 from google.auth import crypt
 from google.auth import exceptions
+from google.auth import iam
 from google.auth import jwt
 from google.auth import transport
 from google.oauth2 import _client
@@ -318,7 +319,11 @@ def test_call_iam_generate_id_token_endpoint():
     request = make_request({"token": id_token})
 
     token, expiry = _client.call_iam_generate_id_token_endpoint(
-        request, "fake_email", "fake_audience", "fake_access_token"
+        request,
+        iam._IAM_IDTOKEN_ENDPOINT,
+        "fake_email",
+        "fake_audience",
+        "fake_access_token",
     )
 
     assert (
@@ -351,7 +356,11 @@ def test_call_iam_generate_id_token_endpoint_no_id_token():
 
     with pytest.raises(exceptions.RefreshError) as excinfo:
         _client.call_iam_generate_id_token_endpoint(
-            request, "fake_email", "fake_audience", "fake_access_token"
+            request,
+            iam._IAM_IDTOKEN_ENDPOINT,
+            "fake_email",
+            "fake_audience",
+            "fake_access_token",
         )
     assert excinfo.match("No ID token in response")
 

@@ -22,6 +22,7 @@ import pytest  # type: ignore
 from google.auth import _helpers
 from google.auth import crypt
 from google.auth import exceptions
+from google.auth import iam
 from google.auth import jwt
 from google.auth import transport
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
@@ -771,10 +772,36 @@ class TestIDTokenCredentials(object):
         )
         request = mock.Mock()
         credentials.refresh(request)
-        req, signer_email, target_audience, access_token = call_iam_generate_id_token_endpoint.call_args[
+        req, iam_endpoint, signer_email, target_audience, access_token = call_iam_generate_id_token_endpoint.call_args[
             0
         ]
         assert req == request
+        assert iam_endpoint == iam._IAM_IDTOKEN_ENDPOINT
+        assert signer_email == "service-account@example.com"
+        assert target_audience == "https://example.com"
+        decoded_access_token = jwt.decode(access_token, verify=False)
+        assert decoded_access_token["scope"] == "https://www.googleapis.com/auth/iam"
+
+    @mock.patch(
+        "google.oauth2._client.call_iam_generate_id_token_endpoint", autospec=True
+    )
+    def test_refresh_iam_flow_non_gdu(self, call_iam_generate_id_token_endpoint):
+        credentials = self.make_credentials(universe_domain="fake-universe")
+        token = "id_token"
+        call_iam_generate_id_token_endpoint.return_value = (
+            token,
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+        )
+        request = mock.Mock()
+        credentials.refresh(request)
+        req, iam_endpoint, signer_email, target_audience, access_token = call_iam_generate_id_token_endpoint.call_args[
+            0
+        ]
+        assert req == request
+        assert (
+            iam_endpoint
+            == "https://iamcredentials.fake-universe/v1/projects/-/serviceAccounts/{}:generateIdToken"
+        )
         assert signer_email == "service-account@example.com"
         assert target_audience == "https://example.com"
         decoded_access_token = jwt.decode(access_token, verify=False)

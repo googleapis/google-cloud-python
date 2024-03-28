@@ -39,10 +39,6 @@ _URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded"
 _JSON_CONTENT_TYPE = "application/json"
 _JWT_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 _REFRESH_GRANT_TYPE = "refresh_token"
-_IAM_IDTOKEN_ENDPOINT = (
-    "https://iamcredentials.googleapis.com/v1/"
-    + "projects/-/serviceAccounts/{}:generateIdToken"
-)
 
 
 def _handle_error_response(response_data, retryable_error):
@@ -328,12 +324,15 @@ def jwt_grant(request, token_uri, assertion, can_retry=True):
     return access_token, expiry, response_data
 
 
-def call_iam_generate_id_token_endpoint(request, signer_email, audience, access_token):
+def call_iam_generate_id_token_endpoint(
+    request, iam_id_token_endpoint, signer_email, audience, access_token
+):
     """Call iam.generateIdToken endpoint to get ID token.
 
     Args:
         request (google.auth.transport.Request): A callable used to make
             HTTP requests.
+        iam_id_token_endpoint (str): The IAM ID token endpoint to use.
         signer_email (str): The signer email used to form the IAM
             generateIdToken endpoint.
         audience (str): The audience for the ID token.
@@ -346,7 +345,7 @@ def call_iam_generate_id_token_endpoint(request, signer_email, audience, access_
 
     response_data = _token_endpoint_request(
         request,
-        _IAM_IDTOKEN_ENDPOINT.format(signer_email),
+        iam_id_token_endpoint.format(signer_email),
         body,
         access_token=access_token,
         use_json=True,
