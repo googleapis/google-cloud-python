@@ -17,41 +17,53 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.securitycenter.v2',
+    package="google.cloud.securitycenter.v1",
     manifest={
-        'Resource',
+        "Notebook",
     },
 )
 
 
-class Resource(proto.Message):
-    r"""Information related to the Google Cloud resource.
+class Notebook(proto.Message):
+    r"""Represents a Jupyter notebook IPYNB file, such as a `Colab
+    Enterprise
+    notebook <https://cloud.google.com/colab/docs/introduction>`__ file,
+    that is associated with a finding.
 
     Attributes:
         name (str):
-            The full resource name of the resource. See:
-            https://cloud.google.com/apis/design/resource_names#full_resource_name
-        display_name (str):
-            The human readable name of the resource.
-        type_ (str):
-            The full resource type of the resource.
+            The name of the notebook.
+        service (str):
+            The source notebook service, for example,
+            "Colab Enterprise".
+        last_author (str):
+            The user ID of the latest author to modify
+            the notebook.
+        notebook_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The most recent time the notebook was
+            updated.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    display_name: str = proto.Field(
+    service: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    type_: str = proto.Field(
+    last_author: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    notebook_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
