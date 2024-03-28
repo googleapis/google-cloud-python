@@ -701,7 +701,7 @@ class FirewallInfo(proto.Message):
         direction (str):
             Possible values: INGRESS, EGRESS
         action (str):
-            Possible values: ALLOW, DENY
+            Possible values: ALLOW, DENY, APPLY_SECURITY_PROFILE_GROUP
         priority (int):
             The priority of the firewall rule.
         network_uri (str):
