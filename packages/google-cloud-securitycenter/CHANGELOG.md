@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.29.0...google-cloud-securitycenter-v1.30.0) (2024-03-28)
+
+
+### Features
+
+* [google-cloud-securitycenter] Add Notebook field to finding's list of attributes ([#12523](https://github.com/googleapis/google-cloud-python/issues/12523)) ([ec1301e](https://github.com/googleapis/google-cloud-python/commit/ec1301ef5759ba9038805761f229728d92d00737))
+
 ## [1.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.28.0...google-cloud-securitycenter-v1.29.0) (2024-03-11)
 
 

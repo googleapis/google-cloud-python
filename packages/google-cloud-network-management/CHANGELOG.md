@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.17.0...google-cloud-network-management-v1.17.1) (2024-03-28)
+
+
+### Documentation
+
+* [google-cloud-network-management] update possible firewall rule actions comment ([#12525](https://github.com/googleapis/google-cloud-python/issues/12525)) ([98814f7](https://github.com/googleapis/google-cloud-python/commit/98814f7a212947b8bb07a2bb38a67bad0c1fa4ea))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.16.0...google-cloud-network-management-v1.17.0) (2024-03-27)
 
 
