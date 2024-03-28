@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.11.0](https://github.com/googleapis/python-error-reporting/compare/v1.10.0...v1.11.0) (2024-03-26)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#475](https://github.com/googleapis/python-error-reporting/issues/475)) ([e4c3454](https://github.com/googleapis/python-error-reporting/commit/e4c3454bd5ba9f452479b0bc956c6ef011766d14))
+
 ## [1.10.0](https://github.com/googleapis/python-error-reporting/compare/v1.9.2...v1.10.0) (2023-12-10)
 
 
