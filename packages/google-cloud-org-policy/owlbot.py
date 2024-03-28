@@ -54,10 +54,8 @@ subprocess.run(["git", "clone", googleapis_url])
 # This is required in order for s.copy() to work
 s._tracked_paths.add("googleapis")
 
-os.makedirs("google/api", exist_ok=True)
-
-s.copy("googleapis/google/api/annotations.proto", "google/api")
-s.copy("googleapis/google/api/http.proto", "google/api")
+# Copy the protos that we want to compile from googleapis
+s.copy("googleapis/google/cloud/orgpolicy/v1/*.proto", "google/cloud/orgpolicy/v1")
 
 # Clean up googleapis
 shutil.rmtree('googleapis')
@@ -81,9 +79,6 @@ python.py_samples(skip_readmes=True)
 
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
-
-# Clean up google/api
-shutil.rmtree('google/api')
 
 # Add license headers
 python.fix_pb2_headers()
