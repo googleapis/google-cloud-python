@@ -1,6 +1,13 @@
 Data API
 ========
 
+.. note::
+   This page describes how to use the Data API with the synchronous Bigtable client.
+   Examples for using the Data API with the async client can be found in the
+   `Getting Started Guide`_.
+
+.. _Getting Started Guide: https://cloud.google.com/bigtable/docs/samples-python-hello
+
 After creating a :class:`Table <google.cloud.bigtable.table.Table>` and some
 column families, you are ready to store and retrieve data.
 

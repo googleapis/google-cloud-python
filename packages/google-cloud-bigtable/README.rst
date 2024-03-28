@@ -21,17 +21,15 @@ Analytics, Maps, and Gmail.
 .. _Product Documentation:  https://cloud.google.com/bigtable/docs
 
 
-Preview Async Data Client
+Async Data Client
 -------------------------
 
-:code:`v2.23.0` includes a preview release of the new :code:`BigtableDataClientAsync` client, accessible at the import path
+:code:`v2.23.0` includes a release of the new :code:`BigtableDataClientAsync` client, accessible at the import path
 :code:`google.cloud.bigtable.data`.
 
 The new client brings a simplified API and increased performance using asyncio, with a corresponding synchronous surface
 coming soon. The new client is focused on the data API (i.e. reading and writing Bigtable data), with admin operations
 remaining in the existing client.
-
-:code:`BigtableDataClientAsync` is currently in preview, and is not recommended for production use.
 
 Feedback and bug reports are welcome at cbt-python-client-v3-feedback@google.com,
 or through the Github `issue tracker`_.
