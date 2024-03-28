@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.14...google-cloud-batch-v0.17.15) (2024-03-28)
+
+
+### Features
+
+* [google-cloud-batch] onboard Resource Allowance API methods on v1alpha ([#12524](https://github.com/googleapis/google-cloud-python/issues/12524)) ([3092827](https://github.com/googleapis/google-cloud-python/commit/3092827c760d5876761a781c6b5f375aad2ae59e))
+
 ## [0.17.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.13...google-cloud-batch-v0.17.14) (2024-03-05)
 
 
