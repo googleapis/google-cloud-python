@@ -47,12 +47,18 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.batch_v1alpha.services.batch_service import pagers
+from google.cloud.batch_v1alpha.types import (
+    resource_allowance as gcb_resource_allowance,
+)
 from google.cloud.batch_v1alpha.types import batch
 from google.cloud.batch_v1alpha.types import job
 from google.cloud.batch_v1alpha.types import job as gcb_job
+from google.cloud.batch_v1alpha.types import notification
+from google.cloud.batch_v1alpha.types import resource_allowance
 from google.cloud.batch_v1alpha.types import task
 
 from .client import BatchServiceClient
@@ -77,6 +83,10 @@ class BatchServiceAsyncClient:
 
     job_path = staticmethod(BatchServiceClient.job_path)
     parse_job_path = staticmethod(BatchServiceClient.parse_job_path)
+    resource_allowance_path = staticmethod(BatchServiceClient.resource_allowance_path)
+    parse_resource_allowance_path = staticmethod(
+        BatchServiceClient.parse_resource_allowance_path
+    )
     task_path = staticmethod(BatchServiceClient.task_path)
     parse_task_path = staticmethod(BatchServiceClient.parse_task_path)
     task_group_path = staticmethod(BatchServiceClient.task_group_path)
@@ -979,6 +989,639 @@ class BatchServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_resource_allowance(
+        self,
+        request: Optional[Union[batch.CreateResourceAllowanceRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        resource_allowance: Optional[gcb_resource_allowance.ResourceAllowance] = None,
+        resource_allowance_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcb_resource_allowance.ResourceAllowance:
+        r"""Create a Resource Allowance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import batch_v1alpha
+
+            async def sample_create_resource_allowance():
+                # Create a client
+                client = batch_v1alpha.BatchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                resource_allowance = batch_v1alpha.ResourceAllowance()
+                resource_allowance.usage_resource_allowance.spec.type_ = "type__value"
+                resource_allowance.usage_resource_allowance.spec.limit.calendar_period = "DAY"
+
+                request = batch_v1alpha.CreateResourceAllowanceRequest(
+                    parent="parent_value",
+                    resource_allowance=resource_allowance,
+                )
+
+                # Make the request
+                response = await client.create_resource_allowance(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.batch_v1alpha.types.CreateResourceAllowanceRequest, dict]]):
+                The request object. CreateResourceAllowance Request.
+            parent (:class:`str`):
+                Required. The parent resource name
+                where the ResourceAllowance will be
+                created. Pattern:
+                "projects/{project}/locations/{location}"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            resource_allowance (:class:`google.cloud.batch_v1alpha.types.ResourceAllowance`):
+                Required. The ResourceAllowance to
+                create.
+
+                This corresponds to the ``resource_allowance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            resource_allowance_id (:class:`str`):
+                ID used to uniquely identify the ResourceAllowance
+                within its parent scope. This field should contain at
+                most 63 characters and must start with lowercase
+                characters. Only lowercase characters, numbers and '-'
+                are accepted. The '-' character cannot be the first or
+                the last one. A system generated ID will be used if the
+                field is not set.
+
+                The resource_allowance.name field in the request will be
+                ignored and the created resource name of the
+                ResourceAllowance will be
+                "{parent}/resourceAllowances/{resource_allowance_id}".
+
+                This corresponds to the ``resource_allowance_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.batch_v1alpha.types.ResourceAllowance:
+                The Resource Allowance description
+                for Cloud Batch.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, resource_allowance, resource_allowance_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = batch.CreateResourceAllowanceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if resource_allowance is not None:
+            request.resource_allowance = resource_allowance
+        if resource_allowance_id is not None:
+            request.resource_allowance_id = resource_allowance_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_resource_allowance,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_resource_allowance(
+        self,
+        request: Optional[Union[batch.GetResourceAllowanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resource_allowance.ResourceAllowance:
+        r"""Get a ResourceAllowance specified by its resource
+        name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import batch_v1alpha
+
+            async def sample_get_resource_allowance():
+                # Create a client
+                client = batch_v1alpha.BatchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = batch_v1alpha.GetResourceAllowanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_resource_allowance(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.batch_v1alpha.types.GetResourceAllowanceRequest, dict]]):
+                The request object. GetResourceAllowance Request.
+            name (:class:`str`):
+                Required. ResourceAllowance name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.batch_v1alpha.types.ResourceAllowance:
+                The Resource Allowance description
+                for Cloud Batch.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = batch.GetResourceAllowanceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_resource_allowance,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_resource_allowance(
+        self,
+        request: Optional[Union[batch.DeleteResourceAllowanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Delete a ResourceAllowance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import batch_v1alpha
+
+            async def sample_delete_resource_allowance():
+                # Create a client
+                client = batch_v1alpha.BatchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = batch_v1alpha.DeleteResourceAllowanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_resource_allowance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.batch_v1alpha.types.DeleteResourceAllowanceRequest, dict]]):
+                The request object. DeleteResourceAllowance Request.
+            name (:class:`str`):
+                Required. ResourceAllowance name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = batch.DeleteResourceAllowanceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_resource_allowance,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=batch.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_resource_allowances(
+        self,
+        request: Optional[Union[batch.ListResourceAllowancesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListResourceAllowancesAsyncPager:
+        r"""List all ResourceAllowances for a project within a
+        region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import batch_v1alpha
+
+            async def sample_list_resource_allowances():
+                # Create a client
+                client = batch_v1alpha.BatchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = batch_v1alpha.ListResourceAllowancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_resource_allowances(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.batch_v1alpha.types.ListResourceAllowancesRequest, dict]]):
+                The request object. ListResourceAllowances Request.
+            parent (:class:`str`):
+                Required. Parent path.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.batch_v1alpha.services.batch_service.pagers.ListResourceAllowancesAsyncPager:
+                ListResourceAllowances Response.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = batch.ListResourceAllowancesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_resource_allowances,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListResourceAllowancesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_resource_allowance(
+        self,
+        request: Optional[Union[batch.UpdateResourceAllowanceRequest, dict]] = None,
+        *,
+        resource_allowance: Optional[gcb_resource_allowance.ResourceAllowance] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcb_resource_allowance.ResourceAllowance:
+        r"""Update a Resource Allowance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import batch_v1alpha
+
+            async def sample_update_resource_allowance():
+                # Create a client
+                client = batch_v1alpha.BatchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                resource_allowance = batch_v1alpha.ResourceAllowance()
+                resource_allowance.usage_resource_allowance.spec.type_ = "type__value"
+                resource_allowance.usage_resource_allowance.spec.limit.calendar_period = "DAY"
+
+                request = batch_v1alpha.UpdateResourceAllowanceRequest(
+                    resource_allowance=resource_allowance,
+                )
+
+                # Make the request
+                response = await client.update_resource_allowance(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.batch_v1alpha.types.UpdateResourceAllowanceRequest, dict]]):
+                The request object. UpdateResourceAllowance Request.
+            resource_allowance (:class:`google.cloud.batch_v1alpha.types.ResourceAllowance`):
+                Required. The ResourceAllowance to update. Update
+                description. Only fields specified in ``update_mask``
+                are updated.
+
+                This corresponds to the ``resource_allowance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Mask of fields to update.
+
+                Field mask is used to specify the fields to be
+                overwritten in the ResourceAllowance resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
+
+                UpdateResourceAllowance request now only supports update
+                on ``limit`` field.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.batch_v1alpha.types.ResourceAllowance:
+                The Resource Allowance description
+                for Cloud Batch.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([resource_allowance, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = batch.UpdateResourceAllowanceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if resource_allowance is not None:
+            request.resource_allowance = resource_allowance
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_resource_allowance,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource_allowance.name", request.resource_allowance.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
