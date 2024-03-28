@@ -329,7 +329,7 @@ class DeleteBackupScheduleRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of backup schedule.
+            Required. The name of the backup schedule.
 
             Format
             ``projects/{project}/databases/{database}/backupSchedules/{backup_schedule}``

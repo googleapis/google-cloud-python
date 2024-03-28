@@ -72,13 +72,12 @@ class BackupSchedule(proto.Message):
             to its creation time, the backup should be
             deleted, e.g. keep backups for 7 days.
         daily_recurrence (google.cloud.firestore_admin_v1.types.DailyRecurrence):
-            For a schedule that runs daily at a specified
-            time.
+            For a schedule that runs daily.
 
             This field is a member of `oneof`_ ``recurrence``.
         weekly_recurrence (google.cloud.firestore_admin_v1.types.WeeklyRecurrence):
             For a schedule that runs weekly on a specific
-            day and time.
+            day.
 
             This field is a member of `oneof`_ ``recurrence``.
     """
@@ -117,7 +116,7 @@ class BackupSchedule(proto.Message):
 
 
 class DailyRecurrence(proto.Message):
-    r"""Represent a recurring schedule that runs at a specific time
+    r"""Represents a recurring schedule that runs at a specific time
     every day.
     The time zone is UTC.
 
