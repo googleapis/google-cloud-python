@@ -17,22 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.batch_v1alpha.types import notification
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.cloud.batch.v1alpha',
+    package="google.cloud.batch.v1alpha",
     manifest={
-        'CalendarPeriod',
-        'ResourceAllowanceState',
-        'ResourceAllowance',
-        'UsageResourceAllowance',
-        'UsageResourceAllowanceSpec',
-        'UsageResourceAllowanceStatus',
+        "CalendarPeriod",
+        "ResourceAllowanceState",
+        "ResourceAllowance",
+        "UsageResourceAllowance",
+        "UsageResourceAllowanceSpec",
+        "UsageResourceAllowanceStatus",
     },
 )
 
@@ -125,11 +124,11 @@ class ResourceAllowance(proto.Message):
             Optional. Notification configurations.
     """
 
-    usage_resource_allowance: 'UsageResourceAllowance' = proto.Field(
+    usage_resource_allowance: "UsageResourceAllowance" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='resource_allowance',
-        message='UsageResourceAllowance',
+        oneof="resource_allowance",
+        message="UsageResourceAllowance",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -168,15 +167,15 @@ class UsageResourceAllowance(proto.Message):
             ResourceAllowance.
     """
 
-    spec: 'UsageResourceAllowanceSpec' = proto.Field(
+    spec: "UsageResourceAllowanceSpec" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='UsageResourceAllowanceSpec',
+        message="UsageResourceAllowanceSpec",
     )
-    status: 'UsageResourceAllowanceStatus' = proto.Field(
+    status: "UsageResourceAllowanceStatus" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='UsageResourceAllowanceStatus',
+        message="UsageResourceAllowanceStatus",
     )
 
 
@@ -218,11 +217,11 @@ class UsageResourceAllowanceSpec(proto.Message):
                 This field is a member of `oneof`_ ``_limit``.
         """
 
-        calendar_period: 'CalendarPeriod' = proto.Field(
+        calendar_period: "CalendarPeriod" = proto.Field(
             proto.ENUM,
             number=1,
-            oneof='duration',
-            enum='CalendarPeriod',
+            oneof="duration",
+            enum="CalendarPeriod",
         )
         limit: float = proto.Field(
             proto.DOUBLE,
@@ -316,17 +315,19 @@ class UsageResourceAllowanceStatus(proto.Message):
                 currently supports HOUR, DAY, MONTH and YEAR.
         """
 
-        latest_period_consumptions: MutableMapping[str, 'UsageResourceAllowanceStatus.PeriodConsumption'] = proto.MapField(
+        latest_period_consumptions: MutableMapping[
+            str, "UsageResourceAllowanceStatus.PeriodConsumption"
+        ] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
-            message='UsageResourceAllowanceStatus.PeriodConsumption',
+            message="UsageResourceAllowanceStatus.PeriodConsumption",
         )
 
-    state: 'ResourceAllowanceState' = proto.Field(
+    state: "ResourceAllowanceState" = proto.Field(
         proto.ENUM,
         number=1,
-        enum='ResourceAllowanceState',
+        enum="ResourceAllowanceState",
     )
     limit_status: LimitStatus = proto.Field(
         proto.MESSAGE,

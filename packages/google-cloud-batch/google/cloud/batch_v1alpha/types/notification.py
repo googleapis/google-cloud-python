@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.batch.v1alpha',
+    package="google.cloud.batch.v1alpha",
     manifest={
-        'Notification',
+        "Notification",
     },
 )
 

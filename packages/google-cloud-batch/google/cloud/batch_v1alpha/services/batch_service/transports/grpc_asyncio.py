@@ -24,9 +24,13 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.batch_v1alpha.types import (
+    resource_allowance as gcb_resource_allowance,
+)
 from google.cloud.batch_v1alpha.types import batch
 from google.cloud.batch_v1alpha.types import job
 from google.cloud.batch_v1alpha.types import job as gcb_job
+from google.cloud.batch_v1alpha.types import resource_allowance
 from google.cloud.batch_v1alpha.types import task
 
 from .base import DEFAULT_CLIENT_INFO, BatchServiceTransport
@@ -404,6 +408,152 @@ class BatchServiceGrpcAsyncIOTransport(BatchServiceTransport):
                 response_deserializer=batch.ListTasksResponse.deserialize,
             )
         return self._stubs["list_tasks"]
+
+    @property
+    def create_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.CreateResourceAllowanceRequest],
+        Awaitable[gcb_resource_allowance.ResourceAllowance],
+    ]:
+        r"""Return a callable for the create resource allowance method over gRPC.
+
+        Create a Resource Allowance.
+
+        Returns:
+            Callable[[~.CreateResourceAllowanceRequest],
+                    Awaitable[~.ResourceAllowance]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_resource_allowance" not in self._stubs:
+            self._stubs["create_resource_allowance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.batch.v1alpha.BatchService/CreateResourceAllowance",
+                request_serializer=batch.CreateResourceAllowanceRequest.serialize,
+                response_deserializer=gcb_resource_allowance.ResourceAllowance.deserialize,
+            )
+        return self._stubs["create_resource_allowance"]
+
+    @property
+    def get_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.GetResourceAllowanceRequest],
+        Awaitable[resource_allowance.ResourceAllowance],
+    ]:
+        r"""Return a callable for the get resource allowance method over gRPC.
+
+        Get a ResourceAllowance specified by its resource
+        name.
+
+        Returns:
+            Callable[[~.GetResourceAllowanceRequest],
+                    Awaitable[~.ResourceAllowance]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_resource_allowance" not in self._stubs:
+            self._stubs["get_resource_allowance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.batch.v1alpha.BatchService/GetResourceAllowance",
+                request_serializer=batch.GetResourceAllowanceRequest.serialize,
+                response_deserializer=resource_allowance.ResourceAllowance.deserialize,
+            )
+        return self._stubs["get_resource_allowance"]
+
+    @property
+    def delete_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.DeleteResourceAllowanceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete resource allowance method over gRPC.
+
+        Delete a ResourceAllowance.
+
+        Returns:
+            Callable[[~.DeleteResourceAllowanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_resource_allowance" not in self._stubs:
+            self._stubs["delete_resource_allowance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.batch.v1alpha.BatchService/DeleteResourceAllowance",
+                request_serializer=batch.DeleteResourceAllowanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_resource_allowance"]
+
+    @property
+    def list_resource_allowances(
+        self,
+    ) -> Callable[
+        [batch.ListResourceAllowancesRequest],
+        Awaitable[batch.ListResourceAllowancesResponse],
+    ]:
+        r"""Return a callable for the list resource allowances method over gRPC.
+
+        List all ResourceAllowances for a project within a
+        region.
+
+        Returns:
+            Callable[[~.ListResourceAllowancesRequest],
+                    Awaitable[~.ListResourceAllowancesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_resource_allowances" not in self._stubs:
+            self._stubs["list_resource_allowances"] = self.grpc_channel.unary_unary(
+                "/google.cloud.batch.v1alpha.BatchService/ListResourceAllowances",
+                request_serializer=batch.ListResourceAllowancesRequest.serialize,
+                response_deserializer=batch.ListResourceAllowancesResponse.deserialize,
+            )
+        return self._stubs["list_resource_allowances"]
+
+    @property
+    def update_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.UpdateResourceAllowanceRequest],
+        Awaitable[gcb_resource_allowance.ResourceAllowance],
+    ]:
+        r"""Return a callable for the update resource allowance method over gRPC.
+
+        Update a Resource Allowance.
+
+        Returns:
+            Callable[[~.UpdateResourceAllowanceRequest],
+                    Awaitable[~.ResourceAllowance]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_resource_allowance" not in self._stubs:
+            self._stubs["update_resource_allowance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.batch.v1alpha.BatchService/UpdateResourceAllowance",
+                request_serializer=batch.UpdateResourceAllowanceRequest.serialize,
+                response_deserializer=gcb_resource_allowance.ResourceAllowance.deserialize,
+            )
+        return self._stubs["update_resource_allowance"]
 
     def close(self):
         return self.grpc_channel.close()
