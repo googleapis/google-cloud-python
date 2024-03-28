@@ -30,12 +30,12 @@ try:
     import pandas
     import pandas.api.types
     import pandas.testing
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pandas = None
 
 try:
     import geopandas
-except ImportError:  # pragma: NO COVER
+except ImportError:
     geopandas = None
 
 import pytest
@@ -46,18 +46,19 @@ from google.cloud.bigquery import exceptions
 from google.cloud.bigquery import _pyarrow_helpers
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import schema
-from google.cloud.bigquery._pandas_helpers import _BIGNUMERIC_SUPPORT
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
 
 if pyarrow:
     import pyarrow.parquet
     import pyarrow.types
-    from pyarrow import ArrowTypeError  # type: ignore # noqa: E402
-else:  # pragma: NO COVER
+
+    _BIGNUMERIC_SUPPORT = True
+else:
     # Mock out pyarrow when missing, because methods from pyarrow.types are
     # used in test parameterization.
     pyarrow = mock.Mock()
+    _BIGNUMERIC_SUPPORT = False
 
 bigquery_storage = _versions_helpers.BQ_STORAGE_VERSIONS.try_import()
 
@@ -572,9 +573,9 @@ def test_bq_to_arrow_array_w_conversion_fail(module_under_test):  # pragma: NO C
     series = pandas.Series(rows, name="test_col", dtype="object")
     bq_field = schema.SchemaField("field_name", "STRING", mode="REPEATED")
     exc_msg = f"""Error converting Pandas column with name: "{series.name}" and datatype: "{series.dtype}" to an appropriate pyarrow datatype: Array, ListArray, or StructArray"""
-    with pytest.raises(ArrowTypeError, match=exc_msg):
+    with pytest.raises(pyarrow.ArrowTypeError, match=exc_msg):
         module_under_test.bq_to_arrow_array(series, bq_field)
-        raise ArrowTypeError(exc_msg)
+        raise pyarrow.ArrowTypeError(exc_msg)
 
 
 @pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])

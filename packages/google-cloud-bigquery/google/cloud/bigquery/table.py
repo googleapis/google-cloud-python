@@ -26,17 +26,17 @@ import warnings
 
 try:
     import pandas  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pandas = None
 
 try:
     import pyarrow  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pyarrow = None
 
 try:
     import db_dtypes  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     db_dtypes = None
 
 try:

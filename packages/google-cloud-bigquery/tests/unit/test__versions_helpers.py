@@ -18,17 +18,17 @@ import pytest
 
 try:
     import pyarrow  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pyarrow = None
 
 try:
     from google.cloud import bigquery_storage  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     bigquery_storage = None
 
 try:
     import pandas  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pandas = None
 
 from google.cloud.bigquery import _versions_helpers
@@ -39,11 +39,8 @@ from google.cloud.bigquery import exceptions
 def test_try_import_raises_no_error_w_recent_pyarrow():
     versions = _versions_helpers.PyarrowVersions()
     with mock.patch("pyarrow.__version__", new="5.0.0"):
-        try:
-            pyarrow = versions.try_import(raise_if_error=True)
-            assert pyarrow is not None
-        except exceptions.LegacyPyarrowError:  # pragma: NO COVER
-            raise ("Legacy error raised with a non-legacy dependency version.")
+        pyarrow = versions.try_import(raise_if_error=True)
+        assert pyarrow is not None
 
 
 @pytest.mark.skipif(pyarrow is None, reason="pyarrow is not installed")
@@ -60,6 +57,16 @@ def test_try_import_raises_error_w_legacy_pyarrow():
     with mock.patch("pyarrow.__version__", new="2.0.0"):
         with pytest.raises(exceptions.LegacyPyarrowError):
             versions.try_import(raise_if_error=True)
+
+
+@pytest.mark.skipif(
+    pyarrow is not None,
+    reason="pyarrow is installed, but this test needs it not to be",
+)
+def test_try_import_raises_error_w_no_pyarrow():
+    versions = _versions_helpers.PyarrowVersions()
+    with pytest.raises(exceptions.LegacyPyarrowError):
+        versions.try_import(raise_if_error=True)
 
 
 @pytest.mark.skipif(pyarrow is None, reason="pyarrow is not installed")
@@ -206,6 +213,16 @@ def test_try_import_raises_error_w_legacy_pandas():
     with mock.patch("pandas.__version__", new="1.0.0"):
         with pytest.raises(exceptions.LegacyPandasError):
             versions.try_import(raise_if_error=True)
+
+
+@pytest.mark.skipif(
+    pandas is not None,
+    reason="pandas is installed, but this test needs it not to be",
+)
+def test_try_import_raises_error_w_no_pandas():
+    versions = _versions_helpers.PandasVersions()
+    with pytest.raises(exceptions.LegacyPandasError):
+        versions.try_import(raise_if_error=True)
 
 
 @pytest.mark.skipif(pandas is None, reason="pandas is not installed")

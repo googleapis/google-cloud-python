@@ -19,7 +19,7 @@ import warnings
 
 try:
     import proto  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     proto = None
 
 

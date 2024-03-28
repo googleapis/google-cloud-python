@@ -19,7 +19,7 @@ from unittest import mock
 
 try:
     import opentelemetry
-except ImportError:  # pragma: NO COVER
+except ImportError:
     opentelemetry = None
 
 if opentelemetry is not None:

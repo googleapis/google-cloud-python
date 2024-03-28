@@ -56,13 +56,8 @@ from google.cloud.bigquery.job.base import _JobReference
 
 try:
     import pandas  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pandas = None
-
-try:
-    import db_dtypes  # type: ignore
-except ImportError:  # pragma: NO COVER
-    db_dtypes = None
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Assumption: type checks are only used by library developers and CI environments

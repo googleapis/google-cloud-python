@@ -27,7 +27,7 @@ packaging==20.0.0
 pandas==1.1.0
 proto-plus==1.22.0
 protobuf==3.19.5
-pyarrow>=3.0.0
+pyarrow==3.0.0
 python-dateutil==2.7.3
 requests==2.21.0
 Shapely==1.8.4

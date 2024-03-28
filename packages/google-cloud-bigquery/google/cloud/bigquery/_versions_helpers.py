@@ -73,7 +73,7 @@ class PyarrowVersions:
         """
         try:
             import pyarrow
-        except ImportError as exc:  # pragma: NO COVER
+        except ImportError as exc:
             if raise_if_error:
                 raise exceptions.LegacyPyarrowError(
                     "pyarrow package not found. Install pyarrow version >="
@@ -212,7 +212,7 @@ class PandasVersions:
         """
         try:
             import pandas
-        except ImportError as exc:  # pragma: NO COVER
+        except ImportError as exc:
             if raise_if_error:
                 raise exceptions.LegacyPandasError(
                     "pandas package not found. Install pandas version >="

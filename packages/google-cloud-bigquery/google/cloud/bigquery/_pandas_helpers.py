@@ -32,7 +32,7 @@ try:
     import pandas  # type: ignore
 
     pandas_import_exception = None
-except ImportError as exc:  # pragma: NO COVER
+except ImportError as exc:
     pandas = None
     pandas_import_exception = exc
 else:
@@ -44,25 +44,21 @@ try:
     date_dtype_name = db_dtypes.DateDtype.name
     time_dtype_name = db_dtypes.TimeDtype.name
     db_dtypes_import_exception = None
-except ImportError as exc:  # pragma: NO COVER
+except ImportError as exc:
     db_dtypes = None
     db_dtypes_import_exception = exc
     date_dtype_name = time_dtype_name = ""  # Use '' rather than None because pytype
 
-pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
-from pyarrow import ArrowTypeError  # type: ignore # noqa: E402
-
-_BIGNUMERIC_SUPPORT = False
-if pyarrow is not None:  # pragma: NO COVER
-    _BIGNUMERIC_SUPPORT = True
+pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
 
 try:
     # _BaseGeometry is used to detect shapely objevys in `bq_to_arrow_array`
     from shapely.geometry.base import BaseGeometry as _BaseGeometry  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     # No shapely, use NoneType for _BaseGeometry as a placeholder.
     _BaseGeometry = type(None)
 else:
+    # We don't have any unit test sessions that install shapely but not pandas.
     if pandas is not None:  # pragma: NO COVER
 
         def _to_wkb():
@@ -309,10 +305,10 @@ def bq_to_arrow_array(series, bq_field):
         if field_type_upper in schema._STRUCT_TYPES:
             return pyarrow.StructArray.from_pandas(series, type=arrow_type)
         return pyarrow.Array.from_pandas(series, type=arrow_type)
-    except ArrowTypeError:  # pragma: NO COVER
+    except pyarrow.ArrowTypeError:
         msg = f"""Error converting Pandas column with name: "{series.name}" and datatype: "{series.dtype}" to an appropriate pyarrow datatype: Array, ListArray, or StructArray"""
         _LOGGER.error(msg)
-        raise ArrowTypeError(msg)
+        raise pyarrow.ArrowTypeError(msg)
 
 
 def get_column_or_index(dataframe, name):

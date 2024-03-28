@@ -95,7 +95,7 @@ try:
     import IPython  # type: ignore
     from IPython import display  # type: ignore
     from IPython.core import magic_arguments  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     raise ImportError("This module can only be loaded in IPython.")
 
 from google.api_core import client_info

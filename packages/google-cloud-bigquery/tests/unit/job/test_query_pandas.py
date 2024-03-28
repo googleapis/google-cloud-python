@@ -19,52 +19,37 @@ from unittest import mock
 
 import pytest
 
+from ..helpers import make_connection
+from .helpers import _make_client
+from .helpers import _make_job_resource
 
 try:
     from google.cloud import bigquery_storage
     import google.cloud.bigquery_storage_v1.reader
     import google.cloud.bigquery_storage_v1.services.big_query_read.client
-except (ImportError, AttributeError):  # pragma: NO COVER
+except (ImportError, AttributeError):
     bigquery_storage = None
 
 try:
-    import pandas
-except (ImportError, AttributeError):  # pragma: NO COVER
-    pandas = None
-try:
     import shapely
-except (ImportError, AttributeError):  # pragma: NO COVER
+except (ImportError, AttributeError):
     shapely = None
 try:
     import geopandas
-except (ImportError, AttributeError):  # pragma: NO COVER
+except (ImportError, AttributeError):
     geopandas = None
 try:
     import tqdm
-except (ImportError, AttributeError):  # pragma: NO COVER
+except (ImportError, AttributeError):
     tqdm = None
-
-try:
-    import importlib.metadata as metadata
-except ImportError:
-    import importlib_metadata as metadata
-
-from ..helpers import make_connection
-from .helpers import _make_client
-from .helpers import _make_job_resource
-
-if pandas is not None:
-    PANDAS_INSTALLED_VERSION = metadata.version("pandas")
-else:
-    PANDAS_INSTALLED_VERSION = "0.0.0"
-
-pandas = pytest.importorskip("pandas")
 
 try:
     import pyarrow
     import pyarrow.types
-except ImportError:  # pragma: NO COVER
+except ImportError:
     pyarrow = None
+
+pandas = pytest.importorskip("pandas")
 
 
 @pytest.fixture
@@ -660,7 +645,10 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
     )
 
 
-@pytest.mark.skipif(PANDAS_INSTALLED_VERSION[0:2] not in ["0.", "1."], reason="")
+@pytest.mark.skipif(
+    pandas.__version__.startswith("2."),
+    reason="pandas 2.0 changes some default dtypes and we haven't update the test to account for those",
+)
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_to_dataframe_column_dtypes():
     from google.cloud.bigquery.job import QueryJob as target_class
