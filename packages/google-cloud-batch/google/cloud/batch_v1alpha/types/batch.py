@@ -17,9 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.batch_v1alpha.types import (
+    resource_allowance as gcb_resource_allowance,
+)
 from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import task
 
@@ -34,6 +38,12 @@ __protobuf__ = proto.module(
         "ListTasksRequest",
         "ListTasksResponse",
         "GetTaskRequest",
+        "CreateResourceAllowanceRequest",
+        "GetResourceAllowanceRequest",
+        "DeleteResourceAllowanceRequest",
+        "ListResourceAllowancesRequest",
+        "ListResourceAllowancesResponse",
+        "UpdateResourceAllowanceRequest",
         "OperationMetadata",
     },
 )
@@ -313,6 +323,244 @@ class GetTaskRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class CreateResourceAllowanceRequest(proto.Message):
+    r"""CreateResourceAllowance Request.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name where the
+            ResourceAllowance will be created. Pattern:
+            "projects/{project}/locations/{location}".
+        resource_allowance_id (str):
+            ID used to uniquely identify the ResourceAllowance within
+            its parent scope. This field should contain at most 63
+            characters and must start with lowercase characters. Only
+            lowercase characters, numbers and '-' are accepted. The '-'
+            character cannot be the first or the last one. A system
+            generated ID will be used if the field is not set.
+
+            The resource_allowance.name field in the request will be
+            ignored and the created resource name of the
+            ResourceAllowance will be
+            "{parent}/resourceAllowances/{resource_allowance_id}".
+        resource_allowance (google.cloud.batch_v1alpha.types.ResourceAllowance):
+            Required. The ResourceAllowance to create.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_allowance_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_allowance: gcb_resource_allowance.ResourceAllowance = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcb_resource_allowance.ResourceAllowance,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class GetResourceAllowanceRequest(proto.Message):
+    r"""GetResourceAllowance Request.
+
+    Attributes:
+        name (str):
+            Required. ResourceAllowance name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteResourceAllowanceRequest(proto.Message):
+    r"""DeleteResourceAllowance Request.
+
+    Attributes:
+        name (str):
+            Required. ResourceAllowance name.
+        reason (str):
+            Optional. Reason for this deletion.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reason: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListResourceAllowancesRequest(proto.Message):
+    r"""ListResourceAllowances Request.
+
+    Attributes:
+        parent (str):
+            Required. Parent path.
+        page_size (int):
+            Optional. Page size.
+        page_token (str):
+            Optional. Page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListResourceAllowancesResponse(proto.Message):
+    r"""ListResourceAllowances Response.
+
+    Attributes:
+        resource_allowances (MutableSequence[google.cloud.batch_v1alpha.types.ResourceAllowance]):
+            ResourceAllowances.
+        next_page_token (str):
+            Next page token.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    resource_allowances: MutableSequence[
+        gcb_resource_allowance.ResourceAllowance
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcb_resource_allowance.ResourceAllowance,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateResourceAllowanceRequest(proto.Message):
+    r"""UpdateResourceAllowance Request.
+
+    Attributes:
+        resource_allowance (google.cloud.batch_v1alpha.types.ResourceAllowance):
+            Required. The ResourceAllowance to update. Update
+            description. Only fields specified in ``update_mask`` are
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Mask of fields to update.
+
+            Field mask is used to specify the fields to be overwritten
+            in the ResourceAllowance resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
+
+            UpdateResourceAllowance request now only supports update on
+            ``limit`` field.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    resource_allowance: gcb_resource_allowance.ResourceAllowance = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcb_resource_allowance.ResourceAllowance,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

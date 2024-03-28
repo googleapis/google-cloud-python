@@ -27,9 +27,13 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.batch_v1alpha import gapic_version as package_version
+from google.cloud.batch_v1alpha.types import (
+    resource_allowance as gcb_resource_allowance,
+)
 from google.cloud.batch_v1alpha.types import batch
 from google.cloud.batch_v1alpha.types import job
 from google.cloud.batch_v1alpha.types import job as gcb_job
+from google.cloud.batch_v1alpha.types import resource_allowance
 from google.cloud.batch_v1alpha.types import task
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -197,6 +201,49 @@ class BatchServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_resource_allowance: gapic_v1.method.wrap_method(
+                self.create_resource_allowance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_resource_allowance: gapic_v1.method.wrap_method(
+                self.get_resource_allowance,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_resource_allowance: gapic_v1.method.wrap_method(
+                self.delete_resource_allowance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_resource_allowances: gapic_v1.method.wrap_method(
+                self.list_resource_allowances,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_resource_allowance: gapic_v1.method.wrap_method(
+                self.update_resource_allowance,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -255,6 +302,63 @@ class BatchServiceTransport(abc.ABC):
     ) -> Callable[
         [batch.ListTasksRequest],
         Union[batch.ListTasksResponse, Awaitable[batch.ListTasksResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.CreateResourceAllowanceRequest],
+        Union[
+            gcb_resource_allowance.ResourceAllowance,
+            Awaitable[gcb_resource_allowance.ResourceAllowance],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.GetResourceAllowanceRequest],
+        Union[
+            resource_allowance.ResourceAllowance,
+            Awaitable[resource_allowance.ResourceAllowance],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.DeleteResourceAllowanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_resource_allowances(
+        self,
+    ) -> Callable[
+        [batch.ListResourceAllowancesRequest],
+        Union[
+            batch.ListResourceAllowancesResponse,
+            Awaitable[batch.ListResourceAllowancesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_resource_allowance(
+        self,
+    ) -> Callable[
+        [batch.UpdateResourceAllowanceRequest],
+        Union[
+            gcb_resource_allowance.ResourceAllowance,
+            Awaitable[gcb_resource_allowance.ResourceAllowance],
+        ],
     ]:
         raise NotImplementedError()
 

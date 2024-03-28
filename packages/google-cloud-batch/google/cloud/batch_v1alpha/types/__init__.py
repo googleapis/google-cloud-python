@@ -15,14 +15,20 @@
 #
 from .batch import (
     CreateJobRequest,
+    CreateResourceAllowanceRequest,
     DeleteJobRequest,
+    DeleteResourceAllowanceRequest,
     GetJobRequest,
+    GetResourceAllowanceRequest,
     GetTaskRequest,
     ListJobsRequest,
     ListJobsResponse,
+    ListResourceAllowancesRequest,
+    ListResourceAllowancesResponse,
     ListTasksRequest,
     ListTasksResponse,
     OperationMetadata,
+    UpdateResourceAllowanceRequest,
 )
 from .job import (
     AllocationPolicy,
@@ -34,6 +40,15 @@ from .job import (
     ResourceUsage,
     ServiceAccount,
     TaskGroup,
+)
+from .notification import Notification
+from .resource_allowance import (
+    CalendarPeriod,
+    ResourceAllowance,
+    ResourceAllowanceState,
+    UsageResourceAllowance,
+    UsageResourceAllowanceSpec,
+    UsageResourceAllowanceStatus,
 )
 from .task import (
     ComputeResource,
@@ -51,14 +66,20 @@ from .volume import GCS, NFS, PD, Volume
 
 __all__ = (
     "CreateJobRequest",
+    "CreateResourceAllowanceRequest",
     "DeleteJobRequest",
+    "DeleteResourceAllowanceRequest",
     "GetJobRequest",
+    "GetResourceAllowanceRequest",
     "GetTaskRequest",
     "ListJobsRequest",
     "ListJobsResponse",
+    "ListResourceAllowancesRequest",
+    "ListResourceAllowancesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
     "OperationMetadata",
+    "UpdateResourceAllowanceRequest",
     "AllocationPolicy",
     "Job",
     "JobDependency",
@@ -68,6 +89,13 @@ __all__ = (
     "ResourceUsage",
     "ServiceAccount",
     "TaskGroup",
+    "Notification",
+    "ResourceAllowance",
+    "UsageResourceAllowance",
+    "UsageResourceAllowanceSpec",
+    "UsageResourceAllowanceStatus",
+    "CalendarPeriod",
+    "ResourceAllowanceState",
     "ComputeResource",
     "Environment",
     "LifecyclePolicy",

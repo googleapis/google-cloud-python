@@ -15,14 +15,29 @@
                 "create_job"
               ]
             },
+            "CreateResourceAllowance": {
+              "methods": [
+                "create_resource_allowance"
+              ]
+            },
             "DeleteJob": {
               "methods": [
                 "delete_job"
               ]
             },
+            "DeleteResourceAllowance": {
+              "methods": [
+                "delete_resource_allowance"
+              ]
+            },
             "GetJob": {
               "methods": [
                 "get_job"
+              ]
+            },
+            "GetResourceAllowance": {
+              "methods": [
+                "get_resource_allowance"
               ]
             },
             "GetTask": {
@@ -35,9 +50,19 @@
                 "list_jobs"
               ]
             },
+            "ListResourceAllowances": {
+              "methods": [
+                "list_resource_allowances"
+              ]
+            },
             "ListTasks": {
               "methods": [
                 "list_tasks"
+              ]
+            },
+            "UpdateResourceAllowance": {
+              "methods": [
+                "update_resource_allowance"
               ]
             }
           }
@@ -50,14 +75,29 @@
                 "create_job"
               ]
             },
+            "CreateResourceAllowance": {
+              "methods": [
+                "create_resource_allowance"
+              ]
+            },
             "DeleteJob": {
               "methods": [
                 "delete_job"
               ]
             },
+            "DeleteResourceAllowance": {
+              "methods": [
+                "delete_resource_allowance"
+              ]
+            },
             "GetJob": {
               "methods": [
                 "get_job"
+              ]
+            },
+            "GetResourceAllowance": {
+              "methods": [
+                "get_resource_allowance"
               ]
             },
             "GetTask": {
@@ -70,9 +110,19 @@
                 "list_jobs"
               ]
             },
+            "ListResourceAllowances": {
+              "methods": [
+                "list_resource_allowances"
+              ]
+            },
             "ListTasks": {
               "methods": [
                 "list_tasks"
+              ]
+            },
+            "UpdateResourceAllowance": {
+              "methods": [
+                "update_resource_allowance"
               ]
             }
           }
@@ -85,14 +135,29 @@
                 "create_job"
               ]
             },
+            "CreateResourceAllowance": {
+              "methods": [
+                "create_resource_allowance"
+              ]
+            },
             "DeleteJob": {
               "methods": [
                 "delete_job"
               ]
             },
+            "DeleteResourceAllowance": {
+              "methods": [
+                "delete_resource_allowance"
+              ]
+            },
             "GetJob": {
               "methods": [
                 "get_job"
+              ]
+            },
+            "GetResourceAllowance": {
+              "methods": [
+                "get_resource_allowance"
               ]
             },
             "GetTask": {
@@ -105,9 +170,19 @@
                 "list_jobs"
               ]
             },
+            "ListResourceAllowances": {
+              "methods": [
+                "list_resource_allowances"
+              ]
+            },
             "ListTasks": {
               "methods": [
                 "list_tasks"
+              ]
+            },
+            "UpdateResourceAllowance": {
+              "methods": [
+                "update_resource_allowance"
               ]
             }
           }
