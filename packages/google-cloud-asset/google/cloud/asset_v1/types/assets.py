@@ -523,6 +523,10 @@ class Tag(proto.Message):
             {ORG_ID}/{TAG_KEY_SHORT_NAME}.
 
             This field is a member of `oneof`_ ``_tag_key``.
+        tag_key_id (str):
+            TagKey ID, in the format of tagKeys/{TAG_KEY_ID}.
+
+            This field is a member of `oneof`_ ``_tag_key_id``.
         tag_value (str):
             TagValue namespaced name, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}.
@@ -537,6 +541,11 @@ class Tag(proto.Message):
     tag_key: str = proto.Field(
         proto.STRING,
         number=1,
+        optional=True,
+    )
+    tag_key_id: str = proto.Field(
+        proto.STRING,
+        number=2,
         optional=True,
     )
     tag_value: str = proto.Field(
@@ -904,6 +913,7 @@ class ResourceSearchResult(proto.Message):
                -  ``tagKeys:"123456789/env*"``
                -  ``tagKeys="123456789/env"``
                -  ``tagKeys:"env"``
+               -  ``tagKeyIds="tagKeys/123"``
                -  ``tagValues:"env"``
                -  ``tagValues:"env/prod"``
                -  ``tagValues:"123456789/env/prod*"``
@@ -927,6 +937,7 @@ class ResourceSearchResult(proto.Message):
                -  ``effectiveTagKeys:"123456789/env*"``
                -  ``effectiveTagKeys="123456789/env"``
                -  ``effectiveTagKeys:"env"``
+               -  ``effectiveTagKeyIds="tagKeys/123"``
                -  ``effectiveTagValues:"env"``
                -  ``effectiveTagValues:"env/prod"``
                -  ``effectiveTagValues:"123456789/env/prod*"``
