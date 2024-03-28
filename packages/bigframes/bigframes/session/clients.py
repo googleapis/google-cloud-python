@@ -69,12 +69,12 @@ class ClientsProvider:
 
     def __init__(
         self,
-        project: Optional[str],
-        location: Optional[str],
-        use_regional_endpoints: Optional[bool],
-        credentials: Optional[google.auth.credentials.Credentials],
-        application_name: Optional[str],
-        bq_kms_key_name: Optional[str],
+        project: Optional[str] = None,
+        location: Optional[str] = None,
+        use_regional_endpoints: Optional[bool] = None,
+        credentials: Optional[google.auth.credentials.Credentials] = None,
+        application_name: Optional[str] = None,
+        bq_kms_key_name: Optional[str] = None,
     ):
         credentials_project = None
         if credentials is None:
