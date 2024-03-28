@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.25.1...google-cloud-asset-v3.26.0) (2024-03-28)
+
+
+### Features
+
+* add tag key id support ([2c17f60](https://github.com/googleapis/google-cloud-python/commit/2c17f60ab9dca74be1e99a1e056f7661b9a2b8c1))
+
+
+### Documentation
+
+* add tagKeyIds example for ResourceSearchResult.tags ([2c17f60](https://github.com/googleapis/google-cloud-python/commit/2c17f60ab9dca74be1e99a1e056f7661b9a2b8c1))
+
 ## [3.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.25.0...google-cloud-asset-v3.25.1) (2024-03-22)
 
 

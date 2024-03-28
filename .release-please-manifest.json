@@ -21,7 +21,7 @@
     "packages/google-cloud-appengine-logging": "1.4.3",
     "packages/google-cloud-apphub": "0.1.0",
     "packages/google-cloud-artifact-registry": "1.11.3",
-    "packages/google-cloud-asset": "3.25.1",
+    "packages/google-cloud-asset": "3.26.0",
     "packages/google-cloud-assured-workloads": "1.12.3",
     "packages/google-cloud-automl": "2.13.3",
     "packages/google-cloud-bare-metal-solution": "1.7.3",
