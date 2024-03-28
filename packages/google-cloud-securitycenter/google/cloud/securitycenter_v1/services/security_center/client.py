@@ -106,6 +106,7 @@ from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
+from google.cloud.securitycenter_v1.types import notebook
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
