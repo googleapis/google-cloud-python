@@ -42,6 +42,7 @@ from .load_balancer import LoadBalancer
 from .log_entry import CloudLoggingEntry, LogEntry
 from .mitre_attack import MitreAttack
 from .mute_config import MuteConfig
+from .notebook import Notebook
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
 from .org_policy import OrgPolicy
@@ -154,6 +155,7 @@ __all__ = (
     "LogEntry",
     "MitreAttack",
     "MuteConfig",
+    "Notebook",
     "NotificationConfig",
     "NotificationMessage",
     "OrgPolicy",

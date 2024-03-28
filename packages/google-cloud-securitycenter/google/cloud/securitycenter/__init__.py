@@ -64,6 +64,7 @@ from google.cloud.securitycenter_v1.types.load_balancer import LoadBalancer
 from google.cloud.securitycenter_v1.types.log_entry import CloudLoggingEntry, LogEntry
 from google.cloud.securitycenter_v1.types.mitre_attack import MitreAttack
 from google.cloud.securitycenter_v1.types.mute_config import MuteConfig
+from google.cloud.securitycenter_v1.types.notebook import Notebook
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
 from google.cloud.securitycenter_v1.types.notification_message import (
     NotificationMessage,
@@ -188,6 +189,7 @@ __all__ = (
     "LogEntry",
     "MitreAttack",
     "MuteConfig",
+    "Notebook",
     "NotificationConfig",
     "NotificationMessage",
     "OrgPolicy",

@@ -51,6 +51,7 @@ from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v1.types import load_balancer, log_entry
+from google.cloud.securitycenter_v1.types import notebook as gcs_notebook
 from google.cloud.securitycenter_v1.types import org_policy, process
 
 __protobuf__ = proto.module(
@@ -262,6 +263,8 @@ class Finding(proto.Message):
         load_balancers (MutableSequence[google.cloud.securitycenter_v1.types.LoadBalancer]):
             The load balancers associated with the
             finding.
+        notebook (google.cloud.securitycenter_v1.types.Notebook):
+            Notebook associated with the finding.
     """
 
     class State(proto.Enum):
@@ -639,6 +642,11 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=58,
         message=load_balancer.LoadBalancer,
+    )
+    notebook: gcs_notebook.Notebook = proto.Field(
+        proto.MESSAGE,
+        number=63,
+        message=gcs_notebook.Notebook,
     )
 
 

@@ -119,6 +119,7 @@ from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
+from google.cloud.securitycenter_v1.types import notebook
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
@@ -19024,6 +19025,12 @@ def test_create_finding_rest(request_type):
             }
         ],
         "load_balancers": [{"name": "name_value"}],
+        "notebook": {
+            "name": "name_value",
+            "service": "service_value",
+            "last_author": "last_author_value",
+            "notebook_update_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -29017,6 +29024,12 @@ def test_update_finding_rest(request_type):
             }
         ],
         "load_balancers": [{"name": "name_value"}],
+        "notebook": {
+            "name": "name_value",
+            "service": "service_value",
+            "last_author": "last_author_value",
+            "notebook_update_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
