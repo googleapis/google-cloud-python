@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-org-policy/compare/v1.10.0...v1.11.0) (2024-03-28)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([f3677cc](https://github.com/googleapis/python-org-policy/commit/f3677cc8fb6ec693e5d0965155a090d393c5eca2))
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([f3677cc](https://github.com/googleapis/python-org-policy/commit/f3677cc8fb6ec693e5d0965155a090d393c5eca2))
+* Add staticmethod decorator to methods ([f3677cc](https://github.com/googleapis/python-org-policy/commit/f3677cc8fb6ec693e5d0965155a090d393c5eca2))
+* **deps:** Require google-api-core&gt;=1.34.1 ([f3677cc](https://github.com/googleapis/python-org-policy/commit/f3677cc8fb6ec693e5d0965155a090d393c5eca2))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([f3677cc](https://github.com/googleapis/python-org-policy/commit/f3677cc8fb6ec693e5d0965155a090d393c5eca2))
+* Resolve issue with missing import for certain enums in `**/types/…` ([f3677cc](https://github.com/googleapis/python-org-policy/commit/f3677cc8fb6ec693e5d0965155a090d393c5eca2))
+
 ## [1.10.0](https://github.com/googleapis/python-org-policy/compare/v1.9.0...v1.10.0) (2023-12-16)
 
 
