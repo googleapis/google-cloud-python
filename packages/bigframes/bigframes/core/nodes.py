@@ -318,6 +318,12 @@ class ReversedNode(UnaryNode):
 class ProjectionNode(UnaryNode):
     assignments: typing.Tuple[typing.Tuple[ex.Expression, str], ...]
 
+    def __post_init__(self):
+        input_types = self.child.schema._mapping
+        for expression, id in self.assignments:
+            # throws TypeError if invalid
+            _ = expression.output_type(input_types)
+
     def __hash__(self):
         return self._node_hash
 

@@ -161,102 +161,165 @@ def _convert_expr_input(
 
 
 # Operation Factories
-def create_unary_op(
-    name: str, type_rule: op_typing.OpTypeRule = op_typing.INPUT_TYPE
-) -> UnaryOp:
+def create_unary_op(name: str, type_signature: op_typing.UnaryTypeSignature) -> UnaryOp:
     return dataclasses.make_dataclass(
         name,
-        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_rule.as_method)],  # type: ignore
+        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_signature.as_method)],  # type: ignore
         bases=(UnaryOp,),
         frozen=True,
     )()
 
 
 def create_binary_op(
-    name: str, type_rule: op_typing.OpTypeRule = op_typing.Supertype()
+    name: str, type_signature: op_typing.BinaryTypeSignature
 ) -> BinaryOp:
     return dataclasses.make_dataclass(
         name,
-        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_rule.as_method)],  # type: ignore
+        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_signature.as_method)],  # type: ignore
         bases=(BinaryOp,),
-        frozen=True,
-    )()
-
-
-def create_ternary_op(
-    name: str, type_rule: op_typing.OpTypeRule = op_typing.Supertype()
-) -> TernaryOp:
-    return dataclasses.make_dataclass(
-        name,
-        [("name", typing.ClassVar[str], name), ("output_type", typing.ClassVar[typing.Callable], type_rule.as_method)],  # type: ignore
-        bases=(TernaryOp,),
         frozen=True,
     )()
 
 
 # Unary Ops
 ## Generic Ops
-invert_op = create_unary_op(name="invert", type_rule=op_typing.INPUT_TYPE)
-isnull_op = create_unary_op(name="isnull", type_rule=op_typing.PREDICATE)
-notnull_op = create_unary_op(name="notnull", type_rule=op_typing.PREDICATE)
-hash_op = create_unary_op(name="hash", type_rule=op_typing.INTEGER)
+invert_op = create_unary_op(
+    name="invert",
+    type_signature=op_typing.TypePreserving(
+        dtypes.is_binary_like,
+        description="binary-like",
+    ),
+)  # numeric
+isnull_op = create_unary_op(
+    name="isnull",
+    type_signature=op_typing.FixedOutputType(
+        lambda x: True, dtypes.BOOL_DTYPE, description="nullable"
+    ),
+)
+notnull_op = create_unary_op(
+    name="notnull",
+    type_signature=op_typing.FixedOutputType(
+        lambda x: True, dtypes.BOOL_DTYPE, description="nullable"
+    ),
+)
+hash_op = create_unary_op(
+    name="hash",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_string_like, dtypes.INT_DTYPE, description="string-like"
+    ),
+)
 ## String Ops
-len_op = create_unary_op(name="len", type_rule=op_typing.INTEGER)
-reverse_op = create_unary_op(name="reverse", type_rule=op_typing.STRING)
-lower_op = create_unary_op(name="lower", type_rule=op_typing.STRING)
-upper_op = create_unary_op(name="upper", type_rule=op_typing.STRING)
-strip_op = create_unary_op(name="strip", type_rule=op_typing.STRING)
-isalnum_op = create_unary_op(name="isalnum", type_rule=op_typing.PREDICATE)
-isalpha_op = create_unary_op(name="isalpha", type_rule=op_typing.PREDICATE)
-isdecimal_op = create_unary_op(name="isdecimal", type_rule=op_typing.PREDICATE)
-isdigit_op = create_unary_op(name="isdigit", type_rule=op_typing.PREDICATE)
-isnumeric_op = create_unary_op(name="isnumeric", type_rule=op_typing.PREDICATE)
-isspace_op = create_unary_op(name="isspace", type_rule=op_typing.PREDICATE)
-islower_op = create_unary_op(name="islower", type_rule=op_typing.PREDICATE)
-isupper_op = create_unary_op(name="isupper", type_rule=op_typing.PREDICATE)
-rstrip_op = create_unary_op(name="rstrip", type_rule=op_typing.STRING)
-lstrip_op = create_unary_op(name="lstrip", type_rule=op_typing.STRING)
-capitalize_op = create_unary_op(name="capitalize", type_rule=op_typing.STRING)
+len_op = create_unary_op(
+    name="len",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_array_like, dtypes.INT_DTYPE, description="array-like"
+    ),
+)
+reverse_op = create_unary_op(name="reverse", type_signature=op_typing.STRING_TRANSFORM)
+lower_op = create_unary_op(name="lower", type_signature=op_typing.STRING_TRANSFORM)
+upper_op = create_unary_op(name="upper", type_signature=op_typing.STRING_TRANSFORM)
+strip_op = create_unary_op(name="strip", type_signature=op_typing.STRING_TRANSFORM)
+isalnum_op = create_unary_op(name="isalnum", type_signature=op_typing.STRING_PREDICATE)
+isalpha_op = create_unary_op(name="isalpha", type_signature=op_typing.STRING_PREDICATE)
+isdecimal_op = create_unary_op(
+    name="isdecimal", type_signature=op_typing.STRING_PREDICATE
+)
+isdigit_op = create_unary_op(name="isdigit", type_signature=op_typing.STRING_PREDICATE)
+isnumeric_op = create_unary_op(
+    name="isnumeric", type_signature=op_typing.STRING_PREDICATE
+)
+isspace_op = create_unary_op(name="isspace", type_signature=op_typing.STRING_PREDICATE)
+islower_op = create_unary_op(name="islower", type_signature=op_typing.STRING_PREDICATE)
+isupper_op = create_unary_op(name="isupper", type_signature=op_typing.STRING_PREDICATE)
+rstrip_op = create_unary_op(name="rstrip", type_signature=op_typing.STRING_TRANSFORM)
+lstrip_op = create_unary_op(name="lstrip", type_signature=op_typing.STRING_TRANSFORM)
+capitalize_op = create_unary_op(
+    name="capitalize", type_signature=op_typing.STRING_TRANSFORM
+)
 ## DateTime Ops
-day_op = create_unary_op(name="day", type_rule=op_typing.INTEGER)
-dayofweek_op = create_unary_op(name="dayofweek", type_rule=op_typing.INTEGER)
+### datelike accessors
+day_op = create_unary_op(
+    name="day",
+    type_signature=op_typing.DATELIKE_ACCESSOR,
+)
+month_op = create_unary_op(
+    name="month",
+    type_signature=op_typing.DATELIKE_ACCESSOR,
+)
+year_op = create_unary_op(
+    name="year",
+    type_signature=op_typing.DATELIKE_ACCESSOR,
+)
+dayofweek_op = create_unary_op(
+    name="dayofweek",
+    type_signature=op_typing.DATELIKE_ACCESSOR,
+)
+quarter_op = create_unary_op(
+    name="quarter",
+    type_signature=op_typing.DATELIKE_ACCESSOR,
+)
+### timelike accessors
+hour_op = create_unary_op(
+    name="hour",
+    type_signature=op_typing.TIMELIKE_ACCESSOR,
+)
+minute_op = create_unary_op(
+    name="minute",
+    type_signature=op_typing.TIMELIKE_ACCESSOR,
+)
+second_op = create_unary_op(
+    name="second",
+    type_signature=op_typing.TIMELIKE_ACCESSOR,
+)
+normalize_op = create_unary_op(
+    name="normalize",
+    type_signature=op_typing.TypePreserving(
+        dtypes.is_time_like,
+        description="time-like",
+    ),
+)
+### datetimelike accessors
 date_op = create_unary_op(
-    name="date", type_rule=op_typing.Fixed(pd.ArrowDtype(pa.date32()))
+    name="date",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_date_like, dtypes.DATE_DTYPE, description="date-like"
+    ),
 )
-hour_op = create_unary_op(name="hour", type_rule=op_typing.INTEGER)
-minute_op = create_unary_op(name="minute", type_rule=op_typing.INTEGER)
-month_op = create_unary_op(name="month", type_rule=op_typing.INTEGER)
-quarter_op = create_unary_op(name="quarter", type_rule=op_typing.INTEGER)
-second_op = create_unary_op(name="second", type_rule=op_typing.INTEGER)
 time_op = create_unary_op(
-    name="time", type_rule=op_typing.Fixed(pd.ArrowDtype(pa.time64("us")))
+    name="time",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_time_like, dtypes.TIME_DTYPE, description="time-like"
+    ),
 )
-year_op = create_unary_op(name="year", type_rule=op_typing.INTEGER)
-normalize_op = create_unary_op(name="normalize")
 ## Trigonometry Ops
-sin_op = create_unary_op(name="sin", type_rule=op_typing.REAL_NUMERIC)
-cos_op = create_unary_op(name="cos", type_rule=op_typing.REAL_NUMERIC)
-tan_op = create_unary_op(name="tan", type_rule=op_typing.REAL_NUMERIC)
-arcsin_op = create_unary_op(name="arcsin", type_rule=op_typing.REAL_NUMERIC)
-arccos_op = create_unary_op(name="arccos", type_rule=op_typing.REAL_NUMERIC)
-arctan_op = create_unary_op(name="arctan", type_rule=op_typing.REAL_NUMERIC)
-sinh_op = create_unary_op(name="sinh", type_rule=op_typing.REAL_NUMERIC)
-cosh_op = create_unary_op(name="cosh", type_rule=op_typing.REAL_NUMERIC)
-tanh_op = create_unary_op(name="tanh", type_rule=op_typing.REAL_NUMERIC)
-arcsinh_op = create_unary_op(name="arcsinh", type_rule=op_typing.REAL_NUMERIC)
-arccosh_op = create_unary_op(name="arccosh", type_rule=op_typing.REAL_NUMERIC)
-arctanh_op = create_unary_op(name="arctanh", type_rule=op_typing.REAL_NUMERIC)
-arctan2_op = create_binary_op(name="arctan2", type_rule=op_typing.REAL_NUMERIC)
+sin_op = create_unary_op(name="sin", type_signature=op_typing.UNARY_REAL_NUMERIC)
+cos_op = create_unary_op(name="cos", type_signature=op_typing.UNARY_REAL_NUMERIC)
+tan_op = create_unary_op(name="tan", type_signature=op_typing.UNARY_REAL_NUMERIC)
+arcsin_op = create_unary_op(name="arcsin", type_signature=op_typing.UNARY_REAL_NUMERIC)
+arccos_op = create_unary_op(name="arccos", type_signature=op_typing.UNARY_REAL_NUMERIC)
+arctan_op = create_unary_op(name="arctan", type_signature=op_typing.UNARY_REAL_NUMERIC)
+sinh_op = create_unary_op(name="sinh", type_signature=op_typing.UNARY_REAL_NUMERIC)
+cosh_op = create_unary_op(name="cosh", type_signature=op_typing.UNARY_REAL_NUMERIC)
+tanh_op = create_unary_op(name="tanh", type_signature=op_typing.UNARY_REAL_NUMERIC)
+arcsinh_op = create_unary_op(
+    name="arcsinh", type_signature=op_typing.UNARY_REAL_NUMERIC
+)
+arccosh_op = create_unary_op(
+    name="arccosh", type_signature=op_typing.UNARY_REAL_NUMERIC
+)
+arctanh_op = create_unary_op(
+    name="arctanh", type_signature=op_typing.UNARY_REAL_NUMERIC
+)
 ## Numeric Ops
-floor_op = create_unary_op(name="floor", type_rule=op_typing.REAL_NUMERIC)
-ceil_op = create_unary_op(name="ceil", type_rule=op_typing.REAL_NUMERIC)
-abs_op = create_unary_op(name="abs", type_rule=op_typing.INPUT_TYPE)
-exp_op = create_unary_op(name="exp", type_rule=op_typing.REAL_NUMERIC)
-expm1_op = create_unary_op(name="expm1", type_rule=op_typing.REAL_NUMERIC)
-ln_op = create_unary_op(name="log", type_rule=op_typing.REAL_NUMERIC)
-log10_op = create_unary_op(name="log10", type_rule=op_typing.REAL_NUMERIC)
-log1p_op = create_unary_op(name="log1p", type_rule=op_typing.REAL_NUMERIC)
-sqrt_op = create_unary_op(name="sqrt", type_rule=op_typing.REAL_NUMERIC)
+floor_op = create_unary_op(name="floor", type_signature=op_typing.UNARY_REAL_NUMERIC)
+ceil_op = create_unary_op(name="ceil", type_signature=op_typing.UNARY_REAL_NUMERIC)
+abs_op = create_unary_op(name="abs", type_signature=op_typing.UNARY_NUMERIC)
+exp_op = create_unary_op(name="exp", type_signature=op_typing.UNARY_REAL_NUMERIC)
+expm1_op = create_unary_op(name="expm1", type_signature=op_typing.UNARY_REAL_NUMERIC)
+ln_op = create_unary_op(name="log", type_signature=op_typing.UNARY_REAL_NUMERIC)
+log10_op = create_unary_op(name="log10", type_signature=op_typing.UNARY_REAL_NUMERIC)
+log1p_op = create_unary_op(name="log1p", type_signature=op_typing.UNARY_REAL_NUMERIC)
+sqrt_op = create_unary_op(name="sqrt", type_signature=op_typing.UNARY_REAL_NUMERIC)
 
 
 # Parameterized unary ops
@@ -266,7 +329,7 @@ class StrContainsOp(UnaryOp):
     pat: str
 
     def output_type(self, *input_types):
-        return dtypes.BOOL_DTYPE
+        return op_typing.STRING_PREDICATE.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -275,7 +338,7 @@ class StrContainsRegexOp(UnaryOp):
     pat: str
 
     def output_type(self, *input_types):
-        return dtypes.BOOL_DTYPE
+        return op_typing.STRING_PREDICATE.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -284,7 +347,7 @@ class StrGetOp(UnaryOp):
     i: int
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -295,7 +358,7 @@ class StrPadOp(UnaryOp):
     side: typing.Literal["both", "left", "right"]
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -305,7 +368,7 @@ class ReplaceStrOp(UnaryOp):
     repl: str
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -315,7 +378,7 @@ class RegexReplaceStrOp(UnaryOp):
     repl: str
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -324,7 +387,7 @@ class StartsWithOp(UnaryOp):
     pat: typing.Sequence[str]
 
     def output_type(self, *input_types):
-        return dtypes.BOOL_DTYPE
+        return op_typing.STRING_PREDICATE.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -333,7 +396,7 @@ class EndsWithOp(UnaryOp):
     pat: typing.Sequence[str]
 
     def output_type(self, *input_types):
-        return dtypes.BOOL_DTYPE
+        return op_typing.STRING_PREDICATE.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -342,7 +405,7 @@ class ZfillOp(UnaryOp):
     width: int
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -353,7 +416,10 @@ class StrFindOp(UnaryOp):
     end: typing.Optional[int]
 
     def output_type(self, *input_types):
-        return dtypes.INT_DTYPE
+        signature = op_typing.FixedOutputType(
+            dtypes.is_string_like, dtypes.INT_DTYPE, "string-like"
+        )
+        return signature.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -363,7 +429,7 @@ class StrExtractOp(UnaryOp):
     n: int = 1
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -373,7 +439,7 @@ class StrSliceOp(UnaryOp):
     end: typing.Optional[int]
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -382,7 +448,7 @@ class StrRepeatOp(UnaryOp):
     repeats: int
 
     def output_type(self, *input_types):
-        return dtypes.STRING_DTYPE
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
 
 
 # Other parameterized unary operations
@@ -392,9 +458,15 @@ class StructFieldOp(UnaryOp):
     name_or_index: str | int
 
     def output_type(self, *input_types):
-        pd_type = typing.cast(pd.ArrowDtype, input_types[0])
-        pa_struct_t = typing.cast(pa.StructType, pd_type.pyarrow_dtype)
-        pa_result_type = pa_struct_t[self.name_or_index].type
+        input_type = input_types[0]
+        if not isinstance(input_type, pd.ArrowDtype):
+            raise TypeError("field accessor input must be a struct type")
+
+        pa_type = input_type.pyarrow_dtype
+        if not isinstance(pa_type, pa.StructType):
+            raise TypeError("field accessor input must be a struct type")
+
+        pa_result_type = pa_type[self.name_or_index].type
         # TODO: Directly convert from arrow to pandas type
         ibis_result_type = dtypes.arrow_dtype_to_ibis_dtype(pa_result_type)
         return dtypes.ibis_dtype_to_bigframes_dtype(ibis_result_type)
@@ -476,37 +548,100 @@ class FloorDtOp(UnaryOp):
 
 
 # Binary Ops
-fillna_op = create_binary_op(name="fillna")
-cliplower_op = create_binary_op(name="clip_lower")
-clipupper_op = create_binary_op(name="clip_upper")
-coalesce_op = create_binary_op(name="coalesce")
+fillna_op = create_binary_op(name="fillna", type_signature=op_typing.COMMON_SUPERTYPE)
+cliplower_op = create_binary_op(
+    name="clip_lower", type_signature=op_typing.COMMON_SUPERTYPE
+)
+clipupper_op = create_binary_op(
+    name="clip_upper", type_signature=op_typing.COMMON_SUPERTYPE
+)
+coalesce_op = create_binary_op(
+    name="coalesce", type_signature=op_typing.COMMON_SUPERTYPE
+)
+
+
 ## Math Ops
-add_op = create_binary_op(name="add", type_rule=op_typing.NUMERIC)
-sub_op = create_binary_op(name="sub", type_rule=op_typing.NUMERIC)
-mul_op = create_binary_op(name="mul", type_rule=op_typing.NUMERIC)
-div_op = create_binary_op(name="div", type_rule=op_typing.REAL_NUMERIC)
-floordiv_op = create_binary_op(name="floordiv", type_rule=op_typing.NUMERIC)
-pow_op = create_binary_op(name="pow", type_rule=op_typing.NUMERIC)
-mod_op = create_binary_op(name="mod", type_rule=op_typing.NUMERIC)
-round_op = create_binary_op(name="round", type_rule=op_typing.REAL_NUMERIC)
-unsafe_pow_op = create_binary_op(name="unsafe_pow_op", type_rule=op_typing.REAL_NUMERIC)
+@dataclasses.dataclass(frozen=True)
+class AddOp(BinaryOp):
+    name: typing.ClassVar[str] = "add"
+
+    def output_type(self, *input_types):
+        left_type = input_types[0]
+        right_type = input_types[1]
+        if all(map(dtypes.is_string_like, input_types)) and len(set(input_types)) == 1:
+            # String addition
+            return input_types[0]
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            # Numeric addition
+            return dtypes.lcd_etype(left_type, right_type)
+        # TODO: Add temporal addition once delta types supported
+        raise TypeError(f"Cannot add dtypes {left_type} and {right_type}")
+
+
+@dataclasses.dataclass(frozen=True)
+class SubOp(BinaryOp):
+    name: typing.ClassVar[str] = "sub"
+
+    # Note: this is actualyl a vararg op, but we don't model that yet
+    def output_type(self, *input_types):
+        left_type = input_types[0]
+        right_type = input_types[1]
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            # Numeric subtraction
+            return dtypes.lcd_etype(left_type, right_type)
+        # TODO: Add temporal addition once delta types supported
+        raise TypeError(f"Cannot subtract dtypes {left_type} and {right_type}")
+
+
+add_op = AddOp()
+sub_op = SubOp()
+mul_op = create_binary_op(name="mul", type_signature=op_typing.BINARY_NUMERIC)
+div_op = create_binary_op(name="div", type_signature=op_typing.BINARY_REAL_NUMERIC)
+floordiv_op = create_binary_op(name="floordiv", type_signature=op_typing.BINARY_NUMERIC)
+pow_op = create_binary_op(name="pow", type_signature=op_typing.BINARY_NUMERIC)
+mod_op = create_binary_op(name="mod", type_signature=op_typing.BINARY_NUMERIC)
+arctan2_op = create_binary_op(
+    name="arctan2", type_signature=op_typing.BINARY_REAL_NUMERIC
+)
+round_op = create_binary_op(name="round", type_signature=op_typing.BINARY_REAL_NUMERIC)
+unsafe_pow_op = create_binary_op(
+    name="unsafe_pow_op", type_signature=op_typing.BINARY_REAL_NUMERIC
+)
 # Logical Ops
-and_op = create_binary_op(name="and")
-or_op = create_binary_op(name="or")
+and_op = create_binary_op(name="and", type_signature=op_typing.LOGICAL)
+or_op = create_binary_op(name="or", type_signature=op_typing.LOGICAL)
 
 ## Comparison Ops
-eq_op = create_binary_op(name="eq", type_rule=op_typing.PREDICATE)
+eq_op = create_binary_op(name="eq", type_signature=op_typing.COMPARISON)
 eq_null_match_op = create_binary_op(
-    name="eq_nulls_match", type_rule=op_typing.PREDICATE
+    name="eq_nulls_match", type_signature=op_typing.COMPARISON
 )
-ne_op = create_binary_op(name="ne", type_rule=op_typing.PREDICATE)
-lt_op = create_binary_op(name="lt", type_rule=op_typing.PREDICATE)
-gt_op = create_binary_op(name="gt", type_rule=op_typing.PREDICATE)
-le_op = create_binary_op(name="le", type_rule=op_typing.PREDICATE)
-ge_op = create_binary_op(name="ge", type_rule=op_typing.PREDICATE)
+ne_op = create_binary_op(name="ne", type_signature=op_typing.COMPARISON)
+lt_op = create_binary_op(name="lt", type_signature=op_typing.COMPARISON)
+gt_op = create_binary_op(name="gt", type_signature=op_typing.COMPARISON)
+le_op = create_binary_op(name="le", type_signature=op_typing.COMPARISON)
+ge_op = create_binary_op(name="ge", type_signature=op_typing.COMPARISON)
+
 
 ## String Ops
-strconcat_op = create_binary_op(name="strconcat", type_rule=op_typing.STRING)
+@dataclasses.dataclass(frozen=True)
+class StrConcatOp(BinaryOp):
+    name: typing.ClassVar[str] = "str_concat"
+
+    # Note: this is actualyl a vararg op, but we don't model that yet
+    def output_type(self, *input_types):
+        if not all(map(dtypes.is_string_like, input_types)):
+            raise TypeError("string concat requires string-like arguments")
+        if len(set(input_types)) != 1:
+            raise TypeError("string concat requires like-typed arguments")
+        return input_types[0]
+
+
+strconcat_op = StrConcatOp()
 
 
 # Ternary Ops
@@ -515,15 +650,25 @@ class WhereOp(TernaryOp):
     name: typing.ClassVar[str] = "where"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        # Second input is boolean and doesn't affect output type
+        if input_types[1] != dtypes.BOOL_DTYPE:
+            raise TypeError("where condition must be a boolean")
         return dtypes.lcd_etype(input_types[0], input_types[2])
 
 
 where_op = WhereOp()
 
 
-clip_op = create_ternary_op(name="clip", type_rule=op_typing.Supertype())
+@dataclasses.dataclass(frozen=True)
+class ClipOp(TernaryOp):
+    name: typing.ClassVar[str] = "clip"
 
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.lcd_etype(
+            input_types[0], dtypes.lcd_etype(input_types[1], input_types[2])
+        )
+
+
+clip_op = ClipOp()
 
 # Just parameterless unary ops for now
 # TODO: Parameter mappings

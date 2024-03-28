@@ -47,13 +47,19 @@ Dtype = Union[
 # None represents the type of a None scalar.
 ExpressionType = typing.Optional[Dtype]
 
-# Used when storing Null expressions
-DEFAULT_DTYPE = pd.Float64Dtype()
 
 INT_DTYPE = pd.Int64Dtype()
 FLOAT_DTYPE = pd.Float64Dtype()
 BOOL_DTYPE = pd.BooleanDtype()
 STRING_DTYPE = pd.StringDtype(storage="pyarrow")
+BYTES_DTYPE = pd.ArrowDtype(pa.binary())
+DATE_DTYPE = pd.ArrowDtype(pa.date32())
+TIME_DTYPE = pd.ArrowDtype(pa.time64("us"))
+DATETIME_DTYPE = pd.ArrowDtype(pa.timestamp("us"))
+TIMESTAMP_DTYPE = pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+
+# Used when storing Null expressions
+DEFAULT_DTYPE = FLOAT_DTYPE
 
 # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
 UNORDERED_DTYPES = [gpd.array.GeometryDtype()]
@@ -99,6 +105,43 @@ NUMERIC_BIGFRAMES_TYPES_PERMISSIVE = NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE + [
     pd.ArrowDtype(pa.decimal128(38, 9)),
     pd.ArrowDtype(pa.decimal256(76, 38)),
 ]
+
+
+## dtype predicates - use these to maintain consistency
+def is_datetime_like(type: ExpressionType) -> bool:
+    return type in (DATETIME_DTYPE, TIMESTAMP_DTYPE)
+
+
+def is_date_like(type: ExpressionType) -> bool:
+    return type in (DATETIME_DTYPE, TIMESTAMP_DTYPE, DATE_DTYPE)
+
+
+def is_time_like(type: ExpressionType) -> bool:
+    return type in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE)
+
+
+def is_binary_like(type: ExpressionType) -> bool:
+    return type in (BOOL_DTYPE, BYTES_DTYPE, INT_DTYPE)
+
+
+def is_string_like(type: ExpressionType) -> bool:
+    return type in (STRING_DTYPE, BYTES_DTYPE)
+
+
+def is_array_like(type: ExpressionType) -> bool:
+    if isinstance(type, pd.ArrowDtype) and isinstance(type.pyarrow_dtype, pa.ListType):
+        return True
+    else:
+        return type in (STRING_DTYPE, BYTES_DTYPE)
+
+
+def is_numeric(type: ExpressionType) -> bool:
+    return type in NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
+
+
+def is_comparable(type: ExpressionType) -> bool:
+    return (type is not None) and (type not in UNORDERED_DTYPES)
+
 
 # Type hints for Ibis data types that can be read to Python objects by BigQuery DataFrame
 ReadOnlyIbisDtype = Union[

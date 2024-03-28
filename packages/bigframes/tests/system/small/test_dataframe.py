@@ -2003,7 +2003,7 @@ def test_mod(scalars_dfs, other_scalar):
 def test_scalar_binop_str_exception(scalars_dfs):
     scalars_df, _ = scalars_dfs
     columns = ["string_col"]
-    with pytest.raises(Exception):
+    with pytest.raises(TypeError, match="Cannot add dtypes"):
         (scalars_df[columns] + 1).to_pandas()
 
 
