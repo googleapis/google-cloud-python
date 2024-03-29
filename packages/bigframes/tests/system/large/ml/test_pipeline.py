@@ -646,7 +646,7 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
                 compose.ColumnTransformer(
                     [
                         (
-                            "ont_hot_encoder",
+                            "one_hot_encoder",
                             preprocessing.OneHotEncoder(
                                 drop="most_frequent",
                                 min_frequency=5,
@@ -699,7 +699,7 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
     transformers = pl_loaded._transform.transformers_
     expected = [
         (
-            "ont_hot_encoder",
+            "one_hot_encoder",
             preprocessing.OneHotEncoder(
                 drop="most_frequent", max_categories=100, min_frequency=5
             ),

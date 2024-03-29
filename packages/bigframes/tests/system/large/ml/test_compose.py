@@ -14,31 +14,27 @@
 
 import pandas
 
-import bigframes.ml.cluster
-import bigframes.ml.compose
-import bigframes.ml.linear_model
-import bigframes.ml.pipeline
-import bigframes.ml.preprocessing
+from bigframes.ml import compose, preprocessing
 
 
 def test_columntransformer_standalone_fit_and_transform(
     penguins_df_default_index, new_penguins_df
 ):
-    transformer = bigframes.ml.compose.ColumnTransformer(
+    transformer = compose.ColumnTransformer(
         [
             (
                 "onehot",
-                bigframes.ml.preprocessing.OneHotEncoder(),
+                preprocessing.OneHotEncoder(),
                 "species",
             ),
             (
                 "starndard_scale",
-                bigframes.ml.preprocessing.StandardScaler(),
+                preprocessing.StandardScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
             (
                 "min_max_scale",
-                bigframes.ml.preprocessing.MinMaxScaler(),
+                preprocessing.MinMaxScaler(),
                 ["culmen_length_mm"],
             ),
         ]
@@ -76,16 +72,16 @@ def test_columntransformer_standalone_fit_and_transform(
 
 
 def test_columntransformer_standalone_fit_transform(new_penguins_df):
-    transformer = bigframes.ml.compose.ColumnTransformer(
+    transformer = compose.ColumnTransformer(
         [
             (
                 "onehot",
-                bigframes.ml.preprocessing.OneHotEncoder(),
+                preprocessing.OneHotEncoder(),
                 "species",
             ),
             (
                 "standard_scale",
-                bigframes.ml.preprocessing.StandardScaler(),
+                preprocessing.StandardScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
         ]
@@ -118,3 +114,40 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
     )
 
     pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
+
+
+def test_columntransformer_save_load(new_penguins_df, dataset_id):
+    transformer = compose.ColumnTransformer(
+        [
+            (
+                "onehot",
+                preprocessing.OneHotEncoder(),
+                "species",
+            ),
+            (
+                "standard_scale",
+                preprocessing.StandardScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+        ]
+    )
+    transformer.fit(
+        new_penguins_df[["species", "culmen_length_mm", "flipper_length_mm"]]
+    )
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+
+    assert isinstance(reloaded_transformer, compose.ColumnTransformer)
+
+    expected = [
+        (
+            "one_hot_encoder",
+            preprocessing.OneHotEncoder(max_categories=1000001, min_frequency=0),
+            "species",
+        ),
+        ("standard_scaler", preprocessing.StandardScaler(), "culmen_length_mm"),
+        ("standard_scaler", preprocessing.StandardScaler(), "flipper_length_mm"),
+    ]
+    assert reloaded_transformer.transformers_ == expected

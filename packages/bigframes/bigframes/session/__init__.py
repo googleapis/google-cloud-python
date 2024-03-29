@@ -953,7 +953,7 @@ class Session(
                 to load from the default project.
 
         Returns:
-            A bigframes.ml Model wrapping the model.
+            A bigframes.ml Model, Transformer or Pipeline wrapping the model.
         """
         import bigframes.ml.loader
 
