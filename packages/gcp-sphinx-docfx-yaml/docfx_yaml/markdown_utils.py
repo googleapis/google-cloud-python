@@ -280,6 +280,7 @@ def move_markdown_pages(
 
         "reference.md", # Reference docs overlap with Overview. Will try and incorporate this in later.
                         # See https://github.com/googleapis/sphinx-docfx-yaml/issues/106.
+        "summary_overview.md",  # Already included in the TOC.
     ]
 
     files_to_rename = {
