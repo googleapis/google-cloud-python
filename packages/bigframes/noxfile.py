@@ -467,6 +467,12 @@ def docs(session):
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+
+    session.run(
+        "python",
+        "scripts/publish_api_coverage.py",
+        "docs",
+    )
     session.run(
         "sphinx-build",
         "-W",  # warnings as errors
@@ -503,6 +509,12 @@ def docfx(session):
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+
+    session.run(
+        "python",
+        "scripts/publish_api_coverage.py",
+        "docs",
+    )
     session.run(
         "sphinx-build",
         "-T",  # show full traceback on exception

@@ -7,6 +7,7 @@ API reference
     :maxdepth: 3
 
     reference/index
+    supported_pandas_apis
 
 Changelog
 ---------

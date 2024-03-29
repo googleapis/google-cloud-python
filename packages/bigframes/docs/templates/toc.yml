@@ -72,6 +72,8 @@
       name: Series
     - name: Window
       uid: bigframes.core.window.Window
+    - href: supported_pandas_apis.html
+      name: Supported pandas APIs
     name: bigframes.pandas
   - items:
     - items:
