@@ -16,7 +16,7 @@ import argparse
 import importlib
 import inspect
 import sys
-from typing import Dict, List
+import typing
 
 import bigframes
 import bigframes.pandas as bpd
@@ -50,6 +50,11 @@ ML_MODULE_NAMES = [
     "remote",
 ]
 
+COVERAGE_GENERATORS = {
+    "documentation": lambda docstr: docstr,
+    "code samples": lambda docstr: docstr and "**Examples:**" in docstr,
+}
+
 for module_name in ML_MODULE_NAMES:
     module = importlib.import_module(f"bigframes.ml.{module_name}")
     classes_ = [
@@ -58,9 +63,15 @@ for module_name in ML_MODULE_NAMES:
     CLASSES.extend(classes_)
 
 
-def get_code_samples_summary() -> Dict[str, Dict[str, List[str]]]:
+def get_coverage_summary(
+    func: typing.Callable,
+) -> typing.Dict[str, typing.Dict[str, typing.List[str]]]:
     """Get Summary of the code samples coverage in BigFrames APIs.
 
+    Args:
+        func (callable):
+            Function to accept documentation and return whether it satisfies
+            coverage.
     Returns:
         Summary: A dictionary of the format
             {
@@ -73,7 +84,7 @@ def get_code_samples_summary() -> Dict[str, Dict[str, List[str]]]:
                 }
             }
     """
-    summary: Dict[str, Dict[str, List[str]]] = dict()
+    summary: typing.Dict[str, typing.Dict[str, typing.List[str]]] = dict()
 
     for class_ in CLASSES:
         class_key = f"{class_.__module__}.{class_.__name__}"
@@ -104,8 +115,8 @@ def get_code_samples_summary() -> Dict[str, Dict[str, List[str]]]:
             impl = getattr(class_, name)
 
             docstr = inspect.getdoc(impl)
-            code_samples_present = docstr and "**Examples:**" in docstr
-            key = PRESENT if code_samples_present else NOT_PRESENT
+            coverage_present = func(docstr)
+            key = PRESENT if coverage_present else NOT_PRESENT
             summary[class_key][key].append(name)
 
     return summary
@@ -113,7 +124,16 @@ def get_code_samples_summary() -> Dict[str, Dict[str, List[str]]]:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Get a summary of code samples coverage in BigFrames APIs."
+        description="Get a summary of documentation coverage in BigFrames APIs."
+    )
+    parser.add_argument(
+        "-c",
+        "--code-samples",
+        type=bool,
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Whether to calculate code samples coverage. By default the tool"
+        " calculates the documentation (docstring) coverage.",
     )
     parser.add_argument(
         "-d",
@@ -121,12 +141,13 @@ if __name__ == "__main__":
         type=bool,
         action=argparse.BooleanOptionalAction,
         default=False,
-        help="Whether to print APIs with and without code samples.",
+        help="Whether to print APIs with and without the coverage.",
     )
 
     args = parser.parse_args(sys.argv[1:])
 
-    summary = get_code_samples_summary()
+    scenario = "code samples" if args.code_samples else "documentation"
+    summary = get_coverage_summary(COVERAGE_GENERATORS[scenario])
 
     total_with_code_samples = 0
     total = 0
@@ -140,8 +161,8 @@ if __name__ == "__main__":
         coverage = 100 * apis_with_code_samples / apis_total
         print(f"{class_}: {coverage:.1f}% ({apis_with_code_samples}/{apis_total})")
         if args.details:
-            print(f"===> APIs WITH code samples: {class_summary[PRESENT]}")
-            print(f"===> APIs WITHOUT code samples: {class_summary[NOT_PRESENT]}")
+            print(f"===> APIs WITH {scenario}: {class_summary[PRESENT]}")
+            print(f"===> APIs WITHOUT {scenario}: {class_summary[NOT_PRESENT]}")
 
     coverage = 100 * total_with_code_samples / total
     print(f"Total: {coverage:.1f}% ({total_with_code_samples}/{total})")
