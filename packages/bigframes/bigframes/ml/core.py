@@ -152,14 +152,14 @@ class BqmlModel(BaseBqml):
             ),
         )
 
-    def generate_text_embedding(
+    def generate_embedding(
         self,
         input_data: bpd.DataFrame,
         options: Mapping[str, int | float],
     ) -> bpd.DataFrame:
         return self._apply_sql(
             input_data,
-            lambda source_df: self._model_manipulation_sql_generator.ml_generate_text_embedding(
+            lambda source_df: self._model_manipulation_sql_generator.ml_generate_embedding(
                 source_df=source_df,
                 struct_options=options,
             ),
