@@ -229,6 +229,10 @@ class ArrayValue:
         value: typing.Any,
         dtype: typing.Optional[bigframes.dtypes.Dtype],
     ) -> ArrayValue:
+        if pandas.isna(value):
+            # Need to assign a data type when value is NaN.
+            dtype = dtype or bigframes.dtypes.DEFAULT_DTYPE
+
         if destination_id in self.column_ids:  # Mutate case
             exprs = [
                 (

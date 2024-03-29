@@ -605,17 +605,24 @@ def test_assign_new_column_w_loc(scalars_dfs):
     pd.testing.assert_frame_equal(bf_result, pd_result)
 
 
-def test_assign_new_column_w_setitem(scalars_dfs):
+@pytest.mark.parametrize(
+    ("scalar",),
+    [
+        (2.1,),
+        (None,),
+    ],
+)
+def test_assign_new_column_w_setitem(scalars_dfs, scalar):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_df = scalars_df.copy()
     pd_df = scalars_pandas_df.copy()
-    bf_df["new_col"] = 2
-    pd_df["new_col"] = 2
+    bf_df["new_col"] = scalar
+    pd_df["new_col"] = scalar
     bf_result = bf_df.to_pandas()
     pd_result = pd_df
 
-    # Convert default pandas dtypes `int64` to match BigQuery DataFrames dtypes.
-    pd_result["new_col"] = pd_result["new_col"].astype("Int64")
+    # Convert default pandas dtypes `float64` to match BigQuery DataFrames dtypes.
+    pd_result["new_col"] = pd_result["new_col"].astype("Float64")
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
 
