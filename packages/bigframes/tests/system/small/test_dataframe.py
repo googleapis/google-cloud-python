@@ -494,6 +494,17 @@ def test_df_peek_force_default(scalars_dfs):
     assert len(peek_result) == 3
 
 
+def test_df_peek_reset_index(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    peek_result = (
+        scalars_df[["int64_col", "int64_too"]].reset_index(drop=True).peek(n=3)
+    )
+    pd.testing.assert_index_equal(
+        scalars_pandas_df[["int64_col", "int64_too"]].columns, peek_result.columns
+    )
+    assert len(peek_result) == 3
+
+
 def test_repr_w_all_rows(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 

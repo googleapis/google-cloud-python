@@ -91,11 +91,6 @@ class BigFrameNode:
         return hash(tuple(hash(getattr(self, field.name)) for field in fields(self)))
 
     @property
-    def peekable(self) -> bool:
-        """Indicates whether the node can be sampled efficiently"""
-        return all(child.peekable for child in self.child_nodes)
-
-    @property
     def roots(self) -> typing.Set[BigFrameNode]:
         roots = itertools.chain.from_iterable(
             map(lambda child: child.roots, self.child_nodes)
@@ -142,12 +137,6 @@ class JoinNode(BigFrameNode):
 
     def __hash__(self):
         return self._node_hash
-
-    @property
-    def peekable(self) -> bool:
-        children_peekable = all(child.peekable for child in self.child_nodes)
-        single_root = len(self.roots) == 1
-        return children_peekable and single_root
 
     @functools.cached_property
     def schema(self) -> schemata.ArraySchema:
@@ -205,10 +194,6 @@ class ReadLocalNode(BigFrameNode):
         return self._node_hash
 
     @property
-    def peekable(self) -> bool:
-        return True
-
-    @property
     def roots(self) -> typing.Set[BigFrameNode]:
         return {self}
 
@@ -232,10 +217,6 @@ class ReadGbqNode(BigFrameNode):
 
     def __hash__(self):
         return self._node_hash
-
-    @property
-    def peekable(self) -> bool:
-        return True
 
     @property
     def roots(self) -> typing.Set[BigFrameNode]:
@@ -262,12 +243,8 @@ class PromoteOffsetsNode(UnaryNode):
         return self._node_hash
 
     @property
-    def peekable(self) -> bool:
-        return False
-
-    @property
     def non_local(self) -> bool:
-        return False
+        return True
 
     @property
     def schema(self) -> schemata.ArraySchema:
@@ -372,10 +349,6 @@ class AggregateNode(UnaryNode):
         return self._node_hash
 
     @property
-    def peekable(self) -> bool:
-        return False
-
-    @property
     def non_local(self) -> bool:
         return True
 
@@ -406,10 +379,6 @@ class WindowOpNode(UnaryNode):
 
     def __hash__(self):
         return self._node_hash
-
-    @property
-    def peekable(self) -> bool:
-        return False
 
     @property
     def non_local(self) -> bool:
@@ -458,10 +427,6 @@ class UnpivotNode(UnaryNode):
     @property
     def non_local(self) -> bool:
         return True
-
-    @property
-    def peekable(self) -> bool:
-        return False
 
     @functools.cached_property
     def schema(self) -> schemata.ArraySchema:

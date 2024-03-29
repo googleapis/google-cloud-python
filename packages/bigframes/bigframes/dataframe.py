@@ -1111,7 +1111,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if maybe_result is None:
             if force:
                 self._cached()
-                maybe_result = self._block.try_peek(n)
+                maybe_result = self._block.try_peek(n, force=True)
                 assert maybe_result is not None
             else:
                 raise ValueError(

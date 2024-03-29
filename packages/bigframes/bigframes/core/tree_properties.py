@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import bigframes.core.nodes as nodes
+
+# TODO: Convert these functions to iterative or enforce hard limit on tree depth. The below algorithms can cause stack to exceed limit.
 
 
 def is_trivially_executable(node: nodes.BigFrameNode) -> bool:
@@ -25,3 +28,11 @@ def is_trivially_executable(node: nodes.BigFrameNode) -> bool:
 
 def local_only(node: nodes.BigFrameNode) -> bool:
     return all(isinstance(node, nodes.ReadLocalNode) for node in node.roots)
+
+
+def peekable(node: nodes.BigFrameNode) -> bool:
+    if local_only(node):
+        return True
+    children_peekable = all(peekable(child) for child in node.child_nodes)
+    self_peekable = not node.non_local
+    return children_peekable and self_peekable

@@ -82,7 +82,8 @@ import bigframes.core.compile
 import bigframes.core.guid as guid
 from bigframes.core.ordering import IntegerEncoding
 import bigframes.core.ordering as order
-import bigframes.core.traversal as traversals
+import bigframes.core.tree_properties as traversals
+import bigframes.core.tree_properties as tree_properties
 import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.formatting_helpers as formatting_helpers
@@ -1848,8 +1849,8 @@ class Session(
         self, array_value: core.ArrayValue, n_rows: int
     ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
         """A 'peek' efficiently accesses a small number of rows in the dataframe."""
-        if not array_value.node.peekable:
-            raise NotImplementedError("cannot efficient peek this dataframe")
+        if not tree_properties.peekable(array_value.node):
+            warnings.warn("Peeking this value cannot be done efficiently.")
         sql = self._compile_unordered(array_value).peek_sql(n_rows)
         return self._start_query(
             sql=sql,
