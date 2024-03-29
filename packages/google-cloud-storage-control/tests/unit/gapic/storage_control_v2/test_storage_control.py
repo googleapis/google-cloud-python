@@ -2992,6 +2992,1399 @@ async def test_get_storage_layout_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.CreateManagedFolderRequest,
+        dict,
+    ],
+)
+def test_create_managed_folder(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder(
+            name="name_value",
+            metageneration=1491,
+        )
+        response = client.create_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.CreateManagedFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ManagedFolder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+def test_create_managed_folder_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        client.create_managed_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.CreateManagedFolderRequest()
+
+
+def test_create_managed_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.CreateManagedFolderRequest(
+        parent="parent_value",
+        managed_folder_id="managed_folder_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        client.create_managed_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.CreateManagedFolderRequest(
+            parent="parent_value",
+            managed_folder_id="managed_folder_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_managed_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.create_managed_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.CreateManagedFolderRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_managed_folder_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.CreateManagedFolderRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.create_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.CreateManagedFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ManagedFolder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+@pytest.mark.asyncio
+async def test_create_managed_folder_async_from_dict():
+    await test_create_managed_folder_async(request_type=dict)
+
+
+def test_create_managed_folder_routing_parameters():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.CreateManagedFolderRequest(**{"parent": "sample1"})
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        call.return_value = storage_control.ManagedFolder()
+        client.create_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
+
+
+def test_create_managed_folder_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_managed_folder(
+            parent="parent_value",
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            managed_folder_id="managed_folder_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].managed_folder
+        mock_val = storage_control.ManagedFolder(name="name_value")
+        assert arg == mock_val
+        arg = args[0].managed_folder_id
+        mock_val = "managed_folder_id_value"
+        assert arg == mock_val
+
+
+def test_create_managed_folder_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_managed_folder(
+            storage_control.CreateManagedFolderRequest(),
+            parent="parent_value",
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            managed_folder_id="managed_folder_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_managed_folder_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_managed_folder(
+            parent="parent_value",
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            managed_folder_id="managed_folder_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].managed_folder
+        mock_val = storage_control.ManagedFolder(name="name_value")
+        assert arg == mock_val
+        arg = args[0].managed_folder_id
+        mock_val = "managed_folder_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_managed_folder_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_managed_folder(
+            storage_control.CreateManagedFolderRequest(),
+            parent="parent_value",
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            managed_folder_id="managed_folder_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.DeleteManagedFolderRequest,
+        dict,
+    ],
+)
+def test_delete_managed_folder(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DeleteManagedFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_managed_folder_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        client.delete_managed_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.DeleteManagedFolderRequest()
+
+
+def test_delete_managed_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.DeleteManagedFolderRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        client.delete_managed_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.DeleteManagedFolderRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_managed_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_managed_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.DeleteManagedFolderRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_managed_folder_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.DeleteManagedFolderRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DeleteManagedFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_managed_folder_async_from_dict():
+    await test_delete_managed_folder_async(request_type=dict)
+
+
+def test_delete_managed_folder_routing_parameters():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.DeleteManagedFolderRequest(
+        **{"name": "projects/sample1/buckets/sample2/sample3"}
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
+
+
+def test_delete_managed_folder_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_managed_folder(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_managed_folder_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_managed_folder(
+            storage_control.DeleteManagedFolderRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_managed_folder_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_managed_folder(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_managed_folder_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_managed_folder(
+            storage_control.DeleteManagedFolderRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetManagedFolderRequest,
+        dict,
+    ],
+)
+def test_get_managed_folder(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder(
+            name="name_value",
+            metageneration=1491,
+        )
+        response = client.get_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetManagedFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ManagedFolder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+def test_get_managed_folder_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        client.get_managed_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetManagedFolderRequest()
+
+
+def test_get_managed_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetManagedFolderRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        client.get_managed_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetManagedFolderRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_managed_folder_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.get_managed_folder()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.GetManagedFolderRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_managed_folder_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.GetManagedFolderRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.get_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetManagedFolderRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ManagedFolder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+@pytest.mark.asyncio
+async def test_get_managed_folder_async_from_dict():
+    await test_get_managed_folder_async(request_type=dict)
+
+
+def test_get_managed_folder_routing_parameters():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.GetManagedFolderRequest(
+        **{"name": "projects/sample1/buckets/sample2/sample3"}
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        call.return_value = storage_control.ManagedFolder()
+        client.get_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
+
+
+def test_get_managed_folder_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_managed_folder(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_managed_folder_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_managed_folder(
+            storage_control.GetManagedFolderRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_managed_folder_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_managed_folder(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_managed_folder_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_managed_folder(
+            storage_control.GetManagedFolderRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListManagedFoldersRequest,
+        dict,
+    ],
+)
+def test_list_managed_folders(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListManagedFoldersResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_managed_folders(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListManagedFoldersRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListManagedFoldersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_managed_folders_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        client.list_managed_folders()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.ListManagedFoldersRequest()
+
+
+def test_list_managed_folders_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ListManagedFoldersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        prefix="prefix_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        client.list_managed_folders(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.ListManagedFoldersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            prefix="prefix_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListManagedFoldersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_managed_folders()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.ListManagedFoldersRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.ListManagedFoldersRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListManagedFoldersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_managed_folders(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListManagedFoldersRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListManagedFoldersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_async_from_dict():
+    await test_list_managed_folders_async(request_type=dict)
+
+
+def test_list_managed_folders_routing_parameters():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListManagedFoldersResponse()
+        client.list_managed_folders(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    _, _, kw = call.mock_calls[0]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
+
+
+def test_list_managed_folders_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListManagedFoldersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_managed_folders(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_managed_folders_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_managed_folders(
+            storage_control.ListManagedFoldersRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListManagedFoldersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListManagedFoldersResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_managed_folders(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_managed_folders(
+            storage_control.ListManagedFoldersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_managed_folders_pager(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[],
+                next_page_token="def",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        pager = client.list_managed_folders(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.ManagedFolder) for i in results)
+
+
+def test_list_managed_folders_pages(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[],
+                next_page_token="def",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_managed_folders(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_async_pager():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[],
+                next_page_token="def",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_managed_folders(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, storage_control.ManagedFolder) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_managed_folders_async_pages():
+    client = StorageControlAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_managed_folders),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[],
+                next_page_token="def",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListManagedFoldersResponse(
+                managed_folders=[
+                    storage_control.ManagedFolder(),
+                    storage_control.ManagedFolder(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_managed_folders(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.StorageControlGrpcTransport(
@@ -3135,6 +4528,10 @@ def test_storage_control_base_transport():
         "list_folders",
         "rename_folder",
         "get_storage_layout",
+        "create_managed_folder",
+        "delete_managed_folder",
+        "get_managed_folder",
+        "list_managed_folders",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3569,9 +4966,37 @@ def test_parse_folder_path():
     assert expected == actual
 
 
-def test_storage_layout_path():
+def test_managed_folder_path():
     project = "cuttlefish"
     bucket = "mussel"
+    managedFolder = "winkle"
+    expected = (
+        "projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}".format(
+            project=project,
+            bucket=bucket,
+            managedFolder=managedFolder,
+        )
+    )
+    actual = StorageControlClient.managed_folder_path(project, bucket, managedFolder)
+    assert expected == actual
+
+
+def test_parse_managed_folder_path():
+    expected = {
+        "project": "nautilus",
+        "bucket": "scallop",
+        "managedFolder": "abalone",
+    }
+    path = StorageControlClient.managed_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_managed_folder_path(path)
+    assert expected == actual
+
+
+def test_storage_layout_path():
+    project = "squid"
+    bucket = "clam"
     expected = "projects/{project}/buckets/{bucket}/storageLayout".format(
         project=project,
         bucket=bucket,
@@ -3582,8 +5007,8 @@ def test_storage_layout_path():
 
 def test_parse_storage_layout_path():
     expected = {
-        "project": "winkle",
-        "bucket": "nautilus",
+        "project": "whelk",
+        "bucket": "octopus",
     }
     path = StorageControlClient.storage_layout_path(**expected)
 
@@ -3593,7 +5018,7 @@ def test_parse_storage_layout_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3603,7 +5028,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = StorageControlClient.common_billing_account_path(**expected)
 
@@ -3613,7 +5038,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3623,7 +5048,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = StorageControlClient.common_folder_path(**expected)
 
@@ -3633,7 +5058,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3643,7 +5068,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = StorageControlClient.common_organization_path(**expected)
 
@@ -3653,7 +5078,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3663,7 +5088,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = StorageControlClient.common_project_path(**expected)
 
@@ -3673,8 +5098,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3685,8 +5110,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = StorageControlClient.common_location_path(**expected)
 
