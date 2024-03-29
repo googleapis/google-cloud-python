@@ -34,7 +34,7 @@ try:
     from collections.abc import Mapping
 # Python 2.7 compatibility
 except ImportError:  # pragma: NO COVER
-    from collections import Mapping
+    from collections import Mapping  # type: ignore
 import json
 import os
 import subprocess
