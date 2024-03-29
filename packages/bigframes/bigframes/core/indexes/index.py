@@ -205,17 +205,17 @@ class Index(vendored_pandas_index.Index):
         return self._query_job
 
     def __repr__(self) -> str:
-        # TODO(swast): Add a timeout here? If the query is taking a long time,
-        # maybe we just print the job metadata that we have so far?
-        # TODO(swast): Avoid downloading the whole series by using job
-        # metadata, like we do with DataFrame.
         opts = bigframes.options.display
         max_results = opts.max_rows
+        max_columns = opts.max_columns
         if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self.query_job)
 
-        pandas_df, _, query_job = self._block.retrieve_repr_request_results(max_results)
+        pandas_df, _, query_job = self._block.retrieve_repr_request_results(
+            max_results, max_columns
+        )
         self._query_job = query_job
+
         return repr(pandas_df.index)
 
     def copy(self, name: Optional[Hashable] = None):

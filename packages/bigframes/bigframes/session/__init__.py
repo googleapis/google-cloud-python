@@ -1831,6 +1831,7 @@ class Session(
         sorted: bool = True,
         dry_run=False,
         col_id_overrides: Mapping[str, str] = {},
+        max_results: Optional[int] = None,
     ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
         sql = self._to_sql(
             array_value, sorted=sorted, col_id_overrides=col_id_overrides
@@ -1840,8 +1841,7 @@ class Session(
         else:
             job_config.dry_run = dry_run
         return self._start_query(
-            sql=sql,
-            job_config=job_config,
+            sql=sql, job_config=job_config, max_results=max_results
         )
 
     def _peek(
@@ -1885,6 +1885,10 @@ class Session(
     def _get_table_size(self, destination_table):
         table = self.bqclient.get_table(destination_table)
         return table.num_bytes
+
+    def _get_table_row_count(self, destination_table) -> int:
+        table = self.bqclient.get_table(destination_table)
+        return table.num_rows
 
     def _rows_to_dataframe(
         self, row_iterator: bigquery.table.RowIterator, dtypes: Dict
