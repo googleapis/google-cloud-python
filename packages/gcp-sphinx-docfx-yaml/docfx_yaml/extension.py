@@ -138,6 +138,12 @@ _SUMMARY_TYPE_BY_ITEM_TYPE = {
     # Modules and Classes are similar types.
     MODULE: CLASS,
     CLASS: CLASS,
+    # Methods and Functions are similar types.
+    METHOD: METHOD,
+    FUNCTION: METHOD,
+    # Properties and Attributes are similar types.
+    PROPERTY: PROPERTY,
+    ATTRIBUTE: PROPERTY,
 }
 # Construct a mapping of name and content for each unique summary type entry.
 _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE = {
@@ -147,6 +153,8 @@ _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE = {
 # Mapping for each summary page entry's file name and entry name.
 _FILE_NAME_AND_ENTRY_NAME_BY_SUMMARY_TYPE = {
     CLASS: ('summary_class.yml', "Classes"),
+    METHOD: ('summary_method.yml', "Methods"),
+    PROPERTY: ('summary_property.yml', "Properties and Attributes"),
 }
 
 # Disable blib2to3 output that clutters debugging log.
@@ -1384,12 +1392,51 @@ def _find_and_add_summary_details(
     if summary_type in [CLASS]:
         name_to_use = f"[{uid}]({cgc_url}{uid})"
 
-    _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append({
-        "uid": uid,
+        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append({
+            "uid": uid,
+            "name": name_to_use,
+            "fullName": uid,
+            "isExternal": False,
+        })
+        return
+
+    # if summary_type in [METHOD, PROPERTY]:
+    short_name = yaml_data.get("name", "")
+    name_to_use = uid
+    if not (class_name := yaml_data.get("class", "")):
+        class_name = yaml_data.get("module", "")
+    anchor_name = f"#{class_name.replace('.', '_')}_{short_name}"
+    # Extract the first summary line by attempting to detect the first sentence.
+    summary = yaml_data.get("summary", "")
+    first_summary_line = min(
+        summary.split(". ")[0],
+        summary.split(".\n")[0],
+        summary.split("\n\n")[0],
+        key=len,
+    )
+    if first_summary_line and first_summary_line[-1] != ".":
+      first_summary_line += "."
+
+    summary_to_use = (
+        f"{first_summary_line}\n\n"
+        f"See more: [{name_to_use}]({cgc_url}{class_name}{anchor_name})"
+    )
+
+    fields = {
+        "uid": f"{uid}-summary",
         "name": name_to_use,
+        "summary": summary_to_use,
         "fullName": uid,
-        "isExternal": False,
-    })
+        "type": 'method',
+    }
+
+    if summary_type == METHOD:
+        fields["syntax"] = {
+            "content": yaml_data.get("syntax").get("content") if yaml_data.get("syntax") else ""
+        }
+    _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].append(
+        fields
+    )
 
 
 def _render_summary_content(
@@ -1399,21 +1446,23 @@ def _render_summary_content(
     library_name: str,
 ) -> _yaml_type_alias:
     """Returns the summary content in appropriate YAML format to write."""
-    summary_content = {}
+    summary_content = {
+        "items": [{
+            'uid': f'{summary_type.lower()}-summary',
+            'name': entry_name,
+            'fullName': f'{entry_name} Summary',
+            'langs': ['python'],
+            'type': 'package',
+            'summary': f'Summary of entries of {entry_name} for {library_name}.',
+            'children': children_name_and_summary_content[0],
+        }]
+    }
 
     if summary_type in [CLASS]:
-        summary_content = {
-            "items": [{
-                'uid': f'{summary_type.lower()}-summary',
-                'name': entry_name,
-                'fullName': f'{entry_name} Summary',
-                'langs': ['python'],
-                'type': 'package',
-                'summary': f'Summary of entries of {entry_name} for {library_name}.',
-                'children': children_name_and_summary_content[0],
-            }],
-            'references': children_name_and_summary_content[1],
-        }
+        summary_content["references"] = children_name_and_summary_content[1]
+
+    if summary_type in [METHOD, PROPERTY]:
+        summary_content["items"].extend(children_name_and_summary_content[1])
 
     return summary_content
 
@@ -1971,6 +2020,8 @@ def build_finished(app, exception):
             "name": f"{app.config.project} APIs",
             "items": [
                 {"name": "Classes", "href": "summary_class.yml"},
+                {"name": "Methods", "href": "summary_method.yml"},
+                {"name": "Properties and Attributes", "href": "summary_property.yml"},
             ],
         }
     )
