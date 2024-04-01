@@ -19,8 +19,8 @@ markupsafe==2.1.5
 packaging==24.0
 proto-plus==1.23.0
 protobuf===4.25.3
-pyasn1==0.5.1
-pyasn1-modules==0.3.0
+pyasn1==0.6.0
+pyasn1-modules==0.4.0
 pyparsing==3.1.2
 python-dateutil==2.9.0.post0
 pytz==2024.1
