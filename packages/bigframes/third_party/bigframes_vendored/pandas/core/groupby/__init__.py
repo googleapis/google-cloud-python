@@ -78,7 +78,7 @@ class GroupBy:
                 Include only float, int, boolean columns.
             exact (bool, default False):
                 Calculate the exact median instead of an approximation. Note:
-                    ``exact=True`` not yet supported.
+                    ``exact=True`` is not supported.
 
         Returns:
             pandas.Series or pandas.DataFrame: Median of groups.
@@ -178,7 +178,7 @@ class GroupBy:
                 Include only float, int, boolean columns.
             min_count (int, default 0):
                 The required number of valid values to perform the operation. If fewer
-                than ``min_count`` non-NA values are present the result will be NA.
+                than ``min_count`` and non-NA values are present, the result will be NA.
 
         Returns:
             Series or DataFrame: Computed sum of values within each group.
@@ -194,7 +194,7 @@ class GroupBy:
                 Include only float, int, boolean columns.
             min_count (int, default 0):
                 The required number of valid values to perform the operation. If fewer
-                than ``min_count`` non-NA values are present the result will be NA.
+                than ``min_count`` and non-NA values are present, the result will be NA.
 
         Returns:
             Series or DataFrame: Computed prod of values within each group.
@@ -214,7 +214,7 @@ class GroupBy:
                 Include only float, int, boolean columns.
             min_count (int, default 0):
                 The required number of valid values to perform the operation. If fewer
-                than ``min_count`` non-NA values are present the result will be NA.
+                than ``min_count`` and non-NA values are present, the result will be NA.
 
         Returns:
             Series or DataFrame: Computed min of values within each group.
@@ -234,7 +234,7 @@ class GroupBy:
                 Include only float, int, boolean columns.
             min_count (int, default 0):
                 The required number of valid values to perform the operation. If fewer
-                than ``min_count`` non-NA values are present the result will be NA.
+                than ``min_count`` and non-NA values are present, the result will be NA.
 
         Returns:
             Series or DataFrame: Computed max of values within each group.

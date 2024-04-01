@@ -38,7 +38,7 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
             automatically adjust weights inversely proportional to class
             frequencies in the input data as
             ``n_samples / (n_classes * np.bincount(y))``. Dict isn't
-            supported now.
+            supported.
         l1_reg (float or None, default None):
             The amount of L1 regularization applied. Default to None. Can't be set in "normal_equation" mode. If unset, value 0 is used.
         l2_reg (float, default 0.0):

@@ -22,8 +22,8 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
 
     Args:
         n_components (int, float or None, default None):
-            Number of components to keep.
-            If n_components is not set all components are kept. n_components = min(n_samples, n_features).
+            Number of components to keep. If n_components is not set all
+            components are kept, n_components = min(n_samples, n_features).
             If 0 < n_components < 1, select the number of components such that the amount of variance that needs to be explained is greater than the percentage specified by n_components.
         svd_solver ("full", "randomized" or "auto", default "auto"):
             The solver to use to calculate the principal components. Details: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-pca#pca_solver.

@@ -34,7 +34,7 @@ class TensorFlowModel(base.Predictor):
         model_path (str):
             GCS path that holds the model files.
         session (BigQuery Session):
-            BQ session to create the model
+            BQ session to create the model.
     """
 
     def __init__(
@@ -113,7 +113,7 @@ class ONNXModel(base.Predictor):
         model_path (str):
             Cloud Storage path that holds the model files.
         session (BigQuery Session):
-            BQ session to create the model
+            BQ session to create the model.
     """
 
     def __init__(
@@ -207,7 +207,7 @@ class XGBoostModel(base.Predictor):
             and feature_types are both specified in the model file. Supported types
             are "bool", "string", "int64", "float64", "array<bool>", "array<string>", "array<int64>", "array<float64>".
         session (BigQuery Session):
-            BQ session to create the model
+            BQ session to create the model.
     """
 
     def __init__(

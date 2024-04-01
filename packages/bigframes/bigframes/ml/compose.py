@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Build composite transformers on heterogeneous data. This module is styled
-after Scikit-Learn's compose module:
+after scikit-Learn's compose module:
 https://scikit-learn.org/stable/modules/classes.html#module-sklearn.compose."""
 
 from __future__ import annotations

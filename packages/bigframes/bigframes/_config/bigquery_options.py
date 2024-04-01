@@ -57,7 +57,7 @@ class BigQueryOptions:
         """The application name to amend to the user-agent sent to Google APIs.
 
         The application name to amend to the user agent sent to Google APIs.
-        The recommended format is  ``"appplication-name/major.minor.patch_version"``
+        The recommended format is  ``"application-name/major.minor.patch_version"``
         or ``"(gpn:PartnerName;)"`` for official Google partners.
         """
         return self._application_name
