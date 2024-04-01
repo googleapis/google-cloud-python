@@ -579,16 +579,28 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             object.__setattr__(self, key, value)
 
     def __repr__(self) -> str:
-        """Converts a DataFrame to a string using pandas dataframe __repr__.
+        """Converts a DataFrame to a string. Calls to_pandas.
 
-        Only represents the first `bigframes.options.display.max_rows`
-        and `bigframes.options.display.max_columns`.
+        Only represents the first `bigframes.options.display.max_rows`.
         """
-        if bigframes.options.display.repr_mode == "deferred":
+        opts = bigframes.options.display
+        max_results = opts.max_rows
+        if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self.query_job)
 
-        pandas_df, shape = self._perform_repr_request()
-        with display_options.pandas_repr(bigframes.options.display):
+        self._cached()
+        # TODO(swast): pass max_columns and get the true column count back. Maybe
+        # get 1 more column than we have requested so that pandas can add the
+        # ... for us?
+        pandas_df, row_count, query_job = self._block.retrieve_repr_request_results(
+            max_results
+        )
+
+        self._set_internal_query_job(query_job)
+
+        column_count = len(pandas_df.columns)
+
+        with display_options.pandas_repr(opts):
             repr_string = repr(pandas_df)
 
         # Modify the end of the string to reflect count.
@@ -596,40 +608,42 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         pattern = re.compile("\\[[0-9]+ rows x [0-9]+ columns\\]")
         if pattern.match(lines[-1]):
             lines = lines[:-2]
-        if shape[0] > len(lines) - 1:
-            lines.append("...")
-        lines.append("")
-        lines.append(f"[{shape[0]} rows x {shape[1]} columns]")
-        return "\n".join(lines)
 
-    def _perform_repr_request(self) -> Tuple[pandas.DataFrame, Tuple[int, int]]:
-        max_results = bigframes.options.display.max_rows
-        max_columns = bigframes.options.display.max_columns
-        self._cached()
-        pandas_df, shape, query_job = self._block.retrieve_repr_request_results(
-            max_results, max_columns
-        )
-        self._set_internal_query_job(query_job)
-        return pandas_df, shape
+        if row_count > len(lines) - 1:
+            lines.append("...")
+
+        lines.append("")
+        lines.append(f"[{row_count} rows x {column_count} columns]")
+        return "\n".join(lines)
 
     def _repr_html_(self) -> str:
         """
         Returns an html string primarily for use by notebooks for displaying
-        a representation of the DataFrame. Displays at most the number of rows
-        and columns given by `bigframes.options.display.max_rows` and
-        `bigframes.options.display.max_columns`.
+        a representation of the DataFrame. Displays 20 rows by default since
+        many notebooks are not configured for large tables.
         """
-
-        if bigframes.options.display.repr_mode == "deferred":
+        opts = bigframes.options.display
+        max_results = bigframes.options.display.max_rows
+        if opts.repr_mode == "deferred":
             return formatter.repr_query_job_html(self.query_job)
 
-        pandas_df, shape = self._perform_repr_request()
+        self._cached()
+        # TODO(swast): pass max_columns and get the true column count back. Maybe
+        # get 1 more column than we have requested so that pandas can add the
+        # ... for us?
+        pandas_df, row_count, query_job = self._block.retrieve_repr_request_results(
+            max_results
+        )
 
-        with display_options.pandas_repr(bigframes.options.display):
+        self._set_internal_query_job(query_job)
+
+        column_count = len(pandas_df.columns)
+
+        with display_options.pandas_repr(opts):
             # _repr_html_ stub is missing so mypy thinks it's a Series. Ignore mypy.
             html_string = pandas_df._repr_html_()  # type:ignore
 
-        html_string += f"[{shape[0]} rows x {shape[1]} columns in total]"
+        html_string += f"[{row_count} rows x {column_count} columns in total]"
         return html_string
 
     def __setitem__(self, key: str, value: SingleItemValue):
