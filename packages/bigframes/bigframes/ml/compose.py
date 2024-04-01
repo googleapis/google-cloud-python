@@ -26,20 +26,10 @@ from typing import cast, List, Optional, Tuple, Union
 import bigframes_vendored.sklearn.compose._column_transformer
 from google.cloud import bigquery
 
-import bigframes
 from bigframes import constants
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, preprocessing, utils
 import bigframes.pandas as bpd
-
-_PREPROCESSING_TYPES = Union[
-    preprocessing.OneHotEncoder,
-    preprocessing.StandardScaler,
-    preprocessing.MaxAbsScaler,
-    preprocessing.MinMaxScaler,
-    preprocessing.KBinsDiscretizer,
-    preprocessing.LabelEncoder,
-]
 
 _BQML_TRANSFROM_TYPE_MAPPING = types.MappingProxyType(
     {
@@ -67,7 +57,7 @@ class ColumnTransformer(
         transformers: List[
             Tuple[
                 str,
-                _PREPROCESSING_TYPES,
+                preprocessing.PreprocessingType,
                 Union[str, List[str]],
             ]
         ],
@@ -82,12 +72,12 @@ class ColumnTransformer(
     @property
     def transformers_(
         self,
-    ) -> List[Tuple[str, _PREPROCESSING_TYPES, str,]]:
+    ) -> List[Tuple[str, preprocessing.PreprocessingType, str,]]:
         """The collection of transformers as tuples of (name, transformer, column)."""
         result: List[
             Tuple[
                 str,
-                _PREPROCESSING_TYPES,
+                preprocessing.PreprocessingType,
                 str,
             ]
         ] = []
@@ -106,15 +96,6 @@ class ColumnTransformer(
         return result
 
     @classmethod
-    def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
-    ) -> ColumnTransformer:
-        col_transformer = cls._extract_from_bq_model(model)
-        col_transformer._bqml_model = core.BqmlModel(session, model)
-
-        return col_transformer
-
-    @classmethod
     def _extract_from_bq_model(
         cls,
         bq_model: bigquery.Model,
@@ -125,7 +106,7 @@ class ColumnTransformer(
         transformers: List[
             Tuple[
                 str,
-                _PREPROCESSING_TYPES,
+                preprocessing.PreprocessingType,
                 Union[str, List[str]],
             ]
         ] = []
@@ -164,15 +145,7 @@ class ColumnTransformer(
 
     def _merge(
         self, bq_model: bigquery.Model
-    ) -> Union[
-        ColumnTransformer,
-        preprocessing.StandardScaler,
-        preprocessing.OneHotEncoder,
-        preprocessing.MaxAbsScaler,
-        preprocessing.MinMaxScaler,
-        preprocessing.KBinsDiscretizer,
-        preprocessing.LabelEncoder,
-    ]:
+    ) -> Union[ColumnTransformer, preprocessing.PreprocessingType,]:
         """Try to merge the column transformer to a simple transformer. Depends on all the columns in bq_model are transformed with the same transformer."""
         transformers = self.transformers_
 
@@ -249,20 +222,3 @@ class ColumnTransformer(
             bpd.DataFrame,
             df[self._output_names],
         )
-
-    def to_gbq(self, model_name: str, replace: bool = False) -> ColumnTransformer:
-        """Save the transformer as a BigQuery model.
-
-        Args:
-            model_name (str):
-                the name of the model.
-            replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
-
-        Returns:
-            ColumnTransformer: saved model."""
-        if not self._bqml_model:
-            raise RuntimeError("A transformer must be fitted before it can be saved")
-
-        new_model = self._bqml_model.copy(model_name, replace)
-        return new_model.session.read_gbq_model(model_name)

@@ -333,7 +333,7 @@ def test_remote_model_predict(
     )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_model_generate_text(
     bqml_palm2_text_generator_model: core.BqmlModel, llm_text_df
 ):

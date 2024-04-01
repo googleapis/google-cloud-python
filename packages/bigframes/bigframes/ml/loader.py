@@ -24,6 +24,7 @@ import bigframes.constants as constants
 from bigframes.ml import (
     cluster,
     compose,
+    core,
     decomposition,
     ensemble,
     forecasting,
@@ -31,6 +32,7 @@ from bigframes.ml import (
     linear_model,
     llm,
     pipeline,
+    preprocessing,
     utils,
 )
 
@@ -81,6 +83,7 @@ def from_bq(
     llm.PaLM2TextEmbeddingGenerator,
     pipeline.Pipeline,
     compose.ColumnTransformer,
+    preprocessing.PreprocessingType,
 ]:
     """Load a BQML model to BigQuery DataFrames ML.
 
@@ -107,8 +110,12 @@ def from_bq(
 
 
 def _transformer_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
-    # TODO(garrettwu): add other transformers
-    return compose.ColumnTransformer._from_bq(session, bq_model)
+    transformer = compose.ColumnTransformer._extract_from_bq_model(bq_model)._merge(
+        bq_model
+    )
+    transformer._bqml_model = core.BqmlModel(session, bq_model)
+
+    return transformer
 
 
 def _model_from_bq(session: bigframes.Session, bq_model: bigquery.Model):

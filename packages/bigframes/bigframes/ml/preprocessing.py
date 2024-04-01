@@ -639,3 +639,13 @@ class LabelEncoder(
             bpd.DataFrame,
             df[self._output_names],
         )
+
+
+PreprocessingType = Union[
+    OneHotEncoder,
+    StandardScaler,
+    MaxAbsScaler,
+    MinMaxScaler,
+    KBinsDiscretizer,
+    LabelEncoder,
+]

@@ -151,3 +151,4 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         ("standard_scaler", preprocessing.StandardScaler(), "flipper_length_mm"),
     ]
     assert reloaded_transformer.transformers_ == expected
+    assert reloaded_transformer._bqml_model is not None

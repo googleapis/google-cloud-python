@@ -49,7 +49,7 @@ def test_create_text_generator_32k_model(
     assert reloaded_model.connection_name == bq_connection
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_create_text_generator_model_default_session(
     bq_connection, llm_text_pandas_df, bigquery_client
 ):
@@ -76,7 +76,7 @@ def test_create_text_generator_model_default_session(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_create_text_generator_32k_model_default_session(
     bq_connection, llm_text_pandas_df, bigquery_client
 ):
@@ -103,7 +103,7 @@ def test_create_text_generator_32k_model_default_session(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_create_text_generator_model_default_connection(
     llm_text_pandas_df, bigquery_client
 ):
@@ -131,7 +131,7 @@ def test_create_text_generator_model_default_connection(
 
 
 # Marked as flaky only because BQML LLM is in preview, the service only has limited capacity, not stable enough.
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_text_generator_predict_default_params_success(
     palm2_text_generator_model, llm_text_df
 ):
@@ -142,7 +142,7 @@ def test_text_generator_predict_default_params_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_text_generator_predict_series_default_params_success(
     palm2_text_generator_model, llm_text_df
 ):
@@ -153,7 +153,7 @@ def test_text_generator_predict_series_default_params_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_text_generator_predict_arbitrary_col_label_success(
     palm2_text_generator_model, llm_text_df
 ):
@@ -165,7 +165,7 @@ def test_text_generator_predict_arbitrary_col_label_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_text_generator_predict_with_params_success(
     palm2_text_generator_model, llm_text_df
 ):
@@ -255,7 +255,7 @@ def test_create_text_embedding_generator_multilingual_model_defaults(bq_connecti
     assert model._bqml_model is not None
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_embedding_generator_predict_success(
     palm2_embedding_generator_model, llm_text_df
 ):
@@ -267,7 +267,7 @@ def test_embedding_generator_predict_success(
     assert len(value) == 768
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_embedding_generator_multilingual_predict_success(
     palm2_embedding_generator_multilingual_model, llm_text_df
 ):
@@ -279,7 +279,7 @@ def test_embedding_generator_multilingual_predict_success(
     assert len(value) == 768
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_embedding_generator_predict_series_success(
     palm2_embedding_generator_model, llm_text_df
 ):
@@ -306,7 +306,7 @@ def test_create_gemini_text_generator_model(
     assert reloaded_model.connection_name == bq_connection
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_predict_default_params_success(
     gemini_text_generator_model, llm_text_df
 ):
@@ -317,7 +317,7 @@ def test_gemini_text_generator_predict_default_params_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_predict_with_params_success(
     gemini_text_generator_model, llm_text_df
 ):

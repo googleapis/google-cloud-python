@@ -18,7 +18,7 @@ import pandas as pd
 import pyarrow as pa
 
 import bigframes.features
-import bigframes.ml.preprocessing
+from bigframes.ml import preprocessing
 
 ONE_HOT_ENCODED_DTYPE = (
     pd.ArrowDtype(pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())])))
@@ -29,7 +29,7 @@ ONE_HOT_ENCODED_DTYPE = (
 
 def test_standard_scaler_normalizes(penguins_df_default_index, new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
-    scaler = bigframes.ml.preprocessing.StandardScaler()
+    scaler = preprocessing.StandardScaler()
     scaler.fit(
         penguins_df_default_index[
             ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
@@ -68,7 +68,7 @@ def test_standard_scaler_normalizes(penguins_df_default_index, new_penguins_df):
 
 def test_standard_scaler_normalizeds_fit_transform(new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
-    scaler = bigframes.ml.preprocessing.StandardScaler()
+    scaler = preprocessing.StandardScaler()
     result = scaler.fit_transform(
         new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
     ).to_pandas()
@@ -97,7 +97,7 @@ def test_standard_scaler_normalizeds_fit_transform(new_penguins_df):
 
 def test_standard_scaler_series_normalizes(penguins_df_default_index, new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
-    scaler = bigframes.ml.preprocessing.StandardScaler()
+    scaler = preprocessing.StandardScaler()
     scaler.fit(penguins_df_default_index["culmen_length_mm"])
 
     result = scaler.transform(penguins_df_default_index["culmen_length_mm"]).to_pandas()
@@ -128,9 +128,22 @@ def test_standard_scaler_series_normalizes(penguins_df_default_index, new_pengui
     pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
 
 
+def test_standard_scaler_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.StandardScaler()
+    transformer.fit(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    )
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.StandardScaler)
+    assert reloaded_transformer._bqml_model is not None
+
+
 def test_max_abs_scaler_normalizes(penguins_df_default_index, new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.MaxAbsScaler, when BQML's change is in prod.
-    scaler = bigframes.ml.preprocessing.MaxAbsScaler()
+    scaler = preprocessing.MaxAbsScaler()
     scaler.fit(
         penguins_df_default_index[
             ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
@@ -168,7 +181,7 @@ def test_max_abs_scaler_normalizes(penguins_df_default_index, new_penguins_df):
 
 
 def test_max_abs_scaler_normalizeds_fit_transform(new_penguins_df):
-    scaler = bigframes.ml.preprocessing.MaxAbsScaler()
+    scaler = preprocessing.MaxAbsScaler()
     result = scaler.fit_transform(
         new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
     ).to_pandas()
@@ -192,7 +205,7 @@ def test_max_abs_scaler_normalizeds_fit_transform(new_penguins_df):
 
 
 def test_max_abs_scaler_series_normalizes(penguins_df_default_index, new_penguins_df):
-    scaler = bigframes.ml.preprocessing.MaxAbsScaler()
+    scaler = preprocessing.MaxAbsScaler()
     scaler.fit(penguins_df_default_index["culmen_length_mm"])
 
     result = scaler.transform(penguins_df_default_index["culmen_length_mm"]).to_pandas()
@@ -219,8 +232,21 @@ def test_max_abs_scaler_series_normalizes(penguins_df_default_index, new_penguin
     pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
 
 
+def test_max_abs_scaler_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.MaxAbsScaler()
+    transformer.fit(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    )
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.MaxAbsScaler)
+    assert reloaded_transformer._bqml_model is not None
+
+
 def test_min_max_scaler_normalized_fit_transform(new_penguins_df):
-    scaler = bigframes.ml.preprocessing.MinMaxScaler()
+    scaler = preprocessing.MinMaxScaler()
     result = scaler.fit_transform(
         new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
     ).to_pandas()
@@ -244,7 +270,7 @@ def test_min_max_scaler_normalized_fit_transform(new_penguins_df):
 
 
 def test_min_max_scaler_series_normalizes(penguins_df_default_index, new_penguins_df):
-    scaler = bigframes.ml.preprocessing.MinMaxScaler()
+    scaler = preprocessing.MinMaxScaler()
     scaler.fit(penguins_df_default_index["culmen_length_mm"])
 
     result = scaler.transform(penguins_df_default_index["culmen_length_mm"]).to_pandas()
@@ -274,7 +300,7 @@ def test_min_max_scaler_series_normalizes(penguins_df_default_index, new_penguin
 
 def test_min_max_scaler_normalizes(penguins_df_default_index, new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.MinMaxScaler, when BQML's change is in prod.
-    scaler = bigframes.ml.preprocessing.MinMaxScaler()
+    scaler = preprocessing.MinMaxScaler()
     scaler.fit(
         penguins_df_default_index[
             ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
@@ -312,8 +338,21 @@ def test_min_max_scaler_normalizes(penguins_df_default_index, new_penguins_df):
     pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
 
 
+def test_min_max_scaler_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.MinMaxScaler()
+    transformer.fit(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    )
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.MinMaxScaler)
+    assert reloaded_transformer._bqml_model is not None
+
+
 def test_k_bins_discretizer_normalized_fit_transform_default_params(new_penguins_df):
-    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(strategy="uniform")
+    discretizer = preprocessing.KBinsDiscretizer(strategy="uniform")
     result = discretizer.fit_transform(
         new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
     ).to_pandas()
@@ -339,7 +378,7 @@ def test_k_bins_discretizer_normalized_fit_transform_default_params(new_penguins
 def test_k_bins_discretizer_series_normalizes(
     penguins_df_default_index, new_penguins_df
 ):
-    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(strategy="uniform")
+    discretizer = preprocessing.KBinsDiscretizer(strategy="uniform")
     discretizer.fit(penguins_df_default_index["culmen_length_mm"])
 
     result = discretizer.transform(
@@ -365,7 +404,7 @@ def test_k_bins_discretizer_series_normalizes(
 
 def test_k_bins_discretizer_normalizes(penguins_df_default_index, new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.KBinsDiscretizer, when BQML's change is in prod.
-    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(strategy="uniform")
+    discretizer = preprocessing.KBinsDiscretizer(strategy="uniform")
     discretizer.fit(
         penguins_df_default_index[
             ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
@@ -402,9 +441,7 @@ def test_k_bins_discretizer_normalizes_different_params(
     penguins_df_default_index, new_penguins_df
 ):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.KBinsDiscretizer, when BQML's change is in prod.
-    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(
-        n_bins=6, strategy="uniform"
-    )
+    discretizer = preprocessing.KBinsDiscretizer(n_bins=6, strategy="uniform")
     discretizer.fit(
         penguins_df_default_index[
             ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
@@ -437,8 +474,23 @@ def test_k_bins_discretizer_normalizes_different_params(
     pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
 
 
+def test_k_bins_discretizer_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.KBinsDiscretizer(n_bins=6, strategy="uniform")
+    transformer.fit(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    )
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.KBinsDiscretizer)
+    assert reloaded_transformer.n_bins == transformer.n_bins
+    assert reloaded_transformer.strategy == transformer.strategy
+    assert reloaded_transformer._bqml_model is not None
+
+
 def test_one_hot_encoder_default_params(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.OneHotEncoder()
+    encoder = preprocessing.OneHotEncoder()
     encoder.fit(new_penguins_df[["species", "sex"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -469,7 +521,7 @@ def test_one_hot_encoder_default_params(new_penguins_df):
 
 
 def test_one_hot_encoder_default_params_fit_transform(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.OneHotEncoder()
+    encoder = preprocessing.OneHotEncoder()
 
     result = encoder.fit_transform(new_penguins_df[["species", "sex"]]).to_pandas()
 
@@ -499,7 +551,7 @@ def test_one_hot_encoder_default_params_fit_transform(new_penguins_df):
 
 
 def test_one_hot_encoder_series_default_params(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.OneHotEncoder()
+    encoder = preprocessing.OneHotEncoder()
     encoder.fit(new_penguins_df["species"])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -525,7 +577,7 @@ def test_one_hot_encoder_series_default_params(new_penguins_df):
 
 
 def test_one_hot_encoder_params(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.OneHotEncoder("most_frequent", 100, 2)
+    encoder = preprocessing.OneHotEncoder("most_frequent", 100, 2)
     encoder.fit(new_penguins_df[["species", "sex"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -556,7 +608,7 @@ def test_one_hot_encoder_params(new_penguins_df):
 
 
 def test_one_hot_encoder_different_data(penguins_df_default_index, new_penguins_df):
-    encoder = bigframes.ml.preprocessing.OneHotEncoder()
+    encoder = preprocessing.OneHotEncoder()
     encoder.fit(penguins_df_default_index[["species", "sex"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -586,8 +638,21 @@ def test_one_hot_encoder_different_data(penguins_df_default_index, new_penguins_
     pd.testing.assert_frame_equal(result, expected)
 
 
+def test_one_hot_encoder_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.OneHotEncoder(min_frequency=1, max_categories=10)
+    transformer.fit(new_penguins_df[["species", "sex"]])
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.OneHotEncoder)
+    assert reloaded_transformer.min_frequency == transformer.min_frequency
+    assert reloaded_transformer.max_categories == transformer.max_categories
+    assert reloaded_transformer._bqml_model is not None
+
+
 def test_label_encoder_default_params(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder = preprocessing.LabelEncoder()
     encoder.fit(new_penguins_df["species"])
 
     result = encoder.transform(new_penguins_df["species"]).to_pandas()
@@ -613,7 +678,7 @@ def test_label_encoder_default_params(new_penguins_df):
 
 
 def test_label_encoder_default_params_fit_transform(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder = preprocessing.LabelEncoder()
 
     result = encoder.fit_transform(new_penguins_df[["species"]]).to_pandas()
 
@@ -638,7 +703,7 @@ def test_label_encoder_default_params_fit_transform(new_penguins_df):
 
 
 def test_label_encoder_series_default_params(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder = preprocessing.LabelEncoder()
     encoder.fit(new_penguins_df["species"])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -664,7 +729,7 @@ def test_label_encoder_series_default_params(new_penguins_df):
 
 
 def test_label_encoder_params(new_penguins_df):
-    encoder = bigframes.ml.preprocessing.LabelEncoder(100, 2)
+    encoder = preprocessing.LabelEncoder(100, 2)
     encoder.fit(new_penguins_df[["species"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -690,7 +755,7 @@ def test_label_encoder_params(new_penguins_df):
 
 
 def test_label_encoder_different_data(penguins_df_default_index, new_penguins_df):
-    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder = preprocessing.LabelEncoder()
     encoder.fit(penguins_df_default_index[["species"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
@@ -713,6 +778,19 @@ def test_label_encoder_different_data(penguins_df_default_index, new_penguins_df
     )
 
     pd.testing.assert_frame_equal(result, expected)
+
+
+def test_label_encoder_save_load(new_penguins_df, dataset_id):
+    transformer = preprocessing.LabelEncoder(min_frequency=1, max_categories=10)
+    transformer.fit(new_penguins_df[["species"]])
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.LabelEncoder)
+    assert reloaded_transformer.min_frequency == transformer.min_frequency
+    assert reloaded_transformer.max_categories == transformer.max_categories
+    assert reloaded_transformer._bqml_model is not None
 
 
 # TODO(garrettwu): add OneHotEncoder tests to compare with sklearn.

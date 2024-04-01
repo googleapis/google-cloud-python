@@ -178,7 +178,33 @@ class UnsupervisedTrainablePredictor(TrainablePredictor):
         return self._fit(X, y)
 
 
-class Transformer(BaseEstimator):
+class BaseTransformer(BaseEstimator):
+    """Transformer base class."""
+
+    def __init__(self):
+        self._bqml_model: Optional[core.BqmlModel] = None
+
+    _T = TypeVar("_T", bound="BaseTransformer")
+
+    def to_gbq(self: _T, model_name: str, replace: bool = False) -> _T:
+        """Save the transformer as a BigQuery model.
+
+        Args:
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
+
+        Returns:
+            Saved transformer."""
+        if not self._bqml_model:
+            raise RuntimeError("A transformer must be fitted before it can be saved")
+
+        new_model = self._bqml_model.copy(model_name, replace)
+        return new_model.session.read_gbq_model(model_name)
+
+
+class Transformer(BaseTransformer):
     """A BigQuery DataFrames Transformer base class that transforms data.
 
     Also the transformers can be attached to a pipeline with a predictor."""
@@ -199,7 +225,7 @@ class Transformer(BaseEstimator):
         return self.fit(X, y).transform(X)
 
 
-class LabelTransformer(BaseEstimator):
+class LabelTransformer(BaseTransformer):
     """A BigQuery DataFrames Label Transformer base class that transforms data.
 
     Also the transformers can be attached to a pipeline with a predictor."""
