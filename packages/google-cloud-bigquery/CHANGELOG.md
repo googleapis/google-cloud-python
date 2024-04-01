@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.20.1](https://github.com/googleapis/python-bigquery/compare/v3.20.0...v3.20.1) (2024-04-01)
+
+
+### Bug Fixes
+
+* Make `pyarrow` an optional dependency post-3.20.0 yanked release ([#1879](https://github.com/googleapis/python-bigquery/issues/1879)) ([21714e1](https://github.com/googleapis/python-bigquery/commit/21714e18bad8d8d89ed5642dbdb61d14e97d5f33))
+
 ## [3.20.0](https://github.com/googleapis/python-bigquery/compare/v3.19.0...v3.20.0) (2024-03-27)
 
 
