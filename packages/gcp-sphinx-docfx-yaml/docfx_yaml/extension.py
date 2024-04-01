@@ -18,21 +18,22 @@ Sphinx DocFX YAML Top-level Extension.
 
 This extension allows you to automagically generate DocFX YAML from your Python AutoAPI docs.
 """
-import ast
-import os
-import inspect
-import re
-import copy
-import shutil
-import black
-import logging
 
+import ast
 from collections import defaultdict
-from collections.abc import MutableSet, Mapping, Sequence
-from pathlib import Path
+from collections.abc import Mapping, MutableSet, Sequence
+import copy
 from functools import partial
+import inspect
 from itertools import zip_longest
+import json
+import logging
+import os
+from pathlib import Path
+import re
+import shutil
 from typing import Any, Dict, Iterable, List, Optional
+import black
 from black import InvalidInput
 
 try:
@@ -161,7 +162,25 @@ _FILE_NAME_AND_ENTRY_NAME_BY_SUMMARY_TYPE = {
 logging.getLogger("blib2to3").setLevel(logging.ERROR)
 
 
+def _grab_repo_metadata() -> Mapping[str, str] | None:
+    """Retrieves the repository's metadata info if found."""
+    try:
+        with open('.repo-metadata.json', 'r') as metadata_file:
+            json_content = json.load(metadata_file)
+        # Return outside of context manager for safe close
+        return json_content
+    except Exception:
+        return None
+
+
 def build_init(app):
+    print("Retrieving repository metadata.")
+    if not (repo_metadata := _grab_repo_metadata()):
+        print("Failed to retrieve repository metadata.")
+        app.env.library_shortname = ""
+    else:
+        print("Successfully retrieved repository metadata.")
+        app.env.library_shortname = repo_metadata["name"]
     print("Running sphinx-build with Markdown first...")
     markdown_utils.run_sphinx_markdown()
     print("Completed running sphinx-build with Markdown files.")
@@ -2013,18 +2032,19 @@ def build_finished(app, exception):
         markdown_utils.remove_unused_pages(
             added_pages, app.env.moved_markdown_pages, normalized_outdir)
 
-    # Add summary pages as the second entry into the table of contents.
-    pkg_toc_yaml.insert(
-        1,
-        {
-            "name": f"{app.config.project} APIs",
-            "items": [
-                {"name": "Classes", "href": "summary_class.yml"},
-                {"name": "Methods", "href": "summary_method.yml"},
-                {"name": "Properties and Attributes", "href": "summary_property.yml"},
-            ],
-        }
-    )
+    if app.env.library_shortname:
+        # Add summary pages as the second entry into the table of contents.
+        pkg_toc_yaml.insert(
+            1,
+            {
+                "name": f"{app.env.library_shortname} APIs",
+                "items": [
+                    {"name": "Classes", "href": "summary_class.yml"},
+                    {"name": "Methods", "href": "summary_method.yml"},
+                    {"name": "Properties and Attributes", "href": "summary_property.yml"},
+                ],
+            }
+        )
 
     toc_file = os.path.join(normalized_outdir, 'toc.yml')
     with open(toc_file, 'w') as writable:
@@ -2040,7 +2060,7 @@ def build_finished(app, exception):
 
     cgc_url = (
         "https://cloud.google.com/python/docs/reference/"
-        f"{app.config.project}/latest/"
+        f"{app.env.library_shortname}/latest/"
     )
     yaml_entry_line = "### YamlMime:UniversalReference\n"
     # Output files
@@ -2086,9 +2106,11 @@ def build_finished(app, exception):
         file_name_set.add(filename)
 
         for entry in yaml_data:
+            if not app.env.library_shortname:
+                break
             summary_type = _SUMMARY_TYPE_BY_ITEM_TYPE.get(entry.get("type"))
             if not (summary_type):
-              continue
+                continue
 
             _find_and_add_summary_details(entry, summary_type, cgc_url)
 
@@ -2105,7 +2127,7 @@ def build_finished(app, exception):
             children_names_and_content,
             entry_name,
             summary_type,
-            app.config.project,
+            app.env.library_shortname,
         )
 
         file_path_to_use = os.path.join(normalized_outdir, file_name)
