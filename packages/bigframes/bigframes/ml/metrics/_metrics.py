@@ -19,8 +19,8 @@ import inspect
 import typing
 from typing import Tuple, Union
 
-import bigframes_vendored.sklearn.metrics._classification as vendored_mertics_classification
-import bigframes_vendored.sklearn.metrics._ranking as vendored_mertics_ranking
+import bigframes_vendored.sklearn.metrics._classification as vendored_metrics_classification
+import bigframes_vendored.sklearn.metrics._ranking as vendored_metrics_ranking
 import bigframes_vendored.sklearn.metrics._regression as vendored_metrics_regression
 import numpy as np
 import pandas as pd
@@ -79,7 +79,7 @@ def accuracy_score(
         return score.sum()
 
 
-accuracy_score.__doc__ = inspect.getdoc(vendored_mertics_classification.accuracy_score)
+accuracy_score.__doc__ = inspect.getdoc(vendored_metrics_classification.accuracy_score)
 
 
 def roc_curve(
@@ -149,7 +149,7 @@ def roc_curve(
     )
 
 
-roc_curve.__doc__ = inspect.getdoc(vendored_mertics_ranking.roc_curve)
+roc_curve.__doc__ = inspect.getdoc(vendored_metrics_ranking.roc_curve)
 
 
 def roc_auc_score(
@@ -171,7 +171,7 @@ def roc_auc_score(
     return (width_diff * height_avg).sum()
 
 
-roc_auc_score.__doc__ = inspect.getdoc(vendored_mertics_ranking.roc_auc_score)
+roc_auc_score.__doc__ = inspect.getdoc(vendored_metrics_ranking.roc_auc_score)
 
 
 def auc(
@@ -185,7 +185,7 @@ def auc(
     return auc
 
 
-auc.__doc__ = inspect.getdoc(vendored_mertics_ranking.auc)
+auc.__doc__ = inspect.getdoc(vendored_metrics_ranking.auc)
 
 
 def confusion_matrix(
@@ -223,7 +223,7 @@ def confusion_matrix(
 
 
 confusion_matrix.__doc__ = inspect.getdoc(
-    vendored_mertics_classification.confusion_matrix
+    vendored_metrics_classification.confusion_matrix
 )
 
 
@@ -261,7 +261,7 @@ def recall_score(
     return recall_score
 
 
-recall_score.__doc__ = inspect.getdoc(vendored_mertics_classification.recall_score)
+recall_score.__doc__ = inspect.getdoc(vendored_metrics_classification.recall_score)
 
 
 def precision_score(
@@ -299,7 +299,7 @@ def precision_score(
 
 
 precision_score.__doc__ = inspect.getdoc(
-    vendored_mertics_classification.precision_score
+    vendored_metrics_classification.precision_score
 )
 
 
@@ -334,4 +334,4 @@ def f1_score(
     return f1_score
 
 
-f1_score.__doc__ = inspect.getdoc(vendored_mertics_classification.f1_score)
+f1_score.__doc__ = inspect.getdoc(vendored_metrics_classification.f1_score)
