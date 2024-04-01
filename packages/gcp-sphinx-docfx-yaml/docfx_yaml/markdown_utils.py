@@ -259,6 +259,41 @@ def _prepend_markdown_header(filename: str, mdfile: Iterable[str]) -> None:
     mdfile.write(file_content)
 
 
+def _merge_markdown_content(
+    *,
+    base_file: str,
+    additional_content_file: str,
+    prepend_additional_content: bool = False,
+) -> None:
+    """Merges the Markdown file contents.
+
+    The additional_content_file's contents get appended to the base_file's
+    content.
+
+    Args:
+        base_file: The base content to append content to.
+        additional_content_file: The additional content to be appended to
+            the base file.
+        prepend_additional_content: Optional. If specified, puts the additional
+            content before the base file content.
+    """
+    try:
+        with (
+            open(base_file, 'r+') as base,
+            open(additional_content_file, 'r') as additional_content
+        ):
+            file_content = (
+                f'{additional_content.read()}\n{base.read()}'
+                if prepend_additional_content
+                else f'{base.read()}\n{additional_content.read()}'
+            )
+            base.seek(0)
+            base.write(file_content)
+    except OSError:
+        print("Could not open the given files.")
+        return
+
+
 def move_markdown_pages(
     app: sphinx.application,
     outdir: Path,
@@ -280,7 +315,13 @@ def move_markdown_pages(
 
         "reference.md", # Reference docs overlap with Overview. Will try and incorporate this in later.
                         # See https://github.com/googleapis/sphinx-docfx-yaml/issues/106.
-        "summary_overview.md",  # Already included in the TOC.
+        "overview_content.md",  # Content will be merged into summary_overview page.
+    ]
+
+    # Use this to move the page but do not add them in the TOC.
+    ignore_in_toc = [
+        "summary_overview.md",  # Already included in the TOC with other
+                                # summary pages.
     ]
 
     files_to_rename = {
@@ -312,6 +353,17 @@ def move_markdown_pages(
         "readme.md" not in markdown_file_names):
         files_to_ignore.remove("index.md")
 
+    if (
+        "summary_overview.md" in markdown_file_names and
+        "overview_content.md" in markdown_file_names
+    ):
+        # Keep the summary_overview file, prepend the additioanl content.
+        _merge_markdown_content(
+            base_file=markdown_dir/"summary_overview.md",
+            additional_content_file=markdown_dir/"overview_content.md",
+            prepend_additional_content=True,
+        )
+
     # For each file, if it is a markdown file move to the top level pages.
     for mdfile in markdown_dir.iterdir():
         if mdfile.is_dir():
@@ -320,62 +372,68 @@ def move_markdown_pages(
             # Restore the original cwd after finish working on the directory.
             cwd.pop()
 
-        if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
-            mdfile_name = ""
+        if not mdfile.is_file() or mdfile.name.lower() in files_to_ignore:
+            continue
 
-            _remove_license(mdfile)
+        mdfile_name = ""
 
-            # Extract the header name for TOC.
-            with open(mdfile) as mdfile_iterator:
-                name = _extract_header_from_markdown(mdfile_iterator)
+        _remove_license(mdfile)
 
-            if not name:
-                with open(mdfile, 'r+') as mdfile_iterator:
-                    mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
+        # Extract the header name for TOC.
+        with open(mdfile) as mdfile_iterator:
+            name = _extract_header_from_markdown(mdfile_iterator)
 
-                    print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
-                    name = mdfile_name
+        if not name:
+            with open(mdfile, 'r+') as mdfile_iterator:
+                mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
 
-                    _prepend_markdown_header(name, mdfile_iterator)
+                print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
+                name = mdfile_name
+
+                _prepend_markdown_header(name, mdfile_iterator)
 
 
-            mdfile_name_to_use = mdfile.name.lower()
-            if mdfile_name_to_use in files_to_rename:
-                mdfile_name_to_use = files_to_rename[mdfile_name_to_use]
+        mdfile_name_to_use = mdfile.name.lower()
+        if mdfile_name_to_use in files_to_rename:
+            mdfile_name_to_use = files_to_rename[mdfile_name_to_use]
 
-            if cwd and mdfile_name_to_use == "index.md":
-                mdfile_name_to_use = f"{'_'.join(cwd)}_{mdfile_name_to_use}"
+        if cwd and mdfile_name_to_use == "index.md":
+            mdfile_name_to_use = f"{'_'.join(cwd)}_{mdfile_name_to_use}"
 
-            mdfile_outdir = f"{outdir}/{mdfile_name_to_use}"
+        mdfile_outdir = f"{outdir}/{mdfile_name_to_use}"
 
-            shutil.copy(mdfile, mdfile_outdir)
-            app.env.moved_markdown_pages.add(mdfile_name_to_use)
+        shutil.copy(mdfile, mdfile_outdir)
 
-            _highlight_md_codeblocks(mdfile_outdir)
-            _clean_image_links(mdfile_outdir)
+        _highlight_md_codeblocks(mdfile_outdir)
+        _clean_image_links(mdfile_outdir)
 
-            if not cwd:
-                # Use Overview as the name for top-level index file.
-                if 'index.md' in mdfile_name_to_use:
-                    # Save the index page entry.
-                    index_page_entry = {
-                        'name': 'Overview',
-                        'href': 'index.md',
-                    }
-                    continue
+        if mdfile.name.lower() in ignore_in_toc:
+            continue
 
-                # Use '/' to reserve for top level pages.
-                app.env.markdown_pages['/'].append({
-                    'name': name,
-                    'href': mdfile_name_to_use,
-                })
+        app.env.moved_markdown_pages.add(mdfile_name_to_use)
+
+        if not cwd:
+            # Use Overview as the name for top-level index file.
+            if 'index.md' in mdfile_name_to_use:
+                # Save the index page entry.
+                index_page_entry = {
+                    'name': 'Overview',
+                    'href': 'index.md',
+                }
                 continue
 
-            # Add the file to the TOC later.
-            app.env.markdown_pages[cwd[-1]].append({
+            # Use '/' to reserve for top level pages.
+            app.env.markdown_pages['/'].append({
                 'name': name,
                 'href': mdfile_name_to_use,
             })
+            continue
+
+        # Add the file to the TOC later.
+        app.env.markdown_pages[cwd[-1]].append({
+            'name': name,
+            'href': mdfile_name_to_use,
+        })
 
     if app.env.markdown_pages.get('/'):
         # Sort the top level pages. Other pages will be sorted when they're

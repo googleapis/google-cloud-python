@@ -306,5 +306,49 @@ For example:
                 self.assertEqual(test_file.read(), mdfile_want.read())
 
 
+    test_markdown_filenames = [
+        [
+            "tests/markdown_example_base.md",
+            "tests/markdown_example_additional_content.md",
+            "tests/markdown_example_base_expected.md",
+        ],
+        [
+            # The content should be the same as base, and not throw any errors.
+            "tests/markdown_example_base.md",
+            "tests/markdown_example_does_not_exist.md",
+            "tests/markdown_example_base.md",
+        ],
+        [
+            # The content should be the same as base, and not throw any errors.
+            "tests/markdown_example_base.md",
+            "tests/markdown_example_additional_content.md",
+            "tests/markdown_example_prepended_base.md",
+            True,
+        ],
+    ]
+    @parameterized.expand(test_markdown_filenames)
+    def test_merges_markdown_content(
+        self,
+        base_file,
+        additional_file,
+        expected_file,
+        prepend_additional_content=False,
+    ):
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as test_file:
+            with open(base_file) as base:
+                test_file.write(base.read())
+                test_file.flush()
+                test_file.seek(0)
+
+            markdown_utils._merge_markdown_content(
+                base_file=test_file.name,
+                additional_content_file=additional_file,
+                prepend_additional_content=prepend_additional_content,
+            )
+            test_file.seek(0)
+
+            with open(expected_file) as mdfile_expected:
+                self.assertEqual(test_file.read(), mdfile_expected.read())
+
 if __name__ == '__main__':
     unittest.main()
