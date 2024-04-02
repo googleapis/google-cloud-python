@@ -597,7 +597,32 @@ class CaPool(proto.Message):
                 certificates. CRLs will expire 7 days from their creation.
                 However, we will rebuild daily. CRLs are also rebuilt
                 shortly after a certificate is revoked.
+            encoding_format (google.cloud.security.privateca_v1.types.CaPool.PublishingOptions.EncodingFormat):
+                Optional. Specifies the encoding format of each
+                [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+                resource's CA certificate and CRLs. If this is omitted, CA
+                certificates and CRLs will be published in PEM.
         """
+
+        class EncodingFormat(proto.Enum):
+            r"""Supported encoding formats for publishing.
+
+            Values:
+                ENCODING_FORMAT_UNSPECIFIED (0):
+                    Not specified. By default, PEM format will be
+                    used.
+                PEM (1):
+                    The
+                    [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+                    CA certificate and CRLs will be published in PEM format.
+                DER (2):
+                    The
+                    [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+                    CA certificate and CRLs will be published in DER format.
+            """
+            ENCODING_FORMAT_UNSPECIFIED = 0
+            PEM = 1
+            DER = 2
 
         publish_ca_cert: bool = proto.Field(
             proto.BOOL,
@@ -606,6 +631,11 @@ class CaPool(proto.Message):
         publish_crl: bool = proto.Field(
             proto.BOOL,
             number=2,
+        )
+        encoding_format: "CaPool.PublishingOptions.EncodingFormat" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="CaPool.PublishingOptions.EncodingFormat",
         )
 
     class IssuancePolicy(proto.Message):
@@ -625,9 +655,9 @@ class CaPool(proto.Message):
                 Note that if the issuing
                 [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
                 expires before a
-                [Certificate][google.cloud.security.privateca.v1.Certificate]'s
-                requested maximum_lifetime, the effective lifetime will be
-                explicitly truncated to match it.
+                [Certificate][google.cloud.security.privateca.v1.Certificate]
+                resource's requested maximum_lifetime, the effective
+                lifetime will be explicitly truncated to match it.
             allowed_issuance_modes (google.cloud.security.privateca_v1.types.CaPool.IssuancePolicy.IssuanceModes):
                 Optional. If specified, then only methods allowed in the
                 [IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes]
@@ -1213,7 +1243,8 @@ class CertificateTemplate(proto.Message):
             Optional. The maximum lifetime allowed for issued
             [Certificates][google.cloud.security.privateca.v1.Certificate]
             that use this template. If the issuing
-            [CaPool][google.cloud.security.privateca.v1.CaPool]'s
+            [CaPool][google.cloud.security.privateca.v1.CaPool]
+            resource's
             [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
             specifies a
             [maximum_lifetime][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.maximum_lifetime]
@@ -1655,9 +1686,9 @@ class CertificateConfig(proto.Message):
             Optional. When specified this provides a
             custom SKI to be used in the certificate. This
             should only be used to maintain a SKI of an
-            existing CA originally created outside CAS,
-            which was not generated using method (1)
-            described in RFC 5280 section 4.2.1.2.
+            existing CA originally created outside CA
+            service, which was not generated using method
+            (1) described in RFC 5280 section 4.2.1.2.
     """
 
     class SubjectConfig(proto.Message):
