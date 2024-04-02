@@ -19,9 +19,12 @@ import random
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
+from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
 from google.cloud.firestore_v1.base_query import QueryType
+from google.cloud.firestore_v1.vector import Vector
 
 
 from typing import (
@@ -46,6 +49,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1.field_path import FieldPath
+    from firestore_v1.vector_query import VectorQuery
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -118,6 +122,9 @@ class BaseCollectionReference(Generic[QueryType]):
         raise NotImplementedError
 
     def _aggregation_query(self) -> BaseAggregationQuery:
+        raise NotImplementedError
+
+    def _vector_query(self) -> BaseVectorQuery:
         raise NotImplementedError
 
     def document(self, document_id: Optional[str] = None) -> DocumentReference:
@@ -538,6 +545,31 @@ class BaseCollectionReference(Generic[QueryType]):
             If not provided, Firestore will pick a default name following the format field_<incremental_id++>.
         """
         return self._aggregation_query().avg(field_ref, alias=alias)
+
+    def find_nearest(
+        self,
+        vector_field: str,
+        query_vector: Vector,
+        limit: int,
+        distance_measure: DistanceMeasure,
+    ) -> VectorQuery:
+        """
+        Finds the closest vector embeddings to the given query vector.
+
+        Args:
+            vector_field(str): An indexed vector field to search upon. Only documents which contain
+                vectors whose dimensionality match the query_vector can be returned.
+            query_vector(Vector): The query vector that we are searching on. Must be a vector of no more
+                than 2048 dimensions.
+            limit (int): The number of nearest neighbors to return. Must be a positive integer of no more than 1000.
+            distance_measure(:class:`DistanceMeasure`): The Distance Measure to use.
+
+        Returns:
+            :class`~firestore_v1.vector_query.VectorQuery`: the vector query.
+        """
+        return self._vector_query().find_nearest(
+            vector_field, query_vector, limit, distance_measure
+        )
 
 
 def _auto_id() -> str:

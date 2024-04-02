@@ -23,6 +23,7 @@ from google.cloud.firestore_v1.base_collection import (
 )
 from google.cloud.firestore_v1 import query as query_mod
 from google.cloud.firestore_v1 import aggregation
+from google.cloud.firestore_v1 import vector_query
 from google.cloud.firestore_v1.watch import Watch
 from google.cloud.firestore_v1 import document
 from typing import Any, Callable, Generator, Tuple, Union
@@ -75,6 +76,14 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
             :class:`~google.cloud.firestore_v1.aggregation_query.AggregationQuery`
         """
         return aggregation.AggregationQuery(self._query())
+
+    def _vector_query(self) -> vector_query.VectorQuery:
+        """VectorQuery factory.
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.vector_query.VectorQuery`
+        """
+        return vector_query.VectorQuery(self._query())
 
     def add(
         self,

@@ -33,6 +33,7 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1 import field_path as field_path_module
 from google.cloud.firestore_v1 import transforms
+from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.types import StructuredQuery
 from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.types import Cursor
@@ -51,11 +52,13 @@ from typing import (
     Union,
     TYPE_CHECKING,
 )
+from google.cloud.firestore_v1.vector import Vector
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.base_vector_query import BaseVectorQuery
     from google.cloud.firestore_v1.field_path import FieldPath
 
 _BAD_DIR_STRING: str
@@ -971,6 +974,15 @@ class BaseQuery(object):
         if self._limit is not None:
             query_kwargs["limit"] = wrappers_pb2.Int32Value(value=self._limit)
         return query.StructuredQuery(**query_kwargs)
+
+    def find_nearest(
+        self,
+        vector_field: str,
+        queryVector: Vector,
+        limit: int,
+        distance_measure: DistanceMeasure,
+    ) -> BaseVectorQuery:
+        raise NotImplementedError
 
     def count(
         self, alias: str | None = None

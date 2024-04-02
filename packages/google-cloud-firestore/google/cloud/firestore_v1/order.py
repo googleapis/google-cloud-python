@@ -19,7 +19,11 @@ from typing import Any
 
 
 class TypeOrder(Enum):
-    # NOTE: This order is defined by the backend and cannot be changed.
+    """The supported Data Type.
+
+    Note: The Enum value does not imply the sort order.
+    """
+
     NULL = 0
     BOOLEAN = 1
     NUMBER = 2
@@ -30,11 +34,11 @@ class TypeOrder(Enum):
     GEO_POINT = 7
     ARRAY = 8
     OBJECT = 9
+    VECTOR = 10
 
     @staticmethod
     def from_value(value) -> Any:
         v = value._pb.WhichOneof("value_type")
-
         lut = {
             "null_value": TypeOrder.NULL,
             "boolean_value": TypeOrder.BOOLEAN,
@@ -51,7 +55,30 @@ class TypeOrder(Enum):
 
         if v not in lut:
             raise ValueError(f"Could not detect value type for {v}")
+
+        if v == "map_value":
+            if (
+                "__type__" in value.map_value.fields
+                and value.map_value.fields["__type__"].string_value == "__vector__"
+            ):
+                return TypeOrder.VECTOR
         return lut[v]
+
+
+# NOTE: This order is defined by the backend and cannot be changed.
+_TYPE_ORDER_MAP = {
+    TypeOrder.NULL: 0,
+    TypeOrder.BOOLEAN: 1,
+    TypeOrder.NUMBER: 2,
+    TypeOrder.TIMESTAMP: 3,
+    TypeOrder.STRING: 4,
+    TypeOrder.BLOB: 5,
+    TypeOrder.REF: 6,
+    TypeOrder.GEO_POINT: 7,
+    TypeOrder.ARRAY: 8,
+    TypeOrder.VECTOR: 9,
+    TypeOrder.OBJECT: 10,
+}
 
 
 class Order(object):
@@ -66,40 +93,39 @@ class Order(object):
         @return -1 is left < right, 0 if left == right, otherwise 1
         """
         # First compare the types.
-        leftType = TypeOrder.from_value(left).value
-        rightType = TypeOrder.from_value(right).value
-
+        leftType = TypeOrder.from_value(left)
+        rightType = TypeOrder.from_value(right)
         if leftType != rightType:
-            if leftType < rightType:
+            if _TYPE_ORDER_MAP[leftType] < _TYPE_ORDER_MAP[rightType]:
                 return -1
-            return 1
+            else:
+                return 1
 
-        value_type = left._pb.WhichOneof("value_type")
-
-        if value_type == "null_value":
+        if leftType == TypeOrder.NULL:
             return 0  # nulls are all equal
-        elif value_type == "boolean_value":
+        elif leftType == TypeOrder.BOOLEAN:
             return cls._compare_to(left.boolean_value, right.boolean_value)
-        elif value_type == "integer_value":
+        elif leftType == TypeOrder.NUMBER:
             return cls.compare_numbers(left, right)
-        elif value_type == "double_value":
-            return cls.compare_numbers(left, right)
-        elif value_type == "timestamp_value":
+        elif leftType == TypeOrder.TIMESTAMP:
             return cls.compare_timestamps(left, right)
-        elif value_type == "string_value":
+        elif leftType == TypeOrder.STRING:
             return cls._compare_to(left.string_value, right.string_value)
-        elif value_type == "bytes_value":
+        elif leftType == TypeOrder.BLOB:
             return cls.compare_blobs(left, right)
-        elif value_type == "reference_value":
+        elif leftType == TypeOrder.REF:
             return cls.compare_resource_paths(left, right)
-        elif value_type == "geo_point_value":
+        elif leftType == TypeOrder.GEO_POINT:
             return cls.compare_geo_points(left, right)
-        elif value_type == "array_value":
+        elif leftType == TypeOrder.ARRAY:
             return cls.compare_arrays(left, right)
-        elif value_type == "map_value":
+        elif leftType == TypeOrder.VECTOR:
+            # ARRAYs < VECTORs < MAPs
+            return cls.compare_vectors(left, right)
+        elif leftType == TypeOrder.OBJECT:
             return cls.compare_objects(left, right)
         else:
-            raise ValueError(f"Unknown ``value_type`` {value_type}")
+            raise ValueError(f"Unknown TypeOrder {leftType}")
 
     @staticmethod
     def compare_blobs(left, right) -> int:
@@ -164,6 +190,21 @@ class Order(object):
                 return cmp
 
         return Order._compare_to(len(l_values), len(r_values))
+
+    @staticmethod
+    def compare_vectors(left, right) -> int:
+        # First compare the size of vector.
+        l_values = left.map_value.fields["value"]
+        r_values = right.map_value.fields["value"]
+
+        left_length = len(l_values.array_value.values)
+        right_length = len(r_values.array_value.values)
+
+        if left_length != right_length:
+            return Order._compare_to(left_length, right_length)
+
+        # Compare element if the size matches.
+        return Order.compare_arrays(l_values, r_values)
 
     @staticmethod
     def compare_objects(left, right) -> int:
