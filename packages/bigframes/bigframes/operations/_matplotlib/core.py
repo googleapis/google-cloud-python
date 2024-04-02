@@ -98,6 +98,12 @@ class ScatterPlot(SamplingPlot):
                 f"Only support a single color string or a column name/posision. {constants.FEEDBACK_LINK}"
             )
 
+        s = self.kwargs.get("s", None)
+        if self._is_sequence_arg(s):
+            raise NotImplementedError(
+                f"Only support a single color string or a column name/posision. {constants.FEEDBACK_LINK}"
+            )
+
     def _compute_plot_data(self):
         sample = self._compute_sample_data(self.data)
 
