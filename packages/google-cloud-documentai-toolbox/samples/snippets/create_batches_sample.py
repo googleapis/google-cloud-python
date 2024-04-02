@@ -47,6 +47,7 @@ def create_batches_sample(
         request = documentai.BatchProcessRequest(
             name="processor_name", input_documents=batch
         )
+        print(request)
 
 
 # [END documentai_toolbox_create_batches]

@@ -16,6 +16,7 @@
 import os
 
 import pytest
+
 from samples.snippets import convert_external_annotations_sample
 
 location = "us"

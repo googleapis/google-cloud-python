@@ -26,7 +26,6 @@ from google.api_core.client_options import ClientOptions
 from google.api_core.operation import from_gapic as operation_from_gapic
 from google.cloud.vision import AnnotateFileResponse
 from google.longrunning.operations_pb2 import GetOperationRequest
-
 from jinja2 import Environment, PackageLoader
 from pikepdf import Pdf
 

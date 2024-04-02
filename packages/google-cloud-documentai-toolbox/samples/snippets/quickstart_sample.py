@@ -18,8 +18,7 @@
 from typing import Optional
 
 from google.cloud import documentai
-from google.cloud.documentai_toolbox import document
-from google.cloud.documentai_toolbox import gcs_utilities
+from google.cloud.documentai_toolbox import document, gcs_utilities
 
 # TODO(developer): Uncomment these variables before running the sample.
 # Given a Document JSON or sharded Document JSON in path gs://bucket/path/to/folder

@@ -17,6 +17,7 @@ import os
 import shutil
 
 import pytest
+
 from samples.snippets import merge_document_shards_sample
 
 gcs_bucket_name = "documentai_toolbox_samples"

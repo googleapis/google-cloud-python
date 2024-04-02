@@ -16,11 +16,10 @@
 
 from typing import Callable, List, Optional
 
-from google.cloud import documentai
-from google.cloud.documentai_toolbox.converters.config.block import Block
-
 from intervaltree import intervaltree
 
+from google.cloud import documentai
+from google.cloud.documentai_toolbox.converters.config.block import Block
 
 PIXEL_CONVERSION_RATES = {
     "pxl": 1,

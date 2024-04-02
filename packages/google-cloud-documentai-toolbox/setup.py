@@ -15,6 +15,7 @@
 #
 import io
 import os
+
 import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))

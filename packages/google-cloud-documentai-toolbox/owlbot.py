@@ -18,7 +18,6 @@ import pathlib
 
 import synthtool as s
 from synthtool import gcp
-from synthtool.languages import python
 
 REPO_ROOT = pathlib.Path(__file__).parent.absolute()
 
@@ -41,4 +40,4 @@ s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst"])
 # Run blacken session
 # ----------------------------------------------------------------------------
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+s.shell.run(["nox", "-s", "format"], hide_output=False)

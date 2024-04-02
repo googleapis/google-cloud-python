@@ -16,6 +16,7 @@
 import os
 
 import pytest
+
 from samples.snippets import table_sample
 
 document_path = "resources/form_with_tables.json"

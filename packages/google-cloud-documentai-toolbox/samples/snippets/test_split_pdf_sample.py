@@ -17,6 +17,7 @@ import os
 import shutil
 
 import pytest
+
 from samples.snippets import split_pdf_sample
 
 document_path = "../../tests/unit/resources/splitter/procurement_splitter_output.json"

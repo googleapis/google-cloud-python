@@ -17,6 +17,7 @@ import os
 import shutil
 
 import pytest
+
 from samples.snippets import export_images_sample
 
 document_path = "../../tests/unit/resources/images/dl3-0.json"

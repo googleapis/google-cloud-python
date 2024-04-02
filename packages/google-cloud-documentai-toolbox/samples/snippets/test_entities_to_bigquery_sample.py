@@ -16,10 +16,10 @@
 import os
 import uuid
 
-import pytest
-from samples.snippets import entities_to_bigquery_sample
-
 from google.cloud import bigquery
+import pytest
+
+from samples.snippets import entities_to_bigquery_sample
 
 location = "us"
 project_id = os.environ["GOOGLE_CLOUD_PROJECT"]

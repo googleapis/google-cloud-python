@@ -16,6 +16,7 @@
 import os
 
 import pytest
+
 from samples.snippets import convert_document_to_vision_sample
 
 location = "us"

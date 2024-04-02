@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import annotations
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import glob
 import os
@@ -22,7 +21,6 @@ import sys
 from typing import Callable, Dict, List, Optional
 
 import nox
-
 
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING
