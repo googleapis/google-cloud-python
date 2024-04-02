@@ -537,8 +537,8 @@ class DisableCertificateAuthorityRequest(proto.Message):
             disabled even if it's being depended on by
             another resource. However, doing so may result
             in unintended and unrecoverable effects on any
-            dependent resource(s) since the CA will no
-            longer be able to issue certificates.
+            dependent resources since the CA will no longer
+            be able to issue certificates.
     """
 
     name: str = proto.Field(
@@ -826,12 +826,12 @@ class DeleteCertificateAuthorityRequest(proto.Message):
             proceed, there will be no way to recover this
             CA.
         ignore_dependent_resources (bool):
-            Optional. This field allows this ca to be
+            Optional. This field allows this CA to be
             deleted even if it's being depended on by
             another resource. However, doing so may result
             in unintended and unrecoverable effects on any
-            dependent resource(s) since the CA will no
-            longer be able to issue certificates.
+            dependent resources since the CA will no longer
+            be able to issue certificates.
     """
 
     name: str = proto.Field(
@@ -1047,7 +1047,7 @@ class DeleteCaPoolRequest(proto.Message):
             deleted even if it's being depended on by
             another resource. However, doing so may result
             in unintended and unrecoverable effects on any
-            dependent resource(s) since the pool will no
+            dependent resources since the pool will no
             longer be able to issue certificates.
     """
 
@@ -1112,8 +1112,8 @@ class FetchCaCertsResponse(proto.Message):
 
     Attributes:
         ca_certs (MutableSequence[google.cloud.security.privateca_v1.types.FetchCaCertsResponse.CertChain]):
-            The PEM encoded CA certificate chains of all Certificate
-            Authorities in this
+            The PEM encoded CA certificate chains of all certificate
+            authorities in this
             [CaPool][google.cloud.security.privateca.v1.CaPool] in the
             ENABLED, DISABLED, or STAGED states.
     """
