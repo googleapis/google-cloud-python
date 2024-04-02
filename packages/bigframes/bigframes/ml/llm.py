@@ -44,7 +44,7 @@ _EMBEDDING_GENERATOR_ENDPOINTS = (
 _GEMINI_PRO_ENDPOINT = "gemini-pro"
 
 _ML_GENERATE_TEXT_STATUS = "ml_generate_text_status"
-_ML_EMBED_TEXT_STATUS = "ml_generate_embedding_status"
+_ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
 
 
 @log_adapter.class_logger
@@ -390,6 +390,13 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
         }
 
         df = self._bqml_model.generate_embedding(X, options)
+        df = df.rename(
+            columns={
+                "ml_generate_embedding_result": "text_embedding",
+                "ml_generate_embedding_statistics": "statistics",
+                "ml_generate_embedding_status": _ML_EMBED_TEXT_STATUS,
+            }
+        )
 
         if (df[_ML_EMBED_TEXT_STATUS] != "").any():
             warnings.warn(

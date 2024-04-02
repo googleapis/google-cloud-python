@@ -261,8 +261,8 @@ def test_embedding_generator_predict_success(
 ):
     df = palm2_embedding_generator_model.predict(llm_text_df).to_pandas()
     assert df.shape == (3, 4)
-    assert "ml_generate_embedding_result" in df.columns
-    series = df["ml_generate_embedding_result"]
+    assert "text_embedding" in df.columns
+    series = df["text_embedding"]
     value = series[0]
     assert len(value) == 768
 
@@ -273,8 +273,8 @@ def test_embedding_generator_multilingual_predict_success(
 ):
     df = palm2_embedding_generator_multilingual_model.predict(llm_text_df).to_pandas()
     assert df.shape == (3, 4)
-    assert "ml_generate_embedding_result" in df.columns
-    series = df["ml_generate_embedding_result"]
+    assert "text_embedding" in df.columns
+    series = df["text_embedding"]
     value = series[0]
     assert len(value) == 768
 
@@ -285,8 +285,8 @@ def test_embedding_generator_predict_series_success(
 ):
     df = palm2_embedding_generator_model.predict(llm_text_df["prompt"]).to_pandas()
     assert df.shape == (3, 4)
-    assert "ml_generate_embedding_result" in df.columns
-    series = df["ml_generate_embedding_result"]
+    assert "text_embedding" in df.columns
+    series = df["text_embedding"]
     value = series[0]
     assert len(value) == 768
 
