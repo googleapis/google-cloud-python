@@ -40,10 +40,14 @@ class storage_controlCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_folder': ('parent', 'folder', 'folder_id', 'recursive', 'request_id', ),
+        'create_managed_folder': ('parent', 'managed_folder', 'managed_folder_id', 'request_id', ),
         'delete_folder': ('name', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
+        'delete_managed_folder': ('name', 'if_metageneration_match', 'if_metageneration_not_match', 'allow_non_empty', 'request_id', ),
         'get_folder': ('name', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
+        'get_managed_folder': ('name', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
         'get_storage_layout': ('name', 'prefix', 'request_id', ),
         'list_folders': ('parent', 'page_size', 'page_token', 'prefix', 'delimiter', 'lexicographic_start', 'lexicographic_end', 'request_id', ),
+        'list_managed_folders': ('parent', 'page_size', 'page_token', 'prefix', 'request_id', ),
         'rename_folder': ('name', 'destination_folder_id', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
     }
 

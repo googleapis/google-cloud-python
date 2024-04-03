@@ -17,7 +17,9 @@ from .citation import CitationMetadata, CitationSource
 from .content import (
     Blob,
     Content,
+    FileData,
     FunctionCall,
+    FunctionCallingConfig,
     FunctionDeclaration,
     FunctionResponse,
     GroundingPassage,
@@ -25,6 +27,7 @@ from .content import (
     Part,
     Schema,
     Tool,
+    ToolConfig,
     Type,
 )
 from .discuss_service import (
@@ -35,6 +38,15 @@ from .discuss_service import (
     GenerateMessageResponse,
     Message,
     MessagePrompt,
+)
+from .file import File
+from .file_service import (
+    CreateFileRequest,
+    CreateFileResponse,
+    DeleteFileRequest,
+    GetFileRequest,
+    ListFilesRequest,
+    ListFilesResponse,
 )
 from .generative_service import (
     AttributionSourceId,
@@ -155,7 +167,9 @@ __all__ = (
     "CitationSource",
     "Blob",
     "Content",
+    "FileData",
     "FunctionCall",
+    "FunctionCallingConfig",
     "FunctionDeclaration",
     "FunctionResponse",
     "GroundingPassage",
@@ -163,6 +177,7 @@ __all__ = (
     "Part",
     "Schema",
     "Tool",
+    "ToolConfig",
     "Type",
     "CountMessageTokensRequest",
     "CountMessageTokensResponse",
@@ -171,6 +186,13 @@ __all__ = (
     "GenerateMessageResponse",
     "Message",
     "MessagePrompt",
+    "File",
+    "CreateFileRequest",
+    "CreateFileResponse",
+    "DeleteFileRequest",
+    "GetFileRequest",
+    "ListFilesRequest",
+    "ListFilesResponse",
     "AttributionSourceId",
     "BatchEmbedContentsRequest",
     "BatchEmbedContentsResponse",

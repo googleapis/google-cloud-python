@@ -119,6 +119,9 @@ class ProcessOptions(proto.Message):
             Only applicable to ``OCR_PROCESSOR`` and
             ``FORM_PARSER_PROCESSOR``. Returns error if set on other
             processor types.
+        layout_config (google.cloud.documentai_v1beta3.types.ProcessOptions.LayoutConfig):
+            Optional. Only applicable to ``LAYOUT_PARSER_PROCESSOR``.
+            Returns error if set on other processor types.
         schema_override (google.cloud.documentai_v1beta3.types.DocumentSchema):
             Optional. Override the schema of the
             [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion].
@@ -127,6 +130,58 @@ class ProcessOptions(proto.Message):
             [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
             doesn't support schema override.
     """
+
+    class LayoutConfig(proto.Message):
+        r"""Serving config for layout parser processor.
+
+        Attributes:
+            chunking_config (google.cloud.documentai_v1beta3.types.ProcessOptions.LayoutConfig.ChunkingConfig):
+                Optional. Config for chunking in layout
+                parser processor.
+        """
+
+        class ChunkingConfig(proto.Message):
+            r"""Serving config for chunking.
+
+            Attributes:
+                chunk_size (int):
+                    Optional. The chunk sizes to use when
+                    splitting documents, in order of level.
+                include_ancestor_headings (bool):
+                    Optional. Whether or not to include ancestor
+                    headings when splitting.
+                semantic_chunking_group_size (bool):
+                    Optional. The number of tokens to group
+                    together when evaluating semantic similarity.
+                breakpoint_percentile_threshold (int):
+                    Optional. The percentile of cosine
+                    dissimilarity that must be exceeded between a
+                    group of tokens and the next. The smaller this
+                    number is, the more chunks will be generated.
+            """
+
+            chunk_size: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            include_ancestor_headings: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+            semantic_chunking_group_size: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+            breakpoint_percentile_threshold: int = proto.Field(
+                proto.INT32,
+                number=4,
+            )
+
+        chunking_config: "ProcessOptions.LayoutConfig.ChunkingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="ProcessOptions.LayoutConfig.ChunkingConfig",
+        )
 
     class IndividualPageSelector(proto.Message):
         r"""A list of individual page numbers.
@@ -162,6 +217,11 @@ class ProcessOptions(proto.Message):
         proto.MESSAGE,
         number=1,
         message=document_io.OcrConfig,
+    )
+    layout_config: LayoutConfig = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=LayoutConfig,
     )
     schema_override: gcd_document_schema.DocumentSchema = proto.Field(
         proto.MESSAGE,
