@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.1.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.0.1...v3.1.0) (2024-04-01)
+
+
+### Features
+
+* Add summary page for Classes and Modules ([#361](https://github.com/googleapis/sphinx-docfx-yaml/issues/361)) ([e56c3a7](https://github.com/googleapis/sphinx-docfx-yaml/commit/e56c3a732c2a71b76d0e44bd1ed889de4ffa1f63))
+* Add summary page support for methods and properties ([#363](https://github.com/googleapis/sphinx-docfx-yaml/issues/363)) ([e3ae026](https://github.com/googleapis/sphinx-docfx-yaml/commit/e3ae0262492f584516b10e1f8753b430e746ffa9))
+* Grab repository metadata ([#364](https://github.com/googleapis/sphinx-docfx-yaml/issues/364)) ([1318b24](https://github.com/googleapis/sphinx-docfx-yaml/commit/1318b2462c757368be3098824dd8924e4dc8b78f))
+* Support overview page ([#365](https://github.com/googleapis/sphinx-docfx-yaml/issues/365)) ([9985d13](https://github.com/googleapis/sphinx-docfx-yaml/commit/9985d134a45842eca9787483078101e0270e2345))
+
 ## [3.0.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.0.0...v3.0.1) (2024-03-13)
 
 
