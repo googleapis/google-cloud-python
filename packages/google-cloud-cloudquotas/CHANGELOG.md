@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.6...google-cloud-cloudquotas-v0.1.7) (2024-04-03)
+
+
+### Features
+
+* Add `rollout_info` field to `QuotaDetails` message ([0b8728c](https://github.com/googleapis/google-cloud-python/commit/0b8728ccd8072c0f761a119971fb0dfe20207cf5))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.5...google-cloud-cloudquotas-v0.1.6) (2024-03-27)
 
 

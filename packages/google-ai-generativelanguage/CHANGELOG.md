@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.0...google-ai-generativelanguage-v0.6.1) (2024-04-03)
+
+
+### Features
+
+* Add file upload service ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+* Add file_data to part options ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+* Add system instructions ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+* Add tool_config ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+
+
+### Documentation
+
+* A comment for field `candidate_count` in message `.[google.ai](https://www.google.com/url?sa=D&q=http%3A%2F%2Fgoogle.ai).generativelanguage.v1beta.GenerationConfig` is changed ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.5.4...google-ai-generativelanguage-v0.6.0) (2024-03-22)
 
 
