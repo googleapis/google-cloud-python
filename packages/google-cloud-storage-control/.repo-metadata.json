@@ -1,8 +1,8 @@
 {
     "name": "google-cloud-storage-control",
-    "name_pretty": "Cloud Storage",
-    "api_description": "Lets you store and retrieve potentially-large, immutable data objects.",
-    "product_documentation": "https://cloud.google.com/storage/docs/overview",
+    "name_pretty": "Storage Control API",
+    "api_description": "Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.",
+    "product_documentation": "https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=187243&template=1162869",
     "release_level": "preview",
@@ -10,8 +10,8 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-storage-control",
-    "api_id": "control.googleapis.com",
+    "api_id": "storage.googleapis.com",
     "default_version": "v2",
     "codeowner_team": "",
-    "api_shortname": "storage"
+    "api_shortname": "storagecontrol"
 }
