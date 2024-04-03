@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
 import pandas as pd
 import pytest
 
@@ -301,5 +303,67 @@ def test_dt_floor(scalars_dfs, col_name, freq):
 
     assert_series_equal(
         pd_result.astype(scalars_df[col_name].dtype),  # floor preserves type
+        bf_result,
+    )
+
+
+def test_dt_compare_coerce_str_datetime(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series: bigframes.series.Series = scalars_df["datetime_col"]
+    bf_result = (bf_series >= "2024-01-01").to_pandas()
+
+    pd_result = scalars_pandas_df["datetime_col"] >= pd.to_datetime("2024-01-01")
+
+    # pandas produces pyarrow bool dtype
+    assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dt_clip_datetime_literals(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series: bigframes.series.Series = scalars_df["date_col"]
+    bf_result = bf_series.clip(
+        datetime.date(2020, 1, 1), datetime.date(2024, 1, 1)
+    ).to_pandas()
+
+    pd_result = scalars_pandas_df["date_col"].clip(
+        datetime.date(2020, 1, 1), datetime.date(2024, 1, 1)
+    )
+
+    assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_dt_clip_coerce_str_date(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series: bigframes.series.Series = scalars_df["date_col"]
+    bf_result = bf_series.clip("2020-01-01", "2024-01-01").to_pandas()
+
+    # Pandas can't coerce with pyarrow types so convert first
+    pd_result = scalars_pandas_df["date_col"].clip(
+        datetime.date(2020, 1, 1), datetime.date(2024, 1, 1)
+    )
+
+    assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_dt_clip_coerce_str_timestamp(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series: bigframes.series.Series = scalars_df["timestamp_col"]
+    bf_result = bf_series.clip(
+        "2020-01-01T20:03:50Z", "2024-01-01T20:03:50Z"
+    ).to_pandas()
+
+    pd_result = scalars_pandas_df["timestamp_col"].clip(
+        pd.to_datetime("2020-01-01T20:03:50Z", utc=True),
+        pd.to_datetime("2024-01-01T20:03:50Z", utc=True),
+    )
+
+    assert_series_equal(
+        pd_result,
         bf_result,
     )

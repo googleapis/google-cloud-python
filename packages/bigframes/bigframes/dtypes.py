@@ -648,6 +648,7 @@ def is_compatible(scalar: typing.Any, dtype: Dtype) -> typing.Optional[Dtype]:
 
 
 def lcd_type(dtype1: Dtype, dtype2: Dtype) -> Dtype:
+    """Get the supertype of the two types."""
     if dtype1 == dtype2:
         return dtype1
     # Implicit conversion currently only supported for numeric types
@@ -664,12 +665,26 @@ def lcd_type(dtype1: Dtype, dtype2: Dtype) -> Dtype:
     return hierarchy[lcd_index]
 
 
-def lcd_etype(etype1: ExpressionType, etype2: ExpressionType) -> ExpressionType:
-    if etype1 is None:
+def coerce_to_common(etype1: ExpressionType, etype2: ExpressionType) -> ExpressionType:
+    """Coerce types to a common type or throw a TypeError"""
+    if etype1 is not None and etype2 is not None:
+        common_supertype = lcd_type(etype1, etype2)
+        if common_supertype is not None:
+            return common_supertype
+    if can_coerce(etype1, etype2):
         return etype2
-    if etype2 is None:
+    if can_coerce(etype2, etype1):
         return etype1
-    return lcd_type_or_throw(etype1, etype2)
+    raise TypeError(f"Cannot coerce {etype1} and {etype2} to a common type.")
+
+
+def can_coerce(source_type: ExpressionType, target_type: ExpressionType) -> bool:
+    if source_type is None:
+        return True  # None can be coerced to any supported type
+    else:
+        return (source_type == STRING_DTYPE) and (
+            target_type in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE, DATE_DTYPE)
+        )
 
 
 def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:

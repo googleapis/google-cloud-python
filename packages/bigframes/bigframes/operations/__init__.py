@@ -548,16 +548,10 @@ class FloorDtOp(UnaryOp):
 
 
 # Binary Ops
-fillna_op = create_binary_op(name="fillna", type_signature=op_typing.COMMON_SUPERTYPE)
-cliplower_op = create_binary_op(
-    name="clip_lower", type_signature=op_typing.COMMON_SUPERTYPE
-)
-clipupper_op = create_binary_op(
-    name="clip_upper", type_signature=op_typing.COMMON_SUPERTYPE
-)
-coalesce_op = create_binary_op(
-    name="coalesce", type_signature=op_typing.COMMON_SUPERTYPE
-)
+fillna_op = create_binary_op(name="fillna", type_signature=op_typing.COERCE)
+cliplower_op = create_binary_op(name="clip_lower", type_signature=op_typing.COERCE)
+clipupper_op = create_binary_op(name="clip_upper", type_signature=op_typing.COERCE)
+coalesce_op = create_binary_op(name="coalesce", type_signature=op_typing.COERCE)
 
 
 ## Math Ops
@@ -575,7 +569,7 @@ class AddOp(BinaryOp):
             right_type is None or dtypes.is_numeric(right_type)
         ):
             # Numeric addition
-            return dtypes.lcd_etype(left_type, right_type)
+            return dtypes.coerce_to_common(left_type, right_type)
         # TODO: Add temporal addition once delta types supported
         raise TypeError(f"Cannot add dtypes {left_type} and {right_type}")
 
@@ -592,7 +586,7 @@ class SubOp(BinaryOp):
             right_type is None or dtypes.is_numeric(right_type)
         ):
             # Numeric subtraction
-            return dtypes.lcd_etype(left_type, right_type)
+            return dtypes.coerce_to_common(left_type, right_type)
         # TODO: Add temporal addition once delta types supported
         raise TypeError(f"Cannot subtract dtypes {left_type} and {right_type}")
 
@@ -652,7 +646,7 @@ class WhereOp(TernaryOp):
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         if input_types[1] != dtypes.BOOL_DTYPE:
             raise TypeError("where condition must be a boolean")
-        return dtypes.lcd_etype(input_types[0], input_types[2])
+        return dtypes.coerce_to_common(input_types[0], input_types[2])
 
 
 where_op = WhereOp()
@@ -663,8 +657,8 @@ class ClipOp(TernaryOp):
     name: typing.ClassVar[str] = "clip"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        return dtypes.lcd_etype(
-            input_types[0], dtypes.lcd_etype(input_types[1], input_types[2])
+        return dtypes.coerce_to_common(
+            input_types[0], dtypes.coerce_to_common(input_types[1], input_types[2])
         )
 
 

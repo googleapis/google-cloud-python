@@ -118,7 +118,7 @@ class BinaryNumeric(BinaryTypeSignature):
             raise TypeError(f"Type {left_type} is not numeric")
         if (right_type is not None) and not bigframes.dtypes.is_numeric(right_type):
             raise TypeError(f"Type {right_type} is not numeric")
-        return bigframes.dtypes.lcd_etype(left_type, right_type)
+        return bigframes.dtypes.coerce_to_common(left_type, right_type)
 
 
 @dataclasses.dataclass
@@ -132,7 +132,7 @@ class BinaryRealNumeric(BinaryTypeSignature):
             raise TypeError(f"Type {left_type} is not numeric")
         if (right_type is not None) and not bigframes.dtypes.is_numeric(right_type):
             raise TypeError(f"Type {right_type} is not numeric")
-        lcd_type = bigframes.dtypes.lcd_etype(left_type, right_type)
+        lcd_type = bigframes.dtypes.coerce_to_common(left_type, right_type)
         if lcd_type == bigframes.dtypes.INT_DTYPE:
             # Real numeric ops produce floats on int input
             return bigframes.dtypes.FLOAT_DTYPE
@@ -140,13 +140,21 @@ class BinaryRealNumeric(BinaryTypeSignature):
 
 
 @dataclasses.dataclass
-class Supertype(BinaryTypeSignature):
-    """Type signature for functions that return a the supertype of its inputs. Currently BigFrames just supports upcasting numerics."""
+class CoerceCommon(BinaryTypeSignature):
+    """Attempt to coerce inputs to a compatible type."""
 
     def output_type(
         self, left_type: ExpressionType, right_type: ExpressionType
     ) -> ExpressionType:
-        return bigframes.dtypes.lcd_etype(left_type, right_type)
+        try:
+            return bigframes.dtypes.coerce_to_common(left_type, right_type)
+        except TypeError:
+            pass
+        if bigframes.dtypes.can_coerce(left_type, right_type):
+            return right_type
+        if bigframes.dtypes.can_coerce(right_type, left_type):
+            return left_type
+        raise TypeError(f"Cannot coerce {left_type} and {right_type} to a common type.")
 
 
 @dataclasses.dataclass
@@ -156,7 +164,7 @@ class Comparison(BinaryTypeSignature):
     def output_type(
         self, left_type: ExpressionType, right_type: ExpressionType
     ) -> ExpressionType:
-        common_type = bigframes.dtypes.lcd_etype(left_type, right_type)
+        common_type = CoerceCommon().output_type(left_type, right_type)
         if not bigframes.dtypes.is_comparable(common_type):
             raise TypeError(f"Types {left_type} and {right_type} are not comparable")
         return bigframes.dtypes.BOOL_DTYPE
@@ -188,7 +196,7 @@ UNARY_REAL_NUMERIC = UnaryRealNumeric()
 BINARY_NUMERIC = BinaryNumeric()
 BINARY_REAL_NUMERIC = BinaryRealNumeric()
 COMPARISON = Comparison()
-COMMON_SUPERTYPE = Supertype()
+COERCE = CoerceCommon()
 LOGICAL = Logical()
 STRING_TRANSFORM = TypePreserving(
     bigframes.dtypes.is_string_like, description="numeric"
