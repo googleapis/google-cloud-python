@@ -449,10 +449,12 @@ class Settings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the
-            settings to retrieve. Format:
+            Identifier. The resource name of the settings
+            to retrieve. Format:
 
-            organizations/{organization}/locations/{location}/settings.
+            organizations/{organization}/locations/{location}/settings
+            or
+            projects/{projects}/locations/{location}/settings.
         notification_settings (MutableMapping[str, google.cloud.advisorynotifications_v1.types.NotificationSettings]):
             Required. Map of each notification type and
             its settings to get/set all settings at once.
@@ -506,7 +508,9 @@ class GetSettingsRequest(proto.Message):
             Required. The resource name of the settings
             to retrieve. Format:
 
-            organizations/{organization}/locations/{location}/settings.
+            organizations/{organization}/locations/{location}/settings
+            or
+            projects/{projects}/locations/{location}/settings.
     """
 
     name: str = proto.Field(

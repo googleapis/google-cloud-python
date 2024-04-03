@@ -747,7 +747,7 @@ class AdvisoryNotificationsServiceClient(
                 the form
                 "organizations/{organization}/locations/{location}"
                 or
-                "projects/{project}/locations/{location}"
+                "projects/{project}/locations/{location}".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -974,7 +974,9 @@ class AdvisoryNotificationsServiceClient(
                 Required. The resource name of the
                 settings to retrieve. Format:
 
-                organizations/{organization}/locations/{location}/settings.
+                organizations/{organization}/locations/{location}/settings
+                or
+                projects/{projects}/locations/{location}/settings.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
