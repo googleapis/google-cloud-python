@@ -26,7 +26,14 @@ def test_bigquery_dataframes_set_options():
     REGION = "US"  # @param {type:"string"}
 
     # Set BigQuery DataFrames options
+    # Note: The project option is not required in all environments.
+    # On BigQuery Studio, the project ID is automatically detected.
     bpd.options.bigquery.project = PROJECT_ID
+
+    # Note: The location option is not required.
+    # It defaults to the location of the first table or query
+    # passed to read_gbq(). For APIs where a location can't be
+    # auto-detected, the location defaults to the "US" location.
     bpd.options.bigquery.location = REGION
 
     # [END bigquery_dataframes_set_options]

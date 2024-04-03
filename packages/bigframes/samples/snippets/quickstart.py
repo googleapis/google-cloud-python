@@ -29,8 +29,9 @@ def run_quickstart(project_id: str):
     import bigframes.pandas as bpd
 
     # Set BigQuery DataFrames options
+    # Note: The project option is not required in all environments.
+    # On BigQuery Studio, the project ID is automatically detected.
     bpd.options.bigquery.project = your_gcp_project_id
-    bpd.options.bigquery.location = "us"
 
     # Create a DataFrame from a BigQuery table
     query_or_table = "bigquery-public-data.ml_datasets.penguins"
