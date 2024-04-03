@@ -86,6 +86,9 @@ class ResourceAllowanceState(proto.Enum):
 
 class ResourceAllowance(proto.Message):
     r"""The Resource Allowance description for Cloud Batch.
+    Only one Resource Allowance is supported now under a specific
+    location and project.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -208,11 +211,14 @@ class UsageResourceAllowanceSpec(proto.Message):
                 This field is a member of `oneof`_ ``duration``.
             limit (float):
                 Required. Limit value of a UsageResourceAllowance within its
-                one duration. Default is 0. For example, you can set
-                ``limit`` as 10000.0 with duration of the current month by
-                setting ``calendar_period`` field as monthly. That means in
-                your current month, 10000.0 is the cour hour limitation that
-                your resources are allowed to consume.
+                one duration.
+
+                Limit cannot be a negative value. Default is 0. For example,
+                you can set ``limit`` as 10000.0 with duration of the
+                current month by setting ``calendar_period`` field as
+                monthly. That means in your current month, 10000.0 is the
+                core hour limitation that your resources are allowed to
+                consume.
 
                 This field is a member of `oneof`_ ``_limit``.
         """

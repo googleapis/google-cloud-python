@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "QuotaConfig",
         "DimensionsInfo",
         "QuotaDetails",
+        "RolloutInfo",
     },
 )
 
@@ -492,10 +493,35 @@ class QuotaDetails(proto.Message):
         value (int):
             The value currently in effect and being
             enforced.
+        rollout_info (google.cloud.cloudquotas_v1.types.RolloutInfo):
+            Rollout information of this quota.
+            This field is present only if the effective
+            limit will change due to the ongoing rollout of
+            the service config.
     """
 
     value: int = proto.Field(
         proto.INT64,
+        number=1,
+    )
+    rollout_info: "RolloutInfo" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="RolloutInfo",
+    )
+
+
+class RolloutInfo(proto.Message):
+    r"""[Output only] Rollout information of a quota.
+
+    Attributes:
+        ongoing_rollout (bool):
+            Whether there is an ongoing rollout for a
+            quota or not.
+    """
+
+    ongoing_rollout: bool = proto.Field(
+        proto.BOOL,
         number=1,
     )
 

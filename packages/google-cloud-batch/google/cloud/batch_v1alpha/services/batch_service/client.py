@@ -1524,7 +1524,9 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
         Returns:
             google.cloud.batch_v1alpha.types.ResourceAllowance:
                 The Resource Allowance description
-                for Cloud Batch.
+                for Cloud Batch. Only one Resource
+                Allowance is supported now under a
+                specific location and project.
 
         """
         # Create or coerce a protobuf request object.
@@ -1633,7 +1635,9 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
         Returns:
             google.cloud.batch_v1alpha.types.ResourceAllowance:
                 The Resource Allowance description
-                for Cloud Batch.
+                for Cloud Batch. Only one Resource
+                Allowance is supported now under a
+                specific location and project.
 
         """
         # Create or coerce a protobuf request object.
@@ -2002,7 +2006,9 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
         Returns:
             google.cloud.batch_v1alpha.types.ResourceAllowance:
                 The Resource Allowance description
-                for Cloud Batch.
+                for Cloud Batch. Only one Resource
+                Allowance is supported now under a
+                specific location and project.
 
         """
         # Create or coerce a protobuf request object.

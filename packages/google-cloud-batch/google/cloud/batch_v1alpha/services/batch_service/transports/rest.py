@@ -823,7 +823,9 @@ class BatchServiceRestTransport(BatchServiceTransport):
             Returns:
                 ~.gcb_resource_allowance.ResourceAllowance:
                     The Resource Allowance description
-                for Cloud Batch.
+                for Cloud Batch. Only one Resource
+                Allowance is supported now under a
+                specific location and project.
 
             """
 
@@ -1167,7 +1169,9 @@ class BatchServiceRestTransport(BatchServiceTransport):
             Returns:
                 ~.resource_allowance.ResourceAllowance:
                     The Resource Allowance description
-                for Cloud Batch.
+                for Cloud Batch. Only one Resource
+                Allowance is supported now under a
+                specific location and project.
 
             """
 
@@ -1589,7 +1593,9 @@ class BatchServiceRestTransport(BatchServiceTransport):
             Returns:
                 ~.gcb_resource_allowance.ResourceAllowance:
                     The Resource Allowance description
-                for Cloud Batch.
+                for Cloud Batch. Only one Resource
+                Allowance is supported now under a
+                specific location and project.
 
             """
 
