@@ -2,7 +2,7 @@
     "name": "google-cloud-storage-control",
     "name_pretty": "Storage Control API",
     "api_description": "Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.",
-    "product_documentation": "https://cloud.google.com/storage/docs/reference/rpc",
+    "product_documentation": "https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=187243&template=1162869",
     "release_level": "preview",
