@@ -31,6 +31,7 @@ from .resources import (
     QuotaInfo,
     QuotaPreference,
     QuotaSafetyCheck,
+    RolloutInfo,
 )
 
 __all__ = (
@@ -48,5 +49,6 @@ __all__ = (
     "QuotaIncreaseEligibility",
     "QuotaInfo",
     "QuotaPreference",
+    "RolloutInfo",
     "QuotaSafetyCheck",
 )
