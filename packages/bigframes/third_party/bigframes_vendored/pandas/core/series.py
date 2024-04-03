@@ -87,7 +87,7 @@ class Series(NDFrame):  # type: ignore[misc]
             MultiIndex([( 'Alice',  'Seattle'),
                 (   'Bob', 'New York'),
                 ('Aritra',     'Kona')],
-               name='Name')
+               names=['Name', 'Location'])
             >>> s1.index.values
             array([('Alice', 'Seattle'), ('Bob', 'New York'), ('Aritra', 'Kona')],
                 dtype=object)

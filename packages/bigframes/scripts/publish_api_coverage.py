@@ -44,6 +44,9 @@ URL_PREFIX = {
     "dataframegroupby": (
         "https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.core.groupby.DataFrameGroupBy#bigframes_core_groupby_DataFrameGroupBy_"
     ),
+    "index": (
+        "https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.core.indexes.base.Index#bigframes_core_indexes_base_Index_"
+    ),
     "series": (
         "https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.series.Series#bigframes_series_Series_"
     ),
@@ -59,7 +62,6 @@ URL_PREFIX = {
     "window": (
         "https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.core.window.Window#bigframes_core_window_Window_"
     ),
-    # TODO: Index not documented.
 }
 
 

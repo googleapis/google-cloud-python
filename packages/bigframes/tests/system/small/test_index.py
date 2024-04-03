@@ -370,3 +370,42 @@ def test_index_isin(scalars_df_index, scalars_pandas_df_index):
         bf_series,
         check_names=False,
     )
+
+
+def test_multiindex_name_is_none(session):
+    df = pd.DataFrame(
+        {
+            "A": [0, 0, 0, 1, 1, 1],
+            "B": ["x", "y", "z", "x", "y", "z"],
+            "C": [123, 345, 789, -123, -345, -789],
+            "D": ["a", "b", "c", "d", "e", "f"],
+        },
+    )
+    index = session.read_pandas(df).set_index(["A", "B"]).index
+    assert index.name is None
+
+
+def test_multiindex_names_not_none(session):
+    df = pd.DataFrame(
+        {
+            "A": [0, 0, 0, 1, 1, 1],
+            "B": ["x", "y", "z", "x", "y", "z"],
+            "C": [123, 345, 789, -123, -345, -789],
+            "D": ["a", "b", "c", "d", "e", "f"],
+        },
+    )
+    index = session.read_pandas(df).set_index(["A", "B"]).index
+    assert tuple(index.names) == ("A", "B")
+
+
+def test_multiindex_repr_includes_all_names(session):
+    df = pd.DataFrame(
+        {
+            "A": [0, 0, 0, 1, 1, 1],
+            "B": ["x", "y", "z", "x", "y", "z"],
+            "C": [123, 345, 789, -123, -345, -789],
+            "D": ["a", "b", "c", "d", "e", "f"],
+        },
+    )
+    index = session.read_pandas(df).set_index(["A", "B"]).index
+    assert "names=['A', 'B']" in repr(index)

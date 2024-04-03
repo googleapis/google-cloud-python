@@ -40,6 +40,8 @@
       - name: SeriesGroupBy
         uid: bigframes.core.groupby.SeriesGroupBy
       name: Groupby
+    - name: Index
+      uid: bigframes.core.indexes.base.Index
     - items:
       - name: AtDataFrameIndexer
         uid: bigframes.core.indexers.AtDataFrameIndexer

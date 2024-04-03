@@ -88,7 +88,12 @@ class Index(vendored_pandas_index.Index):
 
     @property
     def name(self) -> blocks.Label:
-        return self.names[0]
+        names = self.names
+        if len(names) == 1:
+            return self.names[0]
+        else:
+            # pandas returns None for MultiIndex.name.
+            return None
 
     @name.setter
     def name(self, value: blocks.Label):
@@ -459,14 +464,6 @@ class FrameIndex(Index):
     ):
         super().__init__(series_or_dataframe._block)
         self._whole_frame = series_or_dataframe
-
-    @property
-    def name(self) -> blocks.Label:
-        return self.names[0]
-
-    @name.setter
-    def name(self, value: blocks.Label):
-        self.names = [value]
 
     @property
     def names(self) -> typing.Sequence[blocks.Label]:

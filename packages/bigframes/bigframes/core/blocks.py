@@ -1314,8 +1314,8 @@ class Block:
             head_block = self
         computed_df, query_job = head_block.to_pandas()
         formatted_df = computed_df.set_axis(self.column_labels, axis=1)
-        # we reset the axis and substitute the bf index name for the default
-        formatted_df.index.name = self.index.name
+        # we reset the axis and substitute the bf index name(s) for the default
+        formatted_df.index.names = self.index.names  # type: ignore
         return formatted_df, count, query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:

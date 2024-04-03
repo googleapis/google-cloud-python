@@ -27,7 +27,7 @@ import pandas as pd
 import pytest
 
 import bigframes
-import bigframes.core.indexes.index
+import bigframes.core.indexes.base
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.ml.linear_model

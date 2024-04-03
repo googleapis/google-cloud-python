@@ -8,6 +8,18 @@ class Index:
     """Immutable sequence used for indexing and alignment.
 
     The basic object storing axis labels for all objects.
+
+    Args:
+        data (pandas.Series | pandas.Index | bigframes.series.Series | bigframes.core.indexes.base.Index):
+            Labels (1-dimensional).
+        dtype:
+            Data type for the output Index. If not specified, this will be
+            inferred from `data`.
+        name:
+            Name to be stored in the index.
+        session (Optional[bigframes.session.Session]):
+            BigQuery DataFrames session where queries are run. If not set,
+            a default session is used.
     """
 
     @property

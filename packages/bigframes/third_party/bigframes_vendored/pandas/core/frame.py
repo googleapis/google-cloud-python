@@ -4797,7 +4797,7 @@ class DataFrame(generic.NDFrame):
             MultiIndex([( 'Alice',  'Seattle'),
                 (   'Bob', 'New York'),
                 ('Aritra',     'Kona')],
-               name='Name')
+               names=['Name', 'Location'])
             >>> df1.index.values
             array([('Alice', 'Seattle'), ('Bob', 'New York'), ('Aritra', 'Kona')],
                 dtype=object)

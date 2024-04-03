@@ -3,7 +3,7 @@
 Index objects
 =============
 
-.. autoclass:: bigframes.core.indexes.index.Index
+.. autoclass:: bigframes.core.indexes.base.Index
     :members:
     :inherited-members:
     :undoc-members:
