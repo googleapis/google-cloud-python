@@ -422,6 +422,122 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             )
         return self._stubs["get_storage_layout"]
 
+    @property
+    def create_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.CreateManagedFolderRequest],
+        Awaitable[storage_control.ManagedFolder],
+    ]:
+        r"""Return a callable for the create managed folder method over gRPC.
+
+        Creates a new managed folder.
+
+        Returns:
+            Callable[[~.CreateManagedFolderRequest],
+                    Awaitable[~.ManagedFolder]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_managed_folder" not in self._stubs:
+            self._stubs["create_managed_folder"] = self.grpc_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/CreateManagedFolder",
+                request_serializer=storage_control.CreateManagedFolderRequest.serialize,
+                response_deserializer=storage_control.ManagedFolder.deserialize,
+            )
+        return self._stubs["create_managed_folder"]
+
+    @property
+    def delete_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.DeleteManagedFolderRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete managed folder method over gRPC.
+
+        Permanently deletes an empty managed folder.
+
+        Returns:
+            Callable[[~.DeleteManagedFolderRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_managed_folder" not in self._stubs:
+            self._stubs["delete_managed_folder"] = self.grpc_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/DeleteManagedFolder",
+                request_serializer=storage_control.DeleteManagedFolderRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_managed_folder"]
+
+    @property
+    def get_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.GetManagedFolderRequest],
+        Awaitable[storage_control.ManagedFolder],
+    ]:
+        r"""Return a callable for the get managed folder method over gRPC.
+
+        Returns metadata for the specified managed folder.
+
+        Returns:
+            Callable[[~.GetManagedFolderRequest],
+                    Awaitable[~.ManagedFolder]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_managed_folder" not in self._stubs:
+            self._stubs["get_managed_folder"] = self.grpc_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetManagedFolder",
+                request_serializer=storage_control.GetManagedFolderRequest.serialize,
+                response_deserializer=storage_control.ManagedFolder.deserialize,
+            )
+        return self._stubs["get_managed_folder"]
+
+    @property
+    def list_managed_folders(
+        self,
+    ) -> Callable[
+        [storage_control.ListManagedFoldersRequest],
+        Awaitable[storage_control.ListManagedFoldersResponse],
+    ]:
+        r"""Return a callable for the list managed folders method over gRPC.
+
+        Retrieves a list of managed folders for a given
+        bucket.
+
+        Returns:
+            Callable[[~.ListManagedFoldersRequest],
+                    Awaitable[~.ListManagedFoldersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_managed_folders" not in self._stubs:
+            self._stubs["list_managed_folders"] = self.grpc_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ListManagedFolders",
+                request_serializer=storage_control.ListManagedFoldersRequest.serialize,
+                response_deserializer=storage_control.ListManagedFoldersResponse.deserialize,
+            )
+        return self._stubs["list_managed_folders"]
+
     def close(self):
         return self.grpc_channel.close()
 

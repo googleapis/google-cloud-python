@@ -15,14 +15,29 @@
                 "create_folder"
               ]
             },
+            "CreateManagedFolder": {
+              "methods": [
+                "create_managed_folder"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
               ]
             },
+            "DeleteManagedFolder": {
+              "methods": [
+                "delete_managed_folder"
+              ]
+            },
             "GetFolder": {
               "methods": [
                 "get_folder"
+              ]
+            },
+            "GetManagedFolder": {
+              "methods": [
+                "get_managed_folder"
               ]
             },
             "GetStorageLayout": {
@@ -33,6 +48,11 @@
             "ListFolders": {
               "methods": [
                 "list_folders"
+              ]
+            },
+            "ListManagedFolders": {
+              "methods": [
+                "list_managed_folders"
               ]
             },
             "RenameFolder": {
@@ -50,14 +70,29 @@
                 "create_folder"
               ]
             },
+            "CreateManagedFolder": {
+              "methods": [
+                "create_managed_folder"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
               ]
             },
+            "DeleteManagedFolder": {
+              "methods": [
+                "delete_managed_folder"
+              ]
+            },
             "GetFolder": {
               "methods": [
                 "get_folder"
+              ]
+            },
+            "GetManagedFolder": {
+              "methods": [
+                "get_managed_folder"
               ]
             },
             "GetStorageLayout": {
@@ -68,6 +103,11 @@
             "ListFolders": {
               "methods": [
                 "list_folders"
+              ]
+            },
+            "ListManagedFolders": {
+              "methods": [
+                "list_managed_folders"
               ]
             },
             "RenameFolder": {

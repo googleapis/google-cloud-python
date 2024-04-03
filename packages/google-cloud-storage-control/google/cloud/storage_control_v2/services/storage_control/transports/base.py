@@ -216,6 +216,52 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_managed_folder: gapic_v1.method.wrap_method(
+                self.create_managed_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_managed_folder: gapic_v1.method.wrap_method(
+                self.delete_managed_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_managed_folder: gapic_v1.method.wrap_method(
+                self.get_managed_folder,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_managed_folders: gapic_v1.method.wrap_method(
+                self.list_managed_folders,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -286,6 +332,45 @@ class StorageControlTransport(abc.ABC):
     ) -> Callable[
         [storage_control.GetStorageLayoutRequest],
         Union[storage_control.StorageLayout, Awaitable[storage_control.StorageLayout]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.CreateManagedFolderRequest],
+        Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.DeleteManagedFolderRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.GetManagedFolderRequest],
+        Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_managed_folders(
+        self,
+    ) -> Callable[
+        [storage_control.ListManagedFoldersRequest],
+        Union[
+            storage_control.ListManagedFoldersResponse,
+            Awaitable[storage_control.ListManagedFoldersResponse],
+        ],
     ]:
         raise NotImplementedError()
 

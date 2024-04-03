@@ -634,22 +634,23 @@ class GetPlaceRequest(proto.Message):
 
             Note that 3-digit region codes are not currently supported.
         session_token (str):
-            Optional. An arbitrary string which identifies an
-            autocomplete session for billing purposes. Must be at most
-            36 characters in length. Otherwise an INVALID_ARGUMENT error
-            is returned.
+            Optional. A string which identifies an Autocomplete session
+            for billing purposes. Must be a URL and filename safe base64
+            string with at most 36 ASCII characters in length. Otherwise
+            an INVALID_ARGUMENT error is returned.
 
             The session begins when the user starts typing a query, and
             concludes when they select a place and a call to Place
             Details or Address Validation is made. Each session can have
-            multiple queries, followed by one Place selection. The
-            credentials used for each request within a session must
-            belong to the same Google Cloud Console project. Once a
-            session has concluded, the token is no longer valid; your
-            app must generate a fresh token for each session. If the
-            ``session_token`` parameter is omitted, or if you reuse a
-            session token, the session is charged as if no session token
-            was provided (each request is billed separately).
+            multiple queries, followed by one Place Details or Address
+            Validation request. The credentials used for each request
+            within a session must belong to the same Google Cloud
+            Console project. Once a session has concluded, the token is
+            no longer valid; your app must generate a fresh token for
+            each session. If the ``session_token`` parameter is omitted,
+            or if you reuse a session token, the session is charged as
+            if no session token was provided (each request is billed
+            separately).
 
             We recommend the following guidelines:
 
@@ -704,8 +705,8 @@ class AutocompletePlacesRequest(proto.Message):
             biased by IP address, meaning the IP address will be mapped
             to an imprecise location and used as a biasing signal.
         included_primary_types (MutableSequence[str]):
-            Optional. Included primary Place type (e.g. "restaurant" or
-            "gas_station") from
+            Optional. Included primary Place type (for example,
+            "restaurant" or "gas_station") from
             https://developers.google.com/maps/documentation/places/web-service/place-types.
             A Place is only returned if its primary type is included in
             this list. Up to 5 values can be specified. If no types are
@@ -746,22 +747,23 @@ class AutocompletePlacesRequest(proto.Message):
             both Place and query predictions. Otherwise the
             response will only return Place predictions.
         session_token (str):
-            Optional. An arbitrary string which identifies an
-            autocomplete session for billing purposes. Must be at most
-            36 characters in length. Otherwise an INVALID_ARGUMENT error
-            is returned.
+            Optional. A string which identifies an Autocomplete session
+            for billing purposes. Must be a URL and filename safe base64
+            string with at most 36 ASCII characters in length. Otherwise
+            an INVALID_ARGUMENT error is returned.
 
             The session begins when the user starts typing a query, and
             concludes when they select a place and a call to Place
             Details or Address Validation is made. Each session can have
-            multiple queries, followed by one Place selection. The
-            credentials used for each request within a session must
-            belong to the same Google Cloud Console project. Once a
-            session has concluded, the token is no longer valid; your
-            app must generate a fresh token for each session. If the
-            ``session_token`` parameter is omitted, or if you reuse a
-            session token, the session is charged as if no session token
-            was provided (each request is billed separately).
+            multiple queries, followed by one Place Details or Address
+            Validation request. The credentials used for each request
+            within a session must belong to the same Google Cloud
+            Console project. Once a session has concluded, the token is
+            no longer valid; your app must generate a fresh token for
+            each session. If the ``session_token`` parameter is omitted,
+            or if you reuse a session token, the session is charged as
+            if no session token was provided (each request is billed
+            separately).
 
             We recommend the following guidelines:
 
@@ -963,8 +965,8 @@ class AutocompletePlacesResponse(proto.Message):
                     matched in ``text``. The ranges can be used to format
                     specific parts of ``text``. The substrings may not be exact
                     matches of ``input`` if the matching was determined by
-                    criteria other than string matching (e.g. spell corrections
-                    or transliterations).
+                    criteria other than string matching (for example, spell
+                    corrections or transliterations).
 
                     These values are Unicode character offsets of ``text``. The
                     ranges are guaranteed to be ordered in increasing offset
@@ -1110,7 +1112,7 @@ class AutocompletePlacesResponse(proto.Message):
                 text (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.FormattableText):
                     The predicted text. This text does not represent a Place,
                     but rather a text query that could be used in a search
-                    endpoint (e.g. TextSearch).
+                    endpoint (for example, TextSearch).
 
                     ``text`` is recommended for developers who wish to show a
                     single UI element. Developers who wish to show two separate,

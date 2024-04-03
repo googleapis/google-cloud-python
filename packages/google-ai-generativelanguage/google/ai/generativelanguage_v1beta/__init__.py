@@ -19,6 +19,7 @@ __version__ = package_version.__version__
 
 
 from .services.discuss_service import DiscussServiceAsyncClient, DiscussServiceClient
+from .services.file_service import FileServiceAsyncClient, FileServiceClient
 from .services.generative_service import (
     GenerativeServiceAsyncClient,
     GenerativeServiceClient,
@@ -37,7 +38,9 @@ from .types.citation import CitationMetadata, CitationSource
 from .types.content import (
     Blob,
     Content,
+    FileData,
     FunctionCall,
+    FunctionCallingConfig,
     FunctionDeclaration,
     FunctionResponse,
     GroundingPassage,
@@ -45,6 +48,7 @@ from .types.content import (
     Part,
     Schema,
     Tool,
+    ToolConfig,
     Type,
 )
 from .types.discuss_service import (
@@ -55,6 +59,15 @@ from .types.discuss_service import (
     GenerateMessageResponse,
     Message,
     MessagePrompt,
+)
+from .types.file import File
+from .types.file_service import (
+    CreateFileRequest,
+    CreateFileResponse,
+    DeleteFileRequest,
+    GetFileRequest,
+    ListFilesRequest,
+    ListFilesResponse,
 )
 from .types.generative_service import (
     AttributionSourceId,
@@ -172,6 +185,7 @@ from .types.tuned_model import (
 
 __all__ = (
     "DiscussServiceAsyncClient",
+    "FileServiceAsyncClient",
     "GenerativeServiceAsyncClient",
     "ModelServiceAsyncClient",
     "PermissionServiceAsyncClient",
@@ -207,6 +221,8 @@ __all__ = (
     "CreateChunkRequest",
     "CreateCorpusRequest",
     "CreateDocumentRequest",
+    "CreateFileRequest",
+    "CreateFileResponse",
     "CreatePermissionRequest",
     "CreateTunedModelMetadata",
     "CreateTunedModelRequest",
@@ -215,6 +231,7 @@ __all__ = (
     "DeleteChunkRequest",
     "DeleteCorpusRequest",
     "DeleteDocumentRequest",
+    "DeleteFileRequest",
     "DeletePermissionRequest",
     "DeleteTunedModelRequest",
     "DiscussServiceClient",
@@ -225,7 +242,11 @@ __all__ = (
     "EmbedTextResponse",
     "Embedding",
     "Example",
+    "File",
+    "FileData",
+    "FileServiceClient",
     "FunctionCall",
+    "FunctionCallingConfig",
     "FunctionDeclaration",
     "FunctionResponse",
     "GenerateAnswerRequest",
@@ -241,6 +262,7 @@ __all__ = (
     "GetChunkRequest",
     "GetCorpusRequest",
     "GetDocumentRequest",
+    "GetFileRequest",
     "GetModelRequest",
     "GetPermissionRequest",
     "GetTunedModelRequest",
@@ -255,6 +277,8 @@ __all__ = (
     "ListCorporaResponse",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
+    "ListFilesRequest",
+    "ListFilesResponse",
     "ListModelsRequest",
     "ListModelsResponse",
     "ListPermissionsRequest",
@@ -286,6 +310,7 @@ __all__ = (
     "TextPrompt",
     "TextServiceClient",
     "Tool",
+    "ToolConfig",
     "TransferOwnershipRequest",
     "TransferOwnershipResponse",
     "TunedModel",
