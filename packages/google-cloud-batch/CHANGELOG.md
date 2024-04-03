@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.15...google-cloud-batch-v0.17.16) (2024-04-03)
+
+
+### Documentation
+
+* add non-negative restriction comment for usage_resource_allowance.spec.limit.limit exposed on v1alpha ([4be4f8d](https://github.com/googleapis/google-cloud-python/commit/4be4f8d37e7d007c3319dac30c2df6a031a15384))
+* state one Resource Allowance per region per project limitation on v1alpha ([4be4f8d](https://github.com/googleapis/google-cloud-python/commit/4be4f8d37e7d007c3319dac30c2df6a031a15384))
+
 ## [0.17.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.14...google-cloud-batch-v0.17.15) (2024-03-28)
 
 
