@@ -157,24 +157,22 @@ def engine_with_location():
 
 @pytest.fixture(scope="session")
 def table(engine, bigquery_dataset):
-    return Table(f"{bigquery_dataset}.sample", MetaData(bind=engine), autoload=True)
+    return Table(f"{bigquery_dataset}.sample", MetaData(), autoload_with=engine)
 
 
 @pytest.fixture(scope="session")
 def table_using_test_dataset(engine_using_test_dataset):
-    return Table("sample", MetaData(bind=engine_using_test_dataset), autoload=True)
+    return Table("sample", MetaData(), autoload_with=engine_using_test_dataset)
 
 
 @pytest.fixture(scope="session")
 def table_one_row(engine, bigquery_dataset):
-    return Table(
-        f"{bigquery_dataset}.sample_one_row", MetaData(bind=engine), autoload=True
-    )
+    return Table(f"{bigquery_dataset}.sample_one_row", MetaData(), autoload_with=engine)
 
 
 @pytest.fixture(scope="session")
 def table_dml(engine, bigquery_empty_table):
-    return Table(bigquery_empty_table, MetaData(bind=engine), autoload=True)
+    return Table(bigquery_empty_table, MetaData(), autoload_with=engine)
 
 
 @pytest.fixture(scope="session")
@@ -216,7 +214,7 @@ def query():
             .label("outer")
         )
         query = (
-            select([col1, col2, col3])
+            select(col1, col2, col3)
             .where(col1 < "2017-01-01 00:00:00")
             .group_by(col1)
             .order_by(col2)
@@ -227,37 +225,47 @@ def query():
 
 
 def test_engine_with_dataset(engine_using_test_dataset, bigquery_dataset):
-    rows = engine_using_test_dataset.execute("SELECT * FROM sample_one_row").fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS
+    with engine_using_test_dataset.connect() as conn:
+        rows = conn.execute(sqlalchemy.text("SELECT * FROM sample_one_row")).fetchall()
+        assert list(rows[0]) == ONE_ROW_CONTENTS
 
-    table_one_row = Table(
-        "sample_one_row", MetaData(bind=engine_using_test_dataset), autoload=True
-    )
-    rows = table_one_row.select(use_labels=True).execute().fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
+        table_one_row = Table(
+            "sample_one_row", MetaData(), autoload_with=engine_using_test_dataset
+        )
+        rows = conn.execute(
+            table_one_row.select().set_label_style(
+                sqlalchemy.LABEL_STYLE_TABLENAME_PLUS_COL
+            )
+        ).fetchall()
+        assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
-    table_one_row = Table(
-        f"{bigquery_dataset}.sample_one_row",
-        MetaData(bind=engine_using_test_dataset),
-        autoload=True,
-    )
-    rows = table_one_row.select(use_labels=True).execute().fetchall()
-    # verify that we are pulling from the specifically-named dataset,
-    # instead of pulling from the default dataset of the engine (which
-    # does not have this table at all)
-    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
+        table_one_row = Table(
+            f"{bigquery_dataset}.sample_one_row",
+            MetaData(),
+            autoload_with=engine_using_test_dataset,
+        )
+        rows = conn.execute(
+            table_one_row.select().set_label_style(
+                sqlalchemy.LABEL_STYLE_TABLENAME_PLUS_COL
+            )
+        ).fetchall()
+        # verify that we are pulling from the specifically-named dataset,
+        # instead of pulling from the default dataset of the engine (which
+        # does not have this table at all)
+        assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
 def test_dataset_location(
     engine_with_location, bigquery_dataset, bigquery_regional_dataset
 ):
-    rows = engine_with_location.execute(
-        f"SELECT * FROM {bigquery_regional_dataset}.sample_one_row"
-    ).fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS
+    with engine_with_location.connect() as conn:
+        rows = conn.execute(
+            sqlalchemy.text(f"SELECT * FROM {bigquery_regional_dataset}.sample_one_row")
+        ).fetchall()
+        assert list(rows[0]) == ONE_ROW_CONTENTS
 
 
-def test_reflect_select(table, table_using_test_dataset):
+def test_reflect_select(table, engine_using_test_dataset, table_using_test_dataset):
     for table in [table, table_using_test_dataset]:
         assert table.comment == "A sample table containing most data types."
 
@@ -278,61 +286,73 @@ def test_reflect_select(table, table_using_test_dataset):
         assert isinstance(table.c["nested_record.record.name"].type, types.String)
         assert isinstance(table.c.array.type, types.ARRAY)
 
-        # Force unique column labels using `use_labels` below to deal
-        # with BQ sometimes complaining about duplicate column names
-        # when a destination table is specified, even though no
-        # destination table is specified. When this test was written,
-        # `use_labels` was forced by the dialect.
-        rows = table.select(use_labels=True).execute().fetchall()
-        assert len(rows) == 1000
+        with engine_using_test_dataset.connect() as conn:
+            rows = conn.execute(
+                table.select().set_label_style(
+                    sqlalchemy.LABEL_STYLE_TABLENAME_PLUS_COL
+                )
+            ).fetchall()
+            assert len(rows) == 1000
 
 
 def test_content_from_raw_queries(engine, bigquery_dataset):
-    rows = engine.execute(f"SELECT * FROM {bigquery_dataset}.sample_one_row").fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS
+    with engine.connect() as conn:
+        rows = conn.execute(
+            sqlalchemy.text(f"SELECT * FROM {bigquery_dataset}.sample_one_row")
+        ).fetchall()
+        assert list(rows[0]) == ONE_ROW_CONTENTS
 
 
 def test_record_content_from_raw_queries(engine, bigquery_dataset):
-    rows = engine.execute(
-        f"SELECT record.name FROM {bigquery_dataset}.sample_one_row"
-    ).fetchall()
-    assert rows[0][0] == "John Doe"
+    with engine.connect() as conn:
+        rows = conn.execute(
+            sqlalchemy.text(
+                f"SELECT record.name FROM {bigquery_dataset}.sample_one_row"
+            )
+        ).fetchall()
+        assert rows[0][0] == "John Doe"
 
 
 def test_content_from_reflect(engine, table_one_row):
-    rows = table_one_row.select(use_labels=True).execute().fetchall()
-    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
+    with engine.connect() as conn:
+        rows = conn.execute(
+            table_one_row.select().set_label_style(
+                sqlalchemy.LABEL_STYLE_TABLENAME_PLUS_COL
+            )
+        ).fetchall()
+        assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
 def test_unicode(engine, table_one_row):
     unicode_str = "白人看不懂"
-    returned_str = sqlalchemy.select(
-        [expression.bindparam("好", unicode_str)],
-        from_obj=table_one_row,
-    ).scalar()
+    with engine.connect() as conn:
+        returned_str = conn.execute(
+            sqlalchemy.select(expression.bindparam("好", unicode_str)).select_from(
+                table_one_row
+            )
+        ).scalar()
     assert returned_str == unicode_str
 
 
 def test_reflect_select_shared_table(engine):
     one_row = Table(
-        "bigquery-public-data.samples.natality", MetaData(bind=engine), autoload=True
+        "bigquery-public-data.samples.natality", MetaData(), autoload_with=engine
     )
-    row = one_row.select().limit(1).execute().first()
-    assert len(row) >= 1
+    with engine.connect() as conn:
+        row = conn.execute(one_row.select().limit(1)).first()
+        assert len(row) >= 1
 
 
 def test_reflect_table_does_not_exist(engine, bigquery_dataset):
     with pytest.raises(NoSuchTableError):
         Table(
             f"{bigquery_dataset}.table_does_not_exist",
-            MetaData(bind=engine),
-            autoload=True,
+            MetaData(),
+            autoload_with=engine,
         )
 
     assert (
-        Table(
-            f"{bigquery_dataset}.table_does_not_exist", MetaData(bind=engine)
-        ).exists()
+        sqlalchemy.inspect(engine).has_table(f"{bigquery_dataset}.table_does_not_exist")
         is False
     )
 
@@ -341,18 +361,18 @@ def test_reflect_dataset_does_not_exist(engine):
     with pytest.raises(NoSuchTableError):
         Table(
             "dataset_does_not_exist.table_does_not_exist",
-            MetaData(bind=engine),
-            autoload=True,
+            MetaData(),
+            autoload_with=engine,
         )
 
 
 def test_tables_list(engine, engine_using_test_dataset, bigquery_dataset):
-    tables = engine.table_names()
+    tables = sqlalchemy.inspect(engine).get_table_names()
     assert f"{bigquery_dataset}.sample" in tables
     assert f"{bigquery_dataset}.sample_one_row" in tables
     assert f"{bigquery_dataset}.sample_view" not in tables
 
-    tables = engine_using_test_dataset.table_names()
+    tables = sqlalchemy.inspect(engine_using_test_dataset).get_table_names()
     assert "sample" in tables
     assert "sample_one_row" in tables
     assert "sample_view" not in tables
@@ -379,13 +399,13 @@ def test_nested_labels(engine, table):
             sqlalchemy.func.sum(col.label("inner")).label("outer")
         ).over(),
         sqlalchemy.func.sum(
-            sqlalchemy.case([[sqlalchemy.literal(True), col.label("inner")]]).label(
+            sqlalchemy.case((sqlalchemy.literal(True), col.label("inner"))).label(
                 "outer"
             )
         ),
         sqlalchemy.func.sum(
             sqlalchemy.func.sum(
-                sqlalchemy.case([[sqlalchemy.literal(True), col.label("inner")]]).label(
+                sqlalchemy.case((sqlalchemy.literal(True), col.label("inner"))).label(
                     "middle"
                 )
             ).label("outer")
@@ -412,7 +432,7 @@ def test_session_query(
                 col_concat,
                 func.avg(table.c.integer),
                 func.sum(
-                    case([(table.c.boolean == sqlalchemy.literal(True), 1)], else_=0)
+                    case((table.c.boolean == sqlalchemy.literal(True), 1), else_=0)
                 ),
             )
             .group_by(table.c.string, col_concat)
@@ -445,13 +465,14 @@ def test_custom_expression(
 ):
     """GROUP BY clause should use labels instead of expressions"""
     q = query(table)
-    result = engine.execute(q).fetchall()
-    assert len(result) > 0
+    with engine.connect() as conn:
+        result = conn.execute(q).fetchall()
+        assert len(result) > 0
 
     q = query(table_using_test_dataset)
-    result = engine_using_test_dataset.execute(q).fetchall()
-
-    assert len(result) > 0
+    with engine_using_test_dataset.connect() as conn:
+        result = conn.execute(q).fetchall()
+        assert len(result) > 0
 
 
 def test_compiled_query_literal_binds(
@@ -459,15 +480,17 @@ def test_compiled_query_literal_binds(
 ):
     q = query(table)
     compiled = q.compile(engine, compile_kwargs={"literal_binds": True})
-    result = engine.execute(compiled).fetchall()
-    assert len(result) > 0
+    with engine.connect() as conn:
+        result = conn.execute(compiled).fetchall()
+        assert len(result) > 0
 
     q = query(table_using_test_dataset)
     compiled = q.compile(
         engine_using_test_dataset, compile_kwargs={"literal_binds": True}
     )
-    result = engine_using_test_dataset.execute(compiled).fetchall()
-    assert len(result) > 0
+    with engine_using_test_dataset.connect() as conn:
+        result = conn.execute(compiled).fetchall()
+        assert len(result) > 0
 
 
 @pytest.mark.parametrize(
@@ -496,31 +519,46 @@ def test_joins(session, table, table_one_row):
 
 def test_querying_wildcard_tables(engine):
     table = Table(
-        "bigquery-public-data.noaa_gsod.gsod*", MetaData(bind=engine), autoload=True
+        "bigquery-public-data.noaa_gsod.gsod*", MetaData(), autoload_with=engine
     )
-    rows = table.select().limit(1).execute().first()
-    assert len(rows) > 0
+    with engine.connect() as conn:
+        rows = conn.execute(table.select().limit(1)).first()
+        assert len(rows) > 0
 
 
 def test_dml(engine, session, table_dml):
+    """
+    Test DML operations on a table with no data. This table is created
+    in the `bigquery_empty_table` fixture.
+
+    Modern versions of sqlalchemy does not really require setting the
+    label style. This has been maintained to retain this test.
+    """
     # test insert
-    engine.execute(table_dml.insert(ONE_ROW_CONTENTS_DML))
-    result = table_dml.select(use_labels=True).execute().fetchall()
-    assert len(result) == 1
+    with engine.connect() as conn:
+        conn.execute(table_dml.insert().values(ONE_ROW_CONTENTS_DML))
+        result = conn.execute(
+            table_dml.select().set_label_style(sqlalchemy.LABEL_STYLE_DEFAULT)
+        ).fetchall()
+        assert len(result) == 1
 
-    # test update
-    session.query(table_dml).filter(table_dml.c.string == "test").update(
-        {"string": "updated_row"}, synchronize_session=False
-    )
-    updated_result = table_dml.select(use_labels=True).execute().fetchone()
-    assert updated_result[table_dml.c.string] == "updated_row"
+        # test update
+        session.query(table_dml).filter(table_dml.c.string == "test").update(
+            {"string": "updated_row"}, synchronize_session=False
+        )
+        updated_result = conn.execute(
+            table_dml.select().set_label_style(sqlalchemy.LABEL_STYLE_DEFAULT)
+        ).fetchone()
+        assert updated_result._mapping[table_dml.c.string] == "updated_row"
 
-    # test delete
-    session.query(table_dml).filter(table_dml.c.string == "updated_row").delete(
-        synchronize_session=False
-    )
-    result = table_dml.select(use_labels=True).execute().fetchall()
-    assert len(result) == 0
+        # test delete
+        session.query(table_dml).filter(table_dml.c.string == "updated_row").delete(
+            synchronize_session=False
+        )
+        result = conn.execute(
+            table_dml.select().set_label_style(sqlalchemy.LABEL_STYLE_DEFAULT)
+        ).fetchall()
+        assert len(result) == 0
 
 
 def test_create_table(engine, bigquery_dataset):
@@ -679,16 +717,34 @@ def test_invalid_table_reference(
 
 
 def test_has_table(engine, engine_using_test_dataset, bigquery_dataset):
-    assert engine.has_table("sample", bigquery_dataset) is True
-    assert engine.has_table(f"{bigquery_dataset}.sample") is True
-    assert engine.has_table(f"{bigquery_dataset}.nonexistent_table") is False
-    assert engine.has_table("nonexistent_table", "nonexistent_dataset") is False
+    assert sqlalchemy.inspect(engine).has_table("sample", bigquery_dataset) is True
+    assert sqlalchemy.inspect(engine).has_table(f"{bigquery_dataset}.sample") is True
+    assert (
+        sqlalchemy.inspect(engine).has_table(f"{bigquery_dataset}.nonexistent_table")
+        is False
+    )
+    assert (
+        sqlalchemy.inspect(engine).has_table("nonexistent_table", "nonexistent_dataset")
+        is False
+    )
 
-    assert engine_using_test_dataset.has_table("sample") is True
-    assert engine_using_test_dataset.has_table("sample", bigquery_dataset) is True
-    assert engine_using_test_dataset.has_table(f"{bigquery_dataset}.sample") is True
+    assert sqlalchemy.inspect(engine_using_test_dataset).has_table("sample") is True
+    assert (
+        sqlalchemy.inspect(engine_using_test_dataset).has_table(
+            "sample", bigquery_dataset
+        )
+        is True
+    )
+    assert (
+        sqlalchemy.inspect(engine_using_test_dataset).has_table(
+            f"{bigquery_dataset}.sample"
+        )
+        is True
+    )
 
-    assert engine_using_test_dataset.has_table("sample_alt") is False
+    assert (
+        sqlalchemy.inspect(engine_using_test_dataset).has_table("sample_alt") is False
+    )
 
 
 def test_distinct_188(engine, bigquery_dataset):
@@ -735,7 +791,7 @@ def test_huge_in():
     try:
         assert list(
             conn.execute(
-                sqlalchemy.select([sqlalchemy.literal(-1).in_(list(range(99999)))])
+                sqlalchemy.select(sqlalchemy.literal(-1).in_(list(range(99999))))
             )
         ) == [(False,)]
     except Exception:
@@ -765,7 +821,7 @@ def test_unnest(engine, bigquery_dataset):
     conn.execute(
         table.insert(), [dict(objects=["a", "b", "c"]), dict(objects=["x", "y"])]
     )
-    query = select([func.unnest(table.c.objects).alias("foo_objects").column])
+    query = select(func.unnest(table.c.objects).alias("foo_objects").column)
     compiled = str(query.compile(engine))
     assert " ".join(compiled.strip().split()) == (
         f"SELECT `foo_objects`"
@@ -800,10 +856,8 @@ def test_unnest_with_cte(engine, bigquery_dataset):
     )
     selectable = select(table.c).select_from(table).cte("cte")
     query = select(
-        [
-            selectable.c.foo,
-            func.unnest(selectable.c.bars).column_valued("unnest_bars"),
-        ]
+        selectable.c.foo,
+        func.unnest(selectable.c.bars).column_valued("unnest_bars"),
     ).select_from(selectable)
     compiled = str(query.compile(engine))
     assert " ".join(compiled.strip().split()) == (

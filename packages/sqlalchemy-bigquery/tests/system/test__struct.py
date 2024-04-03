@@ -54,7 +54,7 @@ def test_struct(engine, bigquery_dataset, metadata):
         )
     )
 
-    assert list(conn.execute(sqlalchemy.select([table]))) == [
+    assert list(conn.execute(sqlalchemy.select(table))) == [
         (
             {
                 "name": "bob",
@@ -62,16 +62,16 @@ def test_struct(engine, bigquery_dataset, metadata):
             },
         )
     ]
-    assert list(conn.execute(sqlalchemy.select([table.c.person.NAME]))) == [("bob",)]
-    assert list(conn.execute(sqlalchemy.select([table.c.person.children[0]]))) == [
+    assert list(conn.execute(sqlalchemy.select(table.c.person.NAME))) == [("bob",)]
+    assert list(conn.execute(sqlalchemy.select(table.c.person.children[0]))) == [
         ({"name": "billy", "bdate": datetime.date(2020, 1, 1)},)
     ]
-    assert list(
-        conn.execute(sqlalchemy.select([table.c.person.children[0].bdate]))
-    ) == [(datetime.date(2020, 1, 1),)]
+    assert list(conn.execute(sqlalchemy.select(table.c.person.children[0].bdate))) == [
+        (datetime.date(2020, 1, 1),)
+    ]
     assert list(
         conn.execute(
-            sqlalchemy.select([table]).where(table.c.person.children[0].NAME == "billy")
+            sqlalchemy.select(table).where(table.c.person.children[0].NAME == "billy")
         )
     ) == [
         (
@@ -84,7 +84,7 @@ def test_struct(engine, bigquery_dataset, metadata):
     assert (
         list(
             conn.execute(
-                sqlalchemy.select([table]).where(
+                sqlalchemy.select(table).where(
                     table.c.person.children[0].NAME == "sally"
                 )
             )
@@ -99,21 +99,22 @@ def test_complex_literals_pr_67(engine, bigquery_dataset, metadata):
     # Simple select example:
 
     table_name = f"{bigquery_dataset}.test_comples_literals_pr_67"
-    engine.execute(
-        f"""
-        create table {table_name} as (
-            select 'a' as id,
-            struct(1 as x__count, 2 as y__count, 3 as z__count) as dimensions
+    with engine.connect() as conn:
+        conn.execute(
+            sqlalchemy.text(
+                f"""
+            create table {table_name} as (
+                select 'a' as id,
+                struct(1 as x__count, 2 as y__count, 3 as z__count) as dimensions
+                )
+            """
             )
-        """
-    )
+        )
 
     table = sqlalchemy.Table(table_name, metadata, autoload_with=engine)
 
     got = str(
-        sqlalchemy.select([(table.c.dimensions.x__count + 5).label("c")]).compile(
-            engine
-        )
+        sqlalchemy.select((table.c.dimensions.x__count + 5).label("c")).compile(engine)
     )
     want = (
         f"SELECT (`{table_name}`.`dimensions`.x__count) + %(param_1:INT64)s AS `c` \n"
@@ -149,9 +150,11 @@ def test_unnest_and_struct_access_233(engine, bigquery_dataset, metadata):
 
     conn.execute(
         mock_table.insert(),
-        dict(mock_id="x"),
-        dict(mock_id="y"),
-        dict(mock_id="z"),
+        [
+            dict(mock_id="x"),
+            dict(mock_id="y"),
+            dict(mock_id="z"),
+        ],
     )
     conn.execute(
         another_mock_table.insert(),

@@ -17,20 +17,14 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import packaging.version
 import sqlalchemy.sql.default_comparator
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.types
 
 from . import base
 
-sqlalchemy_1_4_or_more = packaging.version.parse(
-    sqlalchemy.__version__
-) >= packaging.version.parse("1.4")
-
-if sqlalchemy_1_4_or_more:
-    import sqlalchemy.sql.coercions
-    import sqlalchemy.sql.roles
+import sqlalchemy.sql.coercions
+import sqlalchemy.sql.roles
 
 
 def _get_subtype_col_spec(type_):
@@ -103,34 +97,20 @@ class STRUCT(sqlalchemy.sql.sqltypes.Indexable, sqlalchemy.types.UserDefinedType
         def __getattr__(self, name):
             if name.lower() in self.expr.type._STRUCT_byname:
                 return self[name]
+            else:
+                raise AttributeError(name)
 
     comparator_factory = Comparator
 
 
-# In the implementations of _field_index below, we're stealing from
-# the JSON type implementation, but the code to steal changed in
-# 1.4. :/
-
-if sqlalchemy_1_4_or_more:
-
-    def _field_index(self, name, operator):
-        return sqlalchemy.sql.coercions.expect(
-            sqlalchemy.sql.roles.BinaryElementRole,
-            name,
-            expr=self.expr,
-            operator=operator,
-            bindparam_type=sqlalchemy.types.String(),
-        )
-
-else:
-
-    def _field_index(self, name, operator):
-        return sqlalchemy.sql.default_comparator._check_literal(
-            self.expr,
-            operator,
-            name,
-            bindparam_type=sqlalchemy.types.String(),
-        )
+def _field_index(self, name, operator):
+    return sqlalchemy.sql.coercions.expect(
+        sqlalchemy.sql.roles.BinaryElementRole,
+        name,
+        expr=self.expr,
+        operator=operator,
+        bindparam_type=sqlalchemy.types.String(),
+    )
 
 
 def struct_getitem_op(a, b):

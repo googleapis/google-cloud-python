@@ -74,7 +74,7 @@ def test_geoalchemy2_core(bigquery_dataset):
     from sqlalchemy.sql import select
 
     assert sorted(
-        (r.name, r.geog.desc[:4]) for r in conn.execute(select([lake_table]))
+        (r.name, r.geog.desc[:4]) for r in conn.execute(select(lake_table))
     ) == [("Garde", "0103"), ("Majeur", "0103"), ("Orta", "0103")]
 
     # Spatial query
@@ -82,26 +82,32 @@ def test_geoalchemy2_core(bigquery_dataset):
     from sqlalchemy import func
 
     [[result]] = conn.execute(
-        select([lake_table.c.name], func.ST_Contains(lake_table.c.geog, "POINT(4 1)"))
+        select(lake_table.c.name).where(
+            func.ST_Contains(lake_table.c.geog, "POINT(4 1)")
+        )
     )
     assert result == "Orta"
 
     assert sorted(
         (r.name, int(r.area))
         for r in conn.execute(
-            select([lake_table.c.name, lake_table.c.geog.ST_AREA().label("area")])
+            select(lake_table.c.name, lake_table.c.geog.ST_AREA().label("area"))
         )
     ) == [("Garde", 49452374328), ("Majeur", 12364036567), ("Orta", 111253664228)]
 
     # Extra: Make sure we can save a retrieved value back:
 
-    [[geog]] = conn.execute(select([lake_table.c.geog], lake_table.c.name == "Garde"))
+    [[geog]] = conn.execute(
+        select(lake_table.c.geog).where(lake_table.c.name == "Garde")
+    )
     conn.execute(lake_table.insert().values(name="test", geog=geog))
     assert (
         int(
             list(
                 conn.execute(
-                    select([lake_table.c.geog.st_area()], lake_table.c.name == "test")
+                    select(lake_table.c.geog.st_area()).where(
+                        lake_table.c.name == "test"
+                    )
                 )
             )[0][0]
         )
@@ -122,7 +128,9 @@ def test_geoalchemy2_core(bigquery_dataset):
         int(
             list(
                 conn.execute(
-                    select([lake_table.c.geog.st_area()], lake_table.c.name == "test2")
+                    select(lake_table.c.geog.st_area()).where(
+                        lake_table.c.name == "test2"
+                    )
                 )
             )[0][0]
         )

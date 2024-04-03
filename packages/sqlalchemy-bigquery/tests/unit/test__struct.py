@@ -84,7 +84,7 @@ def _col():
 )
 def test_struct_traversal_project(faux_conn, expr, sql):
     sql = f"SELECT {sql} AS `anon_1` \nFROM `t`"
-    assert str(sqlalchemy.select([expr]).compile(faux_conn.engine)) == sql
+    assert str(sqlalchemy.select(expr).compile(faux_conn.engine)) == sql
 
 
 @pytest.mark.parametrize(
@@ -117,7 +117,7 @@ def test_struct_traversal_project(faux_conn, expr, sql):
 )
 def test_struct_traversal_filter(faux_conn, expr, sql, param=1):
     want = f"SELECT `t`.`person` \nFROM `t`, `t` \nWHERE {sql}"
-    got = str(sqlalchemy.select([_col()]).where(expr).compile(faux_conn.engine))
+    got = str(sqlalchemy.select(_col()).where(expr).compile(faux_conn.engine))
     assert got == want
 
 

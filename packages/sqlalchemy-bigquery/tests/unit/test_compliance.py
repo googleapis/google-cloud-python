@@ -27,7 +27,7 @@ import sqlalchemy
 from sqlalchemy import Column, Integer, literal_column, select, String, Table, union
 from sqlalchemy.testing.assertions import eq_, in_
 
-from .conftest import setup_table, sqlalchemy_1_3_or_higher
+from .conftest import setup_table
 
 
 def assert_result(connection, sel, expected, params=()):
@@ -52,8 +52,8 @@ def some_table(connection):
 
 def test_distinct_selectable_in_unions(faux_conn):
     table = some_table(faux_conn)
-    s1 = select([table]).where(table.c.id == 2).distinct()
-    s2 = select([table]).where(table.c.id == 3).distinct()
+    s1 = select(table).where(table.c.id == 2).distinct()
+    s2 = select(table).where(table.c.id == 3).distinct()
 
     u1 = union(s1, s2).limit(2)
     assert_result(faux_conn, u1.order_by(u1.c.id), [(2, 2, 3), (3, 3, 4)])
@@ -62,7 +62,7 @@ def test_distinct_selectable_in_unions(faux_conn):
 def test_limit_offset_aliased_selectable_in_unions(faux_conn):
     table = some_table(faux_conn)
     s1 = (
-        select([table])
+        select(table)
         .where(table.c.id == 2)
         .limit(1)
         .order_by(table.c.id)
@@ -70,7 +70,7 @@ def test_limit_offset_aliased_selectable_in_unions(faux_conn):
         .select()
     )
     s2 = (
-        select([table])
+        select(table)
         .where(table.c.id == 3)
         .limit(1)
         .order_by(table.c.id)
@@ -93,27 +93,24 @@ def test_percent_sign_round_trip(faux_conn, metadata):
     faux_conn.execute(t.insert(), dict(data="some %% other value"))
     eq_(
         faux_conn.scalar(
-            select([t.c.data]).where(t.c.data == literal_column("'some % value'"))
+            select(t.c.data).where(t.c.data == literal_column("'some % value'"))
         ),
         "some % value",
     )
 
     eq_(
         faux_conn.scalar(
-            select([t.c.data]).where(
-                t.c.data == literal_column("'some %% other value'")
-            )
+            select(t.c.data).where(t.c.data == literal_column("'some %% other value'"))
         ),
         "some %% other value",
     )
 
 
-@sqlalchemy_1_3_or_higher
 def test_empty_set_against_integer(faux_conn):
     table = some_table(faux_conn)
 
     stmt = (
-        select([table.c.id])
+        select(table.c.id)
         .where(table.c.x.in_(sqlalchemy.bindparam("q", expanding=True)))
         .order_by(table.c.id)
     )
@@ -121,22 +118,17 @@ def test_empty_set_against_integer(faux_conn):
     assert_result(faux_conn, stmt, [], params={"q": []})
 
 
-@sqlalchemy_1_3_or_higher
 def test_null_in_empty_set_is_false(faux_conn):
     stmt = select(
-        [
-            sqlalchemy.case(
-                [
-                    (
-                        sqlalchemy.null().in_(
-                            sqlalchemy.bindparam("foo", value=(), expanding=True)
-                        ),
-                        sqlalchemy.true(),
-                    )
-                ],
-                else_=sqlalchemy.false(),
-            )
-        ]
+        sqlalchemy.case(
+            (
+                sqlalchemy.null().in_(
+                    sqlalchemy.bindparam("foo", value=(), expanding=True)
+                ),
+                sqlalchemy.true(),
+            ),
+            else_=sqlalchemy.false(),
+        )
     )
     in_(faux_conn.execute(stmt).fetchone()[0], (False, 0))
 
@@ -170,12 +162,12 @@ def test_likish(faux_conn, meth, arg, expected):
         ],
     )
     expr = getattr(table.c.data, meth)(arg)
-    rows = {value for value, in faux_conn.execute(select([table.c.id]).where(expr))}
+    rows = {value for value, in faux_conn.execute(select(table.c.id).where(expr))}
     eq_(rows, expected)
 
     all = {i for i in range(1, 11)}
     expr = sqlalchemy.not_(expr)
-    rows = {value for value, in faux_conn.execute(select([table.c.id]).where(expr))}
+    rows = {value for value, in faux_conn.execute(select(table.c.id).where(expr))}
     eq_(rows, all - expected)
 
 
@@ -196,9 +188,7 @@ def test_group_by_composed(faux_conn):
     )
 
     expr = (table.c.x + table.c.y).label("lx")
-    stmt = (
-        select([sqlalchemy.func.count(table.c.id), expr]).group_by(expr).order_by(expr)
-    )
+    stmt = select(sqlalchemy.func.count(table.c.id), expr).group_by(expr).order_by(expr)
     assert_result(faux_conn, stmt, [(1, 3), (1, 5), (1, 7)])
 
 

@@ -10,7 +10,6 @@ import google.api_core.exceptions
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.table import TableListItem
-import packaging.version
 import pytest
 import sqlalchemy
 
@@ -98,7 +97,7 @@ def test_get_table_names(
 ):
     mock_bigquery_client.list_datasets.return_value = datasets_list
     mock_bigquery_client.list_tables.side_effect = tables_lists
-    table_names = engine_under_test.table_names()
+    table_names = sqlalchemy.inspect(engine_under_test).get_table_names()
     mock_bigquery_client.list_datasets.assert_called_once()
     assert mock_bigquery_client.list_tables.call_count == len(datasets_list)
     assert list(sorted(table_names)) == list(sorted(expected))
@@ -227,12 +226,7 @@ def test_unnest_function(args, kw):
 
     f = sqlalchemy.func.unnest(*args, **kw)
     assert isinstance(f.type, sqlalchemy.String)
-    if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse(
-        "1.4"
-    ):
-        assert isinstance(
-            sqlalchemy.select([f]).subquery().c.unnest.type, sqlalchemy.String
-        )
+    assert isinstance(sqlalchemy.select(f).subquery().c.unnest.type, sqlalchemy.String)
 
 
 @mock.patch("sqlalchemy_bigquery._helpers.create_bigquery_client")
