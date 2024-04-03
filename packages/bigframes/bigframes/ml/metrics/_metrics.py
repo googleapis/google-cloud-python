@@ -335,3 +335,17 @@ def f1_score(
 
 
 f1_score.__doc__ = inspect.getdoc(vendored_metrics_classification.f1_score)
+
+
+def mean_squared_error(
+    y_true: Union[bpd.DataFrame, bpd.Series],
+    y_pred: Union[bpd.DataFrame, bpd.Series],
+) -> float:
+    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+
+    return (y_pred_series - y_true_series).pow(2).sum() / len(y_true_series)
+
+
+mean_squared_error.__doc__ = inspect.getdoc(
+    vendored_metrics_regression.mean_squared_error
+)
