@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.11.0...google-cloud-private-ca-v1.12.0) (2024-04-03)
+
+
+### Features
+
+* Add encoding format to `.google.cloud.security.privateca.v1.CaPool` Resource ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+
+
+### Documentation
+
+* A comment for field `ca_certs` in message `.google.cloud.security.privateca.v1.FetchCaCertsResponse` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for field `ignore_dependent_resources` in message `.google.cloud.security.privateca.v1.DeleteCaPoolRequest` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for field `ignore_dependent_resources` in message `.google.cloud.security.privateca.v1.DeleteCertificateAuthorityRequest` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for field `ignore_dependent_resources` in message `.google.cloud.security.privateca.v1.DisableCertificateAuthorityRequest` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for field `maximum_lifetime` in message `.google.cloud.security.privateca.v1.CaPool` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for field `maximum_lifetime` in message `.google.cloud.security.privateca.v1.CertificateTemplate` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for field `subject_key_id` in message `.google.cloud.security.privateca.v1.CertificateConfig` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+* A comment for method `FetchCaCerts` in service `CertificateAuthorityService` is changed ([9297aea](https://github.com/googleapis/google-cloud-python/commit/9297aeacd17ecd096f80c50b8938fdeaf45a4b25))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.10.3...google-cloud-private-ca-v1.11.0) (2024-03-22)
 
 

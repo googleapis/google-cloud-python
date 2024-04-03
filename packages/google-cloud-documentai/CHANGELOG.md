@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.24.2...google-cloud-documentai-v2.25.0) (2024-04-03)
+
+
+### Features
+
+* Support a new Layout Processor in Document AI ([f008893](https://github.com/googleapis/google-cloud-python/commit/f008893d15b88ccd29c23d3c49fee6c1a5c1e1d9))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([f008893](https://github.com/googleapis/google-cloud-python/commit/f008893d15b88ccd29c23d3c49fee6c1a5c1e1d9))
+
 ## [2.24.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.24.1...google-cloud-documentai-v2.24.2) (2024-03-22)
 
 
