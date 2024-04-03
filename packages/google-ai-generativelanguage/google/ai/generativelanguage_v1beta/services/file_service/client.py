@@ -40,7 +40,7 @@ from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.ai.generativelanguage_v1beta3 import gapic_version as package_version
+from google.ai.generativelanguage_v1beta import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -48,38 +48,34 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.ai.generativelanguage_v1beta3.services.permission_service import pagers
-from google.ai.generativelanguage_v1beta3.types import permission as gag_permission
-from google.ai.generativelanguage_v1beta3.types import permission
-from google.ai.generativelanguage_v1beta3.types import permission_service
+from google.ai.generativelanguage_v1beta.services.file_service import pagers
+from google.ai.generativelanguage_v1beta.types import file, file_service
 
-from .transports.base import DEFAULT_CLIENT_INFO, PermissionServiceTransport
-from .transports.grpc import PermissionServiceGrpcTransport
-from .transports.grpc_asyncio import PermissionServiceGrpcAsyncIOTransport
-from .transports.rest import PermissionServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, FileServiceTransport
+from .transports.grpc import FileServiceGrpcTransport
+from .transports.grpc_asyncio import FileServiceGrpcAsyncIOTransport
+from .transports.rest import FileServiceRestTransport
 
 
-class PermissionServiceClientMeta(type):
-    """Metaclass for the PermissionService client.
+class FileServiceClientMeta(type):
+    """Metaclass for the FileService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[PermissionServiceTransport]]
-    _transport_registry["grpc"] = PermissionServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = PermissionServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = PermissionServiceRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[FileServiceTransport]]
+    _transport_registry["grpc"] = FileServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = FileServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = FileServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[PermissionServiceTransport]:
+    ) -> Type[FileServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -98,10 +94,8 @@ class PermissionServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
-    """Provides methods for managing permissions to PaLM API
-    resources.
-    """
+class FileServiceClient(metaclass=FileServiceClientMeta):
+    """An API for uploading and managing files."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -153,7 +147,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PermissionServiceClient: The constructed client.
+            FileServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -171,7 +165,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PermissionServiceClient: The constructed client.
+            FileServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -180,47 +174,28 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> PermissionServiceTransport:
+    def transport(self) -> FileServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            PermissionServiceTransport: The transport used by the client
+            FileServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def permission_path(
-        tuned_model: str,
-        permission: str,
+    def file_path(
+        file: str,
     ) -> str:
-        """Returns a fully-qualified permission string."""
-        return "tunedModels/{tuned_model}/permissions/{permission}".format(
-            tuned_model=tuned_model,
-            permission=permission,
+        """Returns a fully-qualified file string."""
+        return "files/{file}".format(
+            file=file,
         )
 
     @staticmethod
-    def parse_permission_path(path: str) -> Dict[str, str]:
-        """Parses a permission path into its component segments."""
-        m = re.match(
-            r"^tunedModels/(?P<tuned_model>.+?)/permissions/(?P<permission>.+?)$", path
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def tuned_model_path(
-        tuned_model: str,
-    ) -> str:
-        """Returns a fully-qualified tuned_model string."""
-        return "tunedModels/{tuned_model}".format(
-            tuned_model=tuned_model,
-        )
-
-    @staticmethod
-    def parse_tuned_model_path(path: str) -> Dict[str, str]:
-        """Parses a tuned_model path into its component segments."""
-        m = re.match(r"^tunedModels/(?P<tuned_model>.+?)$", path)
+    def parse_file_path(path: str) -> Dict[str, str]:
+        """Parses a file path into its component segments."""
+        m = re.match(r"^files/(?P<file>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -442,14 +417,14 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = PermissionServiceClient._DEFAULT_UNIVERSE
+            _default_universe = FileServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = PermissionServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = FileServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = PermissionServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = FileServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -470,7 +445,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = PermissionServiceClient._DEFAULT_UNIVERSE
+        universe_domain = FileServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -496,7 +471,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = PermissionServiceClient._DEFAULT_UNIVERSE
+        default_universe = FileServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -520,7 +495,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or PermissionServiceClient._compare_universes(
+            or FileServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -548,11 +523,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, PermissionServiceTransport]] = None,
+        transport: Optional[Union[str, FileServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the permission service client.
+        """Instantiates the file service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -560,7 +535,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, PermissionServiceTransport]): The
+            transport (Union[str, FileServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
@@ -614,11 +589,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = PermissionServiceClient._read_environment_variables()
-        self._client_cert_source = PermissionServiceClient._get_client_cert_source(
+        ) = FileServiceClient._read_environment_variables()
+        self._client_cert_source = FileServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = PermissionServiceClient._get_universe_domain(
+        self._universe_domain = FileServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -635,9 +610,9 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, PermissionServiceTransport)
+        transport_provided = isinstance(transport, FileServiceTransport)
         if transport_provided:
-            # transport is a PermissionServiceTransport instance.
+            # transport is a FileServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -648,17 +623,14 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(PermissionServiceTransport, transport)
+            self._transport = cast(FileServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or PermissionServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or FileServiceClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
         )
 
         if not transport_provided:
@@ -684,19 +656,15 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def create_permission(
+    def create_file(
         self,
-        request: Optional[
-            Union[permission_service.CreatePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[file_service.CreateFileRequest, dict]] = None,
         *,
-        parent: Optional[str] = None,
-        permission: Optional[gag_permission.Permission] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gag_permission.Permission:
-        r"""Create a permission to a specific resource.
+    ) -> file_service.CreateFileResponse:
+        r"""Creates a ``File``.
 
         .. code-block:: python
 
@@ -707,38 +675,25 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            def sample_create_permission():
+            def sample_create_file():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceClient()
+                client = generativelanguage_v1beta.FileServiceClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.CreatePermissionRequest(
-                    parent="parent_value",
+                request = generativelanguage_v1beta.CreateFileRequest(
                 )
 
                 # Make the request
-                response = client.create_permission(request=request)
+                response = client.create_file(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta3.types.CreatePermissionRequest, dict]):
-                The request object. Request to create a ``Permission``.
-            parent (str):
-                Required. The parent resource of the ``Permission``.
-                Format: tunedModels/{tuned_model}
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            permission (google.ai.generativelanguage_v1beta3.types.Permission):
-                Required. The permission to create.
-                This corresponds to the ``permission`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
+            request (Union[google.ai.generativelanguage_v1beta.types.CreateFileRequest, dict]):
+                The request object. Request for ``CreateFile``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -746,64 +701,20 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta3.types.Permission:
-                Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
-
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
-
+            google.ai.generativelanguage_v1beta.types.CreateFileResponse:
+                Response for CreateFile.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, permission])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # Minor optimization to avoid making a copy if the user passes
-        # in a permission_service.CreatePermissionRequest.
+        # in a file_service.CreateFileRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, permission_service.CreatePermissionRequest):
-            request = permission_service.CreatePermissionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if permission is not None:
-                request.permission = permission
+        if not isinstance(request, file_service.CreateFileRequest):
+            request = file_service.CreateFileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_permission]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_file]
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -819,16 +730,16 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_permission(
+    def list_files(
         self,
-        request: Optional[Union[permission_service.GetPermissionRequest, dict]] = None,
+        request: Optional[Union[file_service.ListFilesRequest, dict]] = None,
         *,
-        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> permission.Permission:
-        r"""Gets information about a specific Permission.
+    ) -> pagers.ListFilesPager:
+        r"""Lists the metadata for ``File``\ s owned by the requesting
+        project.
 
         .. code-block:: python
 
@@ -839,32 +750,118 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            def sample_get_permission():
+            def sample_list_files():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceClient()
+                client = generativelanguage_v1beta.FileServiceClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.GetPermissionRequest(
+                request = generativelanguage_v1beta.ListFilesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_files(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.ai.generativelanguage_v1beta.types.ListFilesRequest, dict]):
+                The request object. Request for ``ListFiles``.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.ai.generativelanguage_v1beta.services.file_service.pagers.ListFilesPager:
+                Response for ListFiles.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a file_service.ListFilesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, file_service.ListFilesRequest):
+            request = file_service.ListFilesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_files]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListFilesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_file(
+        self,
+        request: Optional[Union[file_service.GetFileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> file.File:
+        r"""Gets the metadata for the given ``File``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ai import generativelanguage_v1beta
+
+            def sample_get_file():
+                # Create a client
+                client = generativelanguage_v1beta.FileServiceClient()
+
+                # Initialize request argument(s)
+                request = generativelanguage_v1beta.GetFileRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_permission(request=request)
+                response = client.get_file(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta3.types.GetPermissionRequest, dict]):
-                The request object. Request for getting information about a specific
-                ``Permission``.
+            request (Union[google.ai.generativelanguage_v1beta.types.GetFileRequest, dict]):
+                The request object. Request for ``GetFile``.
             name (str):
-                Required. The resource name of the permission.
-
-                Format:
-                ``tunedModels/{tuned_model}permissions/{permission}``
+                Required. The name of the ``File`` to get. Example:
+                ``files/abc-123``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -876,31 +873,8 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta3.types.Permission:
-                Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
-
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
-
+            google.ai.generativelanguage_v1beta.types.File:
+                A file uploaded to the API.
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -913,11 +887,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a permission_service.GetPermissionRequest.
+        # in a file_service.GetFileRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, permission_service.GetPermissionRequest):
-            request = permission_service.GetPermissionRequest(request)
+        if not isinstance(request, file_service.GetFileRequest):
+            request = file_service.GetFileRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -925,7 +899,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_permission]
+        rpc = self._transport._wrapped_methods[self._transport.get_file]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -947,278 +921,16 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_permissions(
+    def delete_file(
         self,
-        request: Optional[
-            Union[permission_service.ListPermissionsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListPermissionsPager:
-        r"""Lists permissions for the specific resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
-
-            def sample_list_permissions():
-                # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta3.ListPermissionsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_permissions(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.ai.generativelanguage_v1beta3.types.ListPermissionsRequest, dict]):
-                The request object. Request for listing permissions.
-            parent (str):
-                Required. The parent resource of the permissions.
-                Format: tunedModels/{tuned_model}
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta3.services.permission_service.pagers.ListPermissionsPager:
-                Response from ListPermissions containing a paginated list of
-                   permissions.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a permission_service.ListPermissionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, permission_service.ListPermissionsRequest):
-            request = permission_service.ListPermissionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_permissions]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListPermissionsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_permission(
-        self,
-        request: Optional[
-            Union[permission_service.UpdatePermissionRequest, dict]
-        ] = None,
-        *,
-        permission: Optional[gag_permission.Permission] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gag_permission.Permission:
-        r"""Updates the permission.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
-
-            def sample_update_permission():
-                # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta3.UpdatePermissionRequest(
-                )
-
-                # Make the request
-                response = client.update_permission(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.ai.generativelanguage_v1beta3.types.UpdatePermissionRequest, dict]):
-                The request object. Request to update the ``Permission``.
-            permission (google.ai.generativelanguage_v1beta3.types.Permission):
-                Required. The permission to update.
-
-                The permission's ``name`` field is used to identify the
-                permission to update.
-
-                This corresponds to the ``permission`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to update. Accepted ones:
-
-                -  role (``Permission.role`` field)
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta3.types.Permission:
-                Permission resource grants user,
-                group or the rest of the world access to
-                the PaLM API resource (e.g. a tuned
-                model, file).
-
-                A role is a collection of permitted
-                operations that allows users to perform
-                specific actions on PaLM API resources.
-                To make them available to users, groups,
-                or service accounts, you assign roles.
-                When you assign a role, you grant
-                permissions that the role contains.
-
-                There are three concentric roles. Each
-                role is a superset of the previous
-                role's permitted operations:
-
-                - reader can use the resource (e.g.
-                  tuned model) for inference
-                - writer has reader's permissions and
-                  additionally can edit and share
-                - owner has writer's permissions and
-                  additionally can delete
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([permission, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a permission_service.UpdatePermissionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, permission_service.UpdatePermissionRequest):
-            request = permission_service.UpdatePermissionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if permission is not None:
-                request.permission = permission
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_permission]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("permission.name", request.permission.name),)
-            ),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_permission(
-        self,
-        request: Optional[
-            Union[permission_service.DeletePermissionRequest, dict]
-        ] = None,
+        request: Optional[Union[file_service.DeleteFileRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes the permission.
+        r"""Deletes the ``File``.
 
         .. code-block:: python
 
@@ -1229,26 +941,26 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
+            from google.ai import generativelanguage_v1beta
 
-            def sample_delete_permission():
+            def sample_delete_file():
                 # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceClient()
+                client = generativelanguage_v1beta.FileServiceClient()
 
                 # Initialize request argument(s)
-                request = generativelanguage_v1beta3.DeletePermissionRequest(
+                request = generativelanguage_v1beta.DeleteFileRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                client.delete_permission(request=request)
+                client.delete_file(request=request)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta3.types.DeletePermissionRequest, dict]):
-                The request object. Request to delete the ``Permission``.
+            request (Union[google.ai.generativelanguage_v1beta.types.DeleteFileRequest, dict]):
+                The request object. Request for ``DeleteFile``.
             name (str):
-                Required. The resource name of the permission. Format:
-                ``tunedModels/{tuned_model}/permissions/{permission}``
+                Required. The name of the ``File`` to delete. Example:
+                ``files/abc-123``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1270,11 +982,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a permission_service.DeletePermissionRequest.
+        # in a file_service.DeleteFileRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, permission_service.DeletePermissionRequest):
-            request = permission_service.DeletePermissionRequest(request)
+        if not isinstance(request, file_service.DeleteFileRequest):
+            request = file_service.DeleteFileRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1282,7 +994,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_permission]
+        rpc = self._transport._wrapped_methods[self._transport.delete_file]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1301,95 +1013,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             metadata=metadata,
         )
 
-    def transfer_ownership(
-        self,
-        request: Optional[
-            Union[permission_service.TransferOwnershipRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> permission_service.TransferOwnershipResponse:
-        r"""Transfers ownership of the tuned model.
-        This is the only way to change ownership of the tuned
-        model. The current owner will be downgraded to writer
-        role.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta3
-
-            def sample_transfer_ownership():
-                # Create a client
-                client = generativelanguage_v1beta3.PermissionServiceClient()
-
-                # Initialize request argument(s)
-                request = generativelanguage_v1beta3.TransferOwnershipRequest(
-                    name="name_value",
-                    email_address="email_address_value",
-                )
-
-                # Make the request
-                response = client.transfer_ownership(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.ai.generativelanguage_v1beta3.types.TransferOwnershipRequest, dict]):
-                The request object. Request to transfer the ownership of
-                the tuned model.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.ai.generativelanguage_v1beta3.types.TransferOwnershipResponse:
-                Response from TransferOwnership.
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a permission_service.TransferOwnershipRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, permission_service.TransferOwnershipRequest):
-            request = permission_service.TransferOwnershipRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.transfer_ownership]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "PermissionServiceClient":
+    def __enter__(self) -> "FileServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1408,4 +1032,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("PermissionServiceClient",)
+__all__ = ("FileServiceClient",)

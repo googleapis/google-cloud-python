@@ -89,6 +89,11 @@ class GenerateContentRequest(proto.Message):
             the completion.
 
             Format: ``name=models/{model}``.
+        system_instruction (google.ai.generativelanguage_v1beta.types.Content):
+            Optional. Developer set system instruction.
+            Currently, text only.
+
+            This field is a member of `oneof`_ ``_system_instruction``.
         contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
             Required. The content of the current
             conversation with the model.
@@ -104,6 +109,9 @@ class GenerateContentRequest(proto.Message):
             interact with external systems to perform an action, or set
             of actions, outside of knowledge and scope of the model. The
             only supported tool is currently ``Function``.
+        tool_config (google.ai.generativelanguage_v1beta.types.ToolConfig):
+            Optional. Tool configuration for any ``Tool`` specified in
+            the request.
         safety_settings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetySetting]):
             Optional. A list of unique ``SafetySetting`` instances for
             blocking unsafe content.
@@ -133,6 +141,12 @@ class GenerateContentRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+    system_instruction: gag_content.Content = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        optional=True,
+        message=gag_content.Content,
+    )
     contents: MutableSequence[gag_content.Content] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
@@ -142,6 +156,11 @@ class GenerateContentRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=gag_content.Tool,
+    )
+    tool_config: gag_content.ToolConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=gag_content.ToolConfig,
     )
     safety_settings: MutableSequence[safety.SafetySetting] = proto.RepeatedField(
         proto.MESSAGE,
@@ -165,10 +184,10 @@ class GenerationConfig(proto.Message):
 
     Attributes:
         candidate_count (int):
-            Optional. Number of generated responses to return.
-
-            This value must be between [1, 8], inclusive. If unset, this
-            will default to 1.
+            Optional. Number of generated responses to
+            return.
+            Currently, this value can only be set to 1. If
+            unset, this will default to 1.
 
             This field is a member of `oneof`_ ``_candidate_count``.
         stop_sequences (MutableSequence[str]):

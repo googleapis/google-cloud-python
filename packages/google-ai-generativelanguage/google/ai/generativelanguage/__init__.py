@@ -24,6 +24,12 @@ from google.ai.generativelanguage_v1beta.services.discuss_service.async_client i
 from google.ai.generativelanguage_v1beta.services.discuss_service.client import (
     DiscussServiceClient,
 )
+from google.ai.generativelanguage_v1beta.services.file_service.async_client import (
+    FileServiceAsyncClient,
+)
+from google.ai.generativelanguage_v1beta.services.file_service.client import (
+    FileServiceClient,
+)
 from google.ai.generativelanguage_v1beta.services.generative_service.async_client import (
     GenerativeServiceAsyncClient,
 )
@@ -61,7 +67,9 @@ from google.ai.generativelanguage_v1beta.types.citation import (
 from google.ai.generativelanguage_v1beta.types.content import (
     Blob,
     Content,
+    FileData,
     FunctionCall,
+    FunctionCallingConfig,
     FunctionDeclaration,
     FunctionResponse,
     GroundingPassage,
@@ -69,6 +77,7 @@ from google.ai.generativelanguage_v1beta.types.content import (
     Part,
     Schema,
     Tool,
+    ToolConfig,
     Type,
 )
 from google.ai.generativelanguage_v1beta.types.discuss_service import (
@@ -79,6 +88,15 @@ from google.ai.generativelanguage_v1beta.types.discuss_service import (
     GenerateMessageResponse,
     Message,
     MessagePrompt,
+)
+from google.ai.generativelanguage_v1beta.types.file import File
+from google.ai.generativelanguage_v1beta.types.file_service import (
+    CreateFileRequest,
+    CreateFileResponse,
+    DeleteFileRequest,
+    GetFileRequest,
+    ListFilesRequest,
+    ListFilesResponse,
 )
 from google.ai.generativelanguage_v1beta.types.generative_service import (
     AttributionSourceId,
@@ -197,6 +215,8 @@ from google.ai.generativelanguage_v1beta.types.tuned_model import (
 __all__ = (
     "DiscussServiceClient",
     "DiscussServiceAsyncClient",
+    "FileServiceClient",
+    "FileServiceAsyncClient",
     "GenerativeServiceClient",
     "GenerativeServiceAsyncClient",
     "ModelServiceClient",
@@ -211,7 +231,9 @@ __all__ = (
     "CitationSource",
     "Blob",
     "Content",
+    "FileData",
     "FunctionCall",
+    "FunctionCallingConfig",
     "FunctionDeclaration",
     "FunctionResponse",
     "GroundingPassage",
@@ -219,6 +241,7 @@ __all__ = (
     "Part",
     "Schema",
     "Tool",
+    "ToolConfig",
     "Type",
     "CountMessageTokensRequest",
     "CountMessageTokensResponse",
@@ -227,6 +250,13 @@ __all__ = (
     "GenerateMessageResponse",
     "Message",
     "MessagePrompt",
+    "File",
+    "CreateFileRequest",
+    "CreateFileResponse",
+    "DeleteFileRequest",
+    "GetFileRequest",
+    "ListFilesRequest",
+    "ListFilesResponse",
     "AttributionSourceId",
     "BatchEmbedContentsRequest",
     "BatchEmbedContentsResponse",

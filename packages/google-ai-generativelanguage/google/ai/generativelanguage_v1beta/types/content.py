@@ -27,7 +27,10 @@ __protobuf__ = proto.module(
         "Content",
         "Part",
         "Blob",
+        "FileData",
         "Tool",
+        "ToolConfig",
+        "FunctionCallingConfig",
         "FunctionDeclaration",
         "FunctionCall",
         "FunctionResponse",
@@ -139,6 +142,10 @@ class Part(proto.Message):
             function is used as context to the model.
 
             This field is a member of `oneof`_ ``data``.
+        file_data (google.ai.generativelanguage_v1beta.types.FileData):
+            URI based data.
+
+            This field is a member of `oneof`_ ``data``.
     """
 
     text: str = proto.Field(
@@ -164,6 +171,12 @@ class Part(proto.Message):
         oneof="data",
         message="FunctionResponse",
     )
+    file_data: "FileData" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="data",
+        message="FileData",
+    )
 
 
 class Blob(proto.Message):
@@ -187,6 +200,27 @@ class Blob(proto.Message):
     )
     data: bytes = proto.Field(
         proto.BYTES,
+        number=2,
+    )
+
+
+class FileData(proto.Message):
+    r"""URI based data.
+
+    Attributes:
+        mime_type (str):
+            Optional. The IANA standard MIME type of the
+            source data.
+        file_uri (str):
+            Required. URI.
+    """
+
+    mime_type: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    file_uri: str = proto.Field(
+        proto.STRING,
         number=2,
     )
 
@@ -219,6 +253,79 @@ class Tool(proto.Message):
         proto.MESSAGE,
         number=1,
         message="FunctionDeclaration",
+    )
+
+
+class ToolConfig(proto.Message):
+    r"""The Tool configuration containing parameters for specifying ``Tool``
+    use in the request.
+
+    Attributes:
+        function_calling_config (google.ai.generativelanguage_v1beta.types.FunctionCallingConfig):
+            Optional. Function calling config.
+    """
+
+    function_calling_config: "FunctionCallingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FunctionCallingConfig",
+    )
+
+
+class FunctionCallingConfig(proto.Message):
+    r"""Configuration for specifying function calling behavior.
+
+    Attributes:
+        mode (google.ai.generativelanguage_v1beta.types.FunctionCallingConfig.Mode):
+            Optional. Specifies the mode in which
+            function calling should execute. If unspecified,
+            the default value will be set to AUTO.
+        allowed_function_names (MutableSequence[str]):
+            Optional. A set of function names that, when provided,
+            limits the functions the model will call.
+
+            This should only be set when the Mode is ANY. Function names
+            should match [FunctionDeclaration.name]. With mode set to
+            ANY, model will predict a function call from the set of
+            function names provided.
+    """
+
+    class Mode(proto.Enum):
+        r"""Defines the execution behavior for function calling by
+        defining the execution mode.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Unspecified function calling mode. This value
+                should not be used.
+            AUTO (1):
+                Default model behavior, model decides to
+                predict either a function call or a natural
+                language repspose.
+            ANY (2):
+                Model is constrained to always predicting a function call
+                only. If "allowed_function_names" are set, the predicted
+                function call will be limited to any one of
+                "allowed_function_names", else the predicted function call
+                will be any one of the provided "function_declarations".
+            NONE (3):
+                Model will not predict any function call.
+                Model behavior is same as when not passing any
+                function declarations.
+        """
+        MODE_UNSPECIFIED = 0
+        AUTO = 1
+        ANY = 2
+        NONE = 3
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
+    allowed_function_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 
