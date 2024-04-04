@@ -80,6 +80,7 @@ import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.compile
 import bigframes.core.guid as guid
+import bigframes.core.nodes as nodes
 from bigframes.core.ordering import IntegerEncoding
 import bigframes.core.ordering as order
 import bigframes.core.tree_properties as traversals
@@ -119,6 +120,11 @@ _VALID_ENCODINGS = {
 # BigQuery has 1 MB query size limit. Don't want to take up more than a few % of that inlining a table.
 # Also must assume that text encoding as literals is much less efficient than in-memory representation.
 MAX_INLINE_DF_BYTES = 5000
+
+# Max complexity that should be executed as a single query
+QUERY_COMPLEXITY_LIMIT = 1e7
+# Number of times to factor out subqueries before giving up.
+MAX_SUBTREE_FACTORINGS = 5
 
 logger = logging.getLogger(__name__)
 
@@ -1849,6 +1855,52 @@ class Session(
             columns=new_columns,
             hidden_ordering_columns=new_hidden_columns,
             ordering=order.ExpressionOrdering.from_offset_col("bigframes_offsets"),
+        )
+
+    def _simplify_with_caching(self, array_value: core.ArrayValue) -> core.ArrayValue:
+        """Attempts to handle the complexity by caching duplicated subtrees and breaking the query into pieces."""
+        if not bigframes.options.compute.enable_multi_query_execution:
+            return array_value
+        node = array_value.node
+        if node.planning_complexity < QUERY_COMPLEXITY_LIMIT:
+            return array_value
+
+        for _ in range(MAX_SUBTREE_FACTORINGS):
+            updated = self._cache_most_complex_subtree(node)
+            if updated is None:
+                return core.ArrayValue(node)
+            else:
+                node = updated
+
+        return core.ArrayValue(node)
+
+    def _cache_most_complex_subtree(
+        self, node: nodes.BigFrameNode
+    ) -> Optional[nodes.BigFrameNode]:
+        # TODO: If query fails, retry with lower complexity limit
+        valid_candidates = traversals.count_complex_nodes(
+            node,
+            min_complexity=(QUERY_COMPLEXITY_LIMIT / 500),
+            max_complexity=QUERY_COMPLEXITY_LIMIT,
+        ).items()
+        # Heuristic: subtree_compleixty * (copies of subtree)^2
+        best_candidate = max(
+            valid_candidates,
+            key=lambda i: i[0].planning_complexity + (i[1] ** 2),
+            default=None,
+        )
+
+        if best_candidate is None:
+            # No good subtrees to cache, just return original tree
+            return None
+
+        # TODO: Add clustering columns based on access patterns
+        materialized = self._cache_with_cluster_cols(
+            core.ArrayValue(best_candidate[0]), []
+        ).node
+
+        return traversals.replace_nodes(
+            node, to_replace=best_candidate[0], replacemenet=materialized
         )
 
     def _is_trivially_executable(self, array_value: core.ArrayValue):

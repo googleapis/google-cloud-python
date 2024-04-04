@@ -954,6 +954,14 @@ def restore_sampling_settings():
 
 
 @pytest.fixture()
+def with_multiquery_execution():
+    original_setting = bigframes.options.compute.enable_multi_query_execution
+    bigframes.options.compute.enable_multi_query_execution = True
+    yield
+    bigframes.options.compute.enable_multi_query_execution = original_setting
+
+
+@pytest.fixture()
 def weird_strings_pd():
     df = pd.DataFrame(
         {

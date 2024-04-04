@@ -1873,6 +1873,10 @@ class Block:
             expr = self.session._cache_with_cluster_cols(
                 self.expr, cluster_cols=self.index_columns
             )
+        return self.swap_array_expr(expr)
+
+    def swap_array_expr(self, expr: core.ArrayValue) -> Block:
+        # TODO: Validate schema unchanged
         return Block(
             expr,
             index_columns=self.index_columns,

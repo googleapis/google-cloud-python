@@ -108,6 +108,11 @@ class Expression(abc.ABC):
     def is_bijective(self) -> bool:
         return False
 
+    @property
+    def is_identity(self) -> bool:
+        """True for identity operation that does not transform input."""
+        return False
+
 
 @dataclasses.dataclass(frozen=True)
 class ScalarConstantExpression(Expression):
@@ -171,6 +176,10 @@ class UnboundVariableExpression(Expression):
 
     @property
     def is_bijective(self) -> bool:
+        return True
+
+    @property
+    def is_identity(self) -> bool:
         return True
 
 

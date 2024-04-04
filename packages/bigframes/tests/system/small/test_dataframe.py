@@ -4145,6 +4145,56 @@ def test_recursion_limit(scalars_df_index):
     scalars_df_index.to_pandas()
 
 
+def test_query_complexity_repeated_joins(
+    scalars_df_index, scalars_pandas_df_index, with_multiquery_execution
+):
+    pd_df = scalars_pandas_df_index
+    bf_df = scalars_df_index
+    for _ in range(6):
+        # recursively join, resuling in 2^6 - 1 = 63 joins
+        pd_df = pd_df.merge(pd_df, on="int64_col").head(30)
+        pd_df = pd_df[pd_df.columns[:20]]
+        bf_df = bf_df.merge(bf_df, on="int64_col").head(30)
+        bf_df = bf_df[bf_df.columns[:20]]
+
+    bf_result = bf_df.to_pandas()
+    pd_result = pd_df
+    assert_pandas_df_equal(bf_result, pd_result, check_index_type=False)
+
+
+def test_query_complexity_repeated_subtrees(
+    scalars_df_index, scalars_pandas_df_index, with_multiquery_execution
+):
+    # Recursively union the data, if fully inlined has 10^5 identical root tables.
+    pd_df = scalars_pandas_df_index
+    bf_df = scalars_df_index
+    for _ in range(5):
+        pd_df = pd.concat(10 * [pd_df]).head(5)
+        bf_df = bigframes.pandas.concat(10 * [bf_df]).head(5)
+    bf_result = bf_df.to_pandas()
+    pd_result = pd_df
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
+@pytest.mark.skipif(
+    sys.version_info >= (3, 12),
+    # See: https://github.com/python/cpython/issues/112282
+    reason="setrecursionlimit has no effect on the Python C stack since Python 3.12.",
+)
+def test_query_complexity_repeated_analytic(
+    scalars_df_index, scalars_pandas_df_index, with_multiquery_execution
+):
+    bf_df = scalars_df_index[["int64_col", "int64_too"]]
+    pd_df = scalars_pandas_df_index[["int64_col", "int64_too"]]
+    # Uses LAG analytic operator, each in a new SELECT
+    for _ in range(50):
+        bf_df = bf_df.diff()
+        pd_df = pd_df.diff()
+    bf_result = bf_df.to_pandas()
+    pd_result = pd_df
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_to_pandas_downsampling_option_override(session):
     df = session.read_gbq("bigframes-dev.bigframes_tests_sys.batting")
     download_size = 1
