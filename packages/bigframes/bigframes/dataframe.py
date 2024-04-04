@@ -50,6 +50,7 @@ import bigframes.core
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
+import bigframes.core.convert
 import bigframes.core.expression as ex
 import bigframes.core.groupby as groupby
 import bigframes.core.guid
@@ -663,22 +664,20 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         how: str = "outer",
         reverse: bool = False,
     ):
-        if isinstance(other, (float, int)):
+        if isinstance(other, (float, int, bool)):
             return self._apply_scalar_binop(other, op, reverse=reverse)
-        elif isinstance(other, indexes.Index):
-            return self._apply_series_binop(
-                other.to_series(index=self.index),
-                op,
-                axis=axis,
-                how=how,
-                reverse=reverse,
-            )
-        elif isinstance(other, bigframes.series.Series):
-            return self._apply_series_binop(
-                other, op, axis=axis, how=how, reverse=reverse
-            )
         elif isinstance(other, DataFrame):
             return self._apply_dataframe_binop(other, op, how=how, reverse=reverse)
+        elif isinstance(other, pandas.DataFrame):
+            return self._apply_dataframe_binop(
+                DataFrame(other), op, how=how, reverse=reverse
+            )
+        elif utils.get_axis_number(axis) == 0:
+            bf_series = bigframes.core.convert.to_bf_series(other, self.index)
+            return self._apply_series_binop_axis_0(bf_series, op, how, reverse)
+        elif utils.get_axis_number(axis) == 1:
+            pd_series = bigframes.core.convert.to_pd_series(other, self.columns)
+            return self._apply_series_binop_axis_1(pd_series, op, how, reverse)
         raise NotImplementedError(
             f"binary operation is not implemented on the second operand of type {type(other).__name__}."
             f"{constants.FEEDBACK_LINK}"
@@ -700,22 +699,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             block = block.drop_columns([column_id])
         return DataFrame(block)
 
-    def _apply_series_binop(
+    def _apply_series_binop_axis_0(
         self,
         other: bigframes.series.Series,
         op: ops.BinaryOp,
-        axis: str | int = "columns",
         how: str = "outer",
         reverse: bool = False,
     ) -> DataFrame:
-        if axis not in ("columns", "index", 0, 1):
-            raise ValueError(f"Invalid input: axis {axis}.")
-
-        if axis in ("columns", 1):
-            raise NotImplementedError(
-                f"Row Series operations haven't been supported. {constants.FEEDBACK_LINK}"
-            )
-
         block, (get_column_left, get_column_right) = self._block.join(
             other._block, how=how
         )
@@ -737,6 +727,63 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         block = block.drop_columns([series_col])
         block = block.with_index_labels(self.index.names)
         return DataFrame(block)
+
+    def _apply_series_binop_axis_1(
+        self,
+        other: pandas.Series,
+        op: ops.BinaryOp,
+        how: str = "outer",
+        reverse: bool = False,
+    ) -> DataFrame:
+        # Somewhat different alignment than df-df so separate codepath for now.
+        if self.columns.equals(other.index):
+            columns, lcol_indexer, rcol_indexer = self.columns, None, None
+        else:
+            if not (self.columns.is_unique and other.index.is_unique):
+                raise ValueError("Cannot align non-unique indices")
+            columns, lcol_indexer, rcol_indexer = self.columns.join(
+                other.index, how=how, return_indexers=True
+            )
+
+        binop_result_ids = []
+
+        column_indices = zip(
+            lcol_indexer if (lcol_indexer is not None) else range(len(columns)),
+            rcol_indexer if (rcol_indexer is not None) else range(len(columns)),
+        )
+
+        block = self._block
+        for left_index, right_index in column_indices:
+            if left_index >= 0 and right_index >= 0:  # -1 indices indicate missing
+                self_col_id = self._block.value_columns[left_index]
+                other_scalar = other.iloc[right_index]
+                expr = (
+                    op.as_expr(ex.const(other_scalar), self_col_id)
+                    if reverse
+                    else op.as_expr(self_col_id, ex.const(other_scalar))
+                )
+            elif left_index >= 0:
+                self_col_id = self._block.value_columns[left_index]
+                expr = (
+                    op.as_expr(ex.const(None), self_col_id)
+                    if reverse
+                    else op.as_expr(self_col_id, ex.const(None))
+                )
+            elif right_index >= 0:
+                other_scalar = other.iloc[right_index]
+                expr = (
+                    op.as_expr(ex.const(other_scalar), ex.const(None))
+                    if reverse
+                    else op.as_expr(ex.const(None), ex.const(other_scalar))
+                )
+            else:
+                # Should not be possible
+                raise ValueError("No right or left index.")
+            block, result_col_id = block.project_expr(expr)
+            binop_result_ids.append(result_col_id)
+
+        block = block.select_columns(binop_result_ids)
+        return DataFrame(block.with_column_labels(columns))
 
     def _apply_dataframe_binop(
         self,

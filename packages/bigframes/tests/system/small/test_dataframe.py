@@ -27,6 +27,7 @@ import pytest
 
 import bigframes
 import bigframes._config.display_options as display_options
+import bigframes.core.indexes as bf_indexes
 import bigframes.dataframe as dataframe
 import bigframes.series as series
 from tests.system.utils import (
@@ -2072,6 +2073,37 @@ def test_series_binop_axis_index(
     pd_result = op(scalars_pandas_df[df_columns], scalars_pandas_df[series_column])
 
     assert_pandas_df_equal(bf_result, pd_result)
+
+
+@skip_legacy_pandas
+@pytest.mark.parametrize(
+    ("input"),
+    [
+        ((1000, 2000, 3000)),
+        (pd.Index([1000, 2000, 3000])),
+        (bf_indexes.Index([1000, 2000, 3000])),
+        (pd.Series((1000, 2000), index=["int64_too", "float64_col"])),
+        (series.Series((1000, 2000), index=["int64_too", "float64_col"])),
+    ],
+    ids=[
+        "tuple",
+        "pd_index",
+        "bf_index",
+        "pd_series",
+        "bf_series",
+    ],
+)
+def test_listlike_binop_axis_1(scalars_dfs, input):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    df_columns = ["int64_col", "float64_col", "int64_too"]
+
+    bf_result = scalars_df[df_columns].add(input, axis=1).to_pandas()
+    if hasattr(input, "to_pandas"):
+        input = input.to_pandas()
+    pd_result = scalars_pandas_df[df_columns].add(input, axis=1)
+
+    assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
