@@ -30,7 +30,7 @@ description = (
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 3 - Alpha"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # please keep these in sync with the minimum versions in testing/constraints-3.9.txt
     "cloudpickle >= 2.0.0",

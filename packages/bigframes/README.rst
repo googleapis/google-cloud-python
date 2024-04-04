@@ -1,6 +1,8 @@
 BigQuery DataFrames
 ===================
 
+|GA| |pypi| |versions|
+
 BigQuery DataFrames provides a Pythonic DataFrame and machine learning (ML) API
 powered by the BigQuery engine.
 
@@ -10,6 +12,12 @@ powered by the BigQuery engine.
 BigQuery DataFrames is an open-source package. You can run
 ``pip install --upgrade bigframes`` to install the latest version.
 
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/bigframes.svg
+   :target: https://pypi.org/project/bigframes/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/bigframes.svg
+   :target: https://pypi.org/project/bigframes/
 
 Documentation
 -------------
