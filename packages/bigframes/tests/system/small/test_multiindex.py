@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas
 import pytest
 
@@ -1168,3 +1169,19 @@ def test_column_multi_index_dot_not_supported():
         NotImplementedError, match="Multi-level column input is not supported"
     ):
         bf1 @ bf2
+
+
+def test_explode_w_multi_index():
+    data = [[[1, 1], np.nan, [3, 3]], [[2], [5], []]]
+    multi_level_columns = pandas.MultiIndex.from_arrays(
+        [["col0", "col0", "col1"], ["col00", "col01", "col11"]]
+    )
+
+    df = bpd.DataFrame(data, columns=multi_level_columns)
+    pd_df = df.to_pandas()
+    pandas.testing.assert_frame_equal(
+        df["col0"].explode("col00").to_pandas(),
+        pd_df["col0"].explode("col00"),
+        check_dtype=False,
+        check_index_type=False,
+    )

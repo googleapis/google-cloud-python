@@ -26,11 +26,17 @@ def _to_json_string(translator, op: vendored_ibis_ops.ToJsonString):
     return f"TO_JSON_STRING({arg})"
 
 
+def _generate_array(translator, op: vendored_ibis_ops.GenerateArray):
+    arg = translator.translate(op.arg)
+    return f"GENERATE_ARRAY(0, {arg})"
+
+
 patched_ops = {
     vendored_ibis_ops.ApproximateMultiQuantile: _approx_quantiles,  # type:ignore
     vendored_ibis_ops.FirstNonNullValue: _first_non_null_value,  # type:ignore
     vendored_ibis_ops.LastNonNullValue: _last_non_null_value,  # type:ignore
     vendored_ibis_ops.ToJsonString: _to_json_string,  # type:ignore
+    vendored_ibis_ops.GenerateArray: _generate_array,  # type:ignore
 }
 
 OPERATION_REGISTRY.update(patched_ops)

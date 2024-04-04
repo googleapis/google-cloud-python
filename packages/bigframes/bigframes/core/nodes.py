@@ -484,3 +484,30 @@ class RandomSampleNode(UnaryNode):
 
     def __hash__(self):
         return self._node_hash
+
+
+@dataclass(frozen=True)
+class ExplodeNode(UnaryNode):
+    column_ids: typing.Tuple[str, ...]
+
+    @property
+    def row_preserving(self) -> bool:
+        return False
+
+    def __hash__(self):
+        return self._node_hash
+
+    @functools.cached_property
+    def schema(self) -> schemata.ArraySchema:
+        items = tuple(
+            schemata.SchemaItem(
+                name,
+                bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
+                    self.child.schema.get_type(name).pyarrow_dtype.value_type
+                ),
+            )
+            if name in self.column_ids
+            else schemata.SchemaItem(name, self.child.schema.get_type(name))
+            for name in self.child.schema.names
+        )
+        return schemata.ArraySchema(items)

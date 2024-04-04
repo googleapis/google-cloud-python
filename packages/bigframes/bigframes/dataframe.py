@@ -2579,6 +2579,36 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )[0]
         )
 
+    def explode(
+        self,
+        column: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+        *,
+        ignore_index: Optional[bool] = False,
+    ) -> DataFrame:
+        if not utils.is_list_like(column):
+            column_labels = typing.cast(typing.Sequence[blocks.Label], (column,))
+        else:
+            column_labels = typing.cast(typing.Sequence[blocks.Label], tuple(column))
+
+        if not column_labels:
+            raise ValueError("column must be nonempty")
+        if len(column_labels) > len(set(column_labels)):
+            raise ValueError("column must be unique")
+
+        column_ids = [self._resolve_label_exact(label) for label in column_labels]
+        missing = [
+            column_labels[i] for i in range(len(column_ids)) if column_ids[i] is None
+        ]
+        if len(missing) > 0:
+            raise KeyError(f"None of {missing} are in the columns")
+
+        return DataFrame(
+            self._block.explode(
+                column_ids=typing.cast(typing.Sequence[str], tuple(column_ids)),
+                ignore_index=ignore_index,
+            )
+        )
+
     def _split(
         self,
         ns: Iterable[int] = (),

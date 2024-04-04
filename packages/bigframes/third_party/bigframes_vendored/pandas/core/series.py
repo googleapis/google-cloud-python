@@ -3,7 +3,7 @@ Data structure for 1-dimensional cross-sectional and time series data
 """
 from __future__ import annotations
 
-from typing import Hashable, IO, Literal, Mapping, Sequence, TYPE_CHECKING
+from typing import Hashable, IO, Literal, Mapping, Optional, Sequence, TYPE_CHECKING
 
 from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy as np
@@ -748,6 +748,34 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Returns:
             bigframes.series.Series: Rounded values of the Series.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def explode(self, *, ignore_index: Optional[bool] = False) -> Series:
+        """
+        Transform each element of a list-like to a row.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([[1, 2, 3], [], [3, 4]])
+            >>> s.explode()
+            0       1
+            0       2
+            0       3
+            1    <NA>
+            2       3
+            2       4
+            dtype: Int64
+
+        Args:
+            ignore_index (bool, default False):
+                If True, the resulting index will be labeled 0, 1, …, n - 1.
+
+        Returns:
+            bigframes.series.Series: Exploded lists to rows; index will be duplicated for these rows.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

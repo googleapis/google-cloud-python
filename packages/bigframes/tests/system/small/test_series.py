@@ -3416,3 +3416,104 @@ def test_series_pipe(
     )
 
     assert_series_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("data"),
+    [
+        pytest.param([1, 2, 3], id="int"),
+        pytest.param([[1, 2, 3], [], numpy.nan, [3, 4]], id="int_array"),
+        pytest.param(
+            [["A", "AA", "AAA"], ["BB", "B"], numpy.nan, [], ["C"]], id="string_array"
+        ),
+        pytest.param(
+            [
+                {"A": {"x": 1.0}, "B": "b"},
+                {"A": {"y": 2.0}, "B": "bb"},
+                {"A": {"z": 4.0}},
+                {},
+                numpy.nan,
+            ],
+            id="struct_array",
+        ),
+    ],
+)
+def test_series_explode(data):
+    data = [[1, 2, 3], [], numpy.nan, [3, 4]]
+    s = bigframes.pandas.Series(data)
+    pd_s = pd.Series(data)
+    pd.testing.assert_series_equal(
+        s.explode().to_pandas(),
+        pd_s.explode(),
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+@pytest.mark.parametrize(
+    ("index", "ignore_index"),
+    [
+        pytest.param(None, True, id="default_index"),
+        pytest.param(None, False, id="ignore_default_index"),
+        pytest.param([5, 1, 3, 2], True, id="unordered_index"),
+        pytest.param([5, 1, 3, 2], False, id="ignore_unordered_index"),
+        pytest.param(["z", "x", "a", "b"], True, id="str_index"),
+        pytest.param(["z", "x", "a", "b"], False, id="ignore_str_index"),
+    ],
+)
+def test_series_explode_w_index(index, ignore_index):
+    data = [[], [200.0, 23.12], [4.5, -9.0], [1.0]]
+    s = bigframes.pandas.Series(data, index=index)
+    pd_s = pd.Series(data, index=index)
+    pd.testing.assert_series_equal(
+        s.explode(ignore_index=ignore_index).to_pandas(),
+        pd_s.explode(ignore_index=ignore_index).astype(pd.Float64Dtype()),
+        check_index_type=False,
+    )
+
+
+@pytest.mark.parametrize(
+    ("ignore_index", "ordered"),
+    [
+        pytest.param(True, True, id="include_index_ordered"),
+        pytest.param(True, False, id="include_index_unordered"),
+        pytest.param(False, True, id="ignore_index_ordered"),
+    ],
+)
+def test_series_explode_reserve_order(ignore_index, ordered):
+    data = [numpy.random.randint(0, 10, 10) for _ in range(10)]
+    s = bigframes.pandas.Series(data)
+    pd_s = pd.Series(data)
+
+    res = s.explode(ignore_index=ignore_index).to_pandas(ordered=ordered)
+    pd_res = pd_s.explode(ignore_index=ignore_index).astype(pd.Int64Dtype())
+    pd.testing.assert_series_equal(
+        res if ordered else res.sort_index(),
+        pd_res,
+        check_index_type=False,
+    )
+
+
+def test_series_explode_w_aggregate():
+    data = [[1, 2, 3], [], numpy.nan, [3, 4]]
+    s = bigframes.pandas.Series(data)
+    pd_s = pd.Series(data)
+    assert s.explode().sum() == pd_s.explode().sum()
+
+
+@pytest.mark.parametrize(
+    ("data"),
+    [
+        pytest.param(numpy.nan, id="null"),
+        pytest.param([numpy.nan], id="null_array"),
+        pytest.param([[]], id="empty_array"),
+        pytest.param([numpy.nan, []], id="null_and_empty_array"),
+    ],
+)
+def test_series_explode_null(data):
+    s = bigframes.pandas.Series(data)
+    pd.testing.assert_series_equal(
+        s.explode().to_pandas(),
+        s.to_pandas().explode(),
+        check_dtype=False,
+    )

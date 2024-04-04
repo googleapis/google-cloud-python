@@ -212,7 +212,7 @@ hash_op = create_unary_op(
 len_op = create_unary_op(
     name="len",
     type_signature=op_typing.FixedOutputType(
-        dtypes.is_array_like, dtypes.INT_DTYPE, description="array-like"
+        dtypes.is_iterable, dtypes.INT_DTYPE, description="iterable"
     ),
 )
 reverse_op = create_unary_op(name="reverse", type_signature=op_typing.STRING_TRANSFORM)

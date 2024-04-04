@@ -401,6 +401,15 @@ class ArrayValue:
             return ArrayValue(bigframes.core.rewrite.maybe_rewrite_join(join_node))
         return ArrayValue(join_node)
 
+    def explode(self, column_ids: typing.Sequence[str]) -> ArrayValue:
+        assert len(column_ids) > 0
+        for column_id in column_ids:
+            assert bigframes.dtypes.is_array_like(self.get_column_type(column_id))
+
+        return ArrayValue(
+            nodes.ExplodeNode(child=self.node, column_ids=tuple(column_ids))
+        )
+
     def _uniform_sampling(self, fraction: float) -> ArrayValue:
         """Sampling the table on given fraction.
 

@@ -2804,6 +2804,57 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def explode(
+        self, column: Union[str, Sequence[str]], *, ignore_index: Optional[bool] = False
+    ) -> DataFrame:
+        """
+        Transform each element of an array to a row, replicating index values.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'A': [[0, 1, 2], [], [], [3, 4]],
+            ...                     'B': 1,
+            ...                     'C': [['a', 'b', 'c'], np.nan, [], ['d', 'e']]})
+            >>> df.explode('A')
+                A  B              C
+            0     0  1  ['a' 'b' 'c']
+            0     1  1  ['a' 'b' 'c']
+            0     2  1  ['a' 'b' 'c']
+            1  <NA>  1             []
+            2  <NA>  1             []
+            3     3  1      ['d' 'e']
+            3     4  1      ['d' 'e']
+            <BLANKLINE>
+            [7 rows x 3 columns]
+            >>> df.explode(list('AC'))
+                A  B     C
+            0     0  1     a
+            0     1  1     b
+            0     2  1     c
+            1  <NA>  1  <NA>
+            2  <NA>  1  <NA>
+            3     3  1     d
+            3     4  1     e
+            <BLANKLINE>
+            [7 rows x 3 columns]
+
+        Args:
+            column (str, Sequence[str]):
+                Column(s) to explode. For multiple columns, specify a non-empty list
+                with each element be str or tuple, and all specified columns their
+                list-like data on same row of the frame must have matching length.
+            ignore_index (bool, default False):
+                If True, the resulting index will be labeled 0, 1, …, n - 1.
+
+        Returns:
+            bigframes.series.DataFrame: Exploded lists to rows of the subset columns;
+                index will be duplicated for these rows.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def corr(self, method, min_periods, numeric_only) -> DataFrame:
         """
         Compute pairwise correlation of columns, excluding NA/null values.
