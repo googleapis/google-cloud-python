@@ -1514,7 +1514,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             map_df = map_df.rename(columns={arg.name: self.name})
         elif isinstance(arg, Mapping):
             map_df = bigframes.dataframe.DataFrame(
-                {"keys": list(arg.keys()), self.name: list(arg.values())},
+                {"keys": list(arg.keys()), self.name: list(arg.values())},  # type: ignore
                 session=self._get_block().expr.session,
             )
             map_df = map_df.set_index("keys")

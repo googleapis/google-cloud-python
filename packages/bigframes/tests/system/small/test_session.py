@@ -421,6 +421,21 @@ def test_read_pandas(session, scalars_dfs):
     pd.testing.assert_frame_equal(result, expected)
 
 
+def test_read_pandas_series(session):
+    idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
+    pd_series = pd.Series([3, 1, 4, 1, 5], dtype=pd.Int64Dtype(), index=idx)
+    bf_series = session.read_pandas(pd_series)
+
+    pd.testing.assert_series_equal(bf_series.to_pandas(), pd_series)
+
+
+def test_read_pandas_index(session):
+    pd_idx = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
+    bf_idx = session.read_pandas(pd_idx)
+
+    pd.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
+
+
 def test_read_pandas_inline_respects_location():
     options = bigframes.BigQueryOptions(location="europe-west1")
     session = bigframes.Session(options)

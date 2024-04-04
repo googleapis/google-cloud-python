@@ -95,7 +95,9 @@ import bigframes.version
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
+    import bigframes.core.indexes
     import bigframes.dataframe as dataframe
+    import bigframes.series
 
 _BIGFRAMES_DEFAULT_CONNECTION_ID = "bigframes-default-connection"
 
@@ -963,7 +965,23 @@ class Session(
         model = self.bqclient.get_model(model_ref)
         return bigframes.ml.loader.from_bq(self, model)
 
+    @typing.overload
+    def read_pandas(
+        self, pandas_dataframe: pandas.Index
+    ) -> bigframes.core.indexes.Index:
+        ...
+
+    @typing.overload
+    def read_pandas(self, pandas_dataframe: pandas.Series) -> bigframes.series.Series:
+        ...
+
+    @typing.overload
     def read_pandas(self, pandas_dataframe: pandas.DataFrame) -> dataframe.DataFrame:
+        ...
+
+    def read_pandas(
+        self, pandas_dataframe: Union[pandas.DataFrame, pandas.Series, pandas.Index]
+    ):
         """Loads DataFrame from a pandas DataFrame.
 
         The pandas DataFrame will be persisted as a temporary BigQuery table, which can be
@@ -986,13 +1004,31 @@ class Session(
             [2 rows x 2 columns]
 
         Args:
-            pandas_dataframe (pandas.DataFrame):
-                a pandas DataFrame object to be loaded.
+            pandas_dataframe (pandas.DataFrame, pandas.Series, or pandas.Index):
+                a pandas DataFrame/Series/Index object to be loaded.
 
         Returns:
-            bigframes.dataframe.DataFrame: The BigQuery DataFrame.
+            An equivalent bigframes.pandas.(DataFrame/Series/Index) object
         """
-        return self._read_pandas(pandas_dataframe, "read_pandas")
+        import bigframes.series as series
+
+        # Try to handle non-dataframe pandas objects as well
+        if isinstance(pandas_dataframe, pandas.Series):
+            bf_df = self._read_pandas(pandas.DataFrame(pandas_dataframe), "read_pandas")
+            bf_series = typing.cast(series.Series, bf_df[bf_df.columns[0]])
+            # wrapping into df can set name to 0 so reset to original object name
+            bf_series.name = pandas_dataframe.name
+            return bf_series
+        if isinstance(pandas_dataframe, pandas.Index):
+            return self._read_pandas(
+                pandas.DataFrame(index=pandas_dataframe), "read_pandas"
+            ).index
+        if isinstance(pandas_dataframe, pandas.DataFrame):
+            return self._read_pandas(pandas_dataframe, "read_pandas")
+        else:
+            raise ValueError(
+                f"read_pandas() expects a pandas.DataFrame, but got a {type(pandas_dataframe)}"
+            )
 
     def _read_pandas(
         self, pandas_dataframe: pandas.DataFrame, api_name: str

@@ -577,7 +577,22 @@ def read_gbq_table(
 read_gbq_table.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_table)
 
 
+@typing.overload
 def read_pandas(pandas_dataframe: pandas.DataFrame) -> bigframes.dataframe.DataFrame:
+    ...
+
+
+@typing.overload
+def read_pandas(pandas_dataframe: pandas.Series) -> bigframes.series.Series:
+    ...
+
+
+@typing.overload
+def read_pandas(pandas_dataframe: pandas.Index) -> bigframes.core.indexes.Index:
+    ...
+
+
+def read_pandas(pandas_dataframe: Union[pandas.DataFrame, pandas.Series, pandas.Index]):
     return global_session.with_default_session(
         bigframes.session.Session.read_pandas,
         pandas_dataframe,
