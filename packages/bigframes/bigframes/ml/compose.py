@@ -115,14 +115,17 @@ class ColumnTransformer(
             name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
             return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
 
+        output_names = []
         for transform_col in bq_model._properties["transformColumns"]:
+            transform_col_dict = cast(dict, transform_col)
             # pass the columns that are not transformed
-            if "transformSql" not in transform_col:
+            if "transformSql" not in transform_col_dict:
                 continue
-            transform_sql: str = cast(dict, transform_col)["transformSql"]
+            transform_sql: str = transform_col_dict["transformSql"]
             if not transform_sql.startswith("ML."):
                 continue
 
+            output_names.append(transform_col_dict["name"])
             found_transformer = False
             for prefix in _BQML_TRANSFROM_TYPE_MAPPING:
                 if transform_sql.startswith(prefix):
@@ -141,7 +144,10 @@ class ColumnTransformer(
                     f"Unsupported transformer type. {constants.FEEDBACK_LINK}"
                 )
 
-        return cls(transformers=transformers)
+        transformer = cls(transformers=transformers)
+        transformer._output_names = output_names
+
+        return transformer
 
     def _merge(
         self, bq_model: bigquery.Model
@@ -164,6 +170,7 @@ class ColumnTransformer(
                 for feature_column in bq_model.feature_columns
             ]
         ) == sorted(columns):
+            transformer_0._output_names = self._output_names
             return transformer_0
 
         return self

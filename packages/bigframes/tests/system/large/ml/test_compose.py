@@ -142,3 +142,26 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
     ]
     assert reloaded_transformer.transformers_ == expected
     assert reloaded_transformer._bqml_model is not None
+
+    result = transformer.fit_transform(
+        new_penguins_df[["species", "culmen_length_mm", "flipper_length_mm"]]
+    ).to_pandas()
+
+    expected = pandas.DataFrame(
+        {
+            "onehotencoded_species": [
+                [{"index": 1, "value": 1.0}],
+                [{"index": 1, "value": 1.0}],
+                [{"index": 2, "value": 1.0}],
+            ],
+            "standard_scaled_culmen_length_mm": [
+                1.313249,
+                -0.20198,
+                -1.111118,
+            ],
+            "standard_scaled_flipper_length_mm": [1.251098, -1.196588, -0.054338],
+        },
+        index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
+    )
+
+    pandas.testing.assert_frame_equal(result, expected, rtol=0.1, check_dtype=False)
