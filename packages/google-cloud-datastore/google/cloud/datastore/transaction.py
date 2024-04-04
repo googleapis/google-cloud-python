@@ -13,7 +13,6 @@
 # limitations under the License.
 
 """Create / interact with Google Cloud Datastore transactions."""
-
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore_v1.types import TransactionOptions
 from google.protobuf import timestamp_pb2
@@ -149,15 +148,23 @@ class Transaction(Batch):
     :param read_time: (Optional) Time at which the transaction reads entities.
                       Only allowed when ``read_only=True``. This feature is in private preview.
 
+    :type begin_later: bool
+    :param begin_later: (Optional) If True, the transaction will be started
+                        lazily (i.e. when the first RPC is made). If False,
+                        the transaction will be started as soon as the context manager
+                        is entered. `self.begin()` can also be called manually to begin
+                        the transaction at any time. Default is False.
+
     :raises: :class:`ValueError` if read_time is specified when
              ``read_only=False``.
     """
 
     _status = None
 
-    def __init__(self, client, read_only=False, read_time=None):
+    def __init__(self, client, read_only=False, read_time=None, begin_later=False):
         super(Transaction, self).__init__(client)
         self._id = None
+        self._begin_later = begin_later
 
         if read_only:
             if read_time is not None:
@@ -180,8 +187,8 @@ class Transaction(Batch):
     def id(self):
         """Getter for the transaction ID.
 
-        :rtype: str
-        :returns: The ID of the current transaction.
+        :rtype: bytes or None
+        :returns: The ID of the current transaction, or None if not started.
         """
         return self._id
 
@@ -240,6 +247,21 @@ class Transaction(Batch):
             self._status = self._ABORTED
             raise
 
+    def _begin_with_id(self, transaction_id):
+        """
+        Attach newly created transaction to an existing transaction ID.
+
+        This is used when begin_later is True, when the first lookup request
+        associated with this transaction creates a new transaction ID.
+
+        :type transaction_id: bytes
+        :param transaction_id: ID of the transaction to attach to.
+        """
+        if self._status is not self._INITIAL:
+            raise ValueError("Transaction already begun.")
+        self._id = transaction_id
+        self._status = self._IN_PROGRESS
+
     def rollback(self, retry=None, timeout=None):
         """Rolls back the current transaction.
 
@@ -258,6 +280,12 @@ class Transaction(Batch):
             Note that if ``retry`` is specified, the timeout applies
             to each individual attempt.
         """
+        # if transaction has not started, abort it
+        if self._status == self._INITIAL:
+            self._status = self._ABORTED
+            self._id = None
+            return None
+
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
 
         try:
@@ -296,6 +324,15 @@ class Transaction(Batch):
             Note that if ``retry`` is specified, the timeout applies
             to each individual attempt.
         """
+        # if transaction has not begun, either begin now, or abort if empty
+        if self._status == self._INITIAL:
+            if not self._mutations:
+                self._status = self._ABORTED
+                self._id = None
+                return None
+            else:
+                self.begin()
+
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
 
         try:
@@ -321,3 +358,18 @@ class Transaction(Batch):
             raise RuntimeError("Transaction is read only")
         else:
             super(Transaction, self).put(entity)
+
+    def __enter__(self):
+        if not self._begin_later:
+            self.begin()
+        self._client._push_batch(self)
+        return self
+
+    def _allow_mutations(self):
+        """
+        Mutations can be added to a transaction if it is in IN_PROGRESS state,
+        or if it is in INITIAL state and the begin_later flag is set.
+        """
+        return self._status == self._IN_PROGRESS or (
+            self._begin_later and self._status == self._INITIAL
+        )

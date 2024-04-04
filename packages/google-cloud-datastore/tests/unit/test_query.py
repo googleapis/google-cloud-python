@@ -667,7 +667,7 @@ def test_eventual_transaction_fails(database_id):
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_transaction_id_populated(database_id):
     """
-    When an aggregation is run in the context of a transaction, the transaction
+    When an query is run in the context of a transaction, the transaction
     ID should be populated in the request.
     """
     import mock
@@ -696,6 +696,47 @@ def test_transaction_id_populated(database_id):
     read_options = request["read_options"]
     # ensure transaction ID is populated
     assert read_options.transaction == client.current_transaction.id
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_transaction_begin_later(database_id):
+    """
+    When an aggregation is run in the context of a transaction with begin_later=True,
+    the new_transaction field should be populated in the request read_options.
+    """
+    import mock
+    from google.cloud.datastore_v1.types import TransactionOptions
+
+    # make a fake begin_later transaction
+    transaction = mock.Mock()
+    transaction.id = None
+    transaction._begin_later = True
+    transaction._status = transaction._INITIAL
+    transaction._options = TransactionOptions(read_only=TransactionOptions.ReadOnly())
+
+    mock_datastore_api = mock.Mock()
+    mock_gapic = mock_datastore_api.run_query
+
+    more_results_enum = 3  # NO_MORE_RESULTS
+    response_pb = _make_query_response([], b"", more_results_enum, 0)
+    mock_gapic.return_value = response_pb
+
+    client = _Client(
+        None,
+        datastore_api=mock_datastore_api,
+        database=database_id,
+        transaction=transaction,
+    )
+
+    query = _make_query(client)
+    # run mock query
+    list(query.fetch())
+    assert mock_gapic.call_count == 1
+    request = mock_gapic.call_args[1]["request"]
+    read_options = request["read_options"]
+    # ensure new_transaction is populated
+    assert not read_options.transaction
+    assert read_options.new_transaction == transaction._options
 
 
 def test_iterator_constructor_defaults():
@@ -885,7 +926,9 @@ def _next_page_helper(
     if txn_id is None:
         client = _Client(project, database=database, datastore_api=ds_api)
     else:
-        transaction = mock.Mock(id=txn_id, spec=["id"])
+        transaction = mock.Mock(
+            id=txn_id, _begin_later=False, spec=["id", "_begin_later"]
+        )
         client = _Client(
             project, database=database, datastore_api=ds_api, transaction=transaction
         )

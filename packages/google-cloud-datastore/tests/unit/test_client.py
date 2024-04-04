@@ -706,6 +706,52 @@ def test_client_get_multi_hit_w_transaction(database_id):
 
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_hit_w_transaction_begin_later(database_id):
+    """
+    Transactions with begin_later set should begin on first read
+    """
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+    from google.cloud.datastore.key import Key
+
+    kind = "Kind"
+    id_ = 1234
+    expected_server_id = b"123"
+
+    # Make a found entity pb to be returned from mock backend.
+    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo", database=database_id)
+
+    # Make a connection to return the entity pb.
+    creds = _make_credentials()
+    client = _make_client(credentials=creds, database=database_id)
+    lookup_response = _make_lookup_response(
+        results=[entity_pb], transaction=expected_server_id
+    )
+    ds_api = _make_datastore_api(lookup_response=lookup_response)
+    client._datastore_api_internal = ds_api
+
+    key = Key(kind, id_, project=PROJECT, database=database_id)
+    txn = client.transaction(begin_later=True)
+    assert txn._id is None
+    assert txn._status == txn._INITIAL
+    client.get_multi([key], transaction=txn)
+
+    # transaction should now be started
+    assert txn._id == expected_server_id
+    assert txn._id is not None
+    assert txn._status == txn._IN_PROGRESS
+
+    # check rpc args
+    expected_read_options = datastore_pb2.ReadOptions(new_transaction=txn._options)
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key.to_protobuf()],
+        "read_options": expected_read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.lookup.assert_called_once_with(request=expected_request)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_hit_w_read_time(database_id):
     from datetime import datetime
 
@@ -1847,7 +1893,7 @@ def _make_commit_response(*keys):
     return datastore_pb2.CommitResponse(mutation_results=mutation_results)
 
 
-def _make_lookup_response(results=(), missing=(), deferred=()):
+def _make_lookup_response(results=(), missing=(), deferred=(), transaction=None):
     entity_results_found = [
         mock.Mock(entity=result, spec=["entity"]) for result in results
     ]
@@ -1858,7 +1904,8 @@ def _make_lookup_response(results=(), missing=(), deferred=()):
         found=entity_results_found,
         missing=entity_results_missing,
         deferred=deferred,
-        spec=["found", "missing", "deferred"],
+        transaction=transaction,
+        spec=["found", "missing", "deferred", "transaction"],
     )
 
 

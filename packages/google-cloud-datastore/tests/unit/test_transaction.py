@@ -82,6 +82,27 @@ def test_transaction_constructor_read_write_w_read_time(database_id):
 
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_constructor_begin_later(database_id):
+    from google.cloud.datastore.transaction import Transaction
+
+    project = "PROJECT"
+    client = _Client(project, database=database_id)
+    expected_id = b"1234"
+
+    xact = _make_transaction(client, begin_later=True)
+    assert xact._status == Transaction._INITIAL
+    assert xact.id is None
+
+    xact._begin_with_id(expected_id)
+    assert xact._status == Transaction._IN_PROGRESS
+    assert xact.id == expected_id
+
+    # calling a second time should raise exeception
+    with pytest.raises(ValueError):
+        xact._begin_with_id(expected_id)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_transaction_current(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
@@ -375,6 +396,7 @@ def test_transaction_context_manager_no_raise(database_id):
     xact = _make_transaction(client)
 
     with xact:
+        assert xact._status == xact._IN_PROGRESS
         # only set between begin / commit
         assert xact.id == id_
 
@@ -427,6 +449,34 @@ def test_transaction_context_manager_w_raise(database_id):
     client._datastore_api.rollback.assert_called_once_with(request=expected_request)
 
 
+@pytest.mark.parametrize("with_exception", [False, True])
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_context_manager_w_begin_later(database_id, with_exception):
+    """
+    If begin_later is set, don't begin transaction when entering context manager
+    """
+    project = "PROJECT"
+    id_ = 912830
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    xact = _make_transaction(client, begin_later=True)
+
+    try:
+        with xact:
+            assert xact._status == xact._INITIAL
+            assert xact.id is None
+            if with_exception:
+                raise RuntimeError("expected")
+    except RuntimeError:
+        pass
+    # should be finalized after context manager block
+    assert xact._status == xact._ABORTED
+    assert xact.id is None
+    # no need to call commit or rollback
+    assert ds_api.commit.call_count == 0
+    assert ds_api.rollback.call_count == 0
+
+
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_transaction_put_read_only(database_id):
     project = "PROJECT"
@@ -439,6 +489,100 @@ def test_transaction_put_read_only(database_id):
 
     with pytest.raises(RuntimeError):
         xact.put(entity)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_put_w_begin_later(database_id):
+    """
+    If begin_later is set, should be able to call put without begin first
+    """
+    project = "PROJECT"
+    id_ = 943243
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    entity = _Entity(database=database_id)
+    with _make_transaction(client, begin_later=True) as xact:
+        assert xact._status == xact._INITIAL
+        assert len(xact.mutations) == 0
+        xact.put(entity)
+        assert len(xact.mutations) == 1
+        # should still be in initial state
+        assert xact._status == xact._INITIAL
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_delete_w_begin_later(database_id):
+    """
+    If begin_later is set, should be able to call delete without begin first
+    """
+    project = "PROJECT"
+    id_ = 943243
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    entity = _Entity(database=database_id)
+    with _make_transaction(client, begin_later=True) as xact:
+        assert xact._status == xact._INITIAL
+        assert len(xact.mutations) == 0
+        xact.delete(entity.key.completed_key("name"))
+        assert len(xact.mutations) == 1
+        # should still be in initial state
+        assert xact._status == xact._INITIAL
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_rollback_no_begin(database_id):
+    """
+    If rollback is called without begin, transaciton should abort
+    """
+    project = "PROJECT"
+    id_ = 943243
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    with _make_transaction(client, begin_later=True) as xact:
+        assert xact._status == xact._INITIAL
+        with mock.patch.object(xact, "begin") as begin:
+            xact.rollback()
+            begin.assert_not_called()
+        assert xact._status == xact._ABORTED
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_commit_no_begin(database_id):
+    """
+    If commit is called without begin, and it has mutations staged,
+    should call begin before commit
+    """
+    project = "PROJECT"
+    id_ = 943243
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    entity = _Entity(database=database_id)
+    with _make_transaction(client, begin_later=True) as xact:
+        assert xact._status == xact._INITIAL
+        xact.put(entity)
+        assert xact._status == xact._INITIAL
+        with mock.patch.object(xact, "begin") as begin:
+            begin.side_effect = lambda: setattr(xact, "_status", xact._IN_PROGRESS)
+            xact.commit()
+            begin.assert_called_once_with()
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_empty_transaction_commit(database_id):
+    """
+    If commit is called without begin, and it has no mutations staged,
+    should abort
+    """
+    project = "PROJECT"
+    id_ = 943243
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    with _make_transaction(client, begin_later=True) as xact:
+        assert xact._status == xact._INITIAL
+        with mock.patch.object(xact, "begin") as begin:
+            xact.commit()
+            begin.assert_not_called()
+        assert xact._status == xact._ABORTED
 
 
 def _make_key(kind, id_, project, database=None):

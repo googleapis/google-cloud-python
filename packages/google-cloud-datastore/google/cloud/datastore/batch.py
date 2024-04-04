@@ -192,6 +192,19 @@ class Batch(object):
         """
         return self._mutations
 
+    def _allow_mutations(self) -> bool:
+        """
+        This method is called to see if the batch is in a proper state to allow
+        `put` and `delete` operations.
+
+        the Transaction subclass overrides this method to support
+        the `begin_later` flag.
+
+        :rtype: bool
+        :returns: True if the batch is in a state to allow mutations.
+        """
+        return self._status == self._IN_PROGRESS
+
     def put(self, entity):
         """Remember an entity's state to be saved during :meth:`commit`.
 
@@ -218,7 +231,7 @@ class Batch(object):
                  progress, if entity has no key assigned, or if the key's
                  ``project`` does not match ours.
         """
-        if self._status != self._IN_PROGRESS:
+        if not self._allow_mutations():
             raise ValueError("Batch must be in progress to put()")
 
         if entity.key is None:
@@ -248,7 +261,7 @@ class Batch(object):
                  progress, if key is not complete, or if the key's
                  ``project`` does not match ours.
         """
-        if self._status != self._IN_PROGRESS:
+        if not self._allow_mutations():
             raise ValueError("Batch must be in progress to delete()")
 
         if key.is_partial:
@@ -370,10 +383,12 @@ class Batch(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
-            if exc_type is None:
-                self.commit()
-            else:
-                self.rollback()
+            # commit or rollback if not in terminal state
+            if self._status not in (self._ABORTED, self._FINISHED):
+                if exc_type is None:
+                    self.commit()
+                else:
+                    self.rollback()
         finally:
             self._client._pop_batch()
 

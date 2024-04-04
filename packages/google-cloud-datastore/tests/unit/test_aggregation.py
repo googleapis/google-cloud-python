@@ -471,7 +471,9 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None, database_id=None):
     if txn_id is None:
         client = _Client(project, datastore_api=ds_api, database=database_id)
     else:
-        transaction = mock.Mock(id=txn_id, spec=["id"])
+        transaction = mock.Mock(
+            id=txn_id, _begin_later=False, spec=["id", "_begin_later"]
+        )
         client = _Client(
             project, datastore_api=ds_api, transaction=transaction, database=database_id
         )
@@ -610,6 +612,57 @@ def test_transaction_id_populated(database_id, aggregation_type, aggregation_arg
     read_options = request["read_options"]
     # ensure transaction ID is populated
     assert read_options.transaction == client.current_transaction.id
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+@pytest.mark.parametrize(
+    "aggregation_type,aggregation_args",
+    [
+        ("count", ()),
+        (
+            "sum",
+            ("appearances",),
+        ),
+        ("avg", ("appearances",)),
+    ],
+)
+def test_transaction_begin_later(database_id, aggregation_type, aggregation_args):
+    """
+    When an aggregation is run in the context of a transaction with begin_later=True,
+    the new_transaction field should be populated in the request read_options.
+    """
+    import mock
+    from google.cloud.datastore_v1.types import TransactionOptions
+
+    # make a fake begin_later transaction
+    transaction = mock.Mock()
+    transaction.id = None
+    transaction._begin_later = True
+    transaction._status = transaction._INITIAL
+    transaction._options = TransactionOptions(read_only=TransactionOptions.ReadOnly())
+    mock_datastore_api = mock.Mock()
+    mock_gapic = mock_datastore_api.run_aggregation_query
+    mock_gapic.return_value = _make_aggregation_query_response([])
+    client = _Client(
+        None,
+        datastore_api=mock_datastore_api,
+        database=database_id,
+        transaction=transaction,
+    )
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+
+    # initiate requested aggregation (ex count, sum, avg)
+    getattr(aggregation_query, aggregation_type)(*aggregation_args)
+    # run mock query
+    list(aggregation_query.fetch())
+    assert mock_gapic.call_count == 1
+    request = mock_gapic.call_args[1]["request"]
+    read_options = request["read_options"]
+    # ensure new_transaction is populated
+    assert not read_options.transaction
+    assert read_options.new_transaction == transaction._options
 
 
 class _Client(object):

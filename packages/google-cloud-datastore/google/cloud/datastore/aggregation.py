@@ -442,13 +442,11 @@ class AggregationResultIterator(page_iterator.Iterator):
             return None
 
         query_pb = self._build_protobuf()
-        transaction = self.client.current_transaction
-        if transaction is None:
-            transaction_id = None
-        else:
-            transaction_id = transaction.id
+        transaction_id, new_transaction_options = helpers.get_transaction_options(
+            self.client.current_transaction
+        )
         read_options = helpers.get_read_options(
-            self._eventual, transaction_id, self._read_time
+            self._eventual, transaction_id, self._read_time, new_transaction_options
         )
 
         partition_id = entity_pb2.PartitionId(
