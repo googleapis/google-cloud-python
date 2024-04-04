@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.21.1](https://github.com/googleapis/python-pubsub/compare/v2.21.0...v2.21.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* Set timeout to infinite for publishing with ordering keys enabled ([#1134](https://github.com/googleapis/python-pubsub/issues/1134)) ([67daf3c](https://github.com/googleapis/python-pubsub/commit/67daf3c64239d22eabe59c3df214057a4e59a39e))
+
 ## [2.21.0](https://github.com/googleapis/python-pubsub/compare/v2.20.3...v2.21.0) (2024-03-26)
 
 
