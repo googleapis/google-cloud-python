@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.30.0...google-cloud-securitycenter-v1.30.1) (2024-04-04)
+
+
+### Documentation
+
+* Fixed backtick and double quotes mismatch in security_marks.proto ([22201e2](https://github.com/googleapis/google-cloud-python/commit/22201e2d3ea891d0f44140d63ed3a71c09a3684a))
+
 ## [1.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.29.0...google-cloud-securitycenter-v1.30.0) (2024-03-28)
 
 

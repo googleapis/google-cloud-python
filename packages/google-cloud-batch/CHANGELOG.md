@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.17.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.16...google-cloud-batch-v0.17.17) (2024-04-04)
+
+
+### Documentation
+
+* A comment for field `max_run_duration` in message `.google.cloud.batch.v1alpha.TaskSpec` and `.google.cloud.batch.v1.TaskSpec` is changed ([3d35d8b](https://github.com/googleapis/google-cloud-python/commit/3d35d8b8c3458897ecb3afc16be807d6c64f148a))
+* add non-negative restriction comment for usage_resource_allowance.spec.limit.limit exposed on v1alpha ([3d35d8b](https://github.com/googleapis/google-cloud-python/commit/3d35d8b8c3458897ecb3afc16be807d6c64f148a))
+* state one Resource Allowance per region per project limitation on v1alpha ([3d35d8b](https://github.com/googleapis/google-cloud-python/commit/3d35d8b8c3458897ecb3afc16be807d6c64f148a))
+
 ## [0.17.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.15...google-cloud-batch-v0.17.16) (2024-04-03)
 
 

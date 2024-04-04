@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.7...google-cloud-advisorynotifications-v0.3.8) (2024-04-04)
+
+
+### Features
+
+* add GetSettings and UpdateSettings methods at the Project-level to advisorynotifications.googleapis.com ([b8a4835](https://github.com/googleapis/google-cloud-python/commit/b8a4835d9d2f888c5674d5775535e8da55ac91db))
+
+
+### Documentation
+
+* adding docs for new project level settings methods ([b8a4835](https://github.com/googleapis/google-cloud-python/commit/b8a4835d9d2f888c5674d5775535e8da55ac91db))
+
 ## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.6...google-cloud-advisorynotifications-v0.3.7) (2024-03-05)
 
 
