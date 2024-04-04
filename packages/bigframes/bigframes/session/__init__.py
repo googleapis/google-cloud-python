@@ -116,9 +116,9 @@ _VALID_ENCODINGS = {
     "UTF-32LE",
 }
 
-# BigQuery has 1 MB query size limit, 5000 items shouldn't take more than 10% of this depending on data type.
-# TODO(tbergeron): Convert to bytes-based limit
-MAX_INLINE_DF_SIZE = 5000
+# BigQuery has 1 MB query size limit. Don't want to take up more than a few % of that inlining a table.
+# Also must assume that text encoding as literals is much less efficient than in-memory representation.
+MAX_INLINE_DF_BYTES = 5000
 
 logger = logging.getLogger(__name__)
 
@@ -1051,7 +1051,7 @@ class Session(
     ) -> Optional[dataframe.DataFrame]:
         import bigframes.dataframe as dataframe
 
-        if pandas_dataframe.size > MAX_INLINE_DF_SIZE:
+        if pandas_dataframe.memory_usage(deep=True).sum() > MAX_INLINE_DF_BYTES:
             return None
 
         try:

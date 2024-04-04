@@ -20,7 +20,7 @@ import pandas as pd
 
 import bigframes as bf
 import bigframes.formatting_helpers as formatting_helpers
-from bigframes.session import MAX_INLINE_DF_SIZE
+from bigframes.session import MAX_INLINE_DF_BYTES
 
 job_load_message_regex = r"\w+ job [\w-]+ is \w+\."
 
@@ -70,7 +70,7 @@ def test_progress_bar_load_jobs(
 ):
     # repeat the DF to be big enough to trigger the load job.
     df = penguins_pandas_df_default_index
-    while len(df) < MAX_INLINE_DF_SIZE:
+    while len(df) < MAX_INLINE_DF_BYTES:
         df = pd.DataFrame(np.repeat(df.values, 2, axis=0))
 
     bf.options.display.progress_bar = "terminal"

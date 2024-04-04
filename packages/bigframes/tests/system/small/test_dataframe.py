@@ -66,6 +66,13 @@ def test_df_construct_pandas_default(scalars_dfs):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_df_construct_large_strings():
+    data = [["hello", "w" + "o" * 50000 + "rld"]]
+    bf_result = dataframe.DataFrame(data).to_pandas()
+    pd_result = pd.DataFrame(data, dtype=pd.StringDtype(storage="pyarrow"))
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+
+
 def test_df_construct_pandas_load_job(scalars_dfs):
     # This should trigger the inlined codepath
     columns = [
