@@ -421,6 +421,10 @@ class AdvisoryNotificationsServiceRestTransport(AdvisoryNotificationsServiceTran
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/settings}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/settings}",
+                },
             ]
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
             pb_request = service.GetSettingsRequest.pb(request)
@@ -599,6 +603,11 @@ class AdvisoryNotificationsServiceRestTransport(AdvisoryNotificationsServiceTran
                 {
                     "method": "patch",
                     "uri": "/v1/{settings.name=organizations/*/locations/*/settings}",
+                    "body": "settings",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{settings.name=projects/*/locations/*/settings}",
                     "body": "settings",
                 },
             ]
