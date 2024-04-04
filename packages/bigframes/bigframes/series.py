@@ -351,9 +351,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         columns: Union[blocks.Label, typing.Iterable[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
     ) -> Series:
-        if labels and index:
-            raise ValueError("Must specify exacly one of 'labels' or 'index'")
-        index = labels or index
+        if (labels is None) == (index is None):
+            raise ValueError("Must specify exactly one of 'labels' or 'index'")
+
+        if labels is not None:
+            index = labels
 
         # ignore axis, columns params
         block = self._block

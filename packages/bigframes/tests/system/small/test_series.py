@@ -1529,10 +1529,16 @@ def test_groupby_window_ops(scalars_df_index, scalars_pandas_df_index, operator)
     )
 
 
-def test_drop_label(scalars_df_index, scalars_pandas_df_index):
-    col_name = "int64_col"
-    bf_series = scalars_df_index[col_name].drop(1).to_pandas()
-    pd_series = scalars_pandas_df_index[col_name].drop(1)
+@pytest.mark.parametrize(
+    ("label", "col_name"),
+    [
+        (0, "bool_col"),
+        (1, "int64_col"),
+    ],
+)
+def test_drop_label(scalars_df_index, scalars_pandas_df_index, label, col_name):
+    bf_series = scalars_df_index[col_name].drop(label).to_pandas()
+    pd_series = scalars_pandas_df_index[col_name].drop(label)
     pd.testing.assert_series_equal(
         pd_series,
         bf_series,
