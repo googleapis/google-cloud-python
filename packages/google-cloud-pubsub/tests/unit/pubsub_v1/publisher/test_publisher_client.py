@@ -316,6 +316,10 @@ def test_publish_with_ordering_key_uses_extended_retry_deadline(creds):
     expected_retry = custom_retry.with_deadline(2.0**32)
     _assert_retries_equal(batch_commit_retry, expected_retry)
 
+    batch_commit_timeout = kwargs["commit_timeout"]
+    expected_timeout = 2.0**32
+    assert batch_commit_timeout == pytest.approx(expected_timeout)
+
 
 def test_publish_with_ordering_key_with_no_retry(creds):
     client = publisher.Client(

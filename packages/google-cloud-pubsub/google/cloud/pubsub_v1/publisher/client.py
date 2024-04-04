@@ -399,8 +399,13 @@ class Client(publisher_client.PublisherClient):
                     transport = self._transport
                     base_retry = transport._wrapped_methods[transport.publish]._retry
                     retry = base_retry.with_deadline(2.0**32)
+                    # timeout needs to be overridden and set to infinite in
+                    # addition to the retry deadline since both determine
+                    # the duration for which retries are attempted.
+                    timeout = 2.0**32
                 elif retry is not None:
                     retry = retry.with_deadline(2.0**32)
+                    timeout = 2.0**32
 
             # Delegate the publishing to the sequencer.
             sequencer = self._get_or_create_sequencer(topic, ordering_key)
