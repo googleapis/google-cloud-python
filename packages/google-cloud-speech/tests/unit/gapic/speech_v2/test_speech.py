@@ -8430,6 +8430,7 @@ def test_create_recognizer_rest(request_type):
                     }
                 ]
             },
+            "translation_config": {"target_language": "target_language_value"},
         },
         "annotations": {},
         "state": 2,
@@ -9497,6 +9498,7 @@ def test_update_recognizer_rest(request_type):
                     }
                 ]
             },
+            "translation_config": {"target_language": "target_language_value"},
         },
         "annotations": {},
         "state": 2,

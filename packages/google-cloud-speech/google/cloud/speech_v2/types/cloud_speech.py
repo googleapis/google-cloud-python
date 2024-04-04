@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
         "SpeakerDiarizationConfig",
         "RecognitionFeatures",
         "TranscriptNormalization",
+        "TranslationConfig",
         "SpeechAdaptation",
         "RecognitionConfig",
         "RecognizeRequest",
@@ -1062,6 +1063,21 @@ class TranscriptNormalization(proto.Message):
     )
 
 
+class TranslationConfig(proto.Message):
+    r"""Translation configuration. Use to translate the given audio
+    into text for the desired language.
+
+    Attributes:
+        target_language (str):
+            Required. The language code to translate to.
+    """
+
+    target_language: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class SpeechAdaptation(proto.Message):
     r"""Provides "hints" to the speech recognizer to favor specific
     words and phrases in the results. PhraseSets can be specified as
@@ -1187,6 +1203,10 @@ class RecognitionConfig(proto.Message):
             StreamingRecognize, this normalization only
             applies to stable partial transcripts (stability
             > 0.8) and final transcripts.
+        translation_config (google.cloud.speech_v2.types.TranslationConfig):
+            Optional. Optional configuration used to
+            automatically run translation on the given audio
+            to the desired language for supported models.
     """
 
     auto_decoding_config: "AutoDetectDecodingConfig" = proto.Field(
@@ -1223,6 +1243,11 @@ class RecognitionConfig(proto.Message):
         proto.MESSAGE,
         number=11,
         message="TranscriptNormalization",
+    )
+    translation_config: "TranslationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="TranslationConfig",
     )
 
 
