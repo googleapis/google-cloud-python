@@ -20,13 +20,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -45,10 +39,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import estimate_billing_service
+from google.cloud.discoveryengine_v1alpha.types import rank_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import EstimateBillingServiceTransport
+from .base import RankServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -57,8 +51,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class EstimateBillingServiceRestInterceptor:
-    """Interceptor for EstimateBillingService.
+class RankServiceRestInterceptor:
+    """Interceptor for RankService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -68,45 +62,41 @@ class EstimateBillingServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the EstimateBillingServiceRestTransport.
+    instance of a custom subclass when constructing the RankServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomEstimateBillingServiceInterceptor(EstimateBillingServiceRestInterceptor):
-            def pre_estimate_data_size(self, request, metadata):
+        class MyCustomRankServiceInterceptor(RankServiceRestInterceptor):
+            def pre_rank(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_estimate_data_size(self, response):
+            def post_rank(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = EstimateBillingServiceRestTransport(interceptor=MyCustomEstimateBillingServiceInterceptor())
-        client = EstimateBillingServiceClient(transport=transport)
+        transport = RankServiceRestTransport(interceptor=MyCustomRankServiceInterceptor())
+        client = RankServiceClient(transport=transport)
 
 
     """
 
-    def pre_estimate_data_size(
-        self,
-        request: estimate_billing_service.EstimateDataSizeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[
-        estimate_billing_service.EstimateDataSizeRequest, Sequence[Tuple[str, str]]
-    ]:
-        """Pre-rpc interceptor for estimate_data_size
+    def pre_rank(
+        self, request: rank_service.RankRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[rank_service.RankRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rank
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the EstimateBillingService server.
+        before they are sent to the RankService server.
         """
         return request, metadata
 
-    def post_estimate_data_size(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for estimate_data_size
+    def post_rank(
+        self, response: rank_service.RankResponse
+    ) -> rank_service.RankResponse:
+        """Post-rpc interceptor for rank
 
         Override in a subclass to manipulate the response
-        after it is returned by the EstimateBillingService server but before
+        after it is returned by the RankService server but before
         it is returned to user code.
         """
         return response
@@ -119,7 +109,7 @@ class EstimateBillingServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the EstimateBillingService server.
+        before they are sent to the RankService server.
         """
         return request, metadata
 
@@ -129,7 +119,7 @@ class EstimateBillingServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the EstimateBillingService server but before
+        after it is returned by the RankService server but before
         it is returned to user code.
         """
         return response
@@ -142,7 +132,7 @@ class EstimateBillingServiceRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the EstimateBillingService server.
+        before they are sent to the RankService server.
         """
         return request, metadata
 
@@ -152,23 +142,23 @@ class EstimateBillingServiceRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the EstimateBillingService server but before
+        after it is returned by the RankService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class EstimateBillingServiceRestStub:
+class RankServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: EstimateBillingServiceRestInterceptor
+    _interceptor: RankServiceRestInterceptor
 
 
-class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
-    """REST backend transport for EstimateBillingService.
+class RankServiceRestTransport(RankServiceTransport):
+    """REST backend transport for RankService.
 
-    Service for managing billing estimations resources.
+    Service for ranking text records.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -190,7 +180,7 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[EstimateBillingServiceRestInterceptor] = None,
+        interceptor: Optional[RankServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -249,163 +239,14 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
-        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or EstimateBillingServiceRestInterceptor()
+        self._interceptor = interceptor or RankServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def operations_client(self) -> operations_v1.AbstractOperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/operations/*}",
-                    },
-                ],
-                "google.longrunning.Operations.ListOperations": [
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*/locations/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1alpha/{name=projects/*}/operations",
-                    },
-                ],
-            }
-
-            rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1alpha",
-            )
-
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    class _EstimateDataSize(EstimateBillingServiceRestStub):
+    class _Rank(RankServiceRestStub):
         def __hash__(self):
-            return hash("EstimateDataSize")
+            return hash("Rank")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -419,19 +260,19 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
 
         def __call__(
             self,
-            request: estimate_billing_service.EstimateDataSizeRequest,
+            request: rank_service.RankRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the estimate data size method over HTTP.
+        ) -> rank_service.RankResponse:
+            r"""Call the rank method over HTTP.
 
             Args:
-                request (~.estimate_billing_service.EstimateDataSizeRequest):
+                request (~.rank_service.RankRequest):
                     The request object. Request message for
-                [EstimateBillingService.EstimateDataSize][google.cloud.discoveryengine.v1alpha.EstimateBillingService.EstimateDataSize]
-                method
+                [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -439,24 +280,22 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.rank_service.RankResponse:
+                    Response message for
+                [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
+                method.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1alpha/{location=projects/*/locations/*}:estimateDataSize",
+                    "uri": "/v1alpha/{ranking_config=projects/*/locations/*/rankingConfigs/*}:rank",
                     "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_estimate_data_size(
-                request, metadata
-            )
-            pb_request = estimate_billing_service.EstimateDataSizeRequest.pb(request)
+            request, metadata = self._interceptor.pre_rank(request, metadata)
+            pb_request = rank_service.RankRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -495,26 +334,24 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_estimate_data_size(resp)
+            resp = rank_service.RankResponse()
+            pb_resp = rank_service.RankResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rank(resp)
             return resp
 
     @property
-    def estimate_data_size(
-        self,
-    ) -> Callable[
-        [estimate_billing_service.EstimateDataSizeRequest], operations_pb2.Operation
-    ]:
+    def rank(self) -> Callable[[rank_service.RankRequest], rank_service.RankResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._EstimateDataSize(self._session, self._host, self._interceptor)  # type: ignore
+        return self._Rank(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(EstimateBillingServiceRestStub):
+    class _GetOperation(RankServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -636,7 +473,7 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(EstimateBillingServiceRestStub):
+    class _ListOperations(RankServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -758,4 +595,4 @@ class EstimateBillingServiceRestTransport(EstimateBillingServiceTransport):
         self._session.close()
 
 
-__all__ = ("EstimateBillingServiceRestTransport",)
+__all__ = ("RankServiceRestTransport",)

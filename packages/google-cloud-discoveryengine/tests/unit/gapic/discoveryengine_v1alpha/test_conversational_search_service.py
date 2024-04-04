@@ -3616,6 +3616,12 @@ def test_create_conversation_rest(request_type):
                                     "title": "title_value",
                                     "document": "document_value",
                                     "uri": "uri_value",
+                                    "chunk_contents": [
+                                        {
+                                            "content": "content_value",
+                                            "page_identifier": "page_identifier_value",
+                                        }
+                                    ],
                                 }
                             ],
                         },
@@ -4291,6 +4297,12 @@ def test_update_conversation_rest(request_type):
                                     "title": "title_value",
                                     "document": "document_value",
                                     "uri": "uri_value",
+                                    "chunk_contents": [
+                                        {
+                                            "content": "content_value",
+                                            "page_identifier": "page_identifier_value",
+                                        }
+                                    ],
                                 }
                             ],
                         },

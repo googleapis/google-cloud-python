@@ -11,6 +11,7 @@ Services for Google Cloud Discoveryengine v1alpha API
     document_service
     engine_service
     estimate_billing_service
+    rank_service
     recommendation_service
     schema_service
     search_service

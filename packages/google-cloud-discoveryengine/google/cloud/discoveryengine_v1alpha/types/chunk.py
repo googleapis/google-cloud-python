@@ -40,7 +40,7 @@ class Chunk(proto.Message):
             This field must be a UTF-8 encoded string with a length
             limit of 1024 characters.
         id (str):
-            Unique chunk id of the current chunk.
+            Unique chunk ID of the current chunk.
         content (str):
             Content is a string from a document (parsed
             content).
@@ -50,6 +50,10 @@ class Chunk(proto.Message):
         derived_struct_data (google.protobuf.struct_pb2.Struct):
             Output only. This field is OUTPUT_ONLY. It contains derived
             data that are not in the original input document.
+        page_span (google.cloud.discoveryengine_v1alpha.types.Chunk.PageSpan):
+            Page span of the chunk.
+        chunk_metadata (google.cloud.discoveryengine_v1alpha.types.Chunk.ChunkMetadata):
+            Output only. Metadata of the current chunk.
     """
 
     class DocumentMetadata(proto.Message):
@@ -70,6 +74,58 @@ class Chunk(proto.Message):
         title: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+
+    class PageSpan(proto.Message):
+        r"""Page span of the chunk.
+
+        Attributes:
+            page_start (int):
+                The start page of the chunk.
+            page_end (int):
+                The end page of the chunk.
+        """
+
+        page_start: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        page_end: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
+    class ChunkMetadata(proto.Message):
+        r"""Metadata of the current chunk. This field is only populated on
+        [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+        API.
+
+        Attributes:
+            previous_chunks (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Chunk]):
+                The previous chunks of the current chunk. The number is
+                controlled by
+                [SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks].
+                This field is only populated on
+                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                API.
+            next_chunks (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Chunk]):
+                The next chunks of the current chunk. The number is
+                controlled by
+                [SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks].
+                This field is only populated on
+                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                API.
+        """
+
+        previous_chunks: MutableSequence["Chunk"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Chunk",
+        )
+        next_chunks: MutableSequence["Chunk"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Chunk",
         )
 
     name: str = proto.Field(
@@ -93,6 +149,16 @@ class Chunk(proto.Message):
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
+    )
+    page_span: PageSpan = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=PageSpan,
+    )
+    chunk_metadata: ChunkMetadata = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=ChunkMetadata,
     )
 
 
