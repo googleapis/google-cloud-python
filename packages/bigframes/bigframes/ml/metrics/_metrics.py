@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Metrics functions for evaluating models. This module is styled after
-Scikit-Learn's metrics module: https://scikit-learn.org/stable/modules/metrics.html."""
+scikit-learn's metrics module: https://scikit-learn.org/stable/modules/metrics.html."""
 
 import inspect
 import typing

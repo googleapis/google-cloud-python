@@ -1,4 +1,4 @@
-"""Scikit-Learn Wrapper interface for XGBoost."""
+"""scikit-learn Wrapper interface for XGBoost."""
 
 from typing import Any
 

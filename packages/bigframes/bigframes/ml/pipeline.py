@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""For composing estimators together. This module is styled after Scikit-Learn's
+"""For composing estimators together. This module is styled after scikit-learn's
 pipeline module: https://scikit-learn.org/stable/modules/pipeline.html."""
 
 

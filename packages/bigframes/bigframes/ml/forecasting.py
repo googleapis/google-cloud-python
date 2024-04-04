@@ -248,12 +248,12 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
                 an int value that specifies the number of time points to forecast.
                 The default value is 3, and the maximum value is 1000.
             confidence_level (float, default 0.95):
-                a float value that specifies percentage of the future values that fall in the prediction interval.
+                A float value that specifies percentage of the future values that fall in the prediction interval.
                 The valid input range is [0.0, 1.0).
 
         Returns:
             bigframes.dataframe.DataFrame: The predicted DataFrames. Which
-                contains 2 columns "forecast_timestamp" and "forecast_value".
+                contains 2 columns: "forecast_timestamp" and "forecast_value".
         """
         if horizon < 1 or horizon > 1000:
             raise ValueError(f"horizon must be [1, 1000], but is {horizon}.")
@@ -284,7 +284,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
                 Identifies the custom threshold to use for anomaly detection. The value must be in the range [0, 1), with a default value of 0.95.
 
         Returns:
-            bigframes.dataframe.DataFrame: detected DataFrame."""
+            bigframes.dataframe.DataFrame: Detected DataFrame."""
         if anomaly_prob_threshold < 0.0 or anomaly_prob_threshold >= 1.0:
             raise ValueError(
                 f"anomaly_prob_threshold must be [0.0, 1.0), but is {anomaly_prob_threshold}."

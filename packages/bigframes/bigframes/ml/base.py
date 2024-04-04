@@ -77,7 +77,7 @@ class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
     """
 
     def __repr__(self):
-        """Print the estimator's constructor with all non-default parameter values"""
+        """Print the estimator's constructor with all non-default parameter values."""
 
         # Estimator pretty printer adapted from Sklearn's, which is in turn an adaption of
         # the inbuilt pretty-printer in CPython
@@ -106,13 +106,13 @@ class Predictor(BaseEstimator):
     def register(self: _T, vertex_ai_model_id: Optional[str] = None) -> _T:
         """Register the model to Vertex AI.
 
-        After register, go to Google Cloud Console (https://console.cloud.google.com/vertex-ai/models)
+        After register, go to the Google Cloud console (https://console.cloud.google.com/vertex-ai/models)
         to manage the model registries.
         Refer to https://cloud.google.com/vertex-ai/docs/model-registry/introduction for more options.
 
         Args:
             vertex_ai_model_id (Optional[str], default None):
-                optional string id as model id in Vertex. If not set, will by default to 'bigframes_{bq_model_id}'.
+                Optional string id as model id in Vertex. If not set, will default to 'bigframes_{bq_model_id}'.
                 Vertex Ai model id will be truncated to 63 characters due to its limitation.
 
         Returns:
@@ -191,9 +191,9 @@ class BaseTransformer(BaseEstimator):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Whether to replace if the model already exists. Default to False.
 
         Returns:
             Saved transformer."""

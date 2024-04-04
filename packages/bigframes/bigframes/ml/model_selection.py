@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Functions for test/train split and model tuning. This module is styled after
-Scikit-Learn's model_selection module:
+scikit-learn's model_selection module:
 https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection."""
 
 
@@ -51,7 +51,7 @@ def train_test_split(
         List[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]]: A list of BigQuery DataFrames or Series.
     """
 
-    # TODO(garrettwu): Scikit-Learn throws an error when the dataframes don't have the same
+    # TODO(garrettwu): scikit-learn throws an error when the dataframes don't have the same
     # number of rows. We probably want to do something similar. Now the implementation is based
     # on index. We'll move to based on ordering first.
 
