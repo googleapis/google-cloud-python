@@ -505,7 +505,7 @@ def docfx(session):
         SPHINX_VERSION,
         "alabaster",
         "recommonmark",
-        "gcp-sphinx-docfx-yaml",
+        "gcp-sphinx-docfx-yaml==3.0.1",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
