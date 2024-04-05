@@ -24,20 +24,15 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    serving_config as gcd_serving_config,
-)
-from google.cloud.discoveryengine_v1alpha.types import serving_config
-from google.cloud.discoveryengine_v1alpha.types import serving_config_service
+from google.cloud.discoveryengine_v1alpha.types import rank_service
 
-from .base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
+from .base import DEFAULT_CLIENT_INFO, RankServiceTransport
 
 
-class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
-    """gRPC backend transport for ServingConfigService.
+class RankServiceGrpcTransport(RankServiceTransport):
+    """gRPC backend transport for RankService.
 
-    Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
+    Service for ranking text records.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -236,21 +231,15 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         return self._grpc_channel
 
     @property
-    def update_serving_config(
-        self,
-    ) -> Callable[
-        [serving_config_service.UpdateServingConfigRequest],
-        gcd_serving_config.ServingConfig,
-    ]:
-        r"""Return a callable for the update serving config method over gRPC.
+    def rank(self) -> Callable[[rank_service.RankRequest], rank_service.RankResponse]:
+        r"""Return a callable for the rank method over gRPC.
 
-        Updates a ServingConfig.
-
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Ranks a list of text records based on the given input
+        query.
 
         Returns:
-            Callable[[~.UpdateServingConfigRequest],
-                    ~.ServingConfig]:
+            Callable[[~.RankRequest],
+                    ~.RankResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -258,73 +247,13 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_serving_config" not in self._stubs:
-            self._stubs["update_serving_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ServingConfigService/UpdateServingConfig",
-                request_serializer=serving_config_service.UpdateServingConfigRequest.serialize,
-                response_deserializer=gcd_serving_config.ServingConfig.deserialize,
+        if "rank" not in self._stubs:
+            self._stubs["rank"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.RankService/Rank",
+                request_serializer=rank_service.RankRequest.serialize,
+                response_deserializer=rank_service.RankResponse.deserialize,
             )
-        return self._stubs["update_serving_config"]
-
-    @property
-    def get_serving_config(
-        self,
-    ) -> Callable[
-        [serving_config_service.GetServingConfigRequest], serving_config.ServingConfig
-    ]:
-        r"""Return a callable for the get serving config method over gRPC.
-
-        Gets a ServingConfig.
-
-        Returns a NotFound error if the ServingConfig does not
-        exist.
-
-        Returns:
-            Callable[[~.GetServingConfigRequest],
-                    ~.ServingConfig]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_serving_config" not in self._stubs:
-            self._stubs["get_serving_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ServingConfigService/GetServingConfig",
-                request_serializer=serving_config_service.GetServingConfigRequest.serialize,
-                response_deserializer=serving_config.ServingConfig.deserialize,
-            )
-        return self._stubs["get_serving_config"]
-
-    @property
-    def list_serving_configs(
-        self,
-    ) -> Callable[
-        [serving_config_service.ListServingConfigsRequest],
-        serving_config_service.ListServingConfigsResponse,
-    ]:
-        r"""Return a callable for the list serving configs method over gRPC.
-
-        Lists all ServingConfigs linked to this dataStore.
-
-        Returns:
-            Callable[[~.ListServingConfigsRequest],
-                    ~.ListServingConfigsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_serving_configs" not in self._stubs:
-            self._stubs["list_serving_configs"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ServingConfigService/ListServingConfigs",
-                request_serializer=serving_config_service.ListServingConfigsRequest.serialize,
-                response_deserializer=serving_config_service.ListServingConfigsResponse.deserialize,
-            )
-        return self._stubs["list_serving_configs"]
+        return self._stubs["rank"]
 
     def close(self):
         self.grpc_channel.close()
@@ -370,4 +299,4 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         return "grpc"
 
 
-__all__ = ("ServingConfigServiceGrpcTransport",)
+__all__ = ("RankServiceGrpcTransport",)

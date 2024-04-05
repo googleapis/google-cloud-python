@@ -37,7 +37,8 @@ from .grpc import ServingConfigServiceGrpcTransport
 class ServingConfigServiceGrpcAsyncIOTransport(ServingConfigServiceTransport):
     """gRPC AsyncIO backend transport for ServingConfigService.
 
-    Service for operations related to [ServingConfig][].
+    Service for operations related to
+    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

@@ -420,6 +420,11 @@
                 "get_document"
               ]
             },
+            "GetProcessedDocument": {
+              "methods": [
+                "get_processed_document"
+              ]
+            },
             "ImportDocuments": {
               "methods": [
                 "import_documents"
@@ -460,6 +465,11 @@
                 "get_document"
               ]
             },
+            "GetProcessedDocument": {
+              "methods": [
+                "get_processed_document"
+              ]
+            },
             "ImportDocuments": {
               "methods": [
                 "import_documents"
@@ -498,6 +508,11 @@
             "GetDocument": {
               "methods": [
                 "get_document"
+              ]
+            },
+            "GetProcessedDocument": {
+              "methods": [
+                "get_processed_document"
               ]
             },
             "ImportDocuments": {
@@ -691,6 +706,40 @@
             "EstimateDataSize": {
               "methods": [
                 "estimate_data_size"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RankService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RankServiceClient",
+          "rpcs": {
+            "Rank": {
+              "methods": [
+                "rank"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RankServiceAsyncClient",
+          "rpcs": {
+            "Rank": {
+              "methods": [
+                "rank"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RankServiceClient",
+          "rpcs": {
+            "Rank": {
+              "methods": [
+                "rank"
               ]
             }
           }

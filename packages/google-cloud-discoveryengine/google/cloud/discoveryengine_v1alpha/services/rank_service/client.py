@@ -49,42 +49,32 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.services.serving_config_service import pagers
-from google.cloud.discoveryengine_v1alpha.types import (
-    serving_config as gcd_serving_config,
-)
-from google.cloud.discoveryengine_v1alpha.types import common
-from google.cloud.discoveryengine_v1alpha.types import serving_config
-from google.cloud.discoveryengine_v1alpha.types import serving_config_service
+from google.cloud.discoveryengine_v1alpha.types import rank_service
 
-from .transports.base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
-from .transports.grpc import ServingConfigServiceGrpcTransport
-from .transports.grpc_asyncio import ServingConfigServiceGrpcAsyncIOTransport
-from .transports.rest import ServingConfigServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, RankServiceTransport
+from .transports.grpc import RankServiceGrpcTransport
+from .transports.grpc_asyncio import RankServiceGrpcAsyncIOTransport
+from .transports.rest import RankServiceRestTransport
 
 
-class ServingConfigServiceClientMeta(type):
-    """Metaclass for the ServingConfigService client.
+class RankServiceClientMeta(type):
+    """Metaclass for the RankService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ServingConfigServiceTransport]]
-    _transport_registry["grpc"] = ServingConfigServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = ServingConfigServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = ServingConfigServiceRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[RankServiceTransport]]
+    _transport_registry["grpc"] = RankServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = RankServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = RankServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[ServingConfigServiceTransport]:
+    ) -> Type[RankServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -103,10 +93,8 @@ class ServingConfigServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
-    """Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
-    """
+class RankServiceClient(metaclass=RankServiceClientMeta):
+    """Service for ranking text records."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -158,7 +146,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ServingConfigServiceClient: The constructed client.
+            RankServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -176,7 +164,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ServingConfigServiceClient: The constructed client.
+            RankServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -185,35 +173,33 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> ServingConfigServiceTransport:
+    def transport(self) -> RankServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ServingConfigServiceTransport: The transport used by the client
+            RankServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def serving_config_path(
+    def ranking_config_path(
         project: str,
         location: str,
-        data_store: str,
-        serving_config: str,
+        ranking_config: str,
     ) -> str:
-        """Returns a fully-qualified serving_config string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
+        """Returns a fully-qualified ranking_config string."""
+        return "projects/{project}/locations/{location}/rankingConfigs/{ranking_config}".format(
             project=project,
             location=location,
-            data_store=data_store,
-            serving_config=serving_config,
+            ranking_config=ranking_config,
         )
 
     @staticmethod
-    def parse_serving_config_path(path: str) -> Dict[str, str]:
-        """Parses a serving_config path into its component segments."""
+    def parse_ranking_config_path(path: str) -> Dict[str, str]:
+        """Parses a ranking_config path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/servingConfigs/(?P<serving_config>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/rankingConfigs/(?P<ranking_config>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -437,14 +423,14 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = ServingConfigServiceClient._DEFAULT_UNIVERSE
+            _default_universe = RankServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = ServingConfigServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = RankServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = ServingConfigServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = RankServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -465,7 +451,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = ServingConfigServiceClient._DEFAULT_UNIVERSE
+        universe_domain = RankServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -491,7 +477,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             ValueError: when client_universe does not match the universe in credentials.
         """
 
-        default_universe = ServingConfigServiceClient._DEFAULT_UNIVERSE
+        default_universe = RankServiceClient._DEFAULT_UNIVERSE
         credentials_universe = getattr(credentials, "universe_domain", default_universe)
 
         if client_universe != credentials_universe:
@@ -515,7 +501,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         """
         self._is_universe_domain_valid = (
             self._is_universe_domain_valid
-            or ServingConfigServiceClient._compare_universes(
+            or RankServiceClient._compare_universes(
                 self.universe_domain, self.transport._credentials
             )
         )
@@ -543,11 +529,11 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ServingConfigServiceTransport]] = None,
+        transport: Optional[Union[str, RankServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the serving config service client.
+        """Instantiates the rank service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -555,7 +541,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ServingConfigServiceTransport]): The
+            transport (Union[str, RankServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
@@ -609,11 +595,11 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = ServingConfigServiceClient._read_environment_variables()
-        self._client_cert_source = ServingConfigServiceClient._get_client_cert_source(
+        ) = RankServiceClient._read_environment_variables()
+        self._client_cert_source = RankServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = ServingConfigServiceClient._get_universe_domain(
+        self._universe_domain = RankServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -630,9 +616,9 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ServingConfigServiceTransport)
+        transport_provided = isinstance(transport, RankServiceTransport)
         if transport_provided:
-            # transport is a ServingConfigServiceTransport instance.
+            # transport is a RankServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -643,17 +629,14 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(ServingConfigServiceTransport, transport)
+            self._transport = cast(RankServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or ServingConfigServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or RankServiceClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
         )
 
         if not transport_provided:
@@ -679,21 +662,16 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def update_serving_config(
+    def rank(
         self,
-        request: Optional[
-            Union[serving_config_service.UpdateServingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[rank_service.RankRequest, dict]] = None,
         *,
-        serving_config: Optional[gcd_serving_config.ServingConfig] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_serving_config.ServingConfig:
-        r"""Updates a ServingConfig.
-
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+    ) -> rank_service.RankResponse:
+        r"""Ranks a list of text records based on the given input
+        query.
 
         .. code-block:: python
 
@@ -706,49 +684,26 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1alpha
 
-            def sample_update_serving_config():
+            def sample_rank():
                 # Create a client
-                client = discoveryengine_v1alpha.ServingConfigServiceClient()
+                client = discoveryengine_v1alpha.RankServiceClient()
 
                 # Initialize request argument(s)
-                serving_config = discoveryengine_v1alpha.ServingConfig()
-                serving_config.media_config.content_watched_percentage_threshold = 0.3811
-                serving_config.display_name = "display_name_value"
-                serving_config.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
-
-                request = discoveryengine_v1alpha.UpdateServingConfigRequest(
-                    serving_config=serving_config,
+                request = discoveryengine_v1alpha.RankRequest(
+                    ranking_config="ranking_config_value",
                 )
 
                 # Make the request
-                response = client.update_serving_config(request=request)
+                response = client.rank(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1alpha.types.UpdateServingConfigRequest, dict]):
-                The request object. Request for UpdateServingConfig
+            request (Union[google.cloud.discoveryengine_v1alpha.types.RankRequest, dict]):
+                The request object. Request message for
+                [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
                 method.
-            serving_config (google.cloud.discoveryengine_v1alpha.types.ServingConfig):
-                Required. The ServingConfig to
-                update.
-
-                This corresponds to the ``serving_config`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Indicates which fields in the provided
-                [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
-                to update. The following are NOT supported:
-
-                -  [ServingConfig.name][google.cloud.discoveryengine.v1alpha.ServingConfig.name]
-
-                If not set, all supported fields are updated.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -756,47 +711,29 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.discoveryengine_v1alpha.types.ServingConfig:
-                Configures metadata that is used to
-                generate serving time results (e.g.
-                search results or recommendation
-                predictions). The ServingConfig is
-                passed in the search and predict request
-                and generates results.
+            google.cloud.discoveryengine_v1alpha.types.RankResponse:
+                Response message for
+                   [RankService.Rank][google.cloud.discoveryengine.v1alpha.RankService.Rank]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([serving_config, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
         # Minor optimization to avoid making a copy if the user passes
-        # in a serving_config_service.UpdateServingConfigRequest.
+        # in a rank_service.RankRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, serving_config_service.UpdateServingConfigRequest):
-            request = serving_config_service.UpdateServingConfigRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if serving_config is not None:
-                request.serving_config = serving_config
-            if update_mask is not None:
-                request.update_mask = update_mask
+        if not isinstance(request, rank_service.RankRequest):
+            request = rank_service.RankRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_serving_config]
+        rpc = self._transport._wrapped_methods[self._transport.rank]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("serving_config.name", request.serving_config.name),)
+                (("ranking_config", request.ranking_config),)
             ),
         )
 
@@ -814,242 +751,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_serving_config(
-        self,
-        request: Optional[
-            Union[serving_config_service.GetServingConfigRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> serving_config.ServingConfig:
-        r"""Gets a ServingConfig.
-
-        Returns a NotFound error if the ServingConfig does not
-        exist.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1alpha
-
-            def sample_get_serving_config():
-                # Create a client
-                client = discoveryengine_v1alpha.ServingConfigServiceClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1alpha.GetServingConfigRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_serving_config(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.discoveryengine_v1alpha.types.GetServingConfigRequest, dict]):
-                The request object. Request for GetServingConfig method.
-            name (str):
-                Required. The resource name of the ServingConfig to get.
-                Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1alpha.types.ServingConfig:
-                Configures metadata that is used to
-                generate serving time results (e.g.
-                search results or recommendation
-                predictions). The ServingConfig is
-                passed in the search and predict request
-                and generates results.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a serving_config_service.GetServingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, serving_config_service.GetServingConfigRequest):
-            request = serving_config_service.GetServingConfigRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_serving_config]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_serving_configs(
-        self,
-        request: Optional[
-            Union[serving_config_service.ListServingConfigsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListServingConfigsPager:
-        r"""Lists all ServingConfigs linked to this dataStore.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1alpha
-
-            def sample_list_serving_configs():
-                # Create a client
-                client = discoveryengine_v1alpha.ServingConfigServiceClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1alpha.ListServingConfigsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_serving_configs(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.cloud.discoveryengine_v1alpha.types.ListServingConfigsRequest, dict]):
-                The request object. Request for ListServingConfigs
-                method.
-            parent (str):
-                Required. Full resource name of the parent resource.
-                Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1alpha.services.serving_config_service.pagers.ListServingConfigsPager:
-                Response for ListServingConfigs
-                method.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a serving_config_service.ListServingConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, serving_config_service.ListServingConfigsRequest):
-            request = serving_config_service.ListServingConfigsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_serving_configs]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListServingConfigsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "ServingConfigServiceClient":
+    def __enter__(self) -> "RankServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1182,4 +884,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("ServingConfigServiceClient",)
+__all__ = ("RankServiceClient",)

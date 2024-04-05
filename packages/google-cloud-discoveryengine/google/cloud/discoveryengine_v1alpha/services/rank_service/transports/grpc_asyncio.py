@@ -13,31 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
-import google.auth  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    serving_config as gcd_serving_config,
-)
-from google.cloud.discoveryengine_v1alpha.types import serving_config
-from google.cloud.discoveryengine_v1alpha.types import serving_config_service
+from google.cloud.discoveryengine_v1alpha.types import rank_service
 
-from .base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
+from .base import DEFAULT_CLIENT_INFO, RankServiceTransport
+from .grpc import RankServiceGrpcTransport
 
 
-class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
-    """gRPC backend transport for ServingConfigService.
+class RankServiceGrpcAsyncIOTransport(RankServiceTransport):
+    """gRPC AsyncIO backend transport for RankService.
 
-    Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
+    Service for ranking text records.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -47,7 +43,51 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "discoveryengine.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
@@ -56,7 +96,7 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[grpc.Channel] = None,
+        channel: Optional[aio.Channel] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -80,9 +120,10 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -109,7 +150,7 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -129,7 +170,6 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -183,74 +223,28 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service."""
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def update_serving_config(
+    def rank(
         self,
-    ) -> Callable[
-        [serving_config_service.UpdateServingConfigRequest],
-        gcd_serving_config.ServingConfig,
-    ]:
-        r"""Return a callable for the update serving config method over gRPC.
+    ) -> Callable[[rank_service.RankRequest], Awaitable[rank_service.RankResponse]]:
+        r"""Return a callable for the rank method over gRPC.
 
-        Updates a ServingConfig.
-
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Ranks a list of text records based on the given input
+        query.
 
         Returns:
-            Callable[[~.UpdateServingConfigRequest],
-                    ~.ServingConfig]:
+            Callable[[~.RankRequest],
+                    Awaitable[~.RankResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -258,76 +252,16 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_serving_config" not in self._stubs:
-            self._stubs["update_serving_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ServingConfigService/UpdateServingConfig",
-                request_serializer=serving_config_service.UpdateServingConfigRequest.serialize,
-                response_deserializer=gcd_serving_config.ServingConfig.deserialize,
+        if "rank" not in self._stubs:
+            self._stubs["rank"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.RankService/Rank",
+                request_serializer=rank_service.RankRequest.serialize,
+                response_deserializer=rank_service.RankResponse.deserialize,
             )
-        return self._stubs["update_serving_config"]
-
-    @property
-    def get_serving_config(
-        self,
-    ) -> Callable[
-        [serving_config_service.GetServingConfigRequest], serving_config.ServingConfig
-    ]:
-        r"""Return a callable for the get serving config method over gRPC.
-
-        Gets a ServingConfig.
-
-        Returns a NotFound error if the ServingConfig does not
-        exist.
-
-        Returns:
-            Callable[[~.GetServingConfigRequest],
-                    ~.ServingConfig]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_serving_config" not in self._stubs:
-            self._stubs["get_serving_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ServingConfigService/GetServingConfig",
-                request_serializer=serving_config_service.GetServingConfigRequest.serialize,
-                response_deserializer=serving_config.ServingConfig.deserialize,
-            )
-        return self._stubs["get_serving_config"]
-
-    @property
-    def list_serving_configs(
-        self,
-    ) -> Callable[
-        [serving_config_service.ListServingConfigsRequest],
-        serving_config_service.ListServingConfigsResponse,
-    ]:
-        r"""Return a callable for the list serving configs method over gRPC.
-
-        Lists all ServingConfigs linked to this dataStore.
-
-        Returns:
-            Callable[[~.ListServingConfigsRequest],
-                    ~.ListServingConfigsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_serving_configs" not in self._stubs:
-            self._stubs["list_serving_configs"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.ServingConfigService/ListServingConfigs",
-                request_serializer=serving_config_service.ListServingConfigsRequest.serialize,
-                response_deserializer=serving_config_service.ListServingConfigsResponse.deserialize,
-            )
-        return self._stubs["list_serving_configs"]
+        return self._stubs["rank"]
 
     def close(self):
-        self.grpc_channel.close()
+        return self.grpc_channel.close()
 
     @property
     def get_operation(
@@ -365,9 +299,5 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
             )
         return self._stubs["list_operations"]
 
-    @property
-    def kind(self) -> str:
-        return "grpc"
 
-
-__all__ = ("ServingConfigServiceGrpcTransport",)
+__all__ = ("RankServiceGrpcAsyncIOTransport",)

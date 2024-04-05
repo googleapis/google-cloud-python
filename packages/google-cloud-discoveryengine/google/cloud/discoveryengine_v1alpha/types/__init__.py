@@ -64,12 +64,13 @@ from .data_store_service import (
     UpdateDataStoreRequest,
     UpdateDocumentProcessingConfigRequest,
 )
-from .document import Document
+from .document import Document, ProcessedDocument
 from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
+    GetProcessedDocumentRequest,
     ListDocumentsRequest,
     ListDocumentsResponse,
     UpdateDocumentRequest,
@@ -97,7 +98,14 @@ from .estimate_billing_service import (
 )
 from .import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
+    ImportCompletionSuggestionsMetadata,
+    ImportCompletionSuggestionsResponse,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -108,6 +116,7 @@ from .import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
 )
 from .purge_config import (
     PurgeDocumentsMetadata,
@@ -121,6 +130,7 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .rank_service import RankingRecord, RankRequest, RankResponse
 from .recommendation_service import RecommendRequest, RecommendResponse
 from .schema import FieldConfig, Schema
 from .schema_service import (
@@ -238,10 +248,12 @@ __all__ = (
     "UpdateDataStoreRequest",
     "UpdateDocumentProcessingConfigRequest",
     "Document",
+    "ProcessedDocument",
     "DocumentProcessingConfig",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
+    "GetProcessedDocumentRequest",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
     "UpdateDocumentRequest",
@@ -263,7 +275,14 @@ __all__ = (
     "EstimateDataSizeRequest",
     "EstimateDataSizeResponse",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CloudSqlSource",
+    "FhirStoreSource",
+    "FirestoreSource",
     "GcsSource",
+    "ImportCompletionSuggestionsMetadata",
+    "ImportCompletionSuggestionsResponse",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -274,6 +293,7 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "SpannerSource",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -284,6 +304,9 @@ __all__ = (
     "PurgeUserEventsMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "RankingRecord",
+    "RankRequest",
+    "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
     "FieldConfig",
