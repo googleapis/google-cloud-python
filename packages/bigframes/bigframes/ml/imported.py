@@ -32,7 +32,7 @@ class TensorFlowModel(base.Predictor):
 
     Args:
         model_path (str):
-            GCS path that holds the model files.
+            Cloud Storage path that holds the model files.
         session (BigQuery Session):
             BQ session to create the model.
     """
@@ -69,10 +69,10 @@ class TensorFlowModel(base.Predictor):
 
         Args:
             X (bigframes.dataframe.DataFrame):
-                Input DataFrame, schema is defined by the model.
+                Input DataFrame. Schema is defined by the model.
 
         Returns:
-            bigframes.dataframe.DataFrame: Output DataFrame, schema is defined by the model."""
+            bigframes.dataframe.DataFrame: Output DataFrame. Schema is defined by the model."""
 
         if not self._bqml_model:
             if self.model_path is None:
@@ -91,10 +91,10 @@ class TensorFlowModel(base.Predictor):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                 Default to False.
 
         Returns:
-            TensorFlowModel: saved model."""
+            TensorFlowModel: Saved model."""
         if not self._bqml_model:
             if self.model_path is None:
                 raise ValueError("Model GCS path must be provided.")
@@ -146,7 +146,7 @@ class ONNXModel(base.Predictor):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame or Series, schema is defined by the model.
+                Input DataFrame or Series. Schema is defined by the model.
 
         Returns:
             bigframes.dataframe.DataFrame: Output DataFrame, schema is defined by the model."""
@@ -168,10 +168,10 @@ class ONNXModel(base.Predictor):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            ONNXModel: saved model."""
+            ONNXModel: Saved model."""
         if not self._bqml_model:
             if self.model_path is None:
                 raise ValueError("Model GCS path must be provided.")
@@ -262,10 +262,10 @@ class XGBoostModel(base.Predictor):
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Input DataFrame or Series, schema is defined by the model.
+                Input DataFrame or Series. Schema is defined by the model.
 
         Returns:
-            bigframes.dataframe.DataFrame: Output DataFrame, schema is defined by the model."""
+            bigframes.dataframe.DataFrame: Output DataFrame. Schema is defined by the model."""
 
         if not self._bqml_model:
             if self.model_path is None:
@@ -284,10 +284,10 @@ class XGBoostModel(base.Predictor):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            XGBoostModel: saved model."""
+            XGBoostModel: Saved model."""
         if not self._bqml_model:
             if self.model_path is None:
                 raise ValueError("Model GCS path must be provided.")

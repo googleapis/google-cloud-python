@@ -24,7 +24,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: DataFrame or Series of boolean values,
                 where a value is True if any element is True within its
-                respective group, False otherwise.
+                respective group; otherwise False.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -35,7 +35,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: DataFrame or Series of boolean values,
                 where a value is True if all elements are True within its
-                respective group, False otherwise.
+                respective group; otherwise False.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -339,7 +339,7 @@ class GroupBy:
         Provides expanding functionality.
 
         Returns:
-            Series or DataFrame: A expanding grouper, providing expanding functionality per group.
+            Series or DataFrame: An expanding grouper, providing expanding functionality per group.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

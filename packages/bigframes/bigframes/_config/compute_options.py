@@ -21,7 +21,7 @@ from typing import Optional
 @dataclasses.dataclass
 class ComputeOptions:
     """
-    Encapsulates configuration for compute options.
+    Encapsulates the configuration for compute options.
 
     **Examples:**
 
@@ -39,7 +39,7 @@ class ComputeOptions:
             Limits the bytes billed for query jobs. Queries that will have
             bytes billed beyond this limit will fail (without incurring a
             charge). If unspecified, this will be set to your project default.
-            See `maximum_bytes_billed <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed>`_.
+            See `maximum_bytes_billed`: https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
         enable_multi_query_execution (bool, Options):
             If enabled, large queries may be factored into multiple smaller queries
             in order to avoid generating queries that are too complex for the query

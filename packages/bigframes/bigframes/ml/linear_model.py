@@ -184,7 +184,7 @@ class LinearRegression(
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
             LinearRegression: saved model."""
@@ -349,7 +349,7 @@ class LogisticRegression(
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
             LogisticRegression: saved model."""

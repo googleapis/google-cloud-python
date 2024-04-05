@@ -193,7 +193,7 @@ class BaseTransformer(BaseEstimator):
             model_name (str):
                 The name of the model.
             replace (bool, default False):
-                Whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
             Saved transformer."""

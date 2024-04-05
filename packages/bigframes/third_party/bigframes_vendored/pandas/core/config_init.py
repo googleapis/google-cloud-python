@@ -13,7 +13,7 @@ module is imported, register them here rather than in the module.
 from __future__ import annotations
 
 display_options_doc = """
-Encapsulates configuration for displaying objects.
+Encapsulates the configuration for displaying objects.
 
 **Examples:**
 
@@ -79,7 +79,7 @@ Attributes:
 """
 
 sampling_options_doc = """
-Encapsulates configuration for data sampling.
+Encapsulates the configuration for data sampling.
 
 Attributes:
     max_download_size (int, default 500):

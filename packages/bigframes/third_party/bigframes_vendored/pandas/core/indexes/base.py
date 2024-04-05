@@ -83,7 +83,7 @@ class Index:
             name (Label, optional):
                 Set name for new object.
         Returns:
-            Index: Index refer to new object which is a copy of this object.
+            Index: Index reference to new object, which is a copy of this object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -148,7 +148,7 @@ class Index:
         """
         Return a boolean array where the index values are in `values`.
 
-        Compute boolean array of whether each index value is found in the
+        Compute boolean array to check whether each index value is found in the
         passed set of values. The length of the returned boolean array matches
         the length of the index.
 
@@ -195,7 +195,7 @@ class Index:
 
     def argmin(self) -> int:
         """
-        Return int position of the smallest value in the Series.
+        Return int position of the smallest value in the series.
 
         If the minimum is achieved in multiple locations,
         the first row position is returned.
@@ -264,7 +264,7 @@ class Index:
 
         Args:
             normalize (bool, default False):
-                If True then the object returned will contain the relative
+                If True, then the object returned will contain the relative
                 frequencies of the unique values.
             sort (bool, default True):
                 Sort by frequencies.
@@ -316,7 +316,7 @@ class Index:
             labels (array-like or scalar):
 
         Returns:
-            Index: Will be same type as self
+            Index: Will be same type as self.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

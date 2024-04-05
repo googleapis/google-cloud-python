@@ -81,9 +81,9 @@ class ClassifierMixin:
     def score(self, X, y):
         """Return the mean accuracy on the given test data and labels.
 
-        In multi-label classification, this is the subset accuracy
-        which is a harsh metric since you require for each sample that
-        each label set be correctly predicted.
+        In multi-label classification, this is the subset accuracy,
+        which is a harsh metric since you require that
+        each label set be correctly predicted for each sample.
 
         .. note::
 

@@ -363,10 +363,10 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            ARIMAPlus: saved model."""
+            ARIMAPlus: Saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 

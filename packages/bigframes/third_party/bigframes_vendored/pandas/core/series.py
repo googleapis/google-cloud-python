@@ -2836,7 +2836,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
     def argmax(self):
         """
-        Return int position of the smallest value in the Series.
+        Return int position of the smallest value in the series.
 
         If the minimum is achieved in multiple locations, the first row position is returned.
 

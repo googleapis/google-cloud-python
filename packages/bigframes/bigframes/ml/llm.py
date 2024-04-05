@@ -248,7 +248,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
             PaLM2TextGenerator: saved model."""
@@ -415,7 +415,7 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
             PaLM2TextEmbeddingGenerator: saved model."""
@@ -595,7 +595,7 @@ class GeminiTextGenerator(base.BaseEstimator):
             model_name (str):
                 the name of the model.
             replace (bool, default False):
-                whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
             GeminiTextGenerator: saved model."""

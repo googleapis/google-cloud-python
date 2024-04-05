@@ -192,9 +192,9 @@ class XGBRegressor(
             model_name (str):
                 The name of the model.
             replace (bool, default False):
-                Whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns: Saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
@@ -345,10 +345,10 @@ class XGBClassifier(
             model_name (str):
                 The name of the model.
             replace (bool, default False):
-                Whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            XGBClassifier: saved model."""
+            XGBClassifier: Saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
@@ -508,10 +508,10 @@ class RandomForestRegressor(
             model_name (str):
                 The name of the model.
             replace (bool, default False):
-                Whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            RandomForestRegressor: saved model."""
+            RandomForestRegressor: Saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
@@ -671,10 +671,10 @@ class RandomForestClassifier(
             model_name (str):
                 The name of the model.
             replace (bool, default False):
-                Whether to replace if the model already exists. Default to False.
+                Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            RandomForestClassifier: saved model."""
+            RandomForestClassifier: Saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
