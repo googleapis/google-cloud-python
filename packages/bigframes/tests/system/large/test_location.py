@@ -18,8 +18,8 @@ from google.cloud import bigquery
 import pytest
 
 import bigframes
+import bigframes.constants
 import bigframes.session.clients
-from tests import config
 
 
 def _assert_bq_execution_location(session: bigframes.Session):
@@ -66,7 +66,11 @@ def test_bq_location_default():
     _assert_bq_execution_location(session)
 
 
-@pytest.mark.parametrize("bigquery_location", config.ALL_BIGQUERY_LOCATIONS)
+@pytest.mark.parametrize(
+    "bigquery_location",
+    # Sort the set to avoid nondeterminism.
+    sorted(bigframes.constants.ALL_BIGQUERY_LOCATIONS),
+)
 def test_bq_location(bigquery_location):
     session = bigframes.Session(
         context=bigframes.BigQueryOptions(location=bigquery_location)
@@ -85,7 +89,8 @@ def test_bq_location(bigquery_location):
 
 @pytest.mark.parametrize(
     "bigquery_location",
-    config.REP_ENABLED_BIGQUERY_LOCATIONS,
+    # Sort the set to avoid nondeterminism.
+    sorted(bigframes.constants.REP_ENABLED_BIGQUERY_LOCATIONS),
 )
 def test_bq_rep_endpoints(bigquery_location):
     session = bigframes.Session(
@@ -108,7 +113,8 @@ def test_bq_rep_endpoints(bigquery_location):
 
 @pytest.mark.parametrize(
     "bigquery_location",
-    config.LEP_ENABLED_BIGQUERY_LOCATIONS,
+    # Sort the set to avoid nondeterminism.
+    sorted(bigframes.constants.LEP_ENABLED_BIGQUERY_LOCATIONS),
 )
 def test_bq_lep_endpoints(bigquery_location):
     # We are not testing BigFrames Session for LEP endpoints because it involves
