@@ -23,7 +23,8 @@ from tests.system import utils
 
 try:
     import pandas_gbq  # type: ignore
-except ImportError:
+except ImportError:  # pragma: NO COVER
+    # TODO(b/332758806): Run system tests without "extras"
     pandas_gbq = None
 
 import typing
@@ -129,12 +130,9 @@ def test_to_csv_index(
     """Test the `to_csv` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
     index_col = None
-    if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_csv_index_{index}*.csv"
-        if index:
-            index_col = typing.cast(str, scalars_df.index.name)
-    else:
-        path = gcs_folder + f"test_default_index_df_to_csv_index_{index}*.csv"
+    path = gcs_folder + f"test_index_df_to_csv_index_{index}*.csv"
+    if index:
+        index_col = typing.cast(str, scalars_df.index.name)
 
     # TODO(swast): Support "date_format" parameter and make sure our
     # DATETIME/TIMESTAMP column export is the same format as pandas by default.
@@ -386,11 +384,8 @@ def test_to_json_index_invalid_orient(
     gcs_folder: str,
     index: bool,
 ):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_json_index_{index}*.jsonl"
-    else:
-        path = gcs_folder + f"test_default_index_df_to_json_index_{index}*.jsonl"
+    scalars_df, _ = scalars_dfs
+    path = gcs_folder + f"test_index_df_to_json_index_{index}*.jsonl"
     with pytest.raises(ValueError):
         scalars_df.to_json(path, index=index, lines=True)
 
@@ -404,11 +399,8 @@ def test_to_json_index_invalid_lines(
     gcs_folder: str,
     index: bool,
 ):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_json_index_{index}.jsonl"
-    else:
-        path = gcs_folder + f"test_default_index_df_to_json_index_{index}.jsonl"
+    scalars_df, _ = scalars_dfs
+    path = gcs_folder + f"test_index_df_to_json_index_{index}.jsonl"
     with pytest.raises(NotImplementedError):
         scalars_df.to_json(path, index=index)
 
@@ -422,14 +414,13 @@ def test_to_json_index_records_orient(
     gcs_folder: str,
     index: bool,
 ):
-    """Test the `to_json` API with the `index` parameter."""
-    scalars_df, scalars_pandas_df = scalars_dfs
-    if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_json_index_{index}*.jsonl"
-    else:
-        path = gcs_folder + f"test_default_index_df_to_json_index_{index}*.jsonl"
+    """Test the `to_json` API with the `index` parameter.
 
-    """ Test the `to_json` API with `orient` is `records` and `lines` is True"""
+    Uses the scalable options orient='records' and lines=True.
+    """
+    scalars_df, scalars_pandas_df = scalars_dfs
+    path = gcs_folder + f"test_index_df_to_json_index_{index}*.jsonl"
+
     scalars_df.to_json(path, index=index, orient="records", lines=True)
 
     gcs_df = pd.read_json(
@@ -460,11 +451,7 @@ def test_to_parquet_index(scalars_dfs, gcs_folder, index):
     """Test the `to_parquet` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
     scalars_pandas_df = scalars_pandas_df.copy()
-
-    if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_parquet_{index}*.parquet"
-    else:
-        path = gcs_folder + f"test_default_index_df_to_parquet_{index}*.parquet"
+    path = gcs_folder + f"test_index_df_to_parquet_{index}*.parquet"
 
     # TODO(b/268693993): Type GEOGRAPHY is not currently supported for parquet.
     scalars_df = scalars_df.drop(columns="geography_col")

@@ -110,6 +110,7 @@ def _changed_params(estimator):
         # try to avoid calling repr on nested estimators
         if isinstance(v, BaseEstimator) and v.__class__ != init_params[k].__class__:
             return True
+
         # Use repr as a last resort. It may be expensive.
         def is_scalar_nan(x):
             return isinstance(x, numbers.Real) and math.isnan(x)

@@ -64,8 +64,8 @@ def _assert_bq_table_is_encrypted(
 
 
 def test_session_query_job(bq_cmek, session_with_bq_cmek):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     _, query_job = session_with_bq_cmek._start_query(
         "SELECT 123", job_config=bigquery.QueryJobConfig(use_query_cache=False)
@@ -82,8 +82,8 @@ def test_session_query_job(bq_cmek, session_with_bq_cmek):
 
 
 def test_session_load_job(bq_cmek, session_with_bq_cmek):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Session should have cmek set in the default query and load job configs
     load_table = bigframes.session._io.bigquery.random_table(
@@ -114,8 +114,8 @@ def test_session_load_job(bq_cmek, session_with_bq_cmek):
 
 
 def test_read_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Read the BQ table
     df = session_with_bq_cmek.read_gbq(scalars_table_id)
@@ -125,8 +125,8 @@ def test_read_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
 
 
 def test_df_apis(bq_cmek, session_with_bq_cmek, scalars_table_id):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Read a BQ table and assert encryption
     df = session_with_bq_cmek.read_gbq(scalars_table_id)
@@ -152,8 +152,8 @@ def test_df_apis(bq_cmek, session_with_bq_cmek, scalars_table_id):
 def test_read_csv_gcs(
     bq_cmek, session_with_bq_cmek, scalars_df_index, gcs_folder, engine
 ):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Create a csv in gcs
     write_path = gcs_folder + "test_read_csv_gcs_bigquery_engine*.csv"
@@ -170,8 +170,8 @@ def test_read_csv_gcs(
 
 
 def test_to_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Read a BQ table and assert encryption
     df = session_with_bq_cmek.read_gbq(scalars_table_id)
@@ -205,8 +205,8 @@ def test_to_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
 
 
 def test_read_pandas(bq_cmek, session_with_bq_cmek):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Read a pandas dataframe
     df = session_with_bq_cmek.read_pandas(pandas.DataFrame([1]))
@@ -216,8 +216,8 @@ def test_read_pandas(bq_cmek, session_with_bq_cmek):
 
 
 def test_read_pandas_large(bq_cmek, session_with_bq_cmek):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Read a pandas dataframe large enough to trigger a BQ load job
     df = session_with_bq_cmek.read_pandas(pandas.DataFrame(range(10_000)))
@@ -227,8 +227,8 @@ def test_read_pandas_large(bq_cmek, session_with_bq_cmek):
 
 
 def test_bqml(bq_cmek, session_with_bq_cmek, penguins_table_id):
-    if not bq_cmek:
-        pytest.skip("no cmek set for testing")
+    if not bq_cmek:  # pragma: NO COVER
+        pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     model = bigframes.ml.linear_model.LinearRegression()
     df = session_with_bq_cmek.read_gbq(penguins_table_id).dropna()

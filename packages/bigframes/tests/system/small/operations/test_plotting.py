@@ -27,13 +27,10 @@ def _check_legend_labels(ax, labels):
     """
     assert ax.get_legend() is not None
     texts = ax.get_legend().get_texts()
-    if not isinstance(texts, list):
-        assert texts.get_text() == labels
-    else:
-        actual_labels = [t.get_text() for t in texts]
-        assert len(actual_labels) == len(labels)
-        for label, e in zip(actual_labels, labels):
-            assert label == e
+    actual_labels = [t.get_text() for t in texts]
+    assert len(actual_labels) == len(labels)
+    for label, e in zip(actual_labels, labels):
+        assert label == e
 
 
 def test_series_hist_bins(scalars_dfs):

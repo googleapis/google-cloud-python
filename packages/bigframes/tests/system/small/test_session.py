@@ -493,10 +493,7 @@ def test_read_pandas_tokyo(
 @utils.skip_legacy_pandas
 def test_read_csv_gcs_default_engine(session, scalars_dfs, gcs_folder):
     scalars_df, _ = scalars_dfs
-    if scalars_df.index.name is not None:
-        path = gcs_folder + "test_read_csv_gcs_default_engine_w_index*.csv"
-    else:
-        path = gcs_folder + "test_read_csv_gcs_default_engine_wo_index*.csv"
+    path = gcs_folder + "test_read_csv_gcs_default_engine_w_index*.csv"
     read_path = utils.get_first_file_from_wildcard(path)
     scalars_df.to_csv(path, index=False)
     dtype = scalars_df.dtypes.to_dict()
@@ -520,10 +517,7 @@ def test_read_csv_gcs_default_engine(session, scalars_dfs, gcs_folder):
 
 def test_read_csv_gcs_bq_engine(session, scalars_dfs, gcs_folder):
     scalars_df, _ = scalars_dfs
-    if scalars_df.index.name is not None:
-        path = gcs_folder + "test_read_csv_gcs_bq_engine_w_index*.csv"
-    else:
-        path = gcs_folder + "test_read_csv_gcs_bq_engine_wo_index*.csv"
+    path = gcs_folder + "test_read_csv_gcs_bq_engine_w_index*.csv"
     scalars_df.to_csv(path, index=False)
     df = session.read_csv(path, engine="bigquery")
 

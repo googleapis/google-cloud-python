@@ -105,7 +105,8 @@ def test_remote_function_direct_no_session_param(
         reuse=True,
     )
     def square(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     assert square.bigframes_remote_function
     assert square.bigframes_cloud_function
@@ -157,7 +158,8 @@ def test_remote_function_direct_no_session_param_location_specified(
         reuse=True,
     )
     def square(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -207,7 +209,8 @@ def test_remote_function_direct_no_session_param_location_mismatched(
             reuse=True,
         )
         def square(x):
-            return x * x
+            # This executes on a remote function, where coverage isn't tracked.
+            return x * x  # pragma: NO COVER
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -233,7 +236,8 @@ def test_remote_function_direct_no_session_param_location_project_specified(
         reuse=True,
     )
     def square(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -283,7 +287,8 @@ def test_remote_function_direct_no_session_param_project_mismatched(
             reuse=True,
         )
         def square(x):
-            return x * x
+            # This executes on a remote function, where coverage isn't tracked.
+            return x * x  # pragma: NO COVER
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -294,7 +299,8 @@ def test_remote_function_direct_session_param(session_with_bq_connection, scalar
         session=session_with_bq_connection,
     )
     def square(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -331,7 +337,8 @@ def test_remote_function_via_session_default(session_with_bq_connection, scalars
     # cloud function would be common and quickly reused.
     @session_with_bq_connection.remote_function([int], int)
     def square(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -370,7 +377,8 @@ def test_remote_function_via_session_with_overrides(
         reuse=True,
     )
     def square(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -497,7 +505,8 @@ def test_skip_bq_connection_check(dataset_id_permanent):
 
         @session.remote_function([int], int, dataset=dataset_id_permanent)
         def add_one(x):
-            return x + 1
+            # This executes on a remote function, where coverage isn't tracked.
+            return x + 1  # pragma: NO COVER
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -534,7 +543,8 @@ def test_read_gbq_function_like_original(
         reuse=True,
     )
     def square1(x):
-        return x * x
+        # This executes on a remote function, where coverage isn't tracked.
+        return x * x  # pragma: NO COVER
 
     square2 = rf.read_gbq_function(
         function_name=square1.bigframes_remote_function,

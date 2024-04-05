@@ -524,13 +524,6 @@ def test_repr_w_all_rows(scalars_dfs):
     scalars_df = scalars_df.drop(columns=["numeric_col"])
     scalars_pandas_df = scalars_pandas_df.drop(columns=["numeric_col"])
 
-    if scalars_pandas_df.index.name is None:
-        # Note: Not quite the same as no index / default index, but hopefully
-        # simulates it well enough while being consistent enough for string
-        # comparison to work.
-        scalars_df = scalars_df.set_index("rowindex", drop=False).sort_index()
-        scalars_df.index.name = None
-
     # When there are 10 or fewer rows, the outputs should be identical.
     actual = repr(scalars_df.head(10))
 
@@ -3955,9 +3948,6 @@ def test_df_value_counts(scalars_dfs, subset, normalize, ascending, dropna):
         ("top", "first", False, False),
         ("bottom", "dense", False, False),
     ],
-)
-@pytest.mark.skipif(
-    True, reason="Blocked by possible pandas rank() regression (b/283278923)"
 )
 def test_df_rank_with_nulls(
     scalars_df_index,

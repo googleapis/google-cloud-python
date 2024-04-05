@@ -882,25 +882,6 @@ def test_column_multi_index_unstack(scalars_df_index, scalars_pandas_df_index):
     pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
-@pytest.mark.skip(reason="Pandas fails in newer versions.")
-def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index):
-    columns = ["int64_too", "int64_col", "rowindex_2"]
-    level1 = pandas.Index(["b", pandas.NA, pandas.NA])
-    # Need resulting column to be pyarrow string rather than object dtype
-    level2 = pandas.Index([pandas.NA, "b", "b"], dtype="string[pyarrow]")
-    multi_columns = pandas.MultiIndex.from_arrays([level1, level2])
-    bf_df = scalars_df_index[columns].copy()
-    bf_df.columns = multi_columns
-    pd_df = scalars_pandas_df_index[columns].copy()
-    pd_df.columns = multi_columns
-
-    bf_result = bf_df.stack().to_pandas()
-    pd_result = pd_df.stack()
-
-    # Pandas produces NaN, where bq dataframes produces pd.NA
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
-
-
 def test_corr_w_multi_index(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "float64_col", "int64_col"]
     multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "b"], [1, 2, 2]))

@@ -1276,8 +1276,6 @@ def test_numeric_literal(scalars_dfs):
 
 def test_repr(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
-    if scalars_pandas_df.index.name != "rowindex":
-        pytest.skip("Require index & ordering for consistent repr.")
 
     col_name = "int64_col"
     bf_series = scalars_df[col_name]
@@ -1405,8 +1403,6 @@ def test_groupby_level_sum(scalars_dfs):
     # TODO(tbergeron): Use a non-unique index once that becomes possible in tests
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_too"
-    if scalars_pandas_df.index.name != "rowindex":
-        pytest.skip("Require index for groupby level.")
 
     bf_series = scalars_df[col_name].groupby(level=0).sum()
     pd_series = scalars_pandas_df[col_name].groupby(level=0).sum()
@@ -1421,8 +1417,6 @@ def test_groupby_level_list_sum(scalars_dfs):
     # TODO(tbergeron): Use a non-unique index once that becomes possible in tests
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_too"
-    if scalars_pandas_df.index.name != "rowindex":
-        pytest.skip("Require index for groupby level.")
 
     bf_series = scalars_df[col_name].groupby(level=["rowindex"]).sum()
     pd_series = scalars_pandas_df[col_name].groupby(level=["rowindex"]).sum()
@@ -1710,9 +1704,6 @@ def test_dtypes(scalars_dfs):
 def test_head(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    if scalars_df.index.name is None:
-        pytest.skip("Require explicit index for offset ops.")
-
     bf_result = scalars_df["string_col"].head(2).to_pandas()
     pd_result = scalars_pandas_df["string_col"].head(2)
 
@@ -1724,9 +1715,6 @@ def test_head(scalars_dfs):
 
 def test_tail(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
-
-    if scalars_df.index.name is None:
-        pytest.skip("Require explicit index for offset ops.")
 
     bf_result = scalars_df["string_col"].tail(2).to_pandas()
     pd_result = scalars_pandas_df["string_col"].tail(2)
@@ -1740,9 +1728,6 @@ def test_tail(scalars_dfs):
 def test_head_then_scalar_operation(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    if scalars_df.index.name is None:
-        pytest.skip("Require explicit index for offset ops.")
-
     bf_result = (scalars_df["float64_col"].head(1) + 4).to_pandas()
     pd_result = scalars_pandas_df["float64_col"].head(1) + 4
 
@@ -1754,9 +1739,6 @@ def test_head_then_scalar_operation(scalars_dfs):
 
 def test_head_then_series_operation(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
-
-    if scalars_df.index.name is None:
-        pytest.skip("Require explicit index for offset ops.")
 
     bf_result = (
         scalars_df["float64_col"].head(4) + scalars_df["float64_col"].head(2)
@@ -1833,44 +1815,6 @@ def test_cumsum_int_ordered(scalars_df_index, scalars_pandas_df_index):
         scalars_pandas_df_index.sort_values(by="rowindex_2")[col_name]
         .cumsum()
         .astype(pd.Int64Dtype())
-    )
-
-    pd.testing.assert_series_equal(
-        bf_result,
-        pd_result,
-    )
-
-
-@pytest.mark.parametrize(
-    ("na_option",),
-    [
-        ("keep",),
-        ("top",),
-        ("bottom",),
-    ],
-)
-@pytest.mark.parametrize(
-    ("method",),
-    [
-        ("average",),
-        ("min",),
-        ("max",),
-        ("first",),
-        ("dense",),
-    ],
-)
-@pytest.mark.skipif(
-    True, reason="Blocked by possible pandas rank() regression (b/283278923)"
-)
-def test_rank_with_nulls(scalars_df_index, scalars_pandas_df_index, na_option, method):
-    col_name = "bool_col"
-    bf_result = (
-        scalars_df_index[col_name].rank(na_option=na_option, method=method).to_pandas()
-    )
-    pd_result = (
-        scalars_pandas_df_index[col_name]
-        .rank(na_option=na_option, method=method)
-        .astype(pd.Float64Dtype())
     )
 
     pd.testing.assert_series_equal(

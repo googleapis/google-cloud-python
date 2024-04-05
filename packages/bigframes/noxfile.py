@@ -112,8 +112,7 @@ def lint(session):
         "--check",
         *LINT_PATHS,
     )
-    # TODO(tswast): lint all LINT_PATHS
-    session.run("flake8", "bigframes", "tests")
+    session.run("flake8", *LINT_PATHS)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -411,8 +410,8 @@ def samples(session):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
-    # TODO(swast): Use `requirements.txt` files from the samples directories to
-    # test samples.
+    # TODO(b/332735129): Remove this session and use python_samples templates
+    # where each samples directory has its own noxfile.py file, instead.
     install_test_extra = True
     install_systemtest_dependencies(session, install_test_extra, "-c", constraints_path)
 
@@ -434,12 +433,12 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=90")
 
     # Make sure there is no dead code in our test directories.
-    # TODO(swast): Cleanup dead code in the system tests directory.
     session.run(
         "coverage",
         "report",
         "--show-missing",
         "--include=tests/unit/*",
+        "--include=tests/system/small/*",
         "--fail-under=100",
     )
 
@@ -714,7 +713,7 @@ def notebook(session: nox.Session):
         "notebooks/getting_started/ml_fundamentals_bq_dataframes.ipynb",  # Needs DATASET.
         "notebooks/regression/bq_dataframes_ml_linear_regression.ipynb",  # Needs DATASET_ID.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
-        # TODO(swast): investigate why we get 404 errors, even though
+        # TODO(b/332737009): investigate why we get 404 errors, even though
         # bq_dataframes_llm_code_generation creates a bucket in the sample.
         "notebooks/generative_ai/bq_dataframes_llm_code_generation.ipynb",  # Needs BUCKET_URI.
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
