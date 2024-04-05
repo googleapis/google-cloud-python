@@ -397,7 +397,7 @@ def expm1_op_impl(x: ibis_types.Value):
 
 @scalar_op_compiler.register_unary_op(ops.invert_op)
 def invert_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.NumericValue, x).negate()
+    return x.__invert__()
 
 
 ## String Operation

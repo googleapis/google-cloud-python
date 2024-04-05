@@ -284,6 +284,21 @@ def test_abs(scalars_dfs, col_name):
     assert_series_equal(pd_result, bf_result)
 
 
+@pytest.mark.parametrize(
+    ("col_name",),
+    (
+        ("bool_col",),
+        ("int64_col",),
+    ),
+)
+def test_series_invert(scalars_dfs, col_name):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = (~scalars_df[col_name]).to_pandas()
+    pd_result = ~scalars_pandas_df[col_name]
+
+    assert_series_equal(pd_result, bf_result)
+
+
 def test_fillna(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
