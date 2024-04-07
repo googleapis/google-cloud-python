@@ -15,7 +15,7 @@ Python Client for Organization Policy API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-org-policy.svg
    :target: https://pypi.org/project/google-cloud-org-policy/
 .. _Organization Policy API: https://cloud.google.com/resource-manager/docs/organization-policy/overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/orgpolicy/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/orgpolicy/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
 
 Quick Start
