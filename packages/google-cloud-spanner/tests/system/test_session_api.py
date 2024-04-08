@@ -2348,6 +2348,18 @@ def test_execute_sql_w_jsonb_bindings(
     )
 
 
+def test_execute_sql_w_oid_bindings(
+    not_emulator, not_google_standard_sql, sessions_database, database_dialect
+):
+    _bind_test_helper(
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.PG_OID,
+        123,
+        [123, 456],
+    )
+
+
 def test_execute_sql_w_query_param_struct(sessions_database, not_postgres):
     name = "Phred"
     count = 123
