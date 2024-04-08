@@ -39,7 +39,7 @@ class Vector(collections.abc.Sequence):
         return self._value == other._value
 
     def __repr__(self):
-        return f"Vector<{str(self.value)[1:-1]}>"
+        return f"Vector<{str(self._value)[1:-1]}>"
 
     def to_map_value(self):
         return {"__type__": "__vector__", "value": self._value}
