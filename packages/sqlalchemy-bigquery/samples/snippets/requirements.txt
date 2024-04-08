@@ -29,5 +29,5 @@ rsa==4.9
 shapely==2.0.3
 six==1.16.0
 sqlalchemy===1.4.27
-typing-extensions==4.10.0
+typing-extensions==4.11.0
 urllib3==2.2.1
