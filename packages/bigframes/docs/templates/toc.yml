@@ -69,6 +69,7 @@
         uid: bigframes.operations.plotting
       - name: PlotAccessor
         uid: bigframes.operations.plotting.PlotAccessor
+      name: Plotting
     - items:
       - name: Series
         uid: bigframes.series.Series
