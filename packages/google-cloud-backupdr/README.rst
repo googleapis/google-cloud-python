@@ -14,9 +14,9 @@ Python Client for Backup and DR Service API
    :target: https://pypi.org/project/google-cloud-backupdr/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-backupdr.svg
    :target: https://pypi.org/project/google-cloud-backupdr/
-.. _Backup and DR Service API: 
-.. _Client Library Documentation: https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr/summary_overview
-.. _Product Documentation:  
+.. _Backup and DR Service API: https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-backupdr/latest/summary_overview
+.. _Product Documentation:  https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Backup and DR Service API.:  
+.. _Enable the Backup and DR Service API.:  https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,5 +104,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Backup and DR Service API Product documentation:  
+.. _Backup and DR Service API Product documentation:  https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-dr
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
