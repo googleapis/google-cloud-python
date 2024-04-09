@@ -2132,6 +2132,66 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._pivot(columns=columns, index=index, values=values)
 
+    def pivot_table(
+        self,
+        values: typing.Optional[
+            typing.Union[blocks.Label, Sequence[blocks.Label]]
+        ] = None,
+        index: typing.Optional[
+            typing.Union[blocks.Label, Sequence[blocks.Label]]
+        ] = None,
+        columns: typing.Union[blocks.Label, Sequence[blocks.Label]] = None,
+        aggfunc: str = "mean",
+    ) -> DataFrame:
+        if isinstance(index, Iterable) and not (
+            isinstance(index, blocks.Label) and index in self.columns
+        ):
+            index = list(index)
+        else:
+            index = [index]
+
+        if isinstance(columns, Iterable) and not (
+            isinstance(columns, blocks.Label) and columns in self.columns
+        ):
+            columns = list(columns)
+        else:
+            columns = [columns]
+
+        if isinstance(values, Iterable) and not (
+            isinstance(values, blocks.Label) and values in self.columns
+        ):
+            values = list(values)
+        else:
+            values = [values]
+
+        # Unlike pivot, pivot_table has values always ordered.
+        values.sort()
+
+        keys = index + columns
+        agged = self.groupby(keys, dropna=True)[values].agg(aggfunc)
+
+        if isinstance(agged, bigframes.series.Series):
+            agged = agged.to_frame()
+
+        agged = agged.dropna(how="all")
+
+        if len(values) == 1:
+            agged = agged.rename(columns={agged.columns[0]: values[0]})
+
+        agged = agged.reset_index()
+
+        pivoted = agged.pivot(
+            columns=columns,
+            index=index,
+            values=values if len(values) > 1 else None,
+        ).sort_index()
+
+        # TODO: Remove the reordering step once the issue is resolved.
+        # The pivot_table method results in multi-index columns that are always ordered.
+        # However, the order of the pivoted result columns is not guaranteed to be sorted.
+        # Sort and reorder.
+        return pivoted[pivoted.columns.sort_values()]
+
     def stack(self, level: LevelsType = -1):
         if not isinstance(self.columns, pandas.MultiIndex):
             if level not in [0, -1, self.columns.name]:

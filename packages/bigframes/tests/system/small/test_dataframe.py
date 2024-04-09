@@ -2606,6 +2606,34 @@ def test_df_pivot_hockey(hockey_df, hockey_pandas_df, values, index, columns):
     pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
+@pytest.mark.parametrize(
+    ("values", "index", "columns", "aggfunc"),
+    [
+        (("culmen_length_mm", "body_mass_g"), "species", "sex", "std"),
+        (["body_mass_g", "culmen_length_mm"], ("species", "island"), "sex", "sum"),
+        ("body_mass_g", "sex", ["island", "species"], "mean"),
+        ("culmen_depth_mm", "island", "species", "max"),
+    ],
+)
+def test_df_pivot_table(
+    penguins_df_default_index,
+    penguins_pandas_df_default_index,
+    values,
+    index,
+    columns,
+    aggfunc,
+):
+    bf_result = penguins_df_default_index.pivot_table(
+        values=values, index=index, columns=columns, aggfunc=aggfunc
+    ).to_pandas()
+    pd_result = penguins_pandas_df_default_index.pivot_table(
+        values=values, index=index, columns=columns, aggfunc=aggfunc
+    )
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_column_type=False
+    )
+
+
 def test_ipython_key_completions_with_drop(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_names = "string_col"
