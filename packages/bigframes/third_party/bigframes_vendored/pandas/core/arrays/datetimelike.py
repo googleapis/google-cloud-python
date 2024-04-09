@@ -9,8 +9,8 @@ class DatelikeOps:
         Convert to string Series using specified date_format.
 
         Return a Series of formatted strings specified by date_format. Details
-        of the string format can be found in `BigQuery format elements doc
-        <%(https://cloud.google.com/bigquery/docs/reference/standard-sql/format-elements)s>`__.
+        of the string format can be found in BigQuery format elements doc:
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/format-elements#format_elements_date_time.
 
         **Examples:**
 

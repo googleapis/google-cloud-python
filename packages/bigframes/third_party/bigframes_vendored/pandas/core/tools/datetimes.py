@@ -29,7 +29,7 @@ def to_datetime(
     .. note::
         The format strings for specifying datetime representations in BigQuery and pandas
         are not completely identical. Ensure that the format string provided is compatible
-        with BigQuery.
+        with BigQuery (https://cloud.google.com/bigquery/docs/reference/standard-sql/format-elements#format_elements_date_time).
 
     **Examples:**
 
