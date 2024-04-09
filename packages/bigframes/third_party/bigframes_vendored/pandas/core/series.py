@@ -119,13 +119,15 @@ class Series(NDFrame):  # type: ignore[misc]
     def dtype(self):
         """
         Return the dtype object of the underlying data.
-        """
-        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    @property
-    def dtypes(self):
-        """
-        Return the dtype object of the underlying data.
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s.dtype
+            Int64Dtype()
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

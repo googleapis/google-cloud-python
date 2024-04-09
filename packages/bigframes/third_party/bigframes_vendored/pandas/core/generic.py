@@ -589,6 +589,18 @@ class NDFrame(indexing.IndexingMixin):
         The result's index is the original DataFrame's columns. Columns
         with mixed types aren't supported yet in BigQuery DataFrames.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'float': [1.0], 'int': [1], 'string': ['foo']})
+            >>> df.dtypes
+            float             Float64
+            int                 Int64
+            string    string[pyarrow]
+            dtype: object
+
         Returns:
             A *pandas* Series with the data type of each column.
         """
