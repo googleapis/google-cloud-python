@@ -106,8 +106,7 @@ class ArrayValue:
 
     @functools.cached_property
     def schema(self) -> schemata.ArraySchema:
-        # TODO: switch to use self.node.schema
-        return self._compiled_schema
+        return self.node.schema
 
     @functools.cached_property
     def _compiled_schema(self) -> schemata.ArraySchema:

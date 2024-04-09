@@ -17,7 +17,6 @@
 from __future__ import annotations
 
 import datetime
-import os
 import re
 import sys
 import textwrap
@@ -174,11 +173,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             else:
                 self._block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()
         self._query_job: Optional[bigquery.QueryJob] = None
-
-        # Runs strict validations to ensure internal type predictions and ibis are completely in sync
-        # Do not execute these validations outside of testing suite.
-        if "PYTEST_CURRENT_TEST" in os.environ:
-            self._block.expr.validate_schema()
 
     def __dir__(self):
         return dir(type(self)) + [

@@ -57,12 +57,10 @@ DATE_DTYPE = pd.ArrowDtype(pa.date32())
 TIME_DTYPE = pd.ArrowDtype(pa.time64("us"))
 DATETIME_DTYPE = pd.ArrowDtype(pa.timestamp("us"))
 TIMESTAMP_DTYPE = pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+GEO_DTYPE = gpd.array.GeometryDtype()
 
 # Used when storing Null expressions
 DEFAULT_DTYPE = FLOAT_DTYPE
-
-# On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
-UNORDERED_DTYPES = [gpd.array.GeometryDtype()]
 
 # Type hints for dtype strings supported by BigQuery DataFrame
 DtypeString = Literal[
@@ -134,6 +132,12 @@ def is_array_like(type: ExpressionType) -> bool:
     )
 
 
+def is_struct_like(type: ExpressionType) -> bool:
+    return isinstance(type, pd.ArrowDtype) and isinstance(
+        type.pyarrow_dtype, pa.StructType
+    )
+
+
 def is_numeric(type: ExpressionType) -> bool:
     return type in NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
 
@@ -143,18 +147,18 @@ def is_iterable(type: ExpressionType) -> bool:
 
 
 def is_comparable(type: ExpressionType) -> bool:
-    return (type is not None) and (type not in UNORDERED_DTYPES)
+    return (type is not None) and is_orderable(type)
 
 
-# Type hints for Ibis data types that can be read to Python objects by BigQuery DataFrame
-ReadOnlyIbisDtype = Union[
-    ibis_dtypes.Binary,
-    ibis_dtypes.JSON,
-    ibis_dtypes.Decimal,
-    ibis_dtypes.GeoSpatial,
-    ibis_dtypes.Array,
-    ibis_dtypes.Struct,
-]
+def is_orderable(type: ExpressionType) -> bool:
+    # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
+    return not is_array_like(type) and not is_struct_like(type) and (type != GEO_DTYPE)
+
+
+def is_bool_coercable(type: ExpressionType) -> bool:
+    # TODO: Implement more bool coercions
+    return (type is None) or is_numeric(type) or is_string_like(type)
+
 
 BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, Dtype]] = (
     (ibis_dtypes.boolean, pd.BooleanDtype()),
