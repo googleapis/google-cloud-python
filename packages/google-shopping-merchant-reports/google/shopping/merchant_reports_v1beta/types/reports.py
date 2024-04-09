@@ -63,8 +63,8 @@ class SearchRequest(proto.Message):
             fields.
         page_size (int):
             Optional. Number of ``ReportRows`` to retrieve in a single
-            page. Defaults to the maximum of 1000. Values above 1000 are
-            coerced to 1000.
+            page. Defaults to 1000. Values above 5000 are coerced to
+            5000.
         page_token (str):
             Optional. Token of the page to retrieve. If not specified,
             the first page of results is returned. In order to request
@@ -677,6 +677,16 @@ class ProductView(proto.Message):
             **Only selected attributes of this field (for example,
             ``item_issues.severity.aggregated_severity``) can be used
             for filtering the results.**
+        click_potential (google.shopping.merchant_reports_v1beta.types.ProductView.ClickPotential):
+            Estimated performance potential compared to
+            highest performing products of the merchant.
+        click_potential_rank (int):
+            Rank of the product based on its click potential. A product
+            with ``click_potential_rank`` 1 has the highest click
+            potential among the merchant's products that fulfill the
+            search query conditions.
+
+            This field is a member of `oneof`_ ``_click_potential_rank``.
     """
 
     class AggregatedReportingContextStatus(proto.Enum):
@@ -711,6 +721,35 @@ class ProductView(proto.Message):
         PENDING = 2
         ELIGIBLE_LIMITED = 3
         ELIGIBLE = 4
+
+    class ClickPotential(proto.Enum):
+        r"""A product's `click
+        potential <https://support.google.com/merchants/answer/188488>`__
+        estimates its performance potential compared to highest performing
+        products of the merchant. Click potential of a product helps
+        merchants to prioritize which products to fix and helps them
+        understand how products are performing against their potential.
+
+        Values:
+            CLICK_POTENTIAL_UNSPECIFIED (0):
+                Unknown predicted clicks impact.
+            LOW (1):
+                Potential to receive a low number of clicks
+                compared to the highest performing products of
+                the merchant.
+            MEDIUM (2):
+                Potential to receive a moderate number of
+                clicks compared to the highest performing
+                products of the merchant.
+            HIGH (3):
+                Potential to receive a similar number of
+                clicks as the highest performing products of the
+                merchant.
+        """
+        CLICK_POTENTIAL_UNSPECIFIED = 0
+        LOW = 1
+        MEDIUM = 2
+        HIGH = 3
 
     class ItemIssue(proto.Message):
         r"""Item issue associated with the product.
@@ -1021,6 +1060,16 @@ class ProductView(proto.Message):
         proto.MESSAGE,
         number=27,
         message=ItemIssue,
+    )
+    click_potential: ClickPotential = proto.Field(
+        proto.ENUM,
+        number=29,
+        enum=ClickPotential,
+    )
+    click_potential_rank: int = proto.Field(
+        proto.INT64,
+        number=30,
+        optional=True,
     )
 
 
