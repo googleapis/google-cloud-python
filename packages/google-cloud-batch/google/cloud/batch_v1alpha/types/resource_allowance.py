@@ -263,15 +263,21 @@ class UsageResourceAllowanceStatus(proto.Message):
     class LimitStatus(proto.Message):
         r"""UsageResourceAllowanceStatus detail about usage consumption.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             consumption_interval (google.type.interval_pb2.Interval):
                 Output only. The consumption interval.
             limit (float):
                 Output only. Limit value of a
                 UsageResourceAllowance within its one duration.
+
+                This field is a member of `oneof`_ ``_limit``.
             consumed (float):
                 Output only. Accumulated consumption during
                 ``consumption_interval``.
+
+                This field is a member of `oneof`_ ``_consumed``.
         """
 
         consumption_interval: interval_pb2.Interval = proto.Field(
@@ -282,14 +288,18 @@ class UsageResourceAllowanceStatus(proto.Message):
         limit: float = proto.Field(
             proto.DOUBLE,
             number=2,
+            optional=True,
         )
         consumed: float = proto.Field(
             proto.DOUBLE,
             number=3,
+            optional=True,
         )
 
     class PeriodConsumption(proto.Message):
         r"""
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             consumption_interval (google.type.interval_pb2.Interval):
@@ -297,6 +307,8 @@ class UsageResourceAllowanceStatus(proto.Message):
             consumed (float):
                 Output only. Accumulated consumption during
                 ``consumption_interval``.
+
+                This field is a member of `oneof`_ ``_consumed``.
         """
 
         consumption_interval: interval_pb2.Interval = proto.Field(
@@ -307,6 +319,7 @@ class UsageResourceAllowanceStatus(proto.Message):
         consumed: float = proto.Field(
             proto.DOUBLE,
             number=2,
+            optional=True,
         )
 
     class ConsumptionReport(proto.Message):
