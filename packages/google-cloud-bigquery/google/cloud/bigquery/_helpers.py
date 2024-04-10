@@ -309,6 +309,46 @@ def _json_from_json(value, field):
         return None
 
 
+def _range_element_from_json(value, field):
+    """Coerce 'value' to a range element value, if set or not nullable."""
+    if value == "UNBOUNDED":
+        return None
+    elif field.element_type == "DATE":
+        return _date_from_json(value, None)
+    elif field.element_type == "DATETIME":
+        return _datetime_from_json(value, None)
+    elif field.element_type == "TIMESTAMP":
+        return _timestamp_from_json(value, None)
+    else:
+        raise ValueError(f"Unsupported range field type: {value}")
+
+
+def _range_from_json(value, field):
+    """Coerce 'value' to a range, if set or not nullable.
+
+    Args:
+        value (str): The literal representation of the range.
+        field (google.cloud.bigquery.schema.SchemaField):
+            The field corresponding to the value.
+
+    Returns:
+        Optional[dict]:
+            The parsed range object from ``value`` if the ``field`` is not
+            null (otherwise it is :data:`None`).
+    """
+    range_literal = re.compile(r"\[.*, .*\)")
+    if _not_null(value, field):
+        if range_literal.match(value):
+            start, end = value[1:-1].split(", ")
+            start = _range_element_from_json(start, field.range_element_type)
+            end = _range_element_from_json(end, field.range_element_type)
+            return {"start": start, "end": end}
+        else:
+            raise ValueError(f"Unknown range format: {value}")
+    else:
+        return None
+
+
 # Parse BigQuery API response JSON into a Python representation.
 _CELLDATA_FROM_JSON = {
     "INTEGER": _int_from_json,
@@ -329,6 +369,7 @@ _CELLDATA_FROM_JSON = {
     "TIME": _time_from_json,
     "RECORD": _record_from_json,
     "JSON": _json_from_json,
+    "RANGE": _range_from_json,
 }
 
 _QUERY_PARAMS_FROM_JSON = dict(_CELLDATA_FROM_JSON)

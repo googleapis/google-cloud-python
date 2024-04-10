@@ -25,6 +25,7 @@ from google.cloud._helpers import UTC
 _naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
 _naive_microseconds = datetime.datetime(2016, 12, 5, 12, 41, 9, 250000)
 _stamp = "%s %s" % (_naive.date().isoformat(), _naive.time().isoformat())
+_date = _naive.date().isoformat()
 _stamp_microseconds = _stamp + ".250000"
 _zoned = _naive.replace(tzinfo=UTC)
 _zoned_microseconds = _naive_microseconds.replace(tzinfo=UTC)
@@ -78,6 +79,10 @@ STANDARD_SQL_EXAMPLES = [
     ),
     ("SELECT ARRAY(SELECT STRUCT([1, 2]))", [{"_field_1": [1, 2]}]),
     ("SELECT ST_GeogPoint(1, 2)", "POINT(1 2)"),
+    (
+        "SELECT RANGE<DATE> '[UNBOUNDED, %s)'" % _date,
+        {"start": None, "end": _naive.date()},
+    ),
 ]
 
 

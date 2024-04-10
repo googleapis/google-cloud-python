@@ -452,6 +452,99 @@ class Test_time_from_json(unittest.TestCase):
             self._call_fut("12:12:27.123", object())
 
 
+class Test_range_from_json(unittest.TestCase):
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _range_from_json
+
+        return _range_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field("NULLABLE")))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field("REQUIRED"))
+
+    def test_w_wrong_format(self):
+        range_field = _Field(
+            "NULLABLE",
+            field_type="RANGE",
+            range_element_type=_Field("NULLABLE", element_type="DATE"),
+        )
+        with self.assertRaises(ValueError):
+            self._call_fut("[2009-06-172019-06-17)", range_field)
+
+    def test_w_wrong_element_type(self):
+        range_field = _Field(
+            "NULLABLE",
+            field_type="RANGE",
+            range_element_type=_Field("NULLABLE", element_type="TIME"),
+        )
+        with self.assertRaises(ValueError):
+            self._call_fut("[15:31:38, 15:50:38)", range_field)
+
+    def test_w_unbounded_value(self):
+        range_field = _Field(
+            "NULLABLE",
+            field_type="RANGE",
+            range_element_type=_Field("NULLABLE", element_type="DATE"),
+        )
+        coerced = self._call_fut("[UNBOUNDED, 2019-06-17)", range_field)
+        self.assertEqual(
+            coerced,
+            {"start": None, "end": datetime.date(2019, 6, 17)},
+        )
+
+    def test_w_date_value(self):
+        range_field = _Field(
+            "NULLABLE",
+            field_type="RANGE",
+            range_element_type=_Field("NULLABLE", element_type="DATE"),
+        )
+        coerced = self._call_fut("[2009-06-17, 2019-06-17)", range_field)
+        self.assertEqual(
+            coerced,
+            {
+                "start": datetime.date(2009, 6, 17),
+                "end": datetime.date(2019, 6, 17),
+            },
+        )
+
+    def test_w_datetime_value(self):
+        range_field = _Field(
+            "NULLABLE",
+            field_type="RANGE",
+            range_element_type=_Field("NULLABLE", element_type="DATETIME"),
+        )
+        coerced = self._call_fut(
+            "[2009-06-17T13:45:30, 2019-06-17T13:45:30)", range_field
+        )
+        self.assertEqual(
+            coerced,
+            {
+                "start": datetime.datetime(2009, 6, 17, 13, 45, 30),
+                "end": datetime.datetime(2019, 6, 17, 13, 45, 30),
+            },
+        )
+
+    def test_w_timestamp_value(self):
+        from google.cloud._helpers import _EPOCH
+
+        range_field = _Field(
+            "NULLABLE",
+            field_type="RANGE",
+            range_element_type=_Field("NULLABLE", element_type="TIMESTAMP"),
+        )
+        coerced = self._call_fut("[1234567, 1234789)", range_field)
+        self.assertEqual(
+            coerced,
+            {
+                "start": _EPOCH + datetime.timedelta(seconds=1, microseconds=234567),
+                "end": _EPOCH + datetime.timedelta(seconds=1, microseconds=234789),
+            },
+        )
+
+
 class Test_record_from_json(unittest.TestCase):
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _record_from_json
@@ -1323,11 +1416,21 @@ class Test__str_or_none(unittest.TestCase):
 
 
 class _Field(object):
-    def __init__(self, mode, name="unknown", field_type="UNKNOWN", fields=()):
+    def __init__(
+        self,
+        mode,
+        name="unknown",
+        field_type="UNKNOWN",
+        fields=(),
+        range_element_type=None,
+        element_type=None,
+    ):
         self.mode = mode
         self.name = name
         self.field_type = field_type
         self.fields = fields
+        self.range_element_type = range_element_type
+        self.element_type = element_type
 
 
 def _field_isinstance_patcher():
