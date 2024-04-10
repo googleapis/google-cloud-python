@@ -22,7 +22,7 @@ import numbers
 import os
 import textwrap
 import typing
-from typing import Any, Literal, Mapping, Optional, Tuple, Union
+from typing import Any, Literal, Mapping, Optional, Sequence, Tuple, Union
 
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
 import google.cloud.bigquery as bigquery
@@ -129,6 +129,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @property
     def empty(self) -> bool:
         return self.shape[0] == 0
+
+    @property
+    def hasnans(self) -> bool:
+        # Note, hasnans is actually a null check, and NaNs don't count for nullable float
+        return self.isnull().any()
 
     @property
     def values(self) -> numpy.ndarray:
@@ -752,6 +757,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return (self * other).sum()
 
     dot = __matmul__
+
+    def combine_first(self, other: Series) -> Series:
+        result = self._apply_binary_op(other, ops.coalesce_op)
+        result.name = self.name
+        return result
+
+    def update(self, other: Union[Series, Sequence, Mapping]) -> None:
+        import bigframes.core.convert
+
+        other = bigframes.core.convert.to_bf_series(other, default_index=None)
+        result = self._apply_binary_op(
+            other, ops.coalesce_op, reverse=True, alignment="left"
+        )
+        self._set_block(result._get_block())
 
     def abs(self) -> Series:
         return self._apply_unary_op(ops.abs_op)

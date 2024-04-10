@@ -176,6 +176,31 @@ class Series(NDFrame):  # type: ignore[misc]
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
+    def hasnans(self) -> bool:
+        """
+        Return True if there are any NaNs.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3, None])
+            >>> s
+            0     1.0
+            1     2.0
+            2     3.0
+            3    <NA>
+            dtype: Float64
+            >>> s.hasnans
+            True
+
+        Returns:
+            bool
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
     def T(self) -> Series:
         """Return the transpose, which is by definition self.
 
@@ -2340,6 +2365,119 @@ class Series(NDFrame):  # type: ignore[misc]
             2-Tuple of Series: The result of the operation. The result is always
             consistent with (rfloordiv, rmod) (though pandas may not).
 
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def combine_first(self, other) -> Series:
+        """
+        Update null elements with value in the same location in 'other'.
+
+        Combine two Series objects by filling null values in one Series with
+        non-null values from the other Series. Result index will be the union
+        of the two indexes.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s1 = bpd.Series([1, np.nan])
+            >>> s2 = bpd.Series([3, 4, 5])
+            >>> s1.combine_first(s2)
+            0    1.0
+            1    4.0
+            2    5.0
+            dtype: Float64
+
+            Null values still persist if the location of that null value
+            does not exist in `other`
+
+            >>> s1 = bpd.Series({'falcon': np.nan, 'eagle': 160.0})
+            >>> s2 = bpd.Series({'eagle': 200.0, 'duck': 30.0})
+            >>> s1.combine_first(s2)
+            falcon     <NA>
+            eagle     160.0
+            duck       30.0
+            dtype: Float64
+
+        Args:
+            other (Series):
+                The value(s) to be used for filling null values.
+
+        Returns:
+            Series: The result of combining the provided Series with the other object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def update(self, other) -> None:
+        """
+        Modify Series in place using values from passed Series.
+
+        Uses non-NA values from passed Series to make updates. Aligns
+        on index.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> import pandas as pd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s.update(bpd.Series([4, 5, 6]))
+            >>> s
+            0    4
+            1    5
+            2    6
+            dtype: Int64
+
+            >>> s = bpd.Series(['a', 'b', 'c'])
+            >>> s.update(bpd.Series(['d', 'e'], index=[0, 2]))
+            >>> s
+            0    d
+            1    b
+            2    e
+            dtype: string
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s.update(bpd.Series([4, 5, 6, 7, 8]))
+            >>> s
+            0    4
+            1    5
+            2    6
+            dtype: Int64
+
+            If ``other`` contains NaNs the corresponding values are not updated
+            in the original Series.
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s.update(bpd.Series([4, np.nan, 6], dtype=pd.Int64Dtype()))
+            >>> s
+            0    4
+            1    2
+            2    6
+            dtype: Int64
+
+            ``other`` can also be a non-Series object type
+            that is coercible into a Series
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s.update([4, np.nan, 6])
+            >>> s
+            0    4.0
+            1    2.0
+            2    6.0
+            dtype: Float64
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s.update({1: 9})
+            >>> s
+            0    1
+            1    9
+            2    3
+            dtype: Int64
+
+        Args:
+            other (Series, or object coercible into Series)
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

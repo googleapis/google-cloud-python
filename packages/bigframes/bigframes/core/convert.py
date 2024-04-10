@@ -13,13 +13,27 @@
 # limitations under the License.
 from __future__ import annotations
 
+from typing import Optional
+
 import pandas as pd
 
 import bigframes.core.indexes as index
 import bigframes.series as series
 
 
-def to_bf_series(obj, default_index: index.Index) -> series.Series:
+def to_bf_series(obj, default_index: Optional[index.Index]) -> series.Series:
+    """
+    Convert a an object to a bigframes series
+
+    Args:
+        obj (list-like or Series):
+            Object to convert to bigframes Series
+        default_index (list-like or Index or None):
+            Index to use if obj has no index
+
+    Returns
+        bigframes.pandas.Series
+    """
     if isinstance(obj, series.Series):
         return obj
     if isinstance(obj, pd.Series):
@@ -35,6 +49,18 @@ def to_bf_series(obj, default_index: index.Index) -> series.Series:
 
 
 def to_pd_series(obj, default_index: pd.Index) -> pd.Series:
+    """
+    Convert a an object to a pandas series
+
+    Args:
+        obj (list-like or Series):
+            Object to convert to pandas Series
+        default_index (list-like or Index or None):
+            Index to use if obj has no index
+
+    Returns
+        pandas.Series
+    """
     if isinstance(obj, series.Series):
         return obj.to_pandas()
     if isinstance(obj, pd.Series):
