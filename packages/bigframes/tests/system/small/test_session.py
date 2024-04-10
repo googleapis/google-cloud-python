@@ -24,6 +24,7 @@ import google
 import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -434,6 +435,11 @@ def test_read_pandas_index(session):
     bf_idx = session.read_pandas(pd_idx)
 
     pd.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
+
+
+def test_read_pandas_w_unsupported_mixed_dtype(session):
+    with pytest.raises(pa.ArrowInvalid, match="Could not convert"):
+        session.read_pandas(pd.DataFrame({"a": [1, "hello"]}))
 
 
 def test_read_pandas_inline_respects_location():

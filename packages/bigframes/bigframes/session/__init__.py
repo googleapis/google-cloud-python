@@ -1050,7 +1050,12 @@ class Session(
         inline_df = self._read_pandas_inline(pandas_dataframe)
         if inline_df is not None:
             return inline_df
-        return self._read_pandas_load_job(pandas_dataframe, api_name)
+        try:
+            return self._read_pandas_load_job(pandas_dataframe, api_name)
+        except pa.ArrowInvalid as e:
+            raise pa.ArrowInvalid(
+                f"Could not convert with a BigQuery type: `{e}`. "
+            ) from e
 
     def _read_pandas_inline(
         self, pandas_dataframe: pandas.DataFrame
@@ -1064,6 +1069,10 @@ class Session(
             inline_df = dataframe.DataFrame(
                 blocks.Block.from_local(pandas_dataframe, self)
             )
+        except pa.ArrowInvalid as e:
+            raise pa.ArrowInvalid(
+                f"Could not convert with a BigQuery type: `{e}`. "
+            ) from e
         except ValueError:  # Thrown by ibis for some unhandled types
             return None
         except pa.ArrowTypeError:  # Thrown by arrow for types without mapping (geo).
