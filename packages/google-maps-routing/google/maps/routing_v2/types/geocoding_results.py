@@ -31,7 +31,7 @@ __protobuf__ = proto.module(
 
 class GeocodingResults(proto.Message):
     r"""Contains
-    [GeocodedWaypoints][google.maps.routing.v2.GeocodedWaypoint] for
+    [``GeocodedWaypoints``][google.maps.routing.v2.GeocodedWaypoint] for
     origin, destination and intermediate waypoints. Only populated for
     address waypoints.
 
@@ -85,10 +85,9 @@ class GeocodedWaypoint(proto.Message):
 
             This field is a member of `oneof`_ ``_intermediate_waypoint_request_index``.
         type_ (MutableSequence[str]):
-            The type(s) of the result, in the form of
-            zero or more type tags. Supported types:
-
-            https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types
+            The type(s) of the result, in the form of zero or more type
+            tags. Supported types: `Address types and address component
+            types <https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types>`__.
         partial_match (bool):
             Indicates that the geocoder did not return an
             exact match for the original request, though it

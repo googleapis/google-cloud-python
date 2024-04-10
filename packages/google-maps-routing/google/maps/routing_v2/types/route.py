@@ -64,13 +64,13 @@ class Route(proto.Message):
             A collection of legs (path segments between waypoints) that
             make up the route. Each leg corresponds to the trip between
             two non-\ ``via``
-            [Waypoints][google.maps.routing.v2.Waypoint]. For example, a
-            route with no intermediate waypoints has only one leg. A
-            route that includes one non-\ ``via`` intermediate waypoint
-            has two legs. A route that includes one ``via`` intermediate
-            waypoint has one leg. The order of the legs matches the
-            order of waypoints from ``origin`` to ``intermediates`` to
-            ``destination``.
+            [``Waypoints``][google.maps.routing.v2.Waypoint]. For
+            example, a route with no intermediate waypoints has only one
+            leg. A route that includes one non-\ ``via`` intermediate
+            waypoint has two legs. A route that includes one ``via``
+            intermediate waypoint has one leg. The order of the legs
+            matches the order of waypoints from ``origin`` to
+            ``intermediates`` to ``destination``.
         distance_meters (int):
             The travel distance of the route, in meters.
         duration (google.protobuf.duration_pb2.Duration):
@@ -98,7 +98,7 @@ class Route(proto.Message):
             Additional information about the route.
         optimized_intermediate_waypoint_index (MutableSequence[int]):
             If you set
-            [optimize_waypoint_order][google.maps.routing.v2.ComputeRoutesRequest.optimize_waypoint_order]
+            [``optimize_waypoint_order``][google.maps.routing.v2.ComputeRoutesRequest.optimize_waypoint_order]
             to true, this field contains the optimized ordering of
             intermediate waypoints. Otherwise, this field is empty. For
             example, if you give an input of Origin: LA; Intermediate
@@ -134,7 +134,7 @@ class Route(proto.Message):
                 Duration taking traffic conditions into consideration,
                 represented in text form. Note: If you did not request
                 traffic information, this value will be the same value as
-                static_duration.
+                ``static_duration``.
             static_duration (google.type.localized_text_pb2.LocalizedText):
                 Duration without taking traffic conditions
                 into consideration, represented in text form.
@@ -231,13 +231,12 @@ class RouteTravelAdvisory(proto.Message):
 
     Attributes:
         toll_info (google.maps.routing_v2.types.TollInfo):
-            Contains information about tolls on the
-            route. This field is only populated if tolls are
-            expected on the route. If this field is set, but
-            the estimatedPrice subfield is not populated,
-            then the route contains tolls, but the estimated
-            price is unknown. If this field is not set, then
-            there are no tolls expected on the route.
+            Contains information about tolls on the route. This field is
+            only populated if tolls are expected on the route. If this
+            field is set, but the ``estimatedPrice`` subfield is not
+            populated, then the route contains tolls, but the estimated
+            price is unknown. If this field is not set, then there are
+            no tolls expected on the route.
         speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
             Speed reading intervals detailing traffic density.
             Applicable in case of ``TRAFFIC_AWARE`` and
@@ -556,9 +555,9 @@ class RouteLeg(proto.Message):
 
 
 class RouteLegStep(proto.Message):
-    r"""Contains a segment of a [RouteLeg][google.maps.routing.v2.RouteLeg].
-    A step corresponds to a single navigation instruction. Route legs
-    are made up of steps.
+    r"""Contains a segment of a
+    [``RouteLeg``][google.maps.routing.v2.RouteLeg]. A step corresponds
+    to a single navigation instruction. Route legs are made up of steps.
 
     Attributes:
         distance_meters (int):
@@ -706,7 +705,7 @@ class RouteLegStepTransitDetails(proto.Message):
     """
 
     class TransitStopDetails(proto.Message):
-        r"""Details about the transit stops for the ``RouteLegStep``
+        r"""Details about the transit stops for the ``RouteLegStep``.
 
         Attributes:
             arrival_stop (google.maps.routing_v2.types.TransitStop):
@@ -743,7 +742,7 @@ class RouteLegStepTransitDetails(proto.Message):
         )
 
     class TransitDetailsLocalizedValues(proto.Message):
-        r"""Localized descriptions of values for RouteTransitDetails.
+        r"""Localized descriptions of values for ``RouteTransitDetails``.
 
         Attributes:
             arrival_time (google.maps.routing_v2.types.LocalizedTime):
