@@ -97,6 +97,10 @@ def get_coverage_summary(
             if name.startswith("_") and not name.startswith("__"):
                 continue
 
+            # ignore constructor
+            if name == "__init__":
+                continue
+
             def predicate(impl):
                 return (
                     # This includes class methods like `from_dict`, `from_records`
