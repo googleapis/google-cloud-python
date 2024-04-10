@@ -1,0 +1,42 @@
+# https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
+# Rules for main branch protection
+branchProtectionRules:
+# Identifies the protection rule pattern. Name of the branch to be protected.
+# Defaults to `main`
+- pattern: main
+  requiresCodeOwnerReviews: true
+  requiresStrictStatusChecks: true
+  requiredStatusCheckContexts:
+    - 'cla/google'
+    - 'OwlBot Post Processor'
+    # TODO(tswast): enable once we have tests migrated from google-cloud-bigquery
+    # - 'lint'
+    # - 'docs'
+    # - 'unit (3.8)'
+    # - 'unit (3.9)'
+    # - 'unit (3.10)'
+    # - 'unit (3.11)'
+    # - 'unit (3.12)'
+    # - 'cover'
+    # - 'Kokoro'
+    # - 'Samples - Lint'
+    # - 'Samples - Python 3.8'
+    # - 'Samples - Python 3.9'
+    # - 'Samples - Python 3.10'
+    # - 'Samples - Python 3.11'
+    # - 'Samples - Python 3.12'
+permissionRules:
+  - team: actools-python
+    permission: admin
+  - team: actools
+    permission: admin
+  - team: api-bigquery
+    permission: push
+  - team: api-bigquery-dataframe
+    permission: push
+  - team: yoshi-python
+    permission: push
+  - team: python-samples-owners
+    permission: push
+  - team: python-samples-reviewers
+    permission: push
