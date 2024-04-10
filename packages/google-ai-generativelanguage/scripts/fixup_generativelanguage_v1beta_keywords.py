@@ -59,7 +59,7 @@ class generativelanguageCallTransformer(cst.CSTTransformer):
         'delete_file': ('name', ),
         'delete_permission': ('name', ),
         'delete_tuned_model': ('name', ),
-        'embed_content': ('model', 'content', 'task_type', 'title', ),
+        'embed_content': ('model', 'content', 'task_type', 'title', 'output_dimensionality', ),
         'embed_text': ('model', 'text', ),
         'generate_answer': ('model', 'contents', 'answer_style', 'inline_passages', 'semantic_retriever', 'safety_settings', 'temperature', ),
         'generate_content': ('model', 'contents', 'system_instruction', 'tools', 'tool_config', 'safety_settings', 'generation_config', ),

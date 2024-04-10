@@ -69,6 +69,12 @@ class TaskType(proto.Enum):
         CLUSTERING (5):
             Specifies that the embeddings will be used
             for clustering.
+        QUESTION_ANSWERING (6):
+            Specifies that the given text will be used
+            for question answering.
+        FACT_VERIFICATION (7):
+            Specifies that the given text will be used
+            for fact verification.
     """
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
@@ -76,6 +82,8 @@ class TaskType(proto.Enum):
     SEMANTIC_SIMILARITY = 3
     CLASSIFICATION = 4
     CLUSTERING = 5
+    QUESTION_ANSWERING = 6
+    FACT_VERIFICATION = 7
 
 
 class GenerateContentRequest(proto.Message):
@@ -212,7 +220,7 @@ class GenerationConfig(proto.Message):
             ``Model.temperature`` attribute of the ``Model`` returned
             from the ``getModel`` function.
 
-            Values can range from [0.0, infinity).
+            Values can range from [0.0, 2.0].
 
             This field is a member of `oneof`_ ``_temperature``.
         top_p (float):
@@ -236,16 +244,23 @@ class GenerationConfig(proto.Message):
             Optional. The maximum number of tokens to consider when
             sampling.
 
-            The model uses combined Top-k and nucleus sampling.
-
-            Top-k sampling considers the set of ``top_k`` most probable
-            tokens.
+            Models use nucleus sampling or combined Top-k and nucleus
+            sampling. Top-k sampling considers the set of ``top_k`` most
+            probable tokens. Models running with nucleus sampling don't
+            allow top_k setting.
 
             Note: The default value varies by model, see the
             ``Model.top_k`` attribute of the ``Model`` returned from the
-            ``getModel`` function.
+            ``getModel`` function. Empty ``top_k`` field in ``Model``
+            indicates the model doesn't apply top-k sampling and doesn't
+            allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
+        response_mime_type (str):
+            Optional. Output response mimetype of the generated
+            candidate text. Supported mimetype: ``text/plain``:
+            (default) Text output. ``application/json``: JSON response
+            in the candidates.
     """
 
     candidate_count: int = proto.Field(
@@ -276,6 +291,10 @@ class GenerationConfig(proto.Message):
         proto.INT32,
         number=7,
         optional=True,
+    )
+    response_mime_type: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
@@ -896,6 +915,13 @@ class EmbedContentRequest(proto.Message):
             provides better quality embeddings for retrieval.
 
             This field is a member of `oneof`_ ``_title``.
+        output_dimensionality (int):
+            Optional. Optional reduced dimension for the output
+            embedding. If set, excessive values in the output embedding
+            are truncated from the end. Supported by
+            ``models/text-embedding-latest``.
+
+            This field is a member of `oneof`_ ``_output_dimensionality``.
     """
 
     model: str = proto.Field(
@@ -916,6 +942,11 @@ class EmbedContentRequest(proto.Message):
     title: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
+    )
+    output_dimensionality: int = proto.Field(
+        proto.INT32,
+        number=5,
         optional=True,
     )
 
