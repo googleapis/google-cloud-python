@@ -13,7 +13,9 @@
 # limitations under the License.
 
 from bigframes.core.indexes.base import Index
+from bigframes.core.indexes.multi import MultiIndex
 
 __all__ = [
     "Index",
+    "MultiIndex",
 ]

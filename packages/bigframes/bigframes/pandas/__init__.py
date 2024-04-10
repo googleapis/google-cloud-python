@@ -707,6 +707,7 @@ ArrowDtype = pandas.ArrowDtype
 # checking and docstrings.
 DataFrame = bigframes.dataframe.DataFrame
 Index = bigframes.core.indexes.Index
+MultiIndex = bigframes.core.indexes.MultiIndex
 Series = bigframes.series.Series
 
 # Other public pandas attributes
@@ -760,6 +761,7 @@ __all___ = [
     # Class aliases
     "DataFrame",
     "Index",
+    "MultiIndex",
     "Series",
     # Other public pandas attributes
     "NamedAgg",

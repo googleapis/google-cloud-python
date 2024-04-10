@@ -20,6 +20,31 @@ import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_df_equal, skip_legacy_pandas
 
 
+def test_multi_index_from_arrays():
+    bf_idx = bpd.MultiIndex.from_arrays(
+        [
+            pandas.Index([4, 99], dtype=pandas.Int64Dtype()),
+            pandas.Index(
+                [" Hello, World!", "_some_new_string"],
+                dtype=pandas.StringDtype(storage="pyarrow"),
+            ),
+        ],
+        names=[" 1index 1", "_1index 2"],
+    )
+    pd_idx = pandas.MultiIndex.from_arrays(
+        [
+            pandas.Index([4, 99], dtype=pandas.Int64Dtype()),
+            pandas.Index(
+                [" Hello, World!", "_some_new_string"],
+                dtype=pandas.StringDtype(storage="pyarrow"),
+            ),
+        ],
+        names=[" 1index 1", "_1index 2"],
+    )
+    assert bf_idx.names == pd_idx.names
+    pandas.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
+
+
 @skip_legacy_pandas
 def test_read_pandas_multi_index_axes():
     index = pandas.MultiIndex.from_arrays(
