@@ -791,6 +791,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
         return self._apply_binary_aggregation(other, agg_ops.CorrOp())
 
+    def autocorr(self, lag: int = 1) -> float:
+        return self.corr(self.shift(lag))
+
     def cov(self, other: Series) -> float:
         return self._apply_binary_aggregation(other, agg_ops.CovOp())
 

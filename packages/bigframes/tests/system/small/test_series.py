@@ -718,6 +718,14 @@ def test_series_corr(scalars_dfs):
     assert math.isclose(pd_result, bf_result)
 
 
+@skip_legacy_pandas
+def test_series_autocorr(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df["float64_col"].autocorr(2)
+    pd_result = scalars_pandas_df["float64_col"].autocorr(2)
+    assert math.isclose(pd_result, bf_result)
+
+
 def test_series_cov(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df["int64_too"].cov(scalars_df["int64_too"])

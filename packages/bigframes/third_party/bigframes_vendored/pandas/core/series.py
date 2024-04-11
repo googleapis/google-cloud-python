@@ -844,6 +844,38 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def autocorr(self, lag: int = 1) -> float:
+        """
+        Compute the lag-N autocorrelation.
+
+        This method computes the Pearson correlation between
+        the Series and its shifted self.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([0.25, 0.5, 0.2, -0.05])
+            >>> s.autocorr()  # doctest: +ELLIPSIS
+            0.10355...
+            >>> s.autocorr(lag=2)
+            -1.0
+
+            If the Pearson correlation is not well defined, then 'NaN' is returned.
+
+            >>> s = bpd.Series([1, 0, 0, 0])
+            >>> s.autocorr()
+            nan
+
+        Args:
+            lag (int, default 1):
+                Number of lags to apply before performing autocorrelation.
+
+        Returns:
+            float: The Pearson correlation between self and self.shift(lag).
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def cov(
         self,
         other,
