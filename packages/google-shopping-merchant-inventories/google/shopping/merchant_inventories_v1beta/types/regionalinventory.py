@@ -55,8 +55,9 @@ class RegionalInventory(proto.Message):
             product. This field will be ignored if set by
             the client.
         region (str):
-            Required. ID of the region for this ``RegionalInventory``
-            resource. See the `Regional availability and
+            Required. Immutable. ID of the region for this
+            ``RegionalInventory`` resource. See the `Regional
+            availability and
             pricing <https://support.google.com/merchants/answer/9698880>`__
             for more details.
         price (google.shopping.type.types.Price):
