@@ -468,35 +468,6 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
             )
         return self._stubs["purge_documents"]
 
-    @property
-    def get_processed_document(
-        self,
-    ) -> Callable[
-        [document_service.GetProcessedDocumentRequest], document.ProcessedDocument
-    ]:
-        r"""Return a callable for the get processed document method over gRPC.
-
-        Gets the parsed layout information for a
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
-
-        Returns:
-            Callable[[~.GetProcessedDocumentRequest],
-                    ~.ProcessedDocument]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_processed_document" not in self._stubs:
-            self._stubs["get_processed_document"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.DocumentService/GetProcessedDocument",
-                request_serializer=document_service.GetProcessedDocumentRequest.serialize,
-                response_deserializer=document.ProcessedDocument.deserialize,
-            )
-        return self._stubs["get_processed_document"]
-
     def close(self):
         self.grpc_channel.close()
 

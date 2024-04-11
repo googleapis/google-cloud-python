@@ -83,8 +83,6 @@ class DocumentServiceAsyncClient:
     parse_branch_path = staticmethod(DocumentServiceClient.parse_branch_path)
     document_path = staticmethod(DocumentServiceClient.document_path)
     parse_document_path = staticmethod(DocumentServiceClient.parse_document_path)
-    fhir_store_path = staticmethod(DocumentServiceClient.fhir_store_path)
-    parse_fhir_store_path = staticmethod(DocumentServiceClient.parse_fhir_store_path)
     common_billing_account_path = staticmethod(
         DocumentServiceClient.common_billing_account_path
     )
@@ -1142,128 +1140,6 @@ class DocumentServiceAsyncClient:
             self._client._transport.operations_client,
             purge_config.PurgeDocumentsResponse,
             metadata_type=purge_config.PurgeDocumentsMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_processed_document(
-        self,
-        request: Optional[
-            Union[document_service.GetProcessedDocumentRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> document.ProcessedDocument:
-        r"""Gets the parsed layout information for a
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1alpha
-
-            async def sample_get_processed_document():
-                # Create a client
-                client = discoveryengine_v1alpha.DocumentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1alpha.GetProcessedDocumentRequest(
-                    name="name_value",
-                    processed_document_type="CHUNKED_DOCUMENT",
-                )
-
-                # Make the request
-                response = await client.get_processed_document(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.GetProcessedDocumentRequest, dict]]):
-                The request object. Request message for
-                [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
-                method.
-            name (:class:`str`):
-                Required. Full resource name of
-                [Document][google.cloud.discoveryengine.v1alpha.Document],
-                such as
-                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
-
-                If the caller does not have permission to access the
-                [Document][google.cloud.discoveryengine.v1alpha.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the requested
-                [Document][google.cloud.discoveryengine.v1alpha.Document]
-                does not exist, a ``NOT_FOUND`` error is returned.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1alpha.types.ProcessedDocument:
-                Document captures all raw metadata
-                information of items to be recommended
-                or searched.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = document_service.GetProcessedDocumentRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_processed_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
         )
 
         # Done; return the response.
