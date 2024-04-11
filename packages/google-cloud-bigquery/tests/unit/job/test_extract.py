@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 from unittest import mock
 
 from ..helpers import make_connection
@@ -45,9 +46,8 @@ class TestExtractJobConfig(_Base):
         config.print_header = False
         config._properties["extract"]["someNewField"] = "some-value"
         config.use_avro_logical_types = True
-        resource = config.to_api_repr()
-        self.assertEqual(
-            resource,
+        resource = json.dumps(config.to_api_repr(), sort_keys=True)
+        expected = json.dumps(
             {
                 "extract": {
                     "compression": "SNAPPY",
@@ -58,6 +58,12 @@ class TestExtractJobConfig(_Base):
                     "useAvroLogicalTypes": True,
                 }
             },
+            sort_keys=True,
+        )
+
+        self.assertEqual(
+            resource,
+            expected,
         )
 
     def test_from_api_repr(self):
