@@ -15,6 +15,7 @@
 """Helpers to join ArrayValue objects."""
 
 from bigframes.core.joins.merge import merge
-from bigframes.core.joins.name_resolution import JoinNameRemapper
 
-__all__ = ("merge", "JoinNameRemapper")
+__all__ = [
+    "merge",
+]

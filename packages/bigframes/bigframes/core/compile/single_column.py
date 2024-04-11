@@ -23,8 +23,8 @@ import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 
 import bigframes.core.compile.compiled as compiled
+import bigframes.core.guid as guids
 import bigframes.core.join_def as join_defs
-import bigframes.core.joins as joining
 import bigframes.core.ordering as orderings
 
 
@@ -50,9 +50,13 @@ def join_by_column_ordered(
         finally, all the right columns.
     """
 
-    l_hidden_mapping, r_hidden_mapping = joining.JoinNameRemapper(namespace="hidden")(
-        left._hidden_column_ids, right._hidden_column_ids
-    )
+    l_hidden_mapping = {
+        id: guids.generate_guid("hidden_") for id in left._hidden_column_ids
+    }
+    r_hidden_mapping = {
+        id: guids.generate_guid("hidden_") for id in right._hidden_column_ids
+    }
+
     l_mapping = {**join.get_left_mapping(), **l_hidden_mapping}
     r_mapping = {**join.get_right_mapping(), **r_hidden_mapping}
 
