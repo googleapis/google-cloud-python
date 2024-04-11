@@ -228,11 +228,11 @@ class ReadRowsStream(object):
             read_session ( \
                 Optional[~google.cloud.bigquery_storage_v1.types.ReadSession] \
             ):
-                DEPRECATED.
-
                 This argument was used to specify the schema of the rows in the
                 stream, but now the first message in a read stream contains
-                this information.
+                this information. When row_restriction is applied, some streams
+                may be empty without read_session info. Provide this argument
+                to avoid an error. For more information, see https://github.com/googleapis/python-bigquery-storage/issues/733
 
         Returns:
             Iterable[Mapping]:
@@ -250,11 +250,11 @@ class ReadRowsStream(object):
             read_session ( \
                 ~google.cloud.bigquery_storage_v1.types.ReadSession \
             ):
-                DEPRECATED.
-
                 This argument was used to specify the schema of the rows in the
                 stream, but now the first message in a read stream contains
-                this information.
+                this information. When row_restriction is applied, some streams
+                may be empty without read_session info. Provide this argument
+                to avoid an error. For more information, see https://github.com/googleapis/python-bigquery-storage/issues/733
 
         Returns:
             pyarrow.Table:
@@ -276,11 +276,11 @@ class ReadRowsStream(object):
             read_session ( \
                 ~google.cloud.bigquery_storage_v1.types.ReadSession \
             ):
-                DEPRECATED.
-
                 This argument was used to specify the schema of the rows in the
                 stream, but now the first message in a read stream contains
-                this information.
+                this information. When row_restriction is applied, some streams
+                may be empty without read_session info. Provide this argument
+                to avoid an error. For more information, see https://github.com/googleapis/python-bigquery-storage/issues/733
             dtypes ( \
                 Map[str, Union[str, pandas.Series.dtype]] \
             ):
@@ -308,11 +308,11 @@ class ReadRowsIterable(object):
         read_session ( \
             Optional[~google.cloud.bigquery_storage_v1.types.ReadSession] \
         ):
-            DEPRECATED.
-
             This argument was used to specify the schema of the rows in the
             stream, but now the first message in a read stream contains
-            this information.
+            this information. When row_restriction is applied, some streams
+            may be empty without read_session info. Provide this argument
+            to avoid an error. For more information, see https://github.com/googleapis/python-bigquery-storage/issues/733ß
     """
 
     # This class is modelled after the google.cloud.bigquery.table.RowIterator
