@@ -142,6 +142,8 @@ def test_default_job_attributes(setup):
         "timeEnded": ended_time.isoformat(),
         "hasErrors": True,
         "state": "some_job_state",
+        "total_bytes_billed": 42,
+        "total_bytes_processed": 13,
     }
     with mock.patch("google.cloud.bigquery.job._AsyncJob") as test_job_ref:
         test_job_ref.job_id = "test_job_id"
@@ -154,6 +156,8 @@ def test_default_job_attributes(setup):
         test_job_ref.ended = ended_time
         test_job_ref.error_result = error_result
         test_job_ref.state = "some_job_state"
+        test_job_ref.total_bytes_billed = 42
+        test_job_ref.total_bytes_processed = 13
 
         with opentelemetry_tracing.create_span(
             TEST_SPAN_NAME, attributes=TEST_SPAN_ATTRIBUTES, job_ref=test_job_ref
@@ -180,6 +184,8 @@ def test_optional_job_attributes(setup):
         test_job_ref.state = "some_job_state"
         test_job_ref.num_child_jobs = None
         test_job_ref.parent_job_id = None
+        test_job_ref.total_bytes_billed = None
+        test_job_ref.total_bytes_processed = None
 
         with opentelemetry_tracing.create_span(
             TEST_SPAN_NAME, attributes=TEST_SPAN_ATTRIBUTES, job_ref=test_job_ref
