@@ -662,9 +662,9 @@ class NDFrame(indexing.IndexingMixin):
 
             >>> df.loc[df["b"] == 2, "b"] = 22
             >>> df
-               a     b
-            0  1  22.0
-            1  3   4.0
+               a   b
+            0  1  22
+            1  3   4
             <BLANKLINE>
             [2 rows x 2 columns]
             >>> df_copy

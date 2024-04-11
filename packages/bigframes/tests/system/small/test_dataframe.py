@@ -2918,15 +2918,23 @@ def test_loc_setitem_bool_series_scalar_new_col(scalars_dfs):
     )
 
 
-def test_loc_setitem_bool_series_scalar_existing_col(scalars_dfs):
+@pytest.mark.parametrize(
+    ("col", "value"),
+    [
+        ("string_col", "hello"),
+        ("int64_col", 3),
+        ("float64_col", 3.5),
+    ],
+)
+def test_loc_setitem_bool_series_scalar_existing_col(scalars_dfs, col, value):
     if pd.__version__.startswith("1."):
         pytest.skip("this loc overload not supported in pandas 1.x.")
 
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_df = scalars_df.copy()
     pd_df = scalars_pandas_df.copy()
-    bf_df.loc[bf_df["int64_too"] == 1, "string_col"] = "hello"
-    pd_df.loc[pd_df["int64_too"] == 1, "string_col"] = "hello"
+    bf_df.loc[bf_df["int64_too"] == 1, col] = value
+    pd_df.loc[pd_df["int64_too"] == 1, col] = value
 
     pd.testing.assert_frame_equal(
         bf_df.to_pandas(),

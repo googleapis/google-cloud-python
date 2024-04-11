@@ -192,7 +192,15 @@ class LocDataFrameIndexer:
             and isinstance(key[0], bigframes.series.Series)
             and key[0].dtype == "boolean"
         ) and pd.api.types.is_scalar(value):
-            new_column = key[0].map({True: value, False: None})
+            # For integer scalar, if set value to a new column, the dtype would be default to float.
+            # But if set value to an existing Int64 column, the dtype would still be integer.
+            # So we need to use different NaN type to match this behavior.
+            new_column = key[0].map(
+                {
+                    True: value,
+                    False: pd.NA if key[1] in self._dataframe.columns else None,
+                }
+            )
             try:
                 original_column = self._dataframe[key[1]]
             except KeyError:
