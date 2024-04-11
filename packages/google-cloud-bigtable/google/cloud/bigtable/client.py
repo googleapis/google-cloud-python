@@ -32,7 +32,6 @@ import warnings
 import grpc  # type: ignore
 
 from google.api_core.gapic_v1 import client_info as client_info_lib
-import google.auth  # type: ignore
 from google.auth.credentials import AnonymousCredentials  # type: ignore
 
 from google.cloud import bigtable_v2
@@ -215,58 +214,21 @@ class Client(ClientWithProject):
         return scopes
 
     def _emulator_channel(self, transport, options):
-        """Create a channel using self._credentials
+        """Create a channel for use with the Bigtable emulator.
 
-        Works in a similar way to ``grpc.secure_channel`` but using
-        ``grpc.local_channel_credentials`` rather than
-        ``grpc.ssh_channel_credentials`` to allow easy connection to a
-        local emulator.
+        Insecure channels are used for the emulator as secure channels
+        cannot be used to communicate on some environments.
+        https://github.com/googleapis/python-firestore/issues/359
 
         Returns:
             grpc.Channel or grpc.aio.Channel
         """
-        # TODO: Implement a special credentials type for emulator and use
-        # "transport.create_channel" to create gRPC channels once google-auth
-        # extends it's allowed credentials types.
         # Note: this code also exists in the firestore client.
         if "GrpcAsyncIOTransport" in str(transport.__name__):
-            return grpc.aio.secure_channel(
-                self._emulator_host,
-                self._local_composite_credentials(),
-                options=options,
-            )
+            channel_fn = grpc.aio.insecure_channel
         else:
-            return grpc.secure_channel(
-                self._emulator_host,
-                self._local_composite_credentials(),
-                options=options,
-            )
-
-    def _local_composite_credentials(self):
-        """Create credentials for the local emulator channel.
-
-        :return: grpc.ChannelCredentials
-        """
-        credentials = google.auth.credentials.with_scopes_if_required(
-            self._credentials, None
-        )
-        request = google.auth.transport.requests.Request()
-
-        # Create the metadata plugin for inserting the authorization header.
-        metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
-            credentials, request
-        )
-
-        # Create a set of grpc.CallCredentials using the metadata plugin.
-        google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
-
-        # Using the local_credentials to allow connection to emulator
-        local_credentials = grpc.local_channel_credentials()
-
-        # Combine the local credentials and the authorization credentials.
-        return grpc.composite_channel_credentials(
-            local_credentials, google_auth_credentials
-        )
+            channel_fn = grpc.insecure_channel
+        return channel_fn(self._emulator_host, options=options)
 
     def _create_gapic_client_channel(self, client_class, grpc_transport):
         if self._emulator_host is not None:
