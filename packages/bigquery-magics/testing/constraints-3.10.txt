@@ -1,1 +1,2 @@
-grpcio==1.47.0
+# IMPORTANT: When Python 3.9 support is dropped, update these to
+# match the minimums in setup.py.

@@ -12,21 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from bigquery_magics.line_arg_parser.exceptions import (
-    DuplicateQueryParamsError,
-    ParseError,
-    QueryParamsParseError,
-)
-from bigquery_magics.line_arg_parser.lexer import Lexer, TokenType
-from bigquery_magics.line_arg_parser.parser import Parser
-from bigquery_magics.line_arg_parser.visitors import QueryParamsExtractor
+import pytest
 
-__all__ = (
-    "DuplicateQueryParamsError",
-    "Lexer",
-    "Parser",
-    "ParseError",
-    "QueryParamsExtractor",
-    "QueryParamsParseError",
-    "TokenType",
-)
+IPython = pytest.importorskip("IPython")
+
+
+@pytest.fixture
+def base_visitor():
+    from bigquery_magics.line_arg_parser.visitors import NodeVisitor
+
+    return NodeVisitor()
+
+
+def test_unknown_node(base_visitor):
+    from bigquery_magics.line_arg_parser.parser import ParseNode
+
+    class UnknownNode(ParseNode):
+        pass
+
+    node = UnknownNode()
+
+    with pytest.raises(Exception, match=r"No visit_UnknownNode method"):
+        base_visitor.visit(node)

@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.bigquery.magics.line_arg_parser import DuplicateQueryParamsError
-from google.cloud.bigquery.magics.line_arg_parser import ParseError
-from google.cloud.bigquery.magics.line_arg_parser import QueryParamsParseError
-from google.cloud.bigquery.magics.line_arg_parser import TokenType
+import bigquery_magics.line_arg_parser.exceptions as lap_exceptions
+import bigquery_magics.line_arg_parser.lexer as lap_lexer
 
 
 class ParseNode(object):
@@ -154,11 +152,11 @@ class Parser(object):
         token = next(self._tokens_iter)
         self._current_token = token
 
-    def consume(self, expected_type, exc_type=ParseError):
+    def consume(self, expected_type, exc_type=lap_exceptions.ParseError):
         """Move to the next token in token stream if it matches the expected type.
 
         Args:
-            expected_type (lexer.TokenType): The expected token type to be consumed.
+            expected_type (bigquery_magics.line_arg_parser.lexer.TokenType): The expected token type to be consumed.
             exc_type (Optional[ParseError]): The type of the exception to raise. Should be
                 the ``ParseError`` class or one of its subclasses. Defaults to
                 ``ParseError``.
@@ -167,10 +165,10 @@ class Parser(object):
             ParseError: If the current token does not match the expected type.
         """
         if self._current_token.type_ == expected_type:
-            if expected_type != TokenType.EOL:
+            if expected_type != lap_lexer.TokenType.EOL:
                 self.get_next_token()
         else:
-            if self._current_token.type_ == TokenType.EOL:
+            if self._current_token.type_ == lap_lexer.TokenType.EOL:
                 msg = "Unexpected end of input, expected {}.".format(expected_type)
             else:
                 msg = "Expected token type {}, but found {} at position {}.".format(
@@ -178,11 +176,11 @@ class Parser(object):
                 )
             self.error(message=msg, exc_type=exc_type)
 
-    def error(self, message="Syntax error.", exc_type=ParseError):
+    def error(self, message="Syntax error.", exc_type=lap_exceptions.ParseError):
         """Raise an error with the given message.
 
         Args:
-            expected_type (lexer.TokenType): The expected token type to be consumed.
+            expected_type (bigquery_magics.line_arg_parser.lexer.TokenType): The expected token type to be consumed.
             exc_type (Optional[ParseError]): The type of the exception to raise. Should be
                 the ``ParseError`` class or one of its subclasses. Defaults to
                 ``ParseError``.
@@ -204,7 +202,7 @@ class Parser(object):
 
         token = self._current_token
 
-        if token.type_ != TokenType.EOL:
+        if token.type_ != lap_lexer.TokenType.EOL:
             msg = "Unexpected input at position {}: {}".format(token.pos, token.lexeme)
             self.error(msg)
 
@@ -219,10 +217,10 @@ class Parser(object):
         """
         token = self._current_token
 
-        if token.type_ == TokenType.DEST_VAR:
-            self.consume(TokenType.DEST_VAR)
+        if token.type_ == lap_lexer.TokenType.DEST_VAR:
+            self.consume(lap_lexer.TokenType.DEST_VAR)
             result = DestinationVar(token)
-        elif token.type_ == TokenType.UNKNOWN:
+        elif token.type_ == lap_lexer.TokenType.UNKNOWN:
             msg = "Unknown input at position {}: {}".format(token.pos, token.lexeme)
             self.error(msg)
         else:
@@ -242,15 +240,15 @@ class Parser(object):
         all_options = []
 
         def parse_nonparams_options():
-            while self._current_token.type_ == TokenType.OPTION_SPEC:
+            while self._current_token.type_ == lap_lexer.TokenType.OPTION_SPEC:
                 token = self._current_token
-                self.consume(TokenType.OPTION_SPEC)
+                self.consume(lap_lexer.TokenType.OPTION_SPEC)
 
                 opt_name = token.lexeme[2:]  # cut off the "--" prefix
 
                 # skip the optional "=" character
-                if self._current_token.type_ == TokenType.OPTION_EQ:
-                    self.consume(TokenType.OPTION_EQ)
+                if self._current_token.type_ == lap_lexer.TokenType.OPTION_EQ:
+                    self.consume(lap_lexer.TokenType.OPTION_EQ)
 
                 opt_value = self.option_value()
                 option = CmdOption(opt_name, opt_value)
@@ -260,15 +258,16 @@ class Parser(object):
 
         token = self._current_token
 
-        if token.type_ == TokenType.PARAMS_OPT_SPEC:
+        if token.type_ == lap_lexer.TokenType.PARAMS_OPT_SPEC:
             option = self.params_option()
             all_options.append(option)
 
         parse_nonparams_options()
 
-        if self._current_token.type_ == TokenType.PARAMS_OPT_SPEC:
+        if self._current_token.type_ == lap_lexer.TokenType.PARAMS_OPT_SPEC:
             self.error(
-                message="Duplicate --params option", exc_type=DuplicateQueryParamsError
+                message="Duplicate --params option",
+                exc_type=lap_exceptions.DuplicateQueryParamsError,
             )
 
         return CmdOptionList(all_options)
@@ -282,10 +281,10 @@ class Parser(object):
         """
         token = self._current_token
 
-        if token.type_ == TokenType.OPT_VAL:
-            self.consume(TokenType.OPT_VAL)
+        if token.type_ == lap_lexer.TokenType.OPT_VAL:
+            self.consume(lap_lexer.TokenType.OPT_VAL)
             result = CmdOptionValue(token)
-        elif token.type_ == TokenType.UNKNOWN:
+        elif token.type_ == lap_lexer.TokenType.UNKNOWN:
             msg = "Unknown input at position {}: {}".format(token.pos, token.lexeme)
             self.error(msg)
         else:
@@ -301,19 +300,22 @@ class Parser(object):
             params_option : PARAMS_OPT_SPEC [PARAMS_OPT_EQ] \
                             (DOLLAR_PY_ID | PY_STRING | py_dict)
         """
-        self.consume(TokenType.PARAMS_OPT_SPEC)
+        self.consume(lap_lexer.TokenType.PARAMS_OPT_SPEC)
 
         # skip the optional "=" character
-        if self._current_token.type_ == TokenType.PARAMS_OPT_EQ:
-            self.consume(TokenType.PARAMS_OPT_EQ)
+        if self._current_token.type_ == lap_lexer.TokenType.PARAMS_OPT_EQ:
+            self.consume(lap_lexer.TokenType.PARAMS_OPT_EQ)
 
-        if self._current_token.type_ == TokenType.DOLLAR_PY_ID:
+        if self._current_token.type_ == lap_lexer.TokenType.DOLLAR_PY_ID:
             token = self._current_token
-            self.consume(TokenType.DOLLAR_PY_ID)
+            self.consume(lap_lexer.TokenType.DOLLAR_PY_ID)
             opt_value = PyVarExpansion(token)
-        elif self._current_token.type_ == TokenType.PY_STRING:
+        elif self._current_token.type_ == lap_lexer.TokenType.PY_STRING:
             token = self._current_token
-            self.consume(TokenType.PY_STRING, exc_type=QueryParamsParseError)
+            self.consume(
+                lap_lexer.TokenType.PY_STRING,
+                exc_type=lap_exceptions.QueryParamsParseError,
+            )
             opt_value = PyScalarValue(token, token.lexeme)
         else:
             opt_value = self.py_dict()
@@ -329,9 +331,13 @@ class Parser(object):
 
             py_dict : LCURL dict_items RCURL
         """
-        self.consume(TokenType.LCURL, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.LCURL, exc_type=lap_exceptions.QueryParamsParseError
+        )
         dict_items = self.dict_items()
-        self.consume(TokenType.RCURL, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.RCURL, exc_type=lap_exceptions.QueryParamsParseError
+        )
 
         return PyDict(dict_items)
 
@@ -348,8 +354,10 @@ class Parser(object):
         if item is not None:
             result.append(item)
 
-        while self._current_token.type_ == TokenType.COMMA:
-            self.consume(TokenType.COMMA, exc_type=QueryParamsParseError)
+        while self._current_token.type_ == lap_lexer.TokenType.COMMA:
+            self.consume(
+                lap_lexer.TokenType.COMMA, exc_type=lap_exceptions.QueryParamsParseError
+            )
             item = self.dict_item()
             if item is not None:
                 result.append(item)
@@ -365,14 +373,16 @@ class Parser(object):
         """
         token = self._current_token
 
-        if token.type_ == TokenType.PY_STRING:
+        if token.type_ == lap_lexer.TokenType.PY_STRING:
             key = self.dict_key()
-            self.consume(TokenType.COLON, exc_type=QueryParamsParseError)
+            self.consume(
+                lap_lexer.TokenType.COLON, exc_type=lap_exceptions.QueryParamsParseError
+            )
             value = self.py_value()
             result = PyDictItem(key, value)
-        elif token.type_ == TokenType.UNKNOWN:
+        elif token.type_ == lap_lexer.TokenType.UNKNOWN:
             msg = "Unknown input at position {}: {}".format(token.pos, token.lexeme)
-            self.error(msg, exc_type=QueryParamsParseError)
+            self.error(msg, exc_type=lap_exceptions.QueryParamsParseError)
         else:
             result = None
 
@@ -386,7 +396,9 @@ class Parser(object):
             dict_key : PY_STRING
         """
         token = self._current_token
-        self.consume(TokenType.PY_STRING, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.PY_STRING, exc_type=lap_exceptions.QueryParamsParseError
+        )
         return PyDictKey(token)
 
     def py_value(self):
@@ -398,29 +410,38 @@ class Parser(object):
         """
         token = self._current_token
 
-        if token.type_ == TokenType.PY_BOOL:
-            self.consume(TokenType.PY_BOOL, exc_type=QueryParamsParseError)
+        if token.type_ == lap_lexer.TokenType.PY_BOOL:
+            self.consume(
+                lap_lexer.TokenType.PY_BOOL,
+                exc_type=lap_exceptions.QueryParamsParseError,
+            )
             return PyScalarValue(token, token.lexeme)
-        elif token.type_ == TokenType.PY_NUMBER:
-            self.consume(TokenType.PY_NUMBER, exc_type=QueryParamsParseError)
+        elif token.type_ == lap_lexer.TokenType.PY_NUMBER:
+            self.consume(
+                lap_lexer.TokenType.PY_NUMBER,
+                exc_type=lap_exceptions.QueryParamsParseError,
+            )
             return PyScalarValue(token, token.lexeme)
-        elif token.type_ == TokenType.PY_STRING:
-            self.consume(TokenType.PY_STRING, exc_type=QueryParamsParseError)
+        elif token.type_ == lap_lexer.TokenType.PY_STRING:
+            self.consume(
+                lap_lexer.TokenType.PY_STRING,
+                exc_type=lap_exceptions.QueryParamsParseError,
+            )
             return PyScalarValue(token, token.lexeme)
-        elif token.type_ == TokenType.LPAREN:
+        elif token.type_ == lap_lexer.TokenType.LPAREN:
             tuple_node = self.py_tuple()
             return tuple_node
-        elif token.type_ == TokenType.LSQUARE:
+        elif token.type_ == lap_lexer.TokenType.LSQUARE:
             list_node = self.py_list()
             return list_node
-        elif token.type_ == TokenType.LCURL:
+        elif token.type_ == lap_lexer.TokenType.LCURL:
             dict_node = self.py_dict()
             return dict_node
         else:
             msg = "Unexpected token type {} at position {}.".format(
                 token.type_, token.pos
             )
-            self.error(msg, exc_type=QueryParamsParseError)
+            self.error(msg, exc_type=lap_exceptions.QueryParamsParseError)
 
     def py_tuple(self):
         """Implementation of the ``py_tuple`` grammar production rule.
@@ -429,9 +450,13 @@ class Parser(object):
 
             py_tuple : LPAREN collection_items RPAREN
         """
-        self.consume(TokenType.LPAREN, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.LPAREN, exc_type=lap_exceptions.QueryParamsParseError
+        )
         items = self.collection_items()
-        self.consume(TokenType.RPAREN, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.RPAREN, exc_type=lap_exceptions.QueryParamsParseError
+        )
 
         return PyTuple(items)
 
@@ -442,9 +467,13 @@ class Parser(object):
 
             py_list : LSQUARE collection_items RSQUARE
         """
-        self.consume(TokenType.LSQUARE, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.LSQUARE, exc_type=lap_exceptions.QueryParamsParseError
+        )
         items = self.collection_items()
-        self.consume(TokenType.RSQUARE, exc_type=QueryParamsParseError)
+        self.consume(
+            lap_lexer.TokenType.RSQUARE, exc_type=lap_exceptions.QueryParamsParseError
+        )
 
         return PyList(items)
 
@@ -461,8 +490,10 @@ class Parser(object):
         if item is not None:
             result.append(item)
 
-        while self._current_token.type_ == TokenType.COMMA:
-            self.consume(TokenType.COMMA, exc_type=QueryParamsParseError)
+        while self._current_token.type_ == lap_lexer.TokenType.COMMA:
+            self.consume(
+                lap_lexer.TokenType.COMMA, exc_type=lap_exceptions.QueryParamsParseError
+            )
             item = self.collection_item()
             if item is not None:
                 result.append(item)
@@ -476,7 +507,10 @@ class Parser(object):
 
             collection_item : py_value | EMPTY
         """
-        if self._current_token.type_ not in {TokenType.RPAREN, TokenType.RSQUARE}:
+        if self._current_token.type_ not in {
+            lap_lexer.TokenType.RPAREN,
+            lap_lexer.TokenType.RSQUARE,
+        }:
             result = self.py_value()
         else:
             result = None  # end of list/tuple items

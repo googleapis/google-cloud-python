@@ -1,8 +1,7 @@
-# This constraints file is used to make sure that the latest dependency versions
-# we claim to support in setup.py are indeed installed in test sessions in the most
-# recent Python version supported (3.9 at the time of writing - 2021-05-05).
+# IMPORTANT: When Python 3.8 support is dropped, update these to
+# match the minimums in setup.py.
 #
-# NOTE: Not comprehensive yet, will eventually be maintained semi-automatically by
-# the renovate bot.
-grpcio==1.47.0
-pyarrow>=4.0.0
+# We try to test across major versions of our dependencies.
+# This is the last pandas 2.0.x release.
+pandas==2.0.3
+

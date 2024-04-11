@@ -82,205 +82,35 @@
 
 from __future__ import print_function
 
-import re
 import ast
+from concurrent import futures
 import copy
 import functools
+import re
 import sys
 import time
 import warnings
-from concurrent import futures
 
-try:
-    import IPython  # type: ignore
-    from IPython import display  # type: ignore
-    from IPython.core import magic_arguments  # type: ignore
-except ImportError:  # pragma: NO COVER
-    raise ImportError("This module can only be loaded in IPython.")
-
+import IPython  # type: ignore
+from IPython import display  # type: ignore
+from IPython.core import magic_arguments  # type: ignore
 from google.api_core import client_info
-from google.api_core import client_options
 from google.api_core.exceptions import NotFound
-import google.auth  # type: ignore
 from google.cloud import bigquery
-import google.cloud.bigquery.dataset
-from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.dbapi import _helpers
-from google.cloud.bigquery.magics import line_arg_parser as lap
 
+from bigquery_magics import line_arg_parser as lap
+import bigquery_magics.config
+import bigquery_magics.line_arg_parser.exceptions
+
+try:
+    from google.cloud import bigquery_storage  # type: ignore
+except ImportError:
+    bigquery_storage = None
 
 IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)
-
-
-class Context(object):
-    """Storage for objects to be used throughout an IPython notebook session.
-
-    A Context object is initialized when the ``magics`` module is imported,
-    and can be found at ``google.cloud.bigquery.magics.context``.
-    """
-
-    def __init__(self):
-        self._credentials = None
-        self._project = None
-        self._connection = None
-        self._default_query_job_config = bigquery.QueryJobConfig()
-        self._bigquery_client_options = client_options.ClientOptions()
-        self._bqstorage_client_options = client_options.ClientOptions()
-        self._progress_bar_type = "tqdm_notebook"
-
-    @property
-    def credentials(self):
-        """google.auth.credentials.Credentials: Credentials to use for queries
-        performed through IPython magics.
-
-        Note:
-            These credentials do not need to be explicitly defined if you are
-            using Application Default Credentials. If you are not using
-            Application Default Credentials, manually construct a
-            :class:`google.auth.credentials.Credentials` object and set it as
-            the context credentials as demonstrated in the example below. See
-            `auth docs`_ for more information on obtaining credentials.
-
-        Example:
-            Manually setting the context credentials:
-
-            >>> from google.cloud.bigquery import magics
-            >>> from google.oauth2 import service_account
-            >>> credentials = (service_account
-            ...     .Credentials.from_service_account_file(
-            ...         '/path/to/key.json'))
-            >>> magics.context.credentials = credentials
-
-
-        .. _auth docs: http://google-auth.readthedocs.io
-            /en/latest/user-guide.html#obtaining-credentials
-        """
-        if self._credentials is None:
-            self._credentials, _ = google.auth.default()
-        return self._credentials
-
-    @credentials.setter
-    def credentials(self, value):
-        self._credentials = value
-
-    @property
-    def project(self):
-        """str: Default project to use for queries performed through IPython
-        magics.
-
-        Note:
-            The project does not need to be explicitly defined if you have an
-            environment default project set. If you do not have a default
-            project set in your environment, manually assign the project as
-            demonstrated in the example below.
-
-        Example:
-            Manually setting the context project:
-
-            >>> from google.cloud.bigquery import magics
-            >>> magics.context.project = 'my-project'
-        """
-        if self._project is None:
-            _, self._project = google.auth.default()
-        return self._project
-
-    @project.setter
-    def project(self, value):
-        self._project = value
-
-    @property
-    def bigquery_client_options(self):
-        """google.api_core.client_options.ClientOptions: client options to be
-        used through IPython magics.
-
-        Note::
-            The client options do not need to be explicitly defined if no
-            special network connections are required. Normally you would be
-            using the https://bigquery.googleapis.com/ end point.
-
-        Example:
-            Manually setting the endpoint:
-
-            >>> from google.cloud.bigquery import magics
-            >>> client_options = {}
-            >>> client_options['api_endpoint'] = "https://some.special.url"
-            >>> magics.context.bigquery_client_options = client_options
-        """
-        return self._bigquery_client_options
-
-    @bigquery_client_options.setter
-    def bigquery_client_options(self, value):
-        self._bigquery_client_options = value
-
-    @property
-    def bqstorage_client_options(self):
-        """google.api_core.client_options.ClientOptions: client options to be
-        used through IPython magics for the storage client.
-
-        Note::
-            The client options do not need to be explicitly defined if no
-            special network connections are required. Normally you would be
-            using the https://bigquerystorage.googleapis.com/ end point.
-
-        Example:
-            Manually setting the endpoint:
-
-            >>> from google.cloud.bigquery import magics
-            >>> client_options = {}
-            >>> client_options['api_endpoint'] = "https://some.special.url"
-            >>> magics.context.bqstorage_client_options = client_options
-        """
-        return self._bqstorage_client_options
-
-    @bqstorage_client_options.setter
-    def bqstorage_client_options(self, value):
-        self._bqstorage_client_options = value
-
-    @property
-    def default_query_job_config(self):
-        """google.cloud.bigquery.job.QueryJobConfig: Default job
-        configuration for queries.
-
-        The context's :class:`~google.cloud.bigquery.job.QueryJobConfig` is
-        used for queries. Some properties can be overridden with arguments to
-        the magics.
-
-        Example:
-            Manually setting the default value for ``maximum_bytes_billed``
-            to 100 MB:
-
-            >>> from google.cloud.bigquery import magics
-            >>> magics.context.default_query_job_config.maximum_bytes_billed = 100000000
-        """
-        return self._default_query_job_config
-
-    @default_query_job_config.setter
-    def default_query_job_config(self, value):
-        self._default_query_job_config = value
-
-    @property
-    def progress_bar_type(self):
-        """str: Default progress bar type to use to display progress bar while
-        executing queries through IPython magics.
-
-        Note::
-            Install the ``tqdm`` package to use this feature.
-
-        Example:
-            Manually setting the progress_bar_type:
-
-            >>> from google.cloud.bigquery import magics
-            >>> magics.context.progress_bar_type = "tqdm_notebook"
-        """
-        return self._progress_bar_type
-
-    @progress_bar_type.setter
-    def progress_bar_type(self, value):
-        self._progress_bar_type = value
-
-
-context = Context()
+context = bigquery_magics.config.context
 
 
 def _handle_error(error, destination_var=None):
@@ -288,7 +118,7 @@ def _handle_error(error, destination_var=None):
 
     Args:
         error (Exception):
-            An exception that ocurred during the query execution.
+            An exception that occurred during the query execution.
         destination_var (Optional[str]):
             The name of the IPython session variable to store the query job.
     """
@@ -508,6 +338,15 @@ def _create_dataset_if_necessary(client, dataset_id):
         "Defaults to use tqdm_notebook. Install the ``tqdm`` package to use this feature."
     ),
 )
+@magic_arguments.argument(
+    "--location",
+    type=str,
+    default=None,
+    help=(
+        "Set the location to execute query."
+        "Defaults to location set in query setting in console."
+    ),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -550,7 +389,8 @@ def _cell_magic(line, query):
             "Storage API is already used by default.",
             category=DeprecationWarning,
         )
-    use_bqstorage_api = not args.use_rest_api
+    use_bqstorage_api = not args.use_rest_api and (bigquery_storage is not None)
+    location = args.location
 
     params = []
     if params_option_value:
@@ -579,6 +419,7 @@ def _cell_magic(line, query):
         default_query_job_config=context.default_query_job_config,
         client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
         client_options=bigquery_client_options,
+        location=location,
     )
     if context._connection:
         client._connection = context._connection
@@ -769,7 +610,9 @@ def _make_bqstorage_client(client, use_bqstorage_api, client_options):
         return None
 
     try:
-        _versions_helpers.BQ_STORAGE_VERSIONS.try_import(raise_if_error=True)
+        bigquery_magics._versions_helpers.BQ_STORAGE_VERSIONS.try_import(
+            raise_if_error=True
+        )
     except exceptions.BigQueryStorageNotFoundError as err:
         customized_error = ImportError(
             "The default BigQuery Storage API client cannot be used, install "
@@ -778,8 +621,6 @@ def _make_bqstorage_client(client, use_bqstorage_api, client_options):
             "the --use_rest_api magic option."
         )
         raise customized_error from err
-    except exceptions.LegacyBigQueryStorageError:
-        pass
 
     try:
         from google.api_core.gapic_v1 import client_info as gapic_client_info

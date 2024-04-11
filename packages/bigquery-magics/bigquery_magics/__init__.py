@@ -12,9 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.bigquery.magics.magics import context
+import bigquery_magics.config
+import bigquery_magics.version
+
+context = bigquery_magics.config.context
+__version__ = bigquery_magics.version.__version__
 
 
-# For backwards compatibility we need to make the context available in the path
-# google.cloud.bigquery.magics.context
-__all__ = ("context",)
+def load_ipython_extension(ipython):
+    """Called by IPython when this module is loaded as an IPython extension."""
+    # Import here to avoid circular imports.
+    from bigquery_magics.bigquery import _cell_magic
+
+    ipython.register_magic_function(
+        _cell_magic, magic_kind="cell", magic_name="bigquery"
+    )
+
+
+__all__ = (
+    # For backwards compatibility we need to make the context available in
+    # the path google.cloud.bigquery.magics.context.
+    "context",
+    "__version__",
+    "load_ipython_extension",
+)

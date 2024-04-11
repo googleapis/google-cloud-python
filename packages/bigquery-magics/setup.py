@@ -17,35 +17,31 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 
-name = "google-cloud-bigquery"
-description = "Google BigQuery API client library"
+name = "bigquery-magics"
+description = "Google BigQuery magics for Jupyter and IPython"
 
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 5 - Production/Stable"
+# 'Development Status :: 5 - Production/Stable'``
+release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
-    # Until this issue is closed
-    # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
-    # NOTE: Maintainers, please do not require google-cloud-core>=2.x.x
-    # Until this issue is closed
-    # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-cloud-core >= 1.6.0, <3.0.0dev",
-    "google-resumable-media >= 0.6.0, < 3.0dev",
+    "db-dtypes>=0.3.0,<2.0.0dev",
+    "google-cloud-bigquery >= 3.13.0, <4.0.0dev",
+    "ipywidgets>=7.7.1",
+    "ipython>=7.23.1",
+    "ipykernel>=6.0.0",
     "packaging >= 20.0.0",
-    "python-dateutil >= 2.7.2, <3.0dev",
-    "requests >= 2.21.0, < 3.0.0dev",
+    "pandas>=1.1.0",
+    "pyarrow >= 3.0.0",
+    "tqdm >= 4.7.4, <5.0.0dev",
 ]
-pyarrow_dependency = "pyarrow >= 3.0.0"
 extras = {
-    # Keep the no-op bqstorage extra for backward compatibility.
-    # See: https://github.com/googleapis/python-bigquery/issues/757
+    # bqstorage had a period where it was a required dependency, and has been
+    # moved back to optional due to bloat.  See
+    # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
     "bqstorage": [
         "google-cloud-bigquery-storage >= 2.6.0, <3.0.0dev",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
@@ -56,32 +52,6 @@ extras = {
         # https://github.com/grpc/grpc/pull/15254
         "grpcio >= 1.47.0, < 2.0dev",
         "grpcio >= 1.49.1, < 2.0dev; python_version>='3.11'",
-        pyarrow_dependency,
-    ],
-    "pandas": [
-        "pandas>=1.1.0",
-        pyarrow_dependency,
-        "db-dtypes>=0.3.0,<2.0.0dev",
-        "importlib_metadata>=1.0.0; python_version<'3.8'",
-    ],
-    "ipywidgets": [
-        "ipywidgets>=7.7.0",
-        "ipykernel>=6.0.0",
-    ],
-    "geopandas": ["geopandas>=0.9.0, <1.0dev", "Shapely>=1.8.4, <3.0.0dev"],
-    "ipython": [
-        "ipython>=7.23.1,!=8.1.0",
-        "ipykernel>=6.0.0",
-    ],
-    "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
-    "opentelemetry": [
-        "opentelemetry-api >= 1.1.0",
-        "opentelemetry-sdk >= 1.1.0",
-        "opentelemetry-instrumentation >= 0.20b0",
-    ],
-    "bigquery_v2": [
-        "proto-plus >= 1.15.0, <2.0.0dev",
-        "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",  # For the legacy proto-based types.
     ],
 }
 
@@ -101,16 +71,16 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 version = {}
-with open(os.path.join(package_root, "google/cloud/bigquery/version.py")) as fp:
+with open(os.path.join(package_root, "bigquery_magics/version.py")) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
-# Only include packages under the 'google' namespace. Do not include tests,
+# Only include packages under the 'bigquery_magics' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
     package
     for package in setuptools.find_namespace_packages()
-    if package.startswith("google")
+    if package.startswith("bigquery_magics")
 ]
 
 setuptools.setup(
@@ -121,7 +91,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-bigquery",
+    url="https://github.com/googleapis/python-bigquery-magics",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",

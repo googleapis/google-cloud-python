@@ -12,21 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from bigquery_magics.line_arg_parser.exceptions import (
-    DuplicateQueryParamsError,
-    ParseError,
-    QueryParamsParseError,
-)
-from bigquery_magics.line_arg_parser.lexer import Lexer, TokenType
-from bigquery_magics.line_arg_parser.parser import Parser
-from bigquery_magics.line_arg_parser.visitors import QueryParamsExtractor
-
-__all__ = (
-    "DuplicateQueryParamsError",
-    "Lexer",
-    "Parser",
-    "ParseError",
-    "QueryParamsExtractor",
-    "QueryParamsParseError",
-    "TokenType",
-)
+__version__ = "0.0.1"
