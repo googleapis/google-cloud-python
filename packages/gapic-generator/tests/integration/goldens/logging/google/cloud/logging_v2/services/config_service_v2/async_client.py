@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -181,7 +181,7 @@ class ConfigServiceV2AsyncClient:
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, ConfigServiceV2Transport] = "grpc_asyncio",
+            transport: Optional[Union[str, ConfigServiceV2Transport, Callable[..., ConfigServiceV2Transport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
@@ -193,9 +193,11 @@ class ConfigServiceV2AsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ConfigServiceV2Transport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ConfigServiceV2Transport,Callable[..., ConfigServiceV2Transport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ConfigServiceV2Transport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
