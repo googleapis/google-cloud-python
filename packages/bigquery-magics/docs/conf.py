@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-bigquery documentation build configuration file
+# bigquery-magics documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -61,7 +61,7 @@ extensions = [
 
 # autodoc/autosummary flags
 autoclass_content = "both"
-autodoc_default_options = {"members": True, "inherited-members": True}
+autodoc_default_options = {"members": True}
 autosummary_generate = True
 
 
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-bigquery"
+project = "bigquery-magics"
 copyright = "2019, Google"
 author = "Google APIs"
 
@@ -109,7 +109,6 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = [
-    "google/cloud/bigquery_v2/**",  # Legacy proto-based types.
     "_build",
     "**/.nox/**/*",
     "samples/AUTHORING_GUIDE.md",
@@ -155,9 +154,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-bigquery",
+    "description": "Google Cloud Client Libraries for bigquery-magics",
     "github_user": "googleapis",
-    "github_repo": "python-bigquery",
+    "github_repo": "python-bigquery-magics",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -249,7 +248,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-bigquery-doc"
+htmlhelp_basename = "bigquery-magics-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -282,8 +281,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-cloud-bigquery.tex",
-        "google-cloud-bigquery Documentation",
+        "bigquery-magics.tex",
+        "bigquery-magics Documentation",
         author,
         "manual",
     )
@@ -317,8 +316,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-cloud-bigquery",
-        "google-cloud-bigquery Documentation",
+        "bigquery-magics",
+        "bigquery-magics Documentation",
         [author],
         1,
     )
@@ -336,11 +335,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-cloud-bigquery",
-        "google-cloud-bigquery Documentation",
+        "bigquery-magics",
+        "bigquery-magics Documentation",
         author,
-        "google-cloud-bigquery",
-        "google-cloud-bigquery Library",
+        "bigquery-magics",
+        "bigquery-magics Library",
         "APIs",
     )
 ]
@@ -369,9 +368,11 @@ intersphinx_mapping = {
     "grpc": ("https://grpc.github.io/grpc/python/", None),
     "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
     "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
-    "dateutil": ("https://dateutil.readthedocs.io/en/latest/", None),
-    "geopandas": ("https://geopandas.org/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "pydata-google-auth": (
+        "https://pydata-google-auth.readthedocs.io/en/latest/",
+        None,
+    ),
 }
 
 

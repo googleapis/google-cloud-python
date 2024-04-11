@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.7, 3.8, 3.9, 3.10, 3.11 and 3.12 on both UNIX and Windows.
+  3.7, 3.8, 3.11 and 3.12 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -35,21 +35,21 @@ Using a Development Checkout
 You'll have to create a development environment using a Git checkout:
 
 - While logged into your GitHub account, navigate to the
-  ``python-bigquery`` `repo`_ on GitHub.
+  ``python-bigquery-magics`` `repo`_ on GitHub.
 
-- Fork and clone the ``python-bigquery`` repository to your GitHub account by
+- Fork and clone the ``python-bigquery-magics`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``python-bigquery`` from your GitHub account to your local
+- Clone your fork of ``python-bigquery-magics`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-python-bigquery``.  E.g.::
+  as ``hack-on-python-bigquery-magics``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/python-bigquery.git hack-on-python-bigquery
-   $ cd hack-on-python-bigquery
-   # Configure remotes such that you can pull changes from the googleapis/python-bigquery
+   $ git clone git@github.com:USERNAME/python-bigquery-magics.git hack-on-python-bigquery-magics
+   $ cd hack-on-python-bigquery-magics
+   # Configure remotes such that you can pull changes from the googleapis/python-bigquery-magics
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/python-bigquery.git
+   $ git remote add upstream git@github.com:googleapis/python-bigquery-magics.git
    # fetch and merge changes from upstream into main
    $ git fetch upstream
    $ git merge upstream/main
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/python-bigquery
+.. _repo: https://github.com/googleapis/python-bigquery-magics
 
 Using ``nox``
 =============
@@ -113,7 +113,7 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="main"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``python-bigquery``. The
+  version of ``python-bigquery-magics``. The
   remote name ``upstream`` should point to the official ``googleapis``
   checkout and the branch should be the default branch on that remote (``main``).
 
@@ -143,12 +143,12 @@ Running System Tests
    $ nox -s system
 
    # Run a single system test
-   $ nox -s system-3.8 -- -k <name of test>
+   $ nox -s system-3.12 -- -k <name of test>
 
 
   .. note::
 
-      System tests are only configured to run under Python 3.8.
+      System tests are only configured to run under Python 3.8, 3.11 and 3.12.
       For expediency, we do not run them in older versions of Python 3.
 
   This alone will not run the tests. You'll need to change some local
@@ -209,10 +209,10 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-bigquery/blob/main/CONTRIBUTING.rst``)
+``https://github.com/googleapis/python-bigquery-magics/blob/main/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/google-cloud-bigquery
+.. _description on PyPI: https://pypi.org/project/bigquery-magics
 
 
 *************************
@@ -223,22 +223,18 @@ We support:
 
 -  `Python 3.7`_
 -  `Python 3.8`_
--  `Python 3.9`_
--  `Python 3.10`_
 -  `Python 3.11`_
 -  `Python 3.12`_
 
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
-.. _Python 3.9: https://docs.python.org/3.9/
-.. _Python 3.10: https://docs.python.org/3.10/
 .. _Python 3.11: https://docs.python.org/3.11/
 .. _Python 3.12: https://docs.python.org/3.12/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-bigquery/blob/main/noxfile.py
+.. _config: https://github.com/googleapis/python-bigquery-magics/blob/main/noxfile.py
 
 
 We also explicitly decided to support Python 3 beginning with version 3.7.

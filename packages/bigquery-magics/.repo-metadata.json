@@ -1,18 +1,16 @@
 {
-    "name": "bigquery",
-    "name_pretty": "Google Cloud BigQuery",
+    "name": "bigquery-magics",
+    "name_pretty": "Google BigQuery connector for Jupyter and IPython",
     "product_documentation": "https://cloud.google.com/bigquery",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/bigquery/latest",
-    "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
+    "client_documentation": "https://googleapis.dev/python/bigquery-magics/latest/",
+    "issue_tracker": "https://github.com/googleapis/python-bigquery-magics/issues",
     "release_level": "stable",
     "language": "python",
-    "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-bigquery",
-    "distribution_name": "google-cloud-bigquery",
+    "library_type": "INTEGRATION",
+    "repo": "googleapis/python-bigquery-magics",
+    "distribution_name": "bigquery-magics",
     "api_id": "bigquery.googleapis.com",
     "requires_billing": false,
-    "default_version": "v2",
-    "codeowner_team": "@googleapis/api-bigquery",
-    "api_shortname": "bigquery",
-    "api_description": "is a fully managed, NoOps, low cost data analytics service.\nData can be streamed into BigQuery at millions of rows per second to enable real-time analysis.\nWith BigQuery you can easily deploy Petabyte-scale Databases."
+    "default_version": "",
+    "codeowner_team": "@googleapis/api-bigquery @googleapis/api-bigquery-dataframe"
 }
