@@ -61,9 +61,7 @@ from .transports.grpc_asyncio import ServingConfigServiceGrpcAsyncIOTransport
 
 
 class ServingConfigServiceAsyncClient:
-    """Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
-    """
+    """Service for operations related to [ServingConfig][]."""
 
     _client: ServingConfigServiceClient
 
@@ -302,7 +300,7 @@ class ServingConfigServiceAsyncClient:
                 serving_config = discoveryengine_v1alpha.ServingConfig()
                 serving_config.media_config.content_watched_percentage_threshold = 0.3811
                 serving_config.display_name = "display_name_value"
-                serving_config.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
+                serving_config.solution_type = "SOLUTION_TYPE_CHAT"
 
                 request = discoveryengine_v1alpha.UpdateServingConfigRequest(
                     serving_config=serving_config,
