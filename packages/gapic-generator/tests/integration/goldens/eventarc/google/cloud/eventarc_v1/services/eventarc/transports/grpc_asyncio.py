@@ -18,6 +18,8 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -732,6 +734,101 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
                 response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
             )
         return self._stubs['update_google_channel_config']
+
+    def _prep_wrapped_messages(self, client_info):
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.get_trigger: gapic_v1.method_async.wrap_method(
+                self.get_trigger,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_triggers: gapic_v1.method_async.wrap_method(
+                self.list_triggers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_trigger: gapic_v1.method_async.wrap_method(
+                self.create_trigger,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_trigger: gapic_v1.method_async.wrap_method(
+                self.update_trigger,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_trigger: gapic_v1.method_async.wrap_method(
+                self.delete_trigger,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_channel: gapic_v1.method_async.wrap_method(
+                self.get_channel,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channels: gapic_v1.method_async.wrap_method(
+                self.list_channels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_: gapic_v1.method_async.wrap_method(
+                self.create_channel_,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_channel: gapic_v1.method_async.wrap_method(
+                self.update_channel,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel: gapic_v1.method_async.wrap_method(
+                self.delete_channel,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_provider: gapic_v1.method_async.wrap_method(
+                self.get_provider,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_providers: gapic_v1.method_async.wrap_method(
+                self.list_providers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_channel_connection: gapic_v1.method_async.wrap_method(
+                self.get_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channel_connections: gapic_v1.method_async.wrap_method(
+                self.list_channel_connections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_connection: gapic_v1.method_async.wrap_method(
+                self.create_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel_connection: gapic_v1.method_async.wrap_method(
+                self.delete_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_google_channel_config: gapic_v1.method_async.wrap_method(
+                self.get_google_channel_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_google_channel_config: gapic_v1.method_async.wrap_method(
+                self.update_google_channel_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+         }
 
     def close(self):
         return self.grpc_channel.close()

@@ -18,6 +18,8 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -605,6 +607,66 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['reschedule_maintenance']
+
+    def _prep_wrapped_messages(self, client_info):
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_instances: gapic_v1.method_async.wrap_method(
+                self.list_instances,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_instance: gapic_v1.method_async.wrap_method(
+                self.get_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_instance_auth_string: gapic_v1.method_async.wrap_method(
+                self.get_instance_auth_string,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.create_instance: gapic_v1.method_async.wrap_method(
+                self.create_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.update_instance: gapic_v1.method_async.wrap_method(
+                self.update_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.upgrade_instance: gapic_v1.method_async.wrap_method(
+                self.upgrade_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.import_instance: gapic_v1.method_async.wrap_method(
+                self.import_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.export_instance: gapic_v1.method_async.wrap_method(
+                self.export_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.failover_instance: gapic_v1.method_async.wrap_method(
+                self.failover_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.delete_instance: gapic_v1.method_async.wrap_method(
+                self.delete_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.reschedule_maintenance: gapic_v1.method_async.wrap_method(
+                self.reschedule_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+         }
 
     def close(self):
         return self.grpc_channel.close()

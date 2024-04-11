@@ -18,6 +18,8 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -1184,6 +1186,248 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['copy_log_entries']
+
+    def _prep_wrapped_messages(self, client_info):
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_buckets: gapic_v1.method_async.wrap_method(
+                self.list_buckets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_bucket: gapic_v1.method_async.wrap_method(
+                self.get_bucket,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_bucket_async: gapic_v1.method_async.wrap_method(
+                self.create_bucket_async,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_bucket_async: gapic_v1.method_async.wrap_method(
+                self.update_bucket_async,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_bucket: gapic_v1.method_async.wrap_method(
+                self.create_bucket,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_bucket: gapic_v1.method_async.wrap_method(
+                self.update_bucket,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_bucket: gapic_v1.method_async.wrap_method(
+                self.delete_bucket,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.undelete_bucket: gapic_v1.method_async.wrap_method(
+                self.undelete_bucket,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_views: gapic_v1.method_async.wrap_method(
+                self.list_views,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_view: gapic_v1.method_async.wrap_method(
+                self.get_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_view: gapic_v1.method_async.wrap_method(
+                self.create_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_view: gapic_v1.method_async.wrap_method(
+                self.update_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_view: gapic_v1.method_async.wrap_method(
+                self.delete_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sinks: gapic_v1.method_async.wrap_method(
+                self.list_sinks,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_sink: gapic_v1.method_async.wrap_method(
+                self.get_sink,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_sink: gapic_v1.method_async.wrap_method(
+                self.create_sink,
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_sink: gapic_v1.method_async.wrap_method(
+                self.update_sink,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_sink: gapic_v1.method_async.wrap_method(
+                self.delete_sink,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_link: gapic_v1.method_async.wrap_method(
+                self.create_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_link: gapic_v1.method_async.wrap_method(
+                self.delete_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_links: gapic_v1.method_async.wrap_method(
+                self.list_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_link: gapic_v1.method_async.wrap_method(
+                self.get_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_exclusions: gapic_v1.method_async.wrap_method(
+                self.list_exclusions,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_exclusion: gapic_v1.method_async.wrap_method(
+                self.get_exclusion,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_exclusion: gapic_v1.method_async.wrap_method(
+                self.create_exclusion,
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_exclusion: gapic_v1.method_async.wrap_method(
+                self.update_exclusion,
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.delete_exclusion: gapic_v1.method_async.wrap_method(
+                self.delete_exclusion,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_cmek_settings: gapic_v1.method_async.wrap_method(
+                self.get_cmek_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_cmek_settings: gapic_v1.method_async.wrap_method(
+                self.update_cmek_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_settings: gapic_v1.method_async.wrap_method(
+                self.get_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_settings: gapic_v1.method_async.wrap_method(
+                self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.copy_log_entries: gapic_v1.method_async.wrap_method(
+                self.copy_log_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+         }
 
     def close(self):
         return self.grpc_channel.close()

@@ -314,8 +314,8 @@ class {{ service.async_client_name }}:
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields %}
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
@@ -323,14 +323,17 @@ class {{ service.async_client_name }}:
 
         {% endif %}
         {% if method.input.ident.package != method.ident.package %} {# request lives in a different package, so there is no proto wrapper #}
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = {{ method.input.ident }}(**request)
         elif not request:
             request = {{ method.input.ident }}({% if method.flattened_fields %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %})
         {% else %}
-        request = {{ method.input.ident }}(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, {{ method.input.ident }}):
+            request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
 
         {# Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
@@ -357,26 +360,9 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.{{ method.transport_safe_name|snake_case }},
-            {% if method.retry %}
-            default_retry=retries.AsyncRetry(
-                {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
-                {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
-                {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
-                predicate=retries.if_exception_type(
-                    {% for ex in method.retry.retryable_exceptions|sort(attribute="__name__") %}
-                    core_exceptions.{{ ex.__name__ }},
-                    {% endfor %}
-                ),
-                deadline={{ method.timeout }},
-            ),
-            {% endif %}
-            default_timeout={{ method.timeout }},
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-        {% if method.field_headers %}
+        rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
 
+        {% if method.field_headers %}
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (

@@ -120,7 +120,10 @@ class IAMCredentialsTransport(abc.ABC):
             self.generate_access_token: gapic_v1.method.wrap_method(
                 self.generate_access_token,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -132,7 +135,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.generate_id_token: gapic_v1.method.wrap_method(
                 self.generate_id_token,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -144,7 +150,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.sign_blob: gapic_v1.method.wrap_method(
                 self.sign_blob,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
@@ -156,7 +165,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             self.sign_jwt: gapic_v1.method.wrap_method(
                 self.sign_jwt,
                 default_retry=retries.Retry(
-initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
