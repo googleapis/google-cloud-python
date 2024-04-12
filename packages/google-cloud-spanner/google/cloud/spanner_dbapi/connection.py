@@ -31,7 +31,6 @@ from google.cloud.spanner_dbapi.transaction_helper import TransactionRetryHelper
 from google.cloud.spanner_dbapi.cursor import Cursor
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.snapshot import Snapshot
-from deprecated import deprecated
 
 from google.cloud.spanner_dbapi.exceptions import (
     InterfaceError,
@@ -187,10 +186,11 @@ class Connection:
         return self._autocommit_dml_mode
 
     @property
-    @deprecated(
-        reason="This method is deprecated. Use _spanner_transaction_started field"
-    )
     def inside_transaction(self):
+        warnings.warn(
+            "This method is deprecated. Use _spanner_transaction_started field",
+            DeprecationWarning,
+        )
         return (
             self._transaction
             and not self._transaction.committed

@@ -17,12 +17,12 @@
 import datetime
 import decimal
 import re
+import warnings
 
 import sqlparse
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_v1 import JsonObject
 from . import client_side_statement_parser
-from deprecated import deprecated
 
 from .exceptions import Error
 from .parsed_statement import ParsedStatement, StatementType, Statement
@@ -179,7 +179,6 @@ RE_VALUES_PYFORMAT = re.compile(
 RE_PYFORMAT = re.compile(r"(%s|%\([^\(\)]+\)s)+", re.DOTALL)
 
 
-@deprecated(reason="This method is deprecated. Use _classify_stmt method")
 def classify_stmt(query):
     """Determine SQL query type.
     :type query: str
@@ -187,6 +186,10 @@ def classify_stmt(query):
     :rtype: str
     :returns: The query type name.
     """
+    warnings.warn(
+        "This method is deprecated. Use _classify_stmt method", DeprecationWarning
+    )
+
     # sqlparse will strip Cloud Spanner comments,
     # still, special commenting styles, like
     # PostgreSQL dollar quoted comments are not
