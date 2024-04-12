@@ -92,7 +92,7 @@ class DatasetReference(object):
         ValueError: If either argument is not of type ``str``.
     """
 
-    def __init__(self, project, dataset_id):
+    def __init__(self, project: str, dataset_id: str):
         if not isinstance(project, str):
             raise ValueError("Pass a string for project")
         if not isinstance(dataset_id, str):
@@ -166,22 +166,24 @@ class DatasetReference(object):
                 standard SQL format.
         """
         output_dataset_id = dataset_id
-        output_project_id = default_project
         parts = _helpers._split_id(dataset_id)
 
-        if len(parts) == 1 and not default_project:
-            raise ValueError(
-                "When default_project is not set, dataset_id must be a "
-                "fully-qualified dataset ID in standard SQL format, "
-                'e.g., "project.dataset_id" got {}'.format(dataset_id)
-            )
+        if len(parts) == 1:
+            if default_project is not None:
+                output_project_id = default_project
+            else:
+                raise ValueError(
+                    "When default_project is not set, dataset_id must be a "
+                    "fully-qualified dataset ID in standard SQL format, "
+                    'e.g., "project.dataset_id" got {}'.format(dataset_id)
+                )
         elif len(parts) == 2:
             output_project_id, output_dataset_id = parts
-        elif len(parts) > 2:
+        else:
             raise ValueError(
                 "Too many parts in dataset_id. Expected a fully-qualified "
-                "dataset ID in standard SQL format. e.g. "
-                '"project.dataset_id", got {}'.format(dataset_id)
+                "dataset ID in standard SQL format, "
+                'e.g. "project.dataset_id", got {}'.format(dataset_id)
             )
 
         return cls(output_project_id, output_dataset_id)
