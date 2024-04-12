@@ -490,6 +490,40 @@
         }
       }
     },
+    "RecommendationService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RecommendationServiceClient",
+          "rpcs": {
+            "Recommend": {
+              "methods": [
+                "recommend"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RecommendationServiceAsyncClient",
+          "rpcs": {
+            "Recommend": {
+              "methods": [
+                "recommend"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RecommendationServiceClient",
+          "rpcs": {
+            "Recommend": {
+              "methods": [
+                "recommend"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SchemaService": {
       "clients": {
         "grpc": {

@@ -30,7 +30,10 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
+from google.cloud.discoveryengine_v1alpha.types import answer
 from google.cloud.discoveryengine_v1alpha.types import conversation
+from google.cloud.discoveryengine_v1alpha.types import session
+from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -161,6 +164,41 @@ class ConversationalSearchServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.answer_query: gapic_v1.method.wrap_method(
+                self.answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_answer: gapic_v1.method.wrap_method(
+                self.get_answer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_session: gapic_v1.method.wrap_method(
+                self.create_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_session: gapic_v1.method.wrap_method(
+                self.delete_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_session: gapic_v1.method.wrap_method(
+                self.update_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_session: gapic_v1.method.wrap_method(
+                self.get_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sessions: gapic_v1.method.wrap_method(
+                self.list_sessions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -228,6 +266,75 @@ class ConversationalSearchServiceTransport(abc.ABC):
         Union[
             conversational_search_service.ListConversationsResponse,
             Awaitable[conversational_search_service.ListConversationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        Union[
+            conversational_search_service.AnswerQueryResponse,
+            Awaitable[conversational_search_service.AnswerQueryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_answer(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetAnswerRequest],
+        Union[answer.Answer, Awaitable[answer.Answer]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.CreateSessionRequest],
+        Union[gcd_session.Session, Awaitable[gcd_session.Session]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.DeleteSessionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateSessionRequest],
+        Union[gcd_session.Session, Awaitable[gcd_session.Session]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetSessionRequest],
+        Union[session.Session, Awaitable[session.Session]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_sessions(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListSessionsRequest],
+        Union[
+            conversational_search_service.ListSessionsResponse,
+            Awaitable[conversational_search_service.ListSessionsResponse],
         ],
     ]:
         raise NotImplementedError()

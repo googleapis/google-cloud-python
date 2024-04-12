@@ -298,7 +298,7 @@ class EngineServiceAsyncClient:
                 # Initialize request argument(s)
                 engine = discoveryengine_v1.Engine()
                 engine.display_name = "display_name_value"
-                engine.solution_type = "SOLUTION_TYPE_CHAT"
+                engine.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
 
                 request = discoveryengine_v1.CreateEngineRequest(
                     parent="parent_value",
@@ -590,7 +590,7 @@ class EngineServiceAsyncClient:
                 # Initialize request argument(s)
                 engine = discoveryengine_v1.Engine()
                 engine.display_name = "display_name_value"
-                engine.solution_type = "SOLUTION_TYPE_CHAT"
+                engine.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
 
                 request = discoveryengine_v1.UpdateEngineRequest(
                     engine=engine,

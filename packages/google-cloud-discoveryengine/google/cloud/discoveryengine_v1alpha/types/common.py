@@ -51,10 +51,13 @@ class IndustryVertical(proto.Enum):
             not specific to any industry vertical.
         MEDIA (2):
             The media industry vertical.
+        HEALTHCARE_FHIR (7):
+            The healthcare FHIR vertical.
     """
     INDUSTRY_VERTICAL_UNSPECIFIED = 0
     GENERIC = 1
     MEDIA = 2
+    HEALTHCARE_FHIR = 7
 
 
 class SolutionType(proto.Enum):
@@ -70,16 +73,22 @@ class SolutionType(proto.Enum):
         SOLUTION_TYPE_CHAT (3):
             Used for use cases related to the Generative
             AI agent.
+        SOLUTION_TYPE_GENERATIVE_CHAT (4):
+            Used for use cases related to the Generative Chat agent.
+            It's used for Generative chat engine only, the associated
+            data stores must enrolled with ``SOLUTION_TYPE_CHAT``
+            solution.
     """
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
     SOLUTION_TYPE_SEARCH = 2
     SOLUTION_TYPE_CHAT = 3
+    SOLUTION_TYPE_GENERATIVE_CHAT = 4
 
 
 class SearchTier(proto.Enum):
     r"""Tiers of search features. Different tiers might have
-    different pricing. To learn more, please check the pricing
+    different pricing. To learn more, check the pricing
     documentation.
 
     Values:

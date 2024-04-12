@@ -380,6 +380,93 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
             )
         return self._stubs["list_engines"]
 
+    @property
+    def pause_engine(
+        self,
+    ) -> Callable[[engine_service.PauseEngineRequest], engine.Engine]:
+        r"""Return a callable for the pause engine method over gRPC.
+
+        Pauses the training of an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
+        is
+        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+
+        Returns:
+            Callable[[~.PauseEngineRequest],
+                    ~.Engine]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "pause_engine" not in self._stubs:
+            self._stubs["pause_engine"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.EngineService/PauseEngine",
+                request_serializer=engine_service.PauseEngineRequest.serialize,
+                response_deserializer=engine.Engine.deserialize,
+            )
+        return self._stubs["pause_engine"]
+
+    @property
+    def resume_engine(
+        self,
+    ) -> Callable[[engine_service.ResumeEngineRequest], engine.Engine]:
+        r"""Return a callable for the resume engine method over gRPC.
+
+        Resumes the training of an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
+        is
+        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+
+        Returns:
+            Callable[[~.ResumeEngineRequest],
+                    ~.Engine]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resume_engine" not in self._stubs:
+            self._stubs["resume_engine"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.EngineService/ResumeEngine",
+                request_serializer=engine_service.ResumeEngineRequest.serialize,
+                response_deserializer=engine.Engine.deserialize,
+            )
+        return self._stubs["resume_engine"]
+
+    @property
+    def tune_engine(
+        self,
+    ) -> Callable[[engine_service.TuneEngineRequest], operations_pb2.Operation]:
+        r"""Return a callable for the tune engine method over gRPC.
+
+        Tunes an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
+        is
+        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+
+        Returns:
+            Callable[[~.TuneEngineRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "tune_engine" not in self._stubs:
+            self._stubs["tune_engine"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.EngineService/TuneEngine",
+                request_serializer=engine_service.TuneEngineRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["tune_engine"]
+
     def close(self):
         self.grpc_channel.close()
 

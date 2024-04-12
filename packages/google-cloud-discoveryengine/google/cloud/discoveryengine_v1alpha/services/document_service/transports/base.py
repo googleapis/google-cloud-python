@@ -179,6 +179,11 @@ class DocumentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_processed_document: gapic_v1.method.wrap_method(
+                self.get_processed_document,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -258,6 +263,15 @@ class DocumentServiceTransport(abc.ABC):
     ) -> Callable[
         [purge_config.PurgeDocumentsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_processed_document(
+        self,
+    ) -> Callable[
+        [document_service.GetProcessedDocumentRequest],
+        Union[document.ProcessedDocument, Awaitable[document.ProcessedDocument]],
     ]:
         raise NotImplementedError()
 

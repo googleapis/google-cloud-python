@@ -59,9 +59,15 @@ class SearchRequest(proto.Message):
         page_size (int):
             Maximum number of
             [Document][google.cloud.discoveryengine.v1.Document]s to
-            return. If unspecified, defaults to a reasonable value. The
-            maximum allowed value is 100. Values above 100 are coerced
-            to 100.
+            return. The maximum allowed value depends on the data type.
+            Values above the maximum value are coerced to the maximum
+            value.
+
+            -  Websites with basic indexing: Default ``10``, Maximum
+               ``25``.
+            -  Websites with advanced indexing: Default ``25``, Maximum
+               ``50``.
+            -  Other: Default ``50``, Maximum ``100``.
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
@@ -85,6 +91,9 @@ class SearchRequest(proto.Message):
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
+        data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
+            A list of data store specs to apply on a
+            search call.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -233,6 +242,22 @@ class SearchRequest(proto.Message):
             proto.STRING,
             number=1,
             oneof="image",
+        )
+
+    class DataStoreSpec(proto.Message):
+        r"""A struct to define data stores to filter on in a search call.
+
+        Attributes:
+            data_store (str):
+                Required. Full resource name of
+                [DataStore][google.cloud.discoveryengine.v1.DataStore], such
+                as
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
+        """
+
+        data_store: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     class FacetSpec(proto.Message):
@@ -452,9 +477,7 @@ class SearchRequest(proto.Message):
 
                     -  To boost documents with document ID "doc_1" or "doc_2",
                        and color "Red" or "Blue":
-
-                       -  (id: ANY("doc_1", "doc_2")) AND (color:
-                          ANY("Red","Blue"))
+                       ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -473,7 +496,10 @@ class SearchRequest(proto.Message):
                     ranking, but it is not blocked out completely.
 
                     Setting to 0.0 means no boost applied. The boosting
-                    condition is ignored.
+                    condition is ignored. Only one of the (condition, boost)
+                    combination or the boost_control_spec below are set. If both
+                    are set then the global boost is ignored and the more
+                    fine-grained boost_control_spec is applied.
             """
 
             condition: str = proto.Field(
@@ -591,6 +617,9 @@ class SearchRequest(proto.Message):
             summary_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec):
                 If ``summarySpec`` is not specified, summaries are not
                 included in the search response.
+            extractive_content_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.ExtractiveContentSpec):
+                If there is no extractive_content_spec provided, there will
+                be no extractive answer in the search response.
         """
 
         class SnippetSpec(proto.Message):
@@ -637,7 +666,12 @@ class SearchRequest(proto.Message):
                     ``summaryResultCount``, the summary is generated from all of
                     the results.
 
-                    At most five results can be used to generate a summary.
+                    At most 10 results for documents mode, or 50 for chunks
+                    mode, can be used to generate a summary. The chunks mode is
+                    used when
+                    [SearchRequest.ContentSearchSpec.search_result_mode][] is
+                    set to
+                    [CHUNKS][SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
                 include_citations (bool):
                     Specifies whether to include citations in the summary. The
                     default value is ``false``.
@@ -694,6 +728,15 @@ class SearchRequest(proto.Message):
                 model_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec):
                     If specified, the spec will be used to modify
                     the model specification provided to the LLM.
+                use_semantic_chunks (bool):
+                    If true, answer will be generated from most
+                    relevant chunks from top search results. This
+                    feature will improve summary quality. Note that
+                    with this feature enabled, not all top search
+                    results will be referenced and included in the
+                    reference list, so the citation source index
+                    only points to the search results listed in the
+                    reference list.
             """
 
             class ModelPromptSpec(proto.Message):
@@ -721,11 +764,14 @@ class SearchRequest(proto.Message):
                         Supported values are:
 
                         -  ``stable``: string. Default value when no value is
-                           specified. Uses a generally available, fine-tuned version
-                           of the text-bison@001 model.
-                        -  ``preview``: string. (Public preview) Uses a fine-tuned
-                           version of the text-bison@002 model. This model works
-                           only for summaries in English.
+                           specified. Uses a generally available, fine-tuned model.
+                           For more information, see `Answer generation model
+                           versions and
+                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
+                        -  ``preview``: string. (Public preview) Uses a preview
+                           model. For more information, see `Answer generation model
+                           versions and
+                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
                 """
 
                 version: str = proto.Field(
@@ -765,6 +811,86 @@ class SearchRequest(proto.Message):
                     message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
                 )
             )
+            use_semantic_chunks: bool = proto.Field(
+                proto.BOOL,
+                number=8,
+            )
+
+        class ExtractiveContentSpec(proto.Message):
+            r"""A specification for configuring the extractive content in a
+            search response.
+
+            Attributes:
+                max_extractive_answer_count (int):
+                    The maximum number of extractive answers returned in each
+                    search result.
+
+                    An extractive answer is a verbatim answer extracted from the
+                    original document, which provides a precise and contextually
+                    relevant answer to the search query.
+
+                    If the number of matching answers is less than the
+                    ``max_extractive_answer_count``, return all of the answers.
+                    Otherwise, return the ``max_extractive_answer_count``.
+
+                    At most five answers are returned for each
+                    [SearchResult][google.cloud.discoveryengine.v1.SearchResponse.SearchResult].
+                max_extractive_segment_count (int):
+                    The max number of extractive segments returned in each
+                    search result. Only applied if the
+                    [DataStore][google.cloud.discoveryengine.v1.DataStore] is
+                    set to
+                    [DataStore.ContentConfig.CONTENT_REQUIRED][google.cloud.discoveryengine.v1.DataStore.ContentConfig.CONTENT_REQUIRED]
+                    or
+                    [DataStore.solution_types][google.cloud.discoveryengine.v1.DataStore.solution_types]
+                    is
+                    [SOLUTION_TYPE_CHAT][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_CHAT].
+
+                    An extractive segment is a text segment extracted from the
+                    original document that is relevant to the search query, and,
+                    in general, more verbose than an extractive answer. The
+                    segment could then be used as input for LLMs to generate
+                    summaries and answers.
+
+                    If the number of matching segments is less than
+                    ``max_extractive_segment_count``, return all of the
+                    segments. Otherwise, return the
+                    ``max_extractive_segment_count``.
+                return_extractive_segment_score (bool):
+                    Specifies whether to return the confidence score from the
+                    extractive segments in each search result. This feature is
+                    available only for new or allowlisted data stores. To
+                    allowlist your data store, contact your Customer Engineer.
+                    The default value is ``false``.
+                num_previous_segments (int):
+                    Specifies whether to also include the adjacent from each
+                    selected segments. Return at most ``num_previous_segments``
+                    segments before each selected segments.
+                num_next_segments (int):
+                    Return at most ``num_next_segments`` segments after each
+                    selected segments.
+            """
+
+            max_extractive_answer_count: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            max_extractive_segment_count: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            return_extractive_segment_score: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+            num_previous_segments: int = proto.Field(
+                proto.INT32,
+                number=4,
+            )
+            num_next_segments: int = proto.Field(
+                proto.INT32,
+                number=5,
+            )
 
         snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
             proto.MESSAGE,
@@ -775,6 +901,11 @@ class SearchRequest(proto.Message):
             proto.MESSAGE,
             number=2,
             message="SearchRequest.ContentSearchSpec.SummarySpec",
+        )
+        extractive_content_spec: "SearchRequest.ContentSearchSpec.ExtractiveContentSpec" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
         )
 
     serving_config: str = proto.Field(
@@ -805,6 +936,11 @@ class SearchRequest(proto.Message):
     offset: int = proto.Field(
         proto.INT32,
         number=6,
+    )
+    data_store_specs: MutableSequence[DataStoreSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=32,
+        message=DataStoreSpec,
     )
     filter: str = proto.Field(
         proto.STRING,
@@ -1178,7 +1314,29 @@ class SearchResponse(proto.Message):
                     ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
                 uri (str):
                     Cloud Storage or HTTP uri for the document.
+                chunk_contents (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Summary.Reference.ChunkContent]):
+                    List of cited chunk contents derived from
+                    document content.
             """
+
+            class ChunkContent(proto.Message):
+                r"""Chunk content.
+
+                Attributes:
+                    content (str):
+                        Chunk textual content.
+                    page_identifier (str):
+                        Page identifier.
+                """
+
+                content: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                page_identifier: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
 
             title: str = proto.Field(
                 proto.STRING,
@@ -1191,6 +1349,13 @@ class SearchResponse(proto.Message):
             uri: str = proto.Field(
                 proto.STRING,
                 number=3,
+            )
+            chunk_contents: MutableSequence[
+                "SearchResponse.Summary.Reference.ChunkContent"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="SearchResponse.Summary.Reference.ChunkContent",
             )
 
         class SummaryWithMetadata(proto.Message):

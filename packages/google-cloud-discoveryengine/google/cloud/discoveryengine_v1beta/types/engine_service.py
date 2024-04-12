@@ -34,6 +34,11 @@ __protobuf__ = proto.module(
         "ListEnginesRequest",
         "ListEnginesResponse",
         "UpdateEngineRequest",
+        "PauseEngineRequest",
+        "ResumeEngineRequest",
+        "TuneEngineRequest",
+        "TuneEngineMetadata",
+        "TuneEngineResponse",
     },
 )
 
@@ -278,6 +283,72 @@ class UpdateEngineRequest(proto.Message):
         number=2,
         message=field_mask_pb2.FieldMask,
     )
+
+
+class PauseEngineRequest(proto.Message):
+    r"""Request for pausing training of an engine.
+
+    Attributes:
+        name (str):
+            Required. The name of the engine to pause. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ResumeEngineRequest(proto.Message):
+    r"""Request for resuming training of an engine.
+
+    Attributes:
+        name (str):
+            Required. The name of the engine to resume. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class TuneEngineRequest(proto.Message):
+    r"""Request to manually start a tuning process now (instead of
+    waiting for the periodically scheduled tuning to happen).
+
+    Attributes:
+        name (str):
+            Required. The resource name of the engine to tune. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class TuneEngineMetadata(proto.Message):
+    r"""Metadata associated with a tune operation.
+
+    Attributes:
+        engine (str):
+            Required. The resource name of the engine that this tune
+            applies to. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+    """
+
+    engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class TuneEngineResponse(proto.Message):
+    r"""Response associated with a tune operation."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

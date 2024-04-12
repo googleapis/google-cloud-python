@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import document as gcd_document
@@ -218,6 +219,10 @@ class UpdateDocumentRequest(proto.Message):
             found, a new
             [Document][google.cloud.discoveryengine.v1.Document] will be
             created.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            imported 'document' to update. If not set, will
+            by default update all fields.
     """
 
     document: gcd_document.Document = proto.Field(
@@ -228,6 +233,11 @@ class UpdateDocumentRequest(proto.Message):
     allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 

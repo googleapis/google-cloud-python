@@ -57,7 +57,10 @@ from google.cloud.discoveryengine_v1beta.types import (
     search_service,
 )
 from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1beta.types import answer
 from google.cloud.discoveryengine_v1beta.types import conversation
+from google.cloud.discoveryengine_v1beta.types import session
+from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
 
 def client_cert_source_callback():
@@ -3256,6 +3259,2141 @@ async def test_list_conversations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        conversational_search_service.AnswerQueryRequest,
+        dict,
+    ],
+)
+def test_answer_query(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversational_search_service.AnswerQueryResponse()
+        response = client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.AnswerQueryRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversational_search_service.AnswerQueryResponse)
+
+
+def test_answer_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        client.answer_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.AnswerQueryRequest()
+
+
+def test_answer_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.AnswerQueryRequest(
+        serving_config="serving_config_value",
+        session="session_value",
+        user_pseudo_id="user_pseudo_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        client.answer_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.AnswerQueryRequest(
+            serving_config="serving_config_value",
+            session="session_value",
+            user_pseudo_id="user_pseudo_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_answer_query_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.AnswerQueryResponse()
+        )
+        response = await client.answer_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.AnswerQueryRequest()
+
+
+@pytest.mark.asyncio
+async def test_answer_query_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.AnswerQueryRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.AnswerQueryResponse()
+        )
+        response = await client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.AnswerQueryRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversational_search_service.AnswerQueryResponse)
+
+
+@pytest.mark.asyncio
+async def test_answer_query_async_from_dict():
+    await test_answer_query_async(request_type=dict)
+
+
+def test_answer_query_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.AnswerQueryRequest()
+
+    request.serving_config = "serving_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        call.return_value = conversational_search_service.AnswerQueryResponse()
+        client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "serving_config=serving_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_answer_query_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.AnswerQueryRequest()
+
+    request.serving_config = "serving_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.AnswerQueryResponse()
+        )
+        await client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "serving_config=serving_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.GetAnswerRequest,
+        dict,
+    ],
+)
+def test_get_answer(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = answer.Answer(
+            name="name_value",
+            state=answer.Answer.State.IN_PROGRESS,
+            answer_text="answer_text_value",
+            related_questions=["related_questions_value"],
+            answer_skipped_reasons=[
+                answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+            ],
+        )
+        response = client.get_answer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.GetAnswerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, answer.Answer)
+    assert response.name == "name_value"
+    assert response.state == answer.Answer.State.IN_PROGRESS
+    assert response.answer_text == "answer_text_value"
+    assert response.related_questions == ["related_questions_value"]
+    assert response.answer_skipped_reasons == [
+        answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+    ]
+
+
+def test_get_answer_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        client.get_answer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.GetAnswerRequest()
+
+
+def test_get_answer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.GetAnswerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        client.get_answer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.GetAnswerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_answer_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            answer.Answer(
+                name="name_value",
+                state=answer.Answer.State.IN_PROGRESS,
+                answer_text="answer_text_value",
+                related_questions=["related_questions_value"],
+                answer_skipped_reasons=[
+                    answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+                ],
+            )
+        )
+        response = await client.get_answer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.GetAnswerRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_answer_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.GetAnswerRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            answer.Answer(
+                name="name_value",
+                state=answer.Answer.State.IN_PROGRESS,
+                answer_text="answer_text_value",
+                related_questions=["related_questions_value"],
+                answer_skipped_reasons=[
+                    answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+                ],
+            )
+        )
+        response = await client.get_answer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.GetAnswerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, answer.Answer)
+    assert response.name == "name_value"
+    assert response.state == answer.Answer.State.IN_PROGRESS
+    assert response.answer_text == "answer_text_value"
+    assert response.related_questions == ["related_questions_value"]
+    assert response.answer_skipped_reasons == [
+        answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+    ]
+
+
+@pytest.mark.asyncio
+async def test_get_answer_async_from_dict():
+    await test_get_answer_async(request_type=dict)
+
+
+def test_get_answer_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.GetAnswerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        call.return_value = answer.Answer()
+        client.get_answer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_answer_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.GetAnswerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(answer.Answer())
+        await client.get_answer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_answer_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = answer.Answer()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_answer(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_answer_flattened_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_answer(
+            conversational_search_service.GetAnswerRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_answer_flattened_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_answer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = answer.Answer()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(answer.Answer())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_answer(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_answer_flattened_error_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_answer(
+            conversational_search_service.GetAnswerRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.CreateSessionRequest,
+        dict,
+    ],
+)
+def test_create_session(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_session.Session(
+            name="name_value",
+            state=gcd_session.Session.State.IN_PROGRESS,
+            user_pseudo_id="user_pseudo_id_value",
+        )
+        response = client.create_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.CreateSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session.Session)
+    assert response.name == "name_value"
+    assert response.state == gcd_session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+def test_create_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        client.create_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.CreateSessionRequest()
+
+
+def test_create_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.CreateSessionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        client.create_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.CreateSessionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_session.Session(
+                name="name_value",
+                state=gcd_session.Session.State.IN_PROGRESS,
+                user_pseudo_id="user_pseudo_id_value",
+            )
+        )
+        response = await client.create_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.CreateSessionRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_session_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.CreateSessionRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_session.Session(
+                name="name_value",
+                state=gcd_session.Session.State.IN_PROGRESS,
+                user_pseudo_id="user_pseudo_id_value",
+            )
+        )
+        response = await client.create_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.CreateSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session.Session)
+    assert response.name == "name_value"
+    assert response.state == gcd_session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+@pytest.mark.asyncio
+async def test_create_session_async_from_dict():
+    await test_create_session_async(request_type=dict)
+
+
+def test_create_session_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.CreateSessionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        call.return_value = gcd_session.Session()
+        client.create_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_session_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.CreateSessionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcd_session.Session())
+        await client.create_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_session_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_session.Session()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_session(
+            parent="parent_value",
+            session=gcd_session.Session(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].session
+        mock_val = gcd_session.Session(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_session_flattened_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_session(
+            conversational_search_service.CreateSessionRequest(),
+            parent="parent_value",
+            session=gcd_session.Session(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_session_flattened_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_session.Session()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcd_session.Session())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_session(
+            parent="parent_value",
+            session=gcd_session.Session(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].session
+        mock_val = gcd_session.Session(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_session_flattened_error_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_session(
+            conversational_search_service.CreateSessionRequest(),
+            parent="parent_value",
+            session=gcd_session.Session(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.DeleteSessionRequest,
+        dict,
+    ],
+)
+def test_delete_session(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.DeleteSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        client.delete_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.DeleteSessionRequest()
+
+
+def test_delete_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.DeleteSessionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        client.delete_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.DeleteSessionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.DeleteSessionRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_session_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.DeleteSessionRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.DeleteSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_session_async_from_dict():
+    await test_delete_session_async(request_type=dict)
+
+
+def test_delete_session_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.DeleteSessionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        call.return_value = None
+        client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_session_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.DeleteSessionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_session_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_session(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_session_flattened_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_session(
+            conversational_search_service.DeleteSessionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_session_flattened_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_session(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_session_flattened_error_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_session(
+            conversational_search_service.DeleteSessionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.UpdateSessionRequest,
+        dict,
+    ],
+)
+def test_update_session(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_session.Session(
+            name="name_value",
+            state=gcd_session.Session.State.IN_PROGRESS,
+            user_pseudo_id="user_pseudo_id_value",
+        )
+        response = client.update_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.UpdateSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session.Session)
+    assert response.name == "name_value"
+    assert response.state == gcd_session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+def test_update_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        client.update_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.UpdateSessionRequest()
+
+
+def test_update_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.UpdateSessionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        client.update_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.UpdateSessionRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_session.Session(
+                name="name_value",
+                state=gcd_session.Session.State.IN_PROGRESS,
+                user_pseudo_id="user_pseudo_id_value",
+            )
+        )
+        response = await client.update_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.UpdateSessionRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_session_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.UpdateSessionRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_session.Session(
+                name="name_value",
+                state=gcd_session.Session.State.IN_PROGRESS,
+                user_pseudo_id="user_pseudo_id_value",
+            )
+        )
+        response = await client.update_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.UpdateSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session.Session)
+    assert response.name == "name_value"
+    assert response.state == gcd_session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+@pytest.mark.asyncio
+async def test_update_session_async_from_dict():
+    await test_update_session_async(request_type=dict)
+
+
+def test_update_session_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.UpdateSessionRequest()
+
+    request.session.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        call.return_value = gcd_session.Session()
+        client.update_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "session.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_session_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.UpdateSessionRequest()
+
+    request.session.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcd_session.Session())
+        await client.update_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "session.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_session_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_session.Session()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_session(
+            session=gcd_session.Session(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].session
+        mock_val = gcd_session.Session(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_session_flattened_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_session(
+            conversational_search_service.UpdateSessionRequest(),
+            session=gcd_session.Session(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_session_flattened_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_session.Session()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcd_session.Session())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_session(
+            session=gcd_session.Session(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].session
+        mock_val = gcd_session.Session(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_session_flattened_error_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_session(
+            conversational_search_service.UpdateSessionRequest(),
+            session=gcd_session.Session(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.GetSessionRequest,
+        dict,
+    ],
+)
+def test_get_session(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = session.Session(
+            name="name_value",
+            state=session.Session.State.IN_PROGRESS,
+            user_pseudo_id="user_pseudo_id_value",
+        )
+        response = client.get_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.GetSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, session.Session)
+    assert response.name == "name_value"
+    assert response.state == session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+def test_get_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        client.get_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.GetSessionRequest()
+
+
+def test_get_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.GetSessionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        client.get_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.GetSessionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_session_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session.Session(
+                name="name_value",
+                state=session.Session.State.IN_PROGRESS,
+                user_pseudo_id="user_pseudo_id_value",
+            )
+        )
+        response = await client.get_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.GetSessionRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_session_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.GetSessionRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session.Session(
+                name="name_value",
+                state=session.Session.State.IN_PROGRESS,
+                user_pseudo_id="user_pseudo_id_value",
+            )
+        )
+        response = await client.get_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.GetSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, session.Session)
+    assert response.name == "name_value"
+    assert response.state == session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+@pytest.mark.asyncio
+async def test_get_session_async_from_dict():
+    await test_get_session_async(request_type=dict)
+
+
+def test_get_session_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.GetSessionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        call.return_value = session.Session()
+        client.get_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_session_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.GetSessionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(session.Session())
+        await client.get_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_session_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = session.Session()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_session(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_session_flattened_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_session(
+            conversational_search_service.GetSessionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_session_flattened_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = session.Session()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(session.Session())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_session(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_session_flattened_error_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_session(
+            conversational_search_service.GetSessionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.ListSessionsRequest,
+        dict,
+    ],
+)
+def test_list_sessions(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversational_search_service.ListSessionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_sessions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.ListSessionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSessionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sessions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        client.list_sessions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.ListSessionsRequest()
+
+
+def test_list_sessions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = conversational_search_service.ListSessionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        client.list_sessions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.ListSessionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.ListSessionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sessions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversational_search_service.ListSessionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.ListSessionsRequest,
+):
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.ListSessionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sessions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = conversational_search_service.ListSessionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSessionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_async_from_dict():
+    await test_list_sessions_async(request_type=dict)
+
+
+def test_list_sessions_field_headers():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.ListSessionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        call.return_value = conversational_search_service.ListSessionsResponse()
+        client.list_sessions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversational_search_service.ListSessionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.ListSessionsResponse()
+        )
+        await client.list_sessions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_sessions_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversational_search_service.ListSessionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_sessions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_sessions_flattened_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sessions(
+            conversational_search_service.ListSessionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_flattened_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversational_search_service.ListSessionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversational_search_service.ListSessionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_sessions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_flattened_error_async():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_sessions(
+            conversational_search_service.ListSessionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sessions_pager(transport_name: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                    session.Session(),
+                ],
+                next_page_token="abc",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[],
+                next_page_token="def",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_sessions(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, session.Session) for i in results)
+
+
+def test_list_sessions_pages(transport_name: str = "grpc"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                    session.Session(),
+                ],
+                next_page_token="abc",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[],
+                next_page_token="def",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_sessions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_async_pager():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sessions), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                    session.Session(),
+                ],
+                next_page_token="abc",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[],
+                next_page_token="def",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_sessions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, session.Session) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_async_pages():
+    client = ConversationalSearchServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sessions), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                    session.Session(),
+                ],
+                next_page_token="abc",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[],
+                next_page_token="def",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_sessions(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         conversational_search_service.ConverseConversationRequest,
         dict,
     ],
@@ -3616,6 +5754,12 @@ def test_create_conversation_rest(request_type):
                                     "title": "title_value",
                                     "document": "document_value",
                                     "uri": "uri_value",
+                                    "chunk_contents": [
+                                        {
+                                            "content": "content_value",
+                                            "page_identifier": "page_identifier_value",
+                                        }
+                                    ],
                                 }
                             ],
                         },
@@ -4291,6 +6435,12 @@ def test_update_conversation_rest(request_type):
                                     "title": "title_value",
                                     "document": "document_value",
                                     "uri": "uri_value",
+                                    "chunk_contents": [
+                                        {
+                                            "content": "content_value",
+                                            "page_identifier": "page_identifier_value",
+                                        }
+                                    ],
                                 }
                             ],
                         },
@@ -5272,6 +7422,2134 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.AnswerQueryRequest,
+        dict,
+    ],
+)
+def test_answer_query_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "serving_config": "projects/sample1/locations/sample2/dataStores/sample3/servingConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversational_search_service.AnswerQueryResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = conversational_search_service.AnswerQueryResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.answer_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversational_search_service.AnswerQueryResponse)
+
+
+def test_answer_query_rest_required_fields(
+    request_type=conversational_search_service.AnswerQueryRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request_init["serving_config"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).answer_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["servingConfig"] = "serving_config_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).answer_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "servingConfig" in jsonified_request
+    assert jsonified_request["servingConfig"] == "serving_config_value"
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversational_search_service.AnswerQueryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = conversational_search_service.AnswerQueryResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.answer_query(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_answer_query_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.answer_query._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "servingConfig",
+                "query",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_answer_query_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "post_answer_query"
+    ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_answer_query"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversational_search_service.AnswerQueryRequest.pb(
+            conversational_search_service.AnswerQueryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            conversational_search_service.AnswerQueryResponse.to_json(
+                conversational_search_service.AnswerQueryResponse()
+            )
+        )
+
+        request = conversational_search_service.AnswerQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversational_search_service.AnswerQueryResponse()
+
+        client.answer_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_answer_query_rest_bad_request(
+    transport: str = "rest",
+    request_type=conversational_search_service.AnswerQueryRequest,
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "serving_config": "projects/sample1/locations/sample2/dataStores/sample3/servingConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.answer_query(request)
+
+
+def test_answer_query_rest_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.GetAnswerRequest,
+        dict,
+    ],
+)
+def test_get_answer_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4/answers/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = answer.Answer(
+            name="name_value",
+            state=answer.Answer.State.IN_PROGRESS,
+            answer_text="answer_text_value",
+            related_questions=["related_questions_value"],
+            answer_skipped_reasons=[
+                answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = answer.Answer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_answer(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, answer.Answer)
+    assert response.name == "name_value"
+    assert response.state == answer.Answer.State.IN_PROGRESS
+    assert response.answer_text == "answer_text_value"
+    assert response.related_questions == ["related_questions_value"]
+    assert response.answer_skipped_reasons == [
+        answer.Answer.AnswerSkippedReason.ADVERSARIAL_QUERY_IGNORED
+    ]
+
+
+def test_get_answer_rest_required_fields(
+    request_type=conversational_search_service.GetAnswerRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_answer._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_answer._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = answer.Answer()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = answer.Answer.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_answer(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_answer_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_answer._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_answer_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "post_get_answer"
+    ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_get_answer"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversational_search_service.GetAnswerRequest.pb(
+            conversational_search_service.GetAnswerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = answer.Answer.to_json(answer.Answer())
+
+        request = conversational_search_service.GetAnswerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = answer.Answer()
+
+        client.get_answer(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_answer_rest_bad_request(
+    transport: str = "rest", request_type=conversational_search_service.GetAnswerRequest
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4/answers/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_answer(request)
+
+
+def test_get_answer_rest_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = answer.Answer()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4/answers/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = answer.Answer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_answer(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*/answers/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_answer_rest_flattened_error(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_answer(
+            conversational_search_service.GetAnswerRequest(),
+            name="name_value",
+        )
+
+
+def test_get_answer_rest_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.CreateSessionRequest,
+        dict,
+    ],
+)
+def test_create_session_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
+    request_init["session"] = {
+        "name": "name_value",
+        "state": 1,
+        "user_pseudo_id": "user_pseudo_id_value",
+        "turns": [
+            {
+                "query": {"text": "text_value", "query_id": "query_id_value"},
+                "answer": "answer_value",
+            }
+        ],
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = conversational_search_service.CreateSessionRequest.meta.fields[
+        "session"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["session"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["session"][field])):
+                    del request_init["session"][field][i][subfield]
+            else:
+                del request_init["session"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session.Session(
+            name="name_value",
+            state=gcd_session.Session.State.IN_PROGRESS,
+            user_pseudo_id="user_pseudo_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcd_session.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session.Session)
+    assert response.name == "name_value"
+    assert response.state == gcd_session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+def test_create_session_rest_required_fields(
+    request_type=conversational_search_service.CreateSessionRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcd_session.Session()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcd_session.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_session_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_session._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "session",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_session_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "post_create_session"
+    ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_create_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversational_search_service.CreateSessionRequest.pb(
+            conversational_search_service.CreateSessionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcd_session.Session.to_json(gcd_session.Session())
+
+        request = conversational_search_service.CreateSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_session.Session()
+
+        client.create_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_session_rest_bad_request(
+    transport: str = "rest",
+    request_type=conversational_search_service.CreateSessionRequest,
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_session(request)
+
+
+def test_create_session_rest_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session.Session()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            session=gcd_session.Session(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcd_session.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/dataStores/*}/sessions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_session_rest_flattened_error(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_session(
+            conversational_search_service.CreateSessionRequest(),
+            parent="parent_value",
+            session=gcd_session.Session(name="name_value"),
+        )
+
+
+def test_create_session_rest_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.DeleteSessionRequest,
+        dict,
+    ],
+)
+def test_delete_session_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_session_rest_required_fields(
+    request_type=conversational_search_service.DeleteSessionRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_session_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_session_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_delete_session"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = conversational_search_service.DeleteSessionRequest.pb(
+            conversational_search_service.DeleteSessionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = conversational_search_service.DeleteSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_session_rest_bad_request(
+    transport: str = "rest",
+    request_type=conversational_search_service.DeleteSessionRequest,
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_session(request)
+
+
+def test_delete_session_rest_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_session_rest_flattened_error(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_session(
+            conversational_search_service.DeleteSessionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_session_rest_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.UpdateSessionRequest,
+        dict,
+    ],
+)
+def test_update_session_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+        }
+    }
+    request_init["session"] = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4",
+        "state": 1,
+        "user_pseudo_id": "user_pseudo_id_value",
+        "turns": [
+            {
+                "query": {"text": "text_value", "query_id": "query_id_value"},
+                "answer": "answer_value",
+            }
+        ],
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = conversational_search_service.UpdateSessionRequest.meta.fields[
+        "session"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["session"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["session"][field])):
+                    del request_init["session"][field][i][subfield]
+            else:
+                del request_init["session"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session.Session(
+            name="name_value",
+            state=gcd_session.Session.State.IN_PROGRESS,
+            user_pseudo_id="user_pseudo_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcd_session.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_session.Session)
+    assert response.name == "name_value"
+    assert response.state == gcd_session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+def test_update_session_rest_required_fields(
+    request_type=conversational_search_service.UpdateSessionRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_session._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcd_session.Session()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gcd_session.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_session_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("session",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_session_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "post_update_session"
+    ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_update_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversational_search_service.UpdateSessionRequest.pb(
+            conversational_search_service.UpdateSessionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcd_session.Session.to_json(gcd_session.Session())
+
+        request = conversational_search_service.UpdateSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_session.Session()
+
+        client.update_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_session_rest_bad_request(
+    transport: str = "rest",
+    request_type=conversational_search_service.UpdateSessionRequest,
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_session(request)
+
+
+def test_update_session_rest_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_session.Session()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "session": {
+                "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            session=gcd_session.Session(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcd_session.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{session.name=projects/*/locations/*/dataStores/*/sessions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_session_rest_flattened_error(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_session(
+            conversational_search_service.UpdateSessionRequest(),
+            session=gcd_session.Session(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_session_rest_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.GetSessionRequest,
+        dict,
+    ],
+)
+def test_get_session_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session.Session(
+            name="name_value",
+            state=session.Session.State.IN_PROGRESS,
+            user_pseudo_id="user_pseudo_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = session.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, session.Session)
+    assert response.name == "name_value"
+    assert response.state == session.Session.State.IN_PROGRESS
+    assert response.user_pseudo_id == "user_pseudo_id_value"
+
+
+def test_get_session_rest_required_fields(
+    request_type=conversational_search_service.GetSessionRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = session.Session()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = session.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_session_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_session_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "post_get_session"
+    ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_get_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversational_search_service.GetSessionRequest.pb(
+            conversational_search_service.GetSessionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = session.Session.to_json(session.Session())
+
+        request = conversational_search_service.GetSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = session.Session()
+
+        client.get_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_session_rest_bad_request(
+    transport: str = "rest",
+    request_type=conversational_search_service.GetSessionRequest,
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_session(request)
+
+
+def test_get_session_rest_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session.Session()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = session.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_session_rest_flattened_error(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_session(
+            conversational_search_service.GetSessionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_session_rest_error():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.ListSessionsRequest,
+        dict,
+    ],
+)
+def test_list_sessions_rest(request_type):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversational_search_service.ListSessionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = conversational_search_service.ListSessionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_sessions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSessionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sessions_rest_required_fields(
+    request_type=conversational_search_service.ListSessionsRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sessions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sessions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversational_search_service.ListSessionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = conversational_search_service.ListSessionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_sessions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_sessions_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_sessions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_sessions_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationalSearchServiceRestInterceptor(),
+    )
+    client = ConversationalSearchServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "post_list_sessions"
+    ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor, "pre_list_sessions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversational_search_service.ListSessionsRequest.pb(
+            conversational_search_service.ListSessionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            conversational_search_service.ListSessionsResponse.to_json(
+                conversational_search_service.ListSessionsResponse()
+            )
+        )
+
+        request = conversational_search_service.ListSessionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversational_search_service.ListSessionsResponse()
+
+        client.list_sessions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_sessions_rest_bad_request(
+    transport: str = "rest",
+    request_type=conversational_search_service.ListSessionsRequest,
+):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_sessions(request)
+
+
+def test_list_sessions_rest_flattened():
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversational_search_service.ListSessionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = conversational_search_service.ListSessionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_sessions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/dataStores/*}/sessions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_sessions_rest_flattened_error(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sessions(
+            conversational_search_service.ListSessionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sessions_rest_pager(transport: str = "rest"):
+    client = ConversationalSearchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                    session.Session(),
+                ],
+                next_page_token="abc",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[],
+                next_page_token="def",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            conversational_search_service.ListSessionsResponse(
+                sessions=[
+                    session.Session(),
+                    session.Session(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            conversational_search_service.ListSessionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3"
+        }
+
+        pager = client.list_sessions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, session.Session) for i in results)
+
+        pages = list(client.list_sessions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConversationalSearchServiceGrpcTransport(
@@ -5417,6 +9695,13 @@ def test_conversational_search_service_base_transport():
         "update_conversation",
         "get_conversation",
         "list_conversations",
+        "answer_query",
+        "get_answer",
+        "create_session",
+        "delete_session",
+        "update_session",
+        "get_session",
+        "list_sessions",
         "get_operation",
         "list_operations",
     )
@@ -5704,6 +9989,27 @@ def test_conversational_search_service_client_transport_session_collision(
     session1 = client1.transport.list_conversations._session
     session2 = client2.transport.list_conversations._session
     assert session1 != session2
+    session1 = client1.transport.answer_query._session
+    session2 = client2.transport.answer_query._session
+    assert session1 != session2
+    session1 = client1.transport.get_answer._session
+    session2 = client2.transport.get_answer._session
+    assert session1 != session2
+    session1 = client1.transport.create_session._session
+    session2 = client2.transport.create_session._session
+    assert session1 != session2
+    session1 = client1.transport.delete_session._session
+    session2 = client2.transport.delete_session._session
+    assert session1 != session2
+    session1 = client1.transport.update_session._session
+    session2 = client2.transport.update_session._session
+    assert session1 != session2
+    session1 = client1.transport.get_session._session
+    session2 = client2.transport.get_session._session
+    assert session1 != session2
+    session1 = client1.transport.list_sessions._session
+    session2 = client2.transport.list_sessions._session
+    assert session1 != session2
 
 
 def test_conversational_search_service_grpc_transport_channel():
@@ -5832,11 +10138,82 @@ def test_conversational_search_service_transport_channel_mtls_with_adc(transport
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_conversation_path():
+def test_answer_path():
     project = "squid"
     location = "clam"
     data_store = "whelk"
-    conversation = "octopus"
+    session = "octopus"
+    answer = "oyster"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}/answers/{answer}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        session=session,
+        answer=answer,
+    )
+    actual = ConversationalSearchServiceClient.answer_path(
+        project, location, data_store, session, answer
+    )
+    assert expected == actual
+
+
+def test_parse_answer_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "data_store": "mussel",
+        "session": "winkle",
+        "answer": "nautilus",
+    }
+    path = ConversationalSearchServiceClient.answer_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationalSearchServiceClient.parse_answer_path(path)
+    assert expected == actual
+
+
+def test_chunk_path():
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    branch = "clam"
+    document = "whelk"
+    chunk = "octopus"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        branch=branch,
+        document=document,
+        chunk=chunk,
+    )
+    actual = ConversationalSearchServiceClient.chunk_path(
+        project, location, data_store, branch, document, chunk
+    )
+    assert expected == actual
+
+
+def test_parse_chunk_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "data_store": "cuttlefish",
+        "branch": "mussel",
+        "document": "winkle",
+        "chunk": "nautilus",
+    }
+    path = ConversationalSearchServiceClient.chunk_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationalSearchServiceClient.parse_chunk_path(path)
+    assert expected == actual
+
+
+def test_conversation_path():
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    conversation = "clam"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/conversations/{conversation}".format(
         project=project,
         location=location,
@@ -5851,10 +10228,10 @@ def test_conversation_path():
 
 def test_parse_conversation_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "data_store": "cuttlefish",
-        "conversation": "mussel",
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "conversation": "nudibranch",
     }
     path = ConversationalSearchServiceClient.conversation_path(**expected)
 
@@ -5864,9 +10241,9 @@ def test_parse_conversation_path():
 
 
 def test_data_store_path():
-    project = "winkle"
-    location = "nautilus"
-    data_store = "scallop"
+    project = "cuttlefish"
+    location = "mussel"
+    data_store = "winkle"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}".format(
         project=project,
         location=location,
@@ -5880,9 +10257,9 @@ def test_data_store_path():
 
 def test_parse_data_store_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "data_store": "clam",
+        "project": "nautilus",
+        "location": "scallop",
+        "data_store": "abalone",
     }
     path = ConversationalSearchServiceClient.data_store_path(**expected)
 
@@ -5892,11 +10269,11 @@ def test_parse_data_store_path():
 
 
 def test_document_path():
-    project = "whelk"
-    location = "octopus"
-    data_store = "oyster"
-    branch = "nudibranch"
-    document = "cuttlefish"
+    project = "squid"
+    location = "clam"
+    data_store = "whelk"
+    branch = "octopus"
+    document = "oyster"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}".format(
         project=project,
         location=location,
@@ -5912,11 +10289,11 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "data_store": "nautilus",
-        "branch": "scallop",
-        "document": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "data_store": "mussel",
+        "branch": "winkle",
+        "document": "nautilus",
     }
     path = ConversationalSearchServiceClient.document_path(**expected)
 
@@ -5926,10 +10303,10 @@ def test_parse_document_path():
 
 
 def test_serving_config_path():
-    project = "squid"
-    location = "clam"
-    data_store = "whelk"
-    serving_config = "octopus"
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    serving_config = "clam"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
         project=project,
         location=location,
@@ -5944,10 +10321,10 @@ def test_serving_config_path():
 
 def test_parse_serving_config_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "data_store": "cuttlefish",
-        "serving_config": "mussel",
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "serving_config": "nudibranch",
     }
     path = ConversationalSearchServiceClient.serving_config_path(**expected)
 
@@ -5956,8 +10333,39 @@ def test_parse_serving_config_path():
     assert expected == actual
 
 
+def test_session_path():
+    project = "cuttlefish"
+    location = "mussel"
+    data_store = "winkle"
+    session = "nautilus"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        session=session,
+    )
+    actual = ConversationalSearchServiceClient.session_path(
+        project, location, data_store, session
+    )
+    assert expected == actual
+
+
+def test_parse_session_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "data_store": "squid",
+        "session": "clam",
+    }
+    path = ConversationalSearchServiceClient.session_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationalSearchServiceClient.parse_session_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5969,7 +10377,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ConversationalSearchServiceClient.common_billing_account_path(**expected)
 
@@ -5979,7 +10387,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5989,7 +10397,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ConversationalSearchServiceClient.common_folder_path(**expected)
 
@@ -5999,7 +10407,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6009,7 +10417,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ConversationalSearchServiceClient.common_organization_path(**expected)
 
@@ -6019,7 +10427,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6029,7 +10437,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ConversationalSearchServiceClient.common_project_path(**expected)
 
@@ -6039,8 +10447,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6051,8 +10459,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ConversationalSearchServiceClient.common_location_path(**expected)
 
