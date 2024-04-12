@@ -42,12 +42,12 @@ class HarmCategory(proto.Enum):
             Negative or harmful comments targeting
             identity and/or protected attribute.
         HARM_CATEGORY_TOXICITY (2):
-            Content that is rude, disrepspectful, or
+            Content that is rude, disrespectful, or
             profane.
         HARM_CATEGORY_VIOLENCE (3):
-            Describes scenarios depictng violence against
-            an individual or group, or general descriptions
-            of gore.
+            Describes scenarios depicting violence
+            against an individual or group, or general
+            descriptions of gore.
         HARM_CATEGORY_SEXUAL (4):
             Contains references to sexual acts or other
             lewd content.

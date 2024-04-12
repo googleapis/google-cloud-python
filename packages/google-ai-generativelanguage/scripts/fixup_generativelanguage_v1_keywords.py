@@ -41,7 +41,7 @@ class generativelanguageCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'batch_embed_contents': ('model', 'requests', ),
         'count_tokens': ('model', 'contents', ),
-        'embed_content': ('model', 'content', 'task_type', 'title', ),
+        'embed_content': ('model', 'content', 'task_type', 'title', 'output_dimensionality', ),
         'generate_content': ('model', 'contents', 'safety_settings', 'generation_config', ),
         'get_model': ('name', ),
         'list_models': ('page_size', 'page_token', ),

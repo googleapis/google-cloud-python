@@ -739,6 +739,11 @@ class GenerativeServiceRestTransport(GenerativeServiceTransport):
                     "uri": "/v1/{model=models/*}:generateContent",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{model=tunedModels/*}:generateContent",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_generate_content(
                 request, metadata
