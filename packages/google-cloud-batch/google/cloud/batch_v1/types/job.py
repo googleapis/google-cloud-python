@@ -424,7 +424,19 @@ class AllocationPolicy(proto.Message):
             Describe instances that can be created by this
             AllocationPolicy. Only instances[0] is supported now.
         service_account (google.cloud.batch_v1.types.ServiceAccount):
-            Service account that VMs will run as.
+            Defines the service account for Batch-created VMs. If
+            omitted, the `default Compute Engine service
+            account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
+            is used. Must match the service account specified in any
+            used instance template configured in the Batch job.
+
+            Includes the following fields:
+
+            -  email: The service account's email address. If not set,
+               the default Compute Engine service account is used.
+            -  scopes: Additional OAuth scopes to grant the service
+               account, beyond the default cloud-platform scope. (list
+               of strings)
         labels (MutableMapping[str, str]):
             Labels applied to all VM instances and other resources
             created by AllocationPolicy. Labels could be user provided
@@ -1065,18 +1077,10 @@ class ServiceAccount(proto.Message):
 
     Attributes:
         email (str):
-            Email address of the service account. If not
-            specified, the default Compute Engine service
-            account for the project will be used. If
-            instance template is being used, the service
-            account has to be specified in the instance
-            template and it has to match the email field
-            here.
+            Email address of the service account.
         scopes (MutableSequence[str]):
             List of scopes to be enabled for this service
-            account on the VM, in addition to the
-            cloud-platform API scope that will be added by
-            default.
+            account.
     """
 
     email: str = proto.Field(
