@@ -1,11 +1,16 @@
 # Google Cloud Datastore `ndb` Client Library
 
+[![stable](https://img.shields.io/badge/support-stable-gold.svg)](https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels)
+[![pypi](https://img.shields.io/pypi/v/google-cloud-ndb.svg)](https://pypi.org/project/google-cloud-ndb/)
+[![versions](https://img.shields.io/pypi/pyversions/google-cloud-ndb.svg)](https://pypi.org/project/google-cloud-ndb/)
+
 ## Introduction
 
 This is an updated version of the `ndb` client library for use with
 [Google Cloud Datastore][0].
 
 * [Client Library Documentation](https://googleapis.dev/python/python-ndb/latest)
+* [Product Documentation](https://cloud.google.com/datastore/docs)
 
 The original Python 2 version of `ndb` was designed specifically for the
 [Google App Engine][1] `python27` runtime and can be found at
