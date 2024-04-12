@@ -14,7 +14,7 @@
 from __future__ import annotations
 
 import typing
-from typing import Iterable, Literal, Optional, Tuple, Union
+from typing import Iterable, Literal, Optional, Union
 
 import pandas as pd
 
@@ -113,7 +113,7 @@ def cut(
     bins: Union[
         int,
         pd.IntervalIndex,
-        Iterable[Tuple[Union[int, float], Union[int, float]]],
+        Iterable,
     ],
     *,
     labels: Optional[bool] = None,
@@ -125,9 +125,29 @@ def cut(
         if isinstance(bins, pd.IntervalIndex):
             as_index: pd.IntervalIndex = bins
             bins = tuple((bin.left.item(), bin.right.item()) for bin in bins)
-        else:
+        elif len(list(bins)) == 0:
+            raise ValueError("`bins` iterable should have at least one item")
+        elif isinstance(list(bins)[0], tuple):
             as_index = pd.IntervalIndex.from_tuples(list(bins))
             bins = tuple(bins)
+        elif pd.api.types.is_number(list(bins)[0]):
+            bins_list = list(bins)
+            if len(bins_list) < 2:
+                raise ValueError(
+                    "`bins` iterable of numeric breaks should have"
+                    " at least two items"
+                )
+            as_index = pd.IntervalIndex.from_breaks(bins_list)
+            single_type = all([isinstance(n, type(bins_list[0])) for n in bins_list])
+            numeric_type = type(bins_list[0]) if single_type else float
+            bins = tuple(
+                [
+                    (numeric_type(bins_list[i]), numeric_type(bins_list[i + 1]))
+                    for i in range(len(bins_list) - 1)
+                ]
+            )
+        else:
+            raise ValueError("`bins` iterable should contain tuples or numerics")
 
         if as_index.is_overlapping:
             raise ValueError("Overlapping IntervalIndex is not accepted.")

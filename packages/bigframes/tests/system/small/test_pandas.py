@@ -425,6 +425,58 @@ def test_cut_default_labels(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("breaks",),
+    [
+        ([0, 5, 10, 15, 20, 100, 1000],),  # ints
+        ([0.5, 10.5, 15.5, 20.5, 100.5, 1000.5],),  # floats
+        ([0, 5, 10.5, 15.5, 20, 100, 1000.5],),  # mixed
+    ],
+)
+def test_cut_numeric_breaks(scalars_dfs, breaks):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = pd.cut(scalars_pandas_df["float64_col"], breaks)
+    bf_result = bpd.cut(scalars_df["float64_col"], breaks).to_pandas()
+
+    # Convert to match data format
+    pd_result_converted = pd.Series(
+        [
+            {"left_exclusive": interval.left, "right_inclusive": interval.right}
+            if pd.notna(val)
+            else pd.NA
+            for val, interval in zip(
+                pd_result, pd_result.cat.categories[pd_result.cat.codes]
+            )
+        ],
+        name=pd_result.name,
+    )
+
+    pd.testing.assert_series_equal(
+        bf_result, pd_result_converted, check_index=False, check_dtype=False
+    )
+
+
+@pytest.mark.parametrize(
+    ("bins",),
+    [
+        (-1,),  # negative integer bins argument
+        ([],),  # empty iterable of bins
+        (["notabreak"],),  # iterable of wrong type
+        ([1],),  # numeric breaks with only one numeric
+        # this is supported by pandas but not by
+        # the bigquery operation and a bigframes workaround
+        # is not yet available. Should return column
+        # of structs with all NaN values.
+    ],
+)
+def test_cut_errors(scalars_dfs, bins):
+    scalars_df, _ = scalars_dfs
+
+    with pytest.raises(ValueError):
+        bpd.cut(scalars_df["float64_col"], bins)
+
+
+@pytest.mark.parametrize(
     ("bins",),
     [
         ([(-5, 2), (2, 3), (-3000, -10)],),

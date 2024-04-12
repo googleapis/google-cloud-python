@@ -76,10 +76,20 @@ def cut(
         3    {'left_exclusive': 5, 'right_inclusive': 20}
         dtype: struct<left_exclusive: int64, right_inclusive: int64>[pyarrow]
 
+    Cut with an iterable of ints:
+
+        >>> bins_ints = [0, 1, 5, 20]
+        >>> bpd.cut(s, bins=bins_ints)
+        0                                            <NA>
+        1     {'left_exclusive': 0, 'right_inclusive': 1}
+        2     {'left_exclusive': 1, 'right_inclusive': 5}
+        3    {'left_exclusive': 5, 'right_inclusive': 20}
+        dtype: struct<left_exclusive: int64, right_inclusive: int64>[pyarrow]
+
     Args:
         x (Series):
             The input Series to be binned. Must be 1-dimensional.
-        bins (int, pd.IntervalIndex, Iterable[Tuple[Union[int, float], Union[int, float]]]):
+        bins (int, pd.IntervalIndex, Iterable):
             The criteria to bin by.
 
             int: Defines the number of equal-width bins in the range of `x`. The
@@ -88,6 +98,10 @@ def cut(
 
             pd.IntervalIndex or Iterable of tuples: Defines the exact bins to be used.
             It's important to ensure that these bins are non-overlapping.
+
+            Iterable of numerics: Defines the exact bins by using the interval
+            between each item and its following item. The items must be monotonically
+            increasing.
         labels (None):
             Specifies the labels for the returned bins. Must be the same length as
             the resulting bins. If False, returns only integer indicators of the
