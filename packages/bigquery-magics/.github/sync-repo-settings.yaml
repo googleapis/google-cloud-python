@@ -9,16 +9,15 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'cla/google'
     - 'OwlBot Post Processor'
-    # TODO(tswast): enable once we have tests migrated from google-cloud-bigquery
-    # - 'lint'
+    - 'lint'
+    # TODO: Enable once the docs tests ready.
     # - 'docs'
-    # - 'unit (3.8)'
-    # - 'unit (3.9)'
-    # - 'unit (3.10)'
-    # - 'unit (3.11)'
-    # - 'unit (3.12)'
-    # - 'cover'
-    # - 'Kokoro'
+    - 'unit (3.7)'
+    - 'unit (3.8)'
+    - 'unit (3.11)'
+    - 'unit (3.12)'
+    - 'cover'
+    # TODO: enable once the samples tests ready.
     # - 'Samples - Lint'
     # - 'Samples - Python 3.8'
     # - 'Samples - Python 3.9'
