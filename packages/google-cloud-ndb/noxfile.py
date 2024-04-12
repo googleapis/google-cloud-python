@@ -93,12 +93,34 @@ def cover(session):
     session.run("coverage", "erase")
 
 
+@nox.session(name="old-emulator-system", python=ALL_INTERPRETERS)
+def old_emulator_system(session):
+    emulator_args = ["gcloud", "beta", "emulators", "datastore", "start"]
+    _run_emulator(session, emulator_args)
+
+
 @nox.session(name="emulator-system", python=ALL_INTERPRETERS)
 def emulator_system(session):
+    emulator_args = [
+        "gcloud",
+        "emulators",
+        "firestore",
+        "start",
+        "--database-mode=datastore-mode",
+    ]
+    _run_emulator(session, emulator_args)
+
+
+def _run_emulator(session, emulator_args):
     """Run the system test suite."""
     # Only run the emulator tests manually.
     if not session.interactive:
         return
+
+    # TODO: It would be better to allow the emulator to bind to any port and pull
+    # the port from stderr.
+    emulator_args.append("--host-port=localhost:8092")
+    emulator = subprocess.Popen(emulator_args, stderr=subprocess.PIPE)
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -113,17 +135,6 @@ def emulator_system(session):
         session.install(local_dep)
     session.install(".", "-c", constraints_path)
 
-    # TODO: It would be better to allow the emulator to bind to any port and pull
-    # the port from stderr.
-    emulator_args = [
-        "gcloud",
-        "emulators",
-        "firestore",
-        "start",
-        "--database-mode=datastore-mode",
-        "--host-port=localhost:8092",
-    ]
-    emulator = subprocess.Popen(emulator_args, stderr=subprocess.PIPE)
     # Run py.test against the system tests.
     session.run(
         "py.test",
