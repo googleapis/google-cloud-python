@@ -35,3 +35,8 @@ See the guide below for instructions on migrating to the 2.x release of this lib
     :maxdepth: 2
 
     UPGRADING
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

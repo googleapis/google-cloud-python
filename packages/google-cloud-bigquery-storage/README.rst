@@ -15,7 +15,7 @@ Python Client for Google BigQuery Storage API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-storage.svg
    :target: https://pypi.org/project/google-cloud-bigquery-storage/
 .. _Google BigQuery Storage API: https://cloud.google.com/bigquery/docs/reference/storage/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerystorage/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerystorage/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/storage/
 
 Quick Start
