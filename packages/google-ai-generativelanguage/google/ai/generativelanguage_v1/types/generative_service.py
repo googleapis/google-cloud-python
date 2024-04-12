@@ -64,6 +64,12 @@ class TaskType(proto.Enum):
         CLUSTERING (5):
             Specifies that the embeddings will be used
             for clustering.
+        QUESTION_ANSWERING (6):
+            Specifies that the given text will be used
+            for question answering.
+        FACT_VERIFICATION (7):
+            Specifies that the given text will be used
+            for fact verification.
     """
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
@@ -71,6 +77,8 @@ class TaskType(proto.Enum):
     SEMANTIC_SIMILARITY = 3
     CLASSIFICATION = 4
     CLUSTERING = 5
+    QUESTION_ANSWERING = 6
+    FACT_VERIFICATION = 7
 
 
 class GenerateContentRequest(proto.Message):
@@ -147,10 +155,10 @@ class GenerationConfig(proto.Message):
 
     Attributes:
         candidate_count (int):
-            Optional. Number of generated responses to return.
-
-            This value must be between [1, 8], inclusive. If unset, this
-            will default to 1.
+            Optional. Number of generated responses to
+            return.
+            Currently, this value can only be set to 1. If
+            unset, this will default to 1.
 
             This field is a member of `oneof`_ ``_candidate_count``.
         stop_sequences (MutableSequence[str]):
@@ -163,20 +171,19 @@ class GenerationConfig(proto.Message):
             Optional. The maximum number of tokens to include in a
             candidate.
 
-            If unset, this will default to output_token_limit specified
-            in the ``Model`` specification.
+            Note: The default value varies by model, see the
+            ``Model.output_token_limit`` attribute of the ``Model``
+            returned from the ``getModel`` function.
 
             This field is a member of `oneof`_ ``_max_output_tokens``.
         temperature (float):
-            Optional. Controls the randomness of the output. Note: The
-            default value varies by model, see the ``Model.temperature``
-            attribute of the ``Model`` returned the ``getModel``
-            function.
+            Optional. Controls the randomness of the output.
 
-            Values can range from [0.0,1.0], inclusive. A value closer
-            to 1.0 will produce responses that are more varied and
-            creative, while a value closer to 0.0 will typically result
-            in more straightforward responses from the model.
+            Note: The default value varies by model, see the
+            ``Model.temperature`` attribute of the ``Model`` returned
+            from the ``getModel`` function.
+
+            Values can range from [0.0, 2.0].
 
             This field is a member of `oneof`_ ``_temperature``.
         top_p (float):
@@ -192,7 +199,7 @@ class GenerationConfig(proto.Message):
             based on the cumulative probability.
 
             Note: The default value varies by model, see the
-            ``Model.top_p`` attribute of the ``Model`` returned the
+            ``Model.top_p`` attribute of the ``Model`` returned from the
             ``getModel`` function.
 
             This field is a member of `oneof`_ ``_top_p``.
@@ -200,14 +207,16 @@ class GenerationConfig(proto.Message):
             Optional. The maximum number of tokens to consider when
             sampling.
 
-            The model uses combined Top-k and nucleus sampling.
-
-            Top-k sampling considers the set of ``top_k`` most probable
-            tokens. Defaults to 40.
+            Models use nucleus sampling or combined Top-k and nucleus
+            sampling. Top-k sampling considers the set of ``top_k`` most
+            probable tokens. Models running with nucleus sampling don't
+            allow top_k setting.
 
             Note: The default value varies by model, see the
-            ``Model.top_k`` attribute of the ``Model`` returned the
-            ``getModel`` function.
+            ``Model.top_k`` attribute of the ``Model`` returned from the
+            ``getModel`` function. Empty ``top_k`` field in ``Model``
+            indicates the model doesn't apply top-k sampling and doesn't
+            allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
     """
@@ -446,6 +455,13 @@ class EmbedContentRequest(proto.Message):
             provides better quality embeddings for retrieval.
 
             This field is a member of `oneof`_ ``_title``.
+        output_dimensionality (int):
+            Optional. Optional reduced dimension for the output
+            embedding. If set, excessive values in the output embedding
+            are truncated from the end. Supported by
+            ``models/text-embedding-latest``.
+
+            This field is a member of `oneof`_ ``_output_dimensionality``.
     """
 
     model: str = proto.Field(
@@ -466,6 +482,11 @@ class EmbedContentRequest(proto.Message):
     title: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
+    )
+    output_dimensionality: int = proto.Field(
+        proto.INT32,
+        number=5,
         optional=True,
     )
 
