@@ -43,6 +43,6 @@ For a list of all ``google-cloud-logging`` releases:
    changelog
 
 .. toctree::
-   :hidden:
+  :hidden:
 
-   summary_overview.md
+  summary_overview.md
