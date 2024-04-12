@@ -232,7 +232,8 @@ class ServingConfigServiceRestStub:
 class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
     """REST backend transport for ServingConfigService.
 
-    Service for operations related to [ServingConfig][].
+    Service for operations related to
+    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -736,6 +737,10 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
                 },
                 {
                     "method": "get",

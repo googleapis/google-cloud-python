@@ -42,7 +42,10 @@ from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1beta.types import conversational_search_service
+from google.cloud.discoveryengine_v1beta.types import answer
 from google.cloud.discoveryengine_v1beta.types import conversation
+from google.cloud.discoveryengine_v1beta.types import session
+from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
 from .base import ConversationalSearchServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -69,6 +72,14 @@ class ConversationalSearchServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomConversationalSearchServiceInterceptor(ConversationalSearchServiceRestInterceptor):
+            def pre_answer_query(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_answer_query(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_converse_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -85,15 +96,43 @@ class ConversationalSearchServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_session(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_session(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_delete_session(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_get_answer(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_answer(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_get_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_conversation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_session(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_session(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -105,6 +144,14 @@ class ConversationalSearchServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_sessions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_sessions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -113,11 +160,44 @@ class ConversationalSearchServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_session(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_session(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = ConversationalSearchServiceRestTransport(interceptor=MyCustomConversationalSearchServiceInterceptor())
         client = ConversationalSearchServiceClient(transport=transport)
 
 
     """
+
+    def pre_answer_query(
+        self,
+        request: conversational_search_service.AnswerQueryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.AnswerQueryRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for answer_query
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_answer_query(
+        self, response: conversational_search_service.AnswerQueryResponse
+    ) -> conversational_search_service.AnswerQueryResponse:
+        """Post-rpc interceptor for answer_query
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_converse_conversation(
         self,
@@ -171,6 +251,29 @@ class ConversationalSearchServiceRestInterceptor:
         """
         return response
 
+    def pre_create_session(
+        self,
+        request: conversational_search_service.CreateSessionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.CreateSessionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_session
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_create_session(self, response: gcd_session.Session) -> gcd_session.Session:
+        """Post-rpc interceptor for create_session
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_conversation(
         self,
         request: conversational_search_service.DeleteConversationRequest,
@@ -185,6 +288,43 @@ class ConversationalSearchServiceRestInterceptor:
         before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
+
+    def pre_delete_session(
+        self,
+        request: conversational_search_service.DeleteSessionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.DeleteSessionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_session
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def pre_get_answer(
+        self,
+        request: conversational_search_service.GetAnswerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.GetAnswerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_answer
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_get_answer(self, response: answer.Answer) -> answer.Answer:
+        """Post-rpc interceptor for get_answer
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_get_conversation(
         self,
@@ -204,6 +344,29 @@ class ConversationalSearchServiceRestInterceptor:
         self, response: conversation.Conversation
     ) -> conversation.Conversation:
         """Post-rpc interceptor for get_conversation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_session(
+        self,
+        request: conversational_search_service.GetSessionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.GetSessionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_session
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_get_session(self, response: session.Session) -> session.Session:
+        """Post-rpc interceptor for get_session
 
         Override in a subclass to manipulate the response
         after it is returned by the ConversationalSearchService server but before
@@ -237,6 +400,31 @@ class ConversationalSearchServiceRestInterceptor:
         """
         return response
 
+    def pre_list_sessions(
+        self,
+        request: conversational_search_service.ListSessionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.ListSessionsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_sessions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_list_sessions(
+        self, response: conversational_search_service.ListSessionsResponse
+    ) -> conversational_search_service.ListSessionsResponse:
+        """Post-rpc interceptor for list_sessions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_conversation(
         self,
         request: conversational_search_service.UpdateConversationRequest,
@@ -256,6 +444,29 @@ class ConversationalSearchServiceRestInterceptor:
         self, response: gcd_conversation.Conversation
     ) -> gcd_conversation.Conversation:
         """Post-rpc interceptor for update_conversation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_session(
+        self,
+        request: conversational_search_service.UpdateSessionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.UpdateSessionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_session
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_update_session(self, response: gcd_session.Session) -> gcd_session.Session:
+        """Post-rpc interceptor for update_session
 
         Override in a subclass to manipulate the response
         after it is returned by the ConversationalSearchService server but before
@@ -405,6 +616,113 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ConversationalSearchServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _AnswerQuery(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("AnswerQuery")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.AnswerQueryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> conversational_search_service.AnswerQueryResponse:
+            r"""Call the answer query method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.AnswerQueryRequest):
+                    The request object. Request message for
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1beta.ConversationalSearchService.AnswerQuery]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.conversational_search_service.AnswerQueryResponse:
+                    Response message for
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1beta.ConversationalSearchService.AnswerQuery]
+                method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{serving_config=projects/*/locations/*/dataStores/*/servingConfigs/*}:answer",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}:answer",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}:answer",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_answer_query(request, metadata)
+            pb_request = conversational_search_service.AnswerQueryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = conversational_search_service.AnswerQueryResponse()
+            pb_resp = conversational_search_service.AnswerQueryResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_answer_query(resp)
+            return resp
 
     class _ConverseConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
@@ -628,6 +946,108 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_create_conversation(resp)
             return resp
 
+    class _CreateSession(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("CreateSession")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.CreateSessionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcd_session.Session:
+            r"""Call the create session method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.CreateSessionRequest):
+                    The request object. Request for CreateSession method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gcd_session.Session:
+                    External session proto definition.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/sessions",
+                    "body": "session",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions",
+                    "body": "session",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/sessions",
+                    "body": "session",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_session(request, metadata)
+            pb_request = conversational_search_service.CreateSessionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcd_session.Session()
+            pb_resp = gcd_session.Session.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_session(resp)
+            return resp
+
     class _DeleteConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
             return hash("DeleteConversation")
@@ -713,6 +1133,180 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _DeleteSession(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteSession")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.DeleteSessionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete session method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.DeleteSessionRequest):
+                    The request object. Request for DeleteSession method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_session(request, metadata)
+            pb_request = conversational_search_service.DeleteSessionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _GetAnswer(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("GetAnswer")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.GetAnswerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> answer.Answer:
+            r"""Call the get answer method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.GetAnswerRequest):
+                    The request object. Request for GetAnswer method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.answer.Answer:
+                    Defines an answer.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*/answers/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*/answers/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/sessions/*/answers/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_answer(request, metadata)
+            pb_request = conversational_search_service.GetAnswerRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = answer.Answer()
+            pb_resp = answer.Answer.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_answer(resp)
+            return resp
 
     class _GetConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
@@ -813,6 +1407,99 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_get_conversation(resp)
             return resp
 
+    class _GetSession(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("GetSession")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.GetSessionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> session.Session:
+            r"""Call the get session method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.GetSessionRequest):
+                    The request object. Request for GetSession method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.session.Session:
+                    External session proto definition.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_session(request, metadata)
+            pb_request = conversational_search_service.GetSessionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = session.Session()
+            pb_resp = session.Session.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_session(resp)
+            return resp
+
     class _ListConversations(ConversationalSearchServiceRestStub):
         def __hash__(self):
             return hash("ListConversations")
@@ -910,6 +1597,99 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_conversations(resp)
+            return resp
+
+    class _ListSessions(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("ListSessions")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.ListSessionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> conversational_search_service.ListSessionsResponse:
+            r"""Call the list sessions method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.ListSessionsRequest):
+                    The request object. Request for ListSessions method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.conversational_search_service.ListSessionsResponse:
+                    Response for ListSessions method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/sessions",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/sessions",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_sessions(request, metadata)
+            pb_request = conversational_search_service.ListSessionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = conversational_search_service.ListSessionsResponse()
+            pb_resp = conversational_search_service.ListSessionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_sessions(resp)
             return resp
 
     class _UpdateConversation(ConversationalSearchServiceRestStub):
@@ -1021,6 +1801,119 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_update_conversation(resp)
             return resp
 
+    class _UpdateSession(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateSession")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.UpdateSessionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcd_session.Session:
+            r"""Call the update session method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.UpdateSessionRequest):
+                    The request object. Request for UpdateSession method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gcd_session.Session:
+                    External session proto definition.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{session.name=projects/*/locations/*/dataStores/*/sessions/*}",
+                    "body": "session",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{session.name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
+                    "body": "session",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{session.name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
+                    "body": "session",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_session(request, metadata)
+            pb_request = conversational_search_service.UpdateSessionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcd_session.Session()
+            pb_resp = gcd_session.Session.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_session(resp)
+            return resp
+
+    @property
+    def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        conversational_search_service.AnswerQueryResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AnswerQuery(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def converse_conversation(
         self,
@@ -1044,6 +1937,16 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         return self._CreateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.CreateSessionRequest], gcd_session.Session
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSession(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_conversation(
         self,
     ) -> Callable[
@@ -1052,6 +1955,24 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.DeleteSessionRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSession(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_answer(
+        self,
+    ) -> Callable[[conversational_search_service.GetAnswerRequest], answer.Answer]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAnswer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_conversation(
@@ -1065,6 +1986,14 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         return self._GetConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_session(
+        self,
+    ) -> Callable[[conversational_search_service.GetSessionRequest], session.Session]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSession(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_conversations(
         self,
     ) -> Callable[
@@ -1076,6 +2005,17 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         return self._ListConversations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_sessions(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListSessionsRequest],
+        conversational_search_service.ListSessionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSessions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_conversation(
         self,
     ) -> Callable[
@@ -1085,6 +2025,16 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateSessionRequest], gcd_session.Session
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):

@@ -2497,6 +2497,7 @@ def test_update_serving_config_rest(request_type):
                     "model_prompt_spec": {"preamble": "preamble_value"},
                     "language_code": "language_code_value",
                     "model_spec": {"version": "version_value"},
+                    "use_semantic_chunks": True,
                 },
                 "extractive_content_spec": {
                     "max_extractive_answer_count": 2907,
@@ -2506,6 +2507,7 @@ def test_update_serving_config_rest(request_type):
                     "num_next_segments": 1843,
                 },
                 "search_result_mode": 1,
+                "chunk_spec": {"num_previous_chunks": 2071, "num_next_chunks": 1625},
             }
         },
         "name": "projects/sample1/locations/sample2/dataStores/sample3/servingConfigs/sample4",

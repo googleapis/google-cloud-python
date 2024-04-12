@@ -41,6 +41,12 @@ from .services.estimate_billing_service import (
     EstimateBillingServiceAsyncClient,
     EstimateBillingServiceClient,
 )
+from .services.grounded_generation_service import (
+    GroundedGenerationServiceAsyncClient,
+    GroundedGenerationServiceClient,
+)
+from .services.project_service import ProjectServiceAsyncClient, ProjectServiceClient
+from .services.rank_service import RankServiceAsyncClient, RankServiceClient
 from .services.recommendation_service import (
     RecommendationServiceAsyncClient,
     RecommendationServiceClient,
@@ -65,6 +71,7 @@ from .services.user_event_service import (
 )
 from .types.acl_config import AclConfig
 from .types.acl_config_service import GetAclConfigRequest, UpdateAclConfigRequest
+from .types.answer import Answer
 from .types.chunk import Chunk
 from .types.chunk_service import GetChunkRequest, ListChunksRequest, ListChunksResponse
 from .types.common import (
@@ -92,14 +99,23 @@ from .types.conversation import (
     TextInput,
 )
 from .types.conversational_search_service import (
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     ConverseConversationRequest,
     ConverseConversationResponse,
     CreateConversationRequest,
+    CreateSessionRequest,
     DeleteConversationRequest,
+    DeleteSessionRequest,
+    GetAnswerRequest,
     GetConversationRequest,
+    GetSessionRequest,
     ListConversationsRequest,
     ListConversationsResponse,
+    ListSessionsRequest,
+    ListSessionsResponse,
     UpdateConversationRequest,
+    UpdateSessionRequest,
 )
 from .types.data_store import DataStore
 from .types.data_store_service import (
@@ -114,12 +130,13 @@ from .types.data_store_service import (
     UpdateDataStoreRequest,
     UpdateDocumentProcessingConfigRequest,
 )
-from .types.document import Document
+from .types.document import Document, ProcessedDocument
 from .types.document_processing_config import DocumentProcessingConfig
 from .types.document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
+    GetProcessedDocumentRequest,
     ListDocumentsRequest,
     ListDocumentsResponse,
     UpdateDocumentRequest,
@@ -145,8 +162,19 @@ from .types.estimate_billing_service import (
     EstimateDataSizeRequest,
     EstimateDataSizeResponse,
 )
+from .types.grounded_generation_service import (
+    CheckGroundingRequest,
+    CheckGroundingResponse,
+    CheckGroundingSpec,
+)
+from .types.grounding import FactChunk, GroundingFact
 from .types.import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
@@ -158,6 +186,14 @@ from .types.import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
+)
+from .types.project import Project
+from .types.project_service import (
+    GetProjectRequest,
+    ProvisionProjectMetadata,
+    ProvisionProjectRequest,
+    ReportConsentChangeRequest,
 )
 from .types.purge_config import (
     PurgeDocumentsMetadata,
@@ -171,6 +207,7 @@ from .types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .types.rank_service import RankingRecord, RankRequest, RankResponse
 from .types.recommendation_service import RecommendRequest, RecommendResponse
 from .types.schema import FieldConfig, Schema
 from .types.schema_service import (
@@ -197,6 +234,7 @@ from .types.serving_config_service import (
     ListServingConfigsResponse,
     UpdateServingConfigRequest,
 )
+from .types.session import Query, Session
 from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .types.site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
@@ -248,6 +286,9 @@ __all__ = (
     "DocumentServiceAsyncClient",
     "EngineServiceAsyncClient",
     "EstimateBillingServiceAsyncClient",
+    "GroundedGenerationServiceAsyncClient",
+    "ProjectServiceAsyncClient",
+    "RankServiceAsyncClient",
     "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
@@ -257,6 +298,9 @@ __all__ = (
     "UserEventServiceAsyncClient",
     "AclConfig",
     "AclConfigServiceClient",
+    "Answer",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
@@ -264,8 +308,14 @@ __all__ = (
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CheckGroundingRequest",
+    "CheckGroundingResponse",
+    "CheckGroundingSpec",
     "Chunk",
     "ChunkServiceClient",
+    "CloudSqlSource",
     "CollectUserEventRequest",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -285,6 +335,7 @@ __all__ = (
     "CreateEngineRequest",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
+    "CreateSessionRequest",
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
@@ -299,6 +350,7 @@ __all__ = (
     "DeleteEngineRequest",
     "DeleteSchemaMetadata",
     "DeleteSchemaRequest",
+    "DeleteSessionRequest",
     "DeleteTargetSiteMetadata",
     "DeleteTargetSiteRequest",
     "DisableAdvancedSiteSearchMetadata",
@@ -319,21 +371,30 @@ __all__ = (
     "EstimateDataSizeMetadata",
     "EstimateDataSizeRequest",
     "EstimateDataSizeResponse",
+    "FactChunk",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
+    "FhirStoreSource",
     "FieldConfig",
+    "FirestoreSource",
     "GcsSource",
     "GetAclConfigRequest",
+    "GetAnswerRequest",
     "GetChunkRequest",
     "GetConversationRequest",
     "GetDataStoreRequest",
     "GetDocumentProcessingConfigRequest",
     "GetDocumentRequest",
     "GetEngineRequest",
+    "GetProcessedDocumentRequest",
+    "GetProjectRequest",
     "GetSchemaRequest",
     "GetServingConfigRequest",
+    "GetSessionRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GroundedGenerationServiceClient",
+    "GroundingFact",
     "GuidedSearchSpec",
     "IdpConfig",
     "ImportDocumentsMetadata",
@@ -362,6 +423,8 @@ __all__ = (
     "ListSchemasResponse",
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
+    "ListSessionsRequest",
+    "ListSessionsResponse",
     "ListTargetSitesRequest",
     "ListTargetSitesResponse",
     "MediaInfo",
@@ -369,6 +432,11 @@ __all__ = (
     "PanelInfo",
     "PauseEngineRequest",
     "Principal",
+    "ProcessedDocument",
+    "Project",
+    "ProjectServiceClient",
+    "ProvisionProjectMetadata",
+    "ProvisionProjectRequest",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -379,6 +447,11 @@ __all__ = (
     "PurgeUserEventsMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "Query",
+    "RankRequest",
+    "RankResponse",
+    "RankServiceClient",
+    "RankingRecord",
     "RecommendRequest",
     "RecommendResponse",
     "RecommendationServiceClient",
@@ -386,6 +459,7 @@ __all__ = (
     "RecrawlUrisRequest",
     "RecrawlUrisResponse",
     "Reply",
+    "ReportConsentChangeRequest",
     "ResumeEngineRequest",
     "Schema",
     "SchemaServiceClient",
@@ -398,10 +472,12 @@ __all__ = (
     "SearchTuningServiceClient",
     "ServingConfig",
     "ServingConfigServiceClient",
+    "Session",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
     "SolutionType",
+    "SpannerSource",
     "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",
@@ -421,6 +497,7 @@ __all__ = (
     "UpdateSchemaMetadata",
     "UpdateSchemaRequest",
     "UpdateServingConfigRequest",
+    "UpdateSessionRequest",
     "UpdateTargetSiteMetadata",
     "UpdateTargetSiteRequest",
     "UserEvent",

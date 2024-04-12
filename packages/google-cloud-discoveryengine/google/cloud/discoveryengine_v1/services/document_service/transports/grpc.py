@@ -338,7 +338,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     @property
     def update_document(
         self,
-    ) -> Callable[[document_service.UpdateDocumentRequest], document.Document]:
+    ) -> Callable[[document_service.UpdateDocumentRequest], gcd_document.Document]:
         r"""Return a callable for the update document method over gRPC.
 
         Updates a [Document][google.cloud.discoveryengine.v1.Document].
@@ -357,7 +357,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
             self._stubs["update_document"] = self.grpc_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1.DocumentService/UpdateDocument",
                 request_serializer=document_service.UpdateDocumentRequest.serialize,
-                response_deserializer=document.Document.deserialize,
+                response_deserializer=gcd_document.Document.deserialize,
             )
         return self._stubs["update_document"]
 

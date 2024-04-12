@@ -130,13 +130,15 @@ class UserEvent(proto.Message):
             trigger the event.
 
             Highly recommended for user events that are the result of
-            [RecommendationService.Recommend][]. This field enables
-            accurate attribution of recommendation model performance.
+            [RecommendationService.Recommend][google.cloud.discoveryengine.v1.RecommendationService.Recommend].
+            This field enables accurate attribution of recommendation
+            model performance.
 
             The value must be one of:
 
-            -  [RecommendResponse.attribution_token][] for events that
-               are the result of [RecommendationService.Recommend][].
+            -  [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
+               for events that are the result of
+               [RecommendationService.Recommend][google.cloud.discoveryengine.v1.RecommendationService.Recommend].
             -  [SearchResponse.attribution_token][google.cloud.discoveryengine.v1.SearchResponse.attribution_token]
                for events that are the result of
                [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search].
@@ -145,10 +147,12 @@ class UserEvent(proto.Message):
             conversion completion back to the event and the particular
             predict response containing this clicked/purchased product.
             If user clicks on product K in the recommendation results,
-            pass [RecommendResponse.attribution_token][] as a URL
-            parameter to product K's page. When recording events on
-            product K's page, log the
-            [RecommendResponse.attribution_token][] to this field.
+            pass
+            [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
+            as a URL parameter to product K's page. When recording
+            events on product K's page, log the
+            [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
+            to this field.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -161,9 +165,11 @@ class UserEvent(proto.Message):
             conforming to https://google.aip.dev/160#filtering.
 
             Similarly, for ``view-item-list`` events that are generated
-            from a [RecommendRequest][], this field may be populated
-            directly from [RecommendRequest.filter][] conforming to
-            https://google.aip.dev/160#filtering.
+            from a
+            [RecommendRequest][google.cloud.discoveryengine.v1.RecommendRequest],
+            this field may be populated directly from
+            [RecommendRequest.filter][google.cloud.discoveryengine.v1.RecommendRequest.filter]
+            conforming to https://google.aip.dev/160#filtering.
 
             The value must be a UTF-8 encoded string with a length limit
             of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
@@ -357,7 +363,7 @@ class PageInfo(proto.Message):
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
-            please replace it with other character(s).
+            replace it with other character(s).
 
             Category pages include special pages such as sales or
             promotions. For instance, a special sale page may have the

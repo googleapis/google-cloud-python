@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import common, schema
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -72,6 +72,23 @@ class DataStore(proto.Message):
             Output only. Timestamp the
             [DataStore][google.cloud.discoveryengine.v1.DataStore] was
             created at.
+        starting_schema (google.cloud.discoveryengine_v1.types.Schema):
+            The start schema to use for this
+            [DataStore][google.cloud.discoveryengine.v1.DataStore] when
+            provisioning it. If unset, a default vertical specialized
+            schema will be used.
+
+            This field is only used by [CreateDataStore][] API, and will
+            be ignored if used in other APIs. This field will be omitted
+            from all API responses including [CreateDataStore][] API. To
+            retrieve a schema of a
+            [DataStore][google.cloud.discoveryengine.v1.DataStore], use
+            [SchemaService.GetSchema][google.cloud.discoveryengine.v1.SchemaService.GetSchema]
+            API instead.
+
+            The provided schema will be validated against certain rules
+            on schema. Learn more from `this
+            doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
     """
 
     class ContentConfig(proto.Enum):
@@ -126,6 +143,11 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    starting_schema: schema.Schema = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=schema.Schema,
     )
 
 

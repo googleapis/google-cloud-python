@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .answer import Answer
 from .common import (
     CustomAttribute,
     DoubleList,
@@ -34,14 +35,23 @@ from .conversation import (
     TextInput,
 )
 from .conversational_search_service import (
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     ConverseConversationRequest,
     ConverseConversationResponse,
     CreateConversationRequest,
+    CreateSessionRequest,
     DeleteConversationRequest,
+    DeleteSessionRequest,
+    GetAnswerRequest,
     GetConversationRequest,
+    GetSessionRequest,
     ListConversationsRequest,
     ListConversationsResponse,
+    ListSessionsRequest,
+    ListSessionsResponse,
     UpdateConversationRequest,
+    UpdateSessionRequest,
 )
 from .data_store import DataStore
 from .data_store_service import (
@@ -73,10 +83,26 @@ from .engine_service import (
     GetEngineRequest,
     ListEnginesRequest,
     ListEnginesResponse,
+    PauseEngineRequest,
+    ResumeEngineRequest,
+    TuneEngineMetadata,
+    TuneEngineRequest,
+    TuneEngineResponse,
     UpdateEngineRequest,
 )
+from .grounded_generation_service import (
+    CheckGroundingRequest,
+    CheckGroundingResponse,
+    CheckGroundingSpec,
+)
+from .grounding import FactChunk, GroundingFact
 from .import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
@@ -88,6 +114,7 @@ from .import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
 )
 from .purge_config import (
     PurgeDocumentsMetadata,
@@ -97,6 +124,7 @@ from .purge_config import (
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
 )
+from .rank_service import RankingRecord, RankRequest, RankResponse
 from .recommendation_service import RecommendRequest, RecommendResponse
 from .schema import Schema
 from .schema_service import (
@@ -123,6 +151,7 @@ from .serving_config_service import (
     ListServingConfigsResponse,
     UpdateServingConfigRequest,
 )
+from .session import Query, Session
 from .site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
@@ -166,6 +195,7 @@ from .user_event import (
 from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
+    "Answer",
     "CustomAttribute",
     "DoubleList",
     "EmbeddingConfig",
@@ -183,14 +213,23 @@ __all__ = (
     "ConversationMessage",
     "Reply",
     "TextInput",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
     "CreateConversationRequest",
+    "CreateSessionRequest",
     "DeleteConversationRequest",
+    "DeleteSessionRequest",
+    "GetAnswerRequest",
     "GetConversationRequest",
+    "GetSessionRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
+    "ListSessionsRequest",
+    "ListSessionsResponse",
     "UpdateConversationRequest",
+    "UpdateSessionRequest",
     "DataStore",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -216,8 +255,23 @@ __all__ = (
     "GetEngineRequest",
     "ListEnginesRequest",
     "ListEnginesResponse",
+    "PauseEngineRequest",
+    "ResumeEngineRequest",
+    "TuneEngineMetadata",
+    "TuneEngineRequest",
+    "TuneEngineResponse",
     "UpdateEngineRequest",
+    "CheckGroundingRequest",
+    "CheckGroundingResponse",
+    "CheckGroundingSpec",
+    "FactChunk",
+    "GroundingFact",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CloudSqlSource",
+    "FhirStoreSource",
+    "FirestoreSource",
     "GcsSource",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
@@ -229,12 +283,16 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "SpannerSource",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "RankingRecord",
+    "RankRequest",
+    "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
     "Schema",
@@ -257,6 +315,8 @@ __all__ = (
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
     "UpdateServingConfigRequest",
+    "Query",
+    "Session",
     "SiteSearchEngine",
     "SiteVerificationInfo",
     "TargetSite",

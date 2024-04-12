@@ -15,6 +15,7 @@
 #
 from .acl_config import AclConfig
 from .acl_config_service import GetAclConfigRequest, UpdateAclConfigRequest
+from .answer import Answer
 from .chunk import Chunk
 from .chunk_service import GetChunkRequest, ListChunksRequest, ListChunksResponse
 from .common import (
@@ -42,14 +43,23 @@ from .conversation import (
     TextInput,
 )
 from .conversational_search_service import (
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     ConverseConversationRequest,
     ConverseConversationResponse,
     CreateConversationRequest,
+    CreateSessionRequest,
     DeleteConversationRequest,
+    DeleteSessionRequest,
+    GetAnswerRequest,
     GetConversationRequest,
+    GetSessionRequest,
     ListConversationsRequest,
     ListConversationsResponse,
+    ListSessionsRequest,
+    ListSessionsResponse,
     UpdateConversationRequest,
+    UpdateSessionRequest,
 )
 from .data_store import DataStore
 from .data_store_service import (
@@ -64,12 +74,13 @@ from .data_store_service import (
     UpdateDataStoreRequest,
     UpdateDocumentProcessingConfigRequest,
 )
-from .document import Document
+from .document import Document, ProcessedDocument
 from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
     GetDocumentRequest,
+    GetProcessedDocumentRequest,
     ListDocumentsRequest,
     ListDocumentsResponse,
     UpdateDocumentRequest,
@@ -95,8 +106,19 @@ from .estimate_billing_service import (
     EstimateDataSizeRequest,
     EstimateDataSizeResponse,
 )
+from .grounded_generation_service import (
+    CheckGroundingRequest,
+    CheckGroundingResponse,
+    CheckGroundingSpec,
+)
+from .grounding import FactChunk, GroundingFact
 from .import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
@@ -108,6 +130,14 @@ from .import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
+)
+from .project import Project
+from .project_service import (
+    GetProjectRequest,
+    ProvisionProjectMetadata,
+    ProvisionProjectRequest,
+    ReportConsentChangeRequest,
 )
 from .purge_config import (
     PurgeDocumentsMetadata,
@@ -121,6 +151,7 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .rank_service import RankingRecord, RankRequest, RankResponse
 from .recommendation_service import RecommendRequest, RecommendResponse
 from .schema import FieldConfig, Schema
 from .schema_service import (
@@ -147,6 +178,7 @@ from .serving_config_service import (
     ListServingConfigsResponse,
     UpdateServingConfigRequest,
 )
+from .session import Query, Session
 from .site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
@@ -193,6 +225,7 @@ __all__ = (
     "AclConfig",
     "GetAclConfigRequest",
     "UpdateAclConfigRequest",
+    "Answer",
     "Chunk",
     "GetChunkRequest",
     "ListChunksRequest",
@@ -218,14 +251,23 @@ __all__ = (
     "ConversationMessage",
     "Reply",
     "TextInput",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
     "CreateConversationRequest",
+    "CreateSessionRequest",
     "DeleteConversationRequest",
+    "DeleteSessionRequest",
+    "GetAnswerRequest",
     "GetConversationRequest",
+    "GetSessionRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
+    "ListSessionsRequest",
+    "ListSessionsResponse",
     "UpdateConversationRequest",
+    "UpdateSessionRequest",
     "DataStore",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -238,10 +280,12 @@ __all__ = (
     "UpdateDataStoreRequest",
     "UpdateDocumentProcessingConfigRequest",
     "Document",
+    "ProcessedDocument",
     "DocumentProcessingConfig",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
+    "GetProcessedDocumentRequest",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
     "UpdateDocumentRequest",
@@ -262,7 +306,17 @@ __all__ = (
     "EstimateDataSizeMetadata",
     "EstimateDataSizeRequest",
     "EstimateDataSizeResponse",
+    "CheckGroundingRequest",
+    "CheckGroundingResponse",
+    "CheckGroundingSpec",
+    "FactChunk",
+    "GroundingFact",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CloudSqlSource",
+    "FhirStoreSource",
+    "FirestoreSource",
     "GcsSource",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
@@ -274,6 +328,12 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "SpannerSource",
+    "Project",
+    "GetProjectRequest",
+    "ProvisionProjectMetadata",
+    "ProvisionProjectRequest",
+    "ReportConsentChangeRequest",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
@@ -284,6 +344,9 @@ __all__ = (
     "PurgeUserEventsMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "RankingRecord",
+    "RankRequest",
+    "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
     "FieldConfig",
@@ -307,6 +370,8 @@ __all__ = (
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
     "UpdateServingConfigRequest",
+    "Query",
+    "Session",
     "SiteSearchEngine",
     "SiteVerificationInfo",
     "TargetSite",

@@ -8,6 +8,8 @@ Services for Google Cloud Discoveryengine v1beta API
     data_store_service
     document_service
     engine_service
+    grounded_generation_service
+    rank_service
     recommendation_service
     schema_service
     search_service

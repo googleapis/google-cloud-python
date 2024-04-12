@@ -2497,6 +2497,7 @@ def test_update_serving_config_rest(request_type):
                     "model_prompt_spec": {"preamble": "preamble_value"},
                     "language_code": "language_code_value",
                     "model_spec": {"version": "version_value"},
+                    "use_semantic_chunks": True,
                 },
                 "extractive_content_spec": {
                     "max_extractive_answer_count": 2907,

@@ -237,6 +237,16 @@ class FieldConfig(proto.Message):
             If the schema field has a ``KeyPropertyMapping`` annotation,
             ``indexable_option`` and ``searchable_option`` of this field
             cannot be modified.
+        advanced_site_search_data_sources (MutableSequence[google.cloud.discoveryengine_v1alpha.types.FieldConfig.AdvancedSiteSearchDataSource]):
+            If this field is set, only the corresponding source will be
+            indexed for this field. Otherwise, the values from different
+            sources are merged.
+
+            Assuming a page with ``<author, a>`` in meta tag, and
+            ``<author, b>`` in page map: if this enum is set to
+            METATAGS, we will only index ``<author, a>``; if this enum
+            is not set, we will merge them and index
+            ``<author, [a, b]>``.
     """
 
     class FieldType(proto.Enum):
@@ -367,6 +377,21 @@ class FieldConfig(proto.Message):
         FILTERABLE_ENABLED = 1
         FILTERABLE_DISABLED = 2
 
+    class AdvancedSiteSearchDataSource(proto.Enum):
+        r"""Optional source of the advanced site search field.
+
+        Values:
+            ADVANCED_SITE_SEARCH_DATA_SOURCE_UNSPECIFIED (0):
+                Value used when unset.
+            METATAGS (1):
+                Retrieve value from meta tag.
+            PAGEMAP (2):
+                Retrieve value from page map.
+        """
+        ADVANCED_SITE_SEARCH_DATA_SOURCE_UNSPECIFIED = 0
+        METATAGS = 1
+        PAGEMAP = 2
+
     field_path: str = proto.Field(
         proto.STRING,
         number=1,
@@ -409,6 +434,13 @@ class FieldConfig(proto.Message):
     key_property_type: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    advanced_site_search_data_sources: MutableSequence[
+        AdvancedSiteSearchDataSource
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=10,
+        enum=AdvancedSiteSearchDataSource,
     )
 
 

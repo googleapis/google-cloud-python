@@ -526,6 +526,10 @@ class EngineServiceRestTransport(EngineServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                     },
                     {
@@ -1499,6 +1503,10 @@ class EngineServiceRestTransport(EngineServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
                 },
                 {
                     "method": "get",

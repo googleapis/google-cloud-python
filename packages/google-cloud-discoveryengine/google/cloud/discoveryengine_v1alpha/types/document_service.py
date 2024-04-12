@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "CreateDocumentRequest",
         "UpdateDocumentRequest",
         "DeleteDocumentRequest",
+        "GetProcessedDocumentRequest",
     },
 )
 
@@ -269,6 +270,79 @@ class DeleteDocumentRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class GetProcessedDocumentRequest(proto.Message):
+    r"""Request message for
+    [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full resource name of
+            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
+
+            If the caller does not have permission to access the
+            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            regardless of whether or not it exists, a
+            ``PERMISSION_DENIED`` error is returned.
+
+            If the requested
+            [Document][google.cloud.discoveryengine.v1alpha.Document]
+            does not exist, a ``NOT_FOUND`` error is returned.
+        processed_document_type (google.cloud.discoveryengine_v1alpha.types.GetProcessedDocumentRequest.ProcessedDocumentType):
+            Required. What type of processing to return.
+        processed_document_format (google.cloud.discoveryengine_v1alpha.types.GetProcessedDocumentRequest.ProcessedDocumentFormat):
+            What format output should be.  If
+            unspecified, defaults to JSON.
+    """
+
+    class ProcessedDocumentType(proto.Enum):
+        r"""The type of processing to return in the response.
+
+        Values:
+            PROCESSED_DOCUMENT_TYPE_UNSPECIFIED (0):
+                Default value.
+            PARSED_DOCUMENT (1):
+                Available for all data store parsing configs.
+            CHUNKED_DOCUMENT (2):
+                Only available if ChunkingConfig is enabeld
+                on the data store.
+        """
+        PROCESSED_DOCUMENT_TYPE_UNSPECIFIED = 0
+        PARSED_DOCUMENT = 1
+        CHUNKED_DOCUMENT = 2
+
+    class ProcessedDocumentFormat(proto.Enum):
+        r"""The format of the returned processed document. If
+        unspecified, defaults to JSON.
+
+        Values:
+            PROCESSED_DOCUMENT_FORMAT_UNSPECIFIED (0):
+                Default value.
+            JSON (1):
+                output format will be a JSON string
+                representation of processed document.
+        """
+        PROCESSED_DOCUMENT_FORMAT_UNSPECIFIED = 0
+        JSON = 1
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    processed_document_type: ProcessedDocumentType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ProcessedDocumentType,
+    )
+    processed_document_format: ProcessedDocumentFormat = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ProcessedDocumentFormat,
     )
 
 

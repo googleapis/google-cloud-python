@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
@@ -29,6 +30,12 @@ __protobuf__ = proto.module(
     manifest={
         "GcsSource",
         "BigQuerySource",
+        "SpannerSource",
+        "BigtableOptions",
+        "BigtableSource",
+        "FhirStoreSource",
+        "CloudSqlSource",
+        "FirestoreSource",
         "ImportErrorConfig",
         "ImportUserEventsRequest",
         "ImportUserEventsResponse",
@@ -73,11 +80,13 @@ class GcsSource(proto.Message):
             -  ``custom``: One custom data JSON per row in arbitrary
                format that conforms to the defined
                [Schema][google.cloud.discoveryengine.v1alpha.Schema] of
-               the data store. This can only be used by Gen App Builder.
+               the data store. This can only be used by the GENERIC Data
+               Store vertical.
             -  ``csv``: A CSV file with header conforming to the defined
                [Schema][google.cloud.discoveryengine.v1alpha.Schema] of
                the data store. Each entry after the header is imported
-               as a Document. This can only be used by Gen App Builder.
+               as a Document. This can only be used by the GENERIC Data
+               Store vertical.
 
             Supported values for user even imports:
 
@@ -147,7 +156,8 @@ class BigQuerySource(proto.Message):
             -  ``custom``: One custom data per row in arbitrary format
                that conforms to the defined
                [Schema][google.cloud.discoveryengine.v1alpha.Schema] of
-               the data store. This can only be used by Gen App Builder.
+               the data store. This can only be used by the GENERIC Data
+               Store vertical.
     """
 
     partition_date: date_pb2.Date = proto.Field(
@@ -175,6 +185,402 @@ class BigQuerySource(proto.Message):
     data_schema: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class SpannerSource(proto.Message):
+    r"""The Spanner source for importing data
+
+    Attributes:
+        project_id (str):
+            The project ID that the Spanner source is in
+            with a length limit of 128 characters. If not
+            specified, inherits the project ID from the
+            parent request.
+        instance_id (str):
+            Required. The instance ID of the source
+            Spanner table.
+        database_id (str):
+            Required. The database ID of the source
+            Spanner table.
+        table_id (str):
+            Required. The table name of the Spanner
+            database that needs to be imported.
+        enable_data_boost (bool):
+            Whether to apply data boost on Spanner export. Enabling this
+            option will incur additional cost. More info can be found
+            `here <https://cloud.google.com/spanner/docs/databoost/databoost-overview#billing_and_quotas>`__.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    table_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    enable_data_boost: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class BigtableOptions(proto.Message):
+    r"""The Bigtable Options object that contains information to
+    support the import.
+
+    Attributes:
+        key_field_name (str):
+            The field name used for saving row key value in the
+            document. The name has to match the pattern
+            ``[a-zA-Z0-9][a-zA-Z0-9-_]*``.
+        families (MutableMapping[str, google.cloud.discoveryengine_v1alpha.types.BigtableOptions.BigtableColumnFamily]):
+            The mapping from family names to an object
+            that contains column families level information
+            for the given column family. If a family is not
+            present in this map it will be ignored.
+    """
+
+    class Type(proto.Enum):
+        r"""The type of values in a Bigtable column or column family. The values
+        are expected to be encoded using `HBase
+        Bytes.toBytes <https://hbase.apache.org/apidocs/org/apache/hadoop/hbase/util/Bytes.html>`__
+        function when the encoding value is set to ``BINARY``.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type is unspecified.
+            STRING (1):
+                String type.
+            NUMBER (2):
+                Numerical type.
+            INTEGER (3):
+                Integer type.
+            VAR_INTEGER (4):
+                Variable length integer type.
+            BIG_NUMERIC (5):
+                BigDecimal type.
+            BOOLEAN (6):
+                Boolean type.
+            JSON (7):
+                JSON type.
+        """
+        TYPE_UNSPECIFIED = 0
+        STRING = 1
+        NUMBER = 2
+        INTEGER = 3
+        VAR_INTEGER = 4
+        BIG_NUMERIC = 5
+        BOOLEAN = 6
+        JSON = 7
+
+    class Encoding(proto.Enum):
+        r"""The encoding mode of a Bigtable column or column family.
+
+        Values:
+            ENCODING_UNSPECIFIED (0):
+                The encoding is unspecified.
+            TEXT (1):
+                Text encoding.
+            BINARY (2):
+                Binary encoding.
+        """
+        ENCODING_UNSPECIFIED = 0
+        TEXT = 1
+        BINARY = 2
+
+    class BigtableColumnFamily(proto.Message):
+        r"""The column family of the Bigtable.
+
+        Attributes:
+            field_name (str):
+                The field name to use for this column family in the
+                document. The name has to match the pattern
+                ``[a-zA-Z0-9][a-zA-Z0-9-_]*``. If not set, it is parsed from
+                the family name with best effort. However, due to different
+                naming patterns, field name collisions could happen, where
+                parsing behavior is undefined.
+            encoding (google.cloud.discoveryengine_v1alpha.types.BigtableOptions.Encoding):
+                The encoding mode of the values when the type is not STRING.
+                Acceptable encoding values are:
+
+                -  ``TEXT``: indicates values are alphanumeric text strings.
+                -  ``BINARY``: indicates values are encoded using
+                   ``HBase Bytes.toBytes`` family of functions. This can be
+                   overridden for a specific column by listing that column
+                   in ``columns`` and specifying an encoding for it.
+            type_ (google.cloud.discoveryengine_v1alpha.types.BigtableOptions.Type):
+                The type of values in this column family. The values are
+                expected to be encoded using ``HBase Bytes.toBytes``
+                function when the encoding value is set to ``BINARY``.
+            columns (MutableSequence[google.cloud.discoveryengine_v1alpha.types.BigtableOptions.BigtableColumn]):
+                The list of objects that contains column
+                level information for each column. If a column
+                is not present in this list it will be ignored.
+        """
+
+        field_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        encoding: "BigtableOptions.Encoding" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="BigtableOptions.Encoding",
+        )
+        type_: "BigtableOptions.Type" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="BigtableOptions.Type",
+        )
+        columns: MutableSequence[
+            "BigtableOptions.BigtableColumn"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="BigtableOptions.BigtableColumn",
+        )
+
+    class BigtableColumn(proto.Message):
+        r"""The column of the Bigtable.
+
+        Attributes:
+            qualifier (bytes):
+                Required. Qualifier of the column. If it
+                cannot be decoded with utf-8, use a base-64
+                encoded string instead.
+            field_name (str):
+                The field name to use for this column in the document. The
+                name has to match the pattern ``[a-zA-Z0-9][a-zA-Z0-9-_]*``.
+                If not set, it is parsed from the qualifier bytes with best
+                effort. However, due to different naming patterns, field
+                name collisions could happen, where parsing behavior is
+                undefined.
+            encoding (google.cloud.discoveryengine_v1alpha.types.BigtableOptions.Encoding):
+                The encoding mode of the values when the type is not
+                ``STRING``. Acceptable encoding values are:
+
+                -  ``TEXT``: indicates values are alphanumeric text strings.
+                -  ``BINARY``: indicates values are encoded using
+                   ``HBase Bytes.toBytes`` family of functions. This can be
+                   overridden for a specific column by listing that column
+                   in ``columns`` and specifying an encoding for it.
+            type_ (google.cloud.discoveryengine_v1alpha.types.BigtableOptions.Type):
+                The type of values in this column family. The values are
+                expected to be encoded using ``HBase Bytes.toBytes``
+                function when the encoding value is set to ``BINARY``.
+        """
+
+        qualifier: bytes = proto.Field(
+            proto.BYTES,
+            number=1,
+        )
+        field_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        encoding: "BigtableOptions.Encoding" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="BigtableOptions.Encoding",
+        )
+        type_: "BigtableOptions.Type" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="BigtableOptions.Type",
+        )
+
+    key_field_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    families: MutableMapping[str, BigtableColumnFamily] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=BigtableColumnFamily,
+    )
+
+
+class BigtableSource(proto.Message):
+    r"""The Cloud Bigtable source for importing data.
+
+    Attributes:
+        project_id (str):
+            The project ID that the Bigtable source is in
+            with a length limit of 128 characters. If not
+            specified, inherits the project ID from the
+            parent request.
+        instance_id (str):
+            Required. The instance ID of the Cloud
+            Bigtable that needs to be imported.
+        table_id (str):
+            Required. The table ID of the Cloud Bigtable
+            that needs to be imported.
+        bigtable_options (google.cloud.discoveryengine_v1alpha.types.BigtableOptions):
+            Required. Bigtable options that contains
+            information needed when parsing data into typed
+            structures. For example, column type
+            annotations.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    table_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    bigtable_options: "BigtableOptions" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="BigtableOptions",
+    )
+
+
+class FhirStoreSource(proto.Message):
+    r"""Cloud FhirStore source import data from.
+
+    Attributes:
+        fhir_store (str):
+            Required. The full resource name of the FHIR store to import
+            data from, in the format of
+            ``projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}``.
+        gcs_staging_dir (str):
+            Intermediate Cloud Storage directory used for
+            the import with a length limit of 2,000
+            characters. Can be specified if one wants to
+            have the FhirStore export to a specific Cloud
+            Storage directory.
+    """
+
+    fhir_store: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_staging_dir: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CloudSqlSource(proto.Message):
+    r"""Cloud SQL source import data from.
+
+    Attributes:
+        project_id (str):
+            The project ID that the Cloud SQL source is
+            in with a length limit of 128 characters. If not
+            specified, inherits the project ID from the
+            parent request.
+        instance_id (str):
+            Required. The Cloud SQL instance to copy the
+            data from with a length limit of 256 characters.
+        database_id (str):
+            Required. The Cloud SQL database to copy the
+            data from with a length limit of 256 characters.
+        table_id (str):
+            Required. The Cloud SQL table to copy the
+            data from with a length limit of 256 characters.
+        gcs_staging_dir (str):
+            Intermediate Cloud Storage directory used for
+            the import with a length limit of 2,000
+            characters. Can be specified if one wants to
+            have the Cloud SQL export to a specific Cloud
+            Storage directory.
+
+            Ensure that the Cloud SQL service account has
+            the necessary Cloud Storage Admin permissions to
+            access the specified Cloud Storage directory.
+        offload (bool):
+            Option for serverless export. Enabling this option will
+            incur additional cost. More info can be found
+            `here <https://cloud.google.com/sql/pricing#serverless>`__.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    table_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    gcs_staging_dir: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    offload: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+
+
+class FirestoreSource(proto.Message):
+    r"""Firestore source import data from.
+
+    Attributes:
+        project_id (str):
+            The project ID that the Cloud SQL source is
+            in with a length limit of 128 characters. If not
+            specified, inherits the project ID from the
+            parent request.
+        database_id (str):
+            Required. The Firestore database to copy the
+            data from with a length limit of 256 characters.
+        collection_id (str):
+            Required. The Firestore collection to copy
+            the data from with a length limit of 1,500
+            characters.
+        gcs_staging_dir (str):
+            Intermediate Cloud Storage directory used for
+            the import with a length limit of 2,000
+            characters. Can be specified if one wants to
+            have the Firestore export to a specific Cloud
+            Storage directory.
+
+            Ensure that the Firestore service account has
+            the necessary Cloud Storage Admin permissions to
+            access the specified Cloud Storage directory.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    collection_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    gcs_staging_dir: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -376,6 +782,8 @@ class ImportDocumentsMetadata(proto.Message):
         failure_count (int):
             Count of entries that encountered errors
             while processing.
+        total_count (int):
+            Total count of entries that were processed.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -395,6 +803,10 @@ class ImportDocumentsMetadata(proto.Message):
     failure_count: int = proto.Field(
         proto.INT64,
         number=4,
+    )
+    total_count: int = proto.Field(
+        proto.INT64,
+        number=5,
     )
 
 
@@ -422,6 +834,26 @@ class ImportDocumentsRequest(proto.Message):
             BigQuery input source.
 
             This field is a member of `oneof`_ ``source``.
+        fhir_store_source (google.cloud.discoveryengine_v1alpha.types.FhirStoreSource):
+            FhirStore input source.
+
+            This field is a member of `oneof`_ ``source``.
+        spanner_source (google.cloud.discoveryengine_v1alpha.types.SpannerSource):
+            Spanner input source.
+
+            This field is a member of `oneof`_ ``source``.
+        cloud_sql_source (google.cloud.discoveryengine_v1alpha.types.CloudSqlSource):
+            Cloud SQL input source.
+
+            This field is a member of `oneof`_ ``source``.
+        firestore_source (google.cloud.discoveryengine_v1alpha.types.FirestoreSource):
+            Firestore input source.
+
+            This field is a member of `oneof`_ ``source``.
+        bigtable_source (google.cloud.discoveryengine_v1alpha.types.BigtableSource):
+            Cloud Bigtable input source.
+
+            This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent branch resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
@@ -433,6 +865,10 @@ class ImportDocumentsRequest(proto.Message):
             The mode of reconciliation between existing documents and
             the documents to be imported. Defaults to
             [ReconciliationMode.INCREMENTAL][google.cloud.discoveryengine.v1alpha.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL].
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            imported documents to update. If not set, the
+            default is to update all fields.
         auto_generate_ids (bool):
             Whether to automatically generate IDs for the documents if
             absent.
@@ -450,52 +886,61 @@ class ImportDocumentsRequest(proto.Message):
             [id_field][google.cloud.discoveryengine.v1alpha.ImportDocumentsRequest.id_field],
             otherwise, documents without IDs fail to be imported.
 
-            Only set this field when using
-            [GcsSource][google.cloud.discoveryengine.v1alpha.GcsSource]
-            or
-            [BigQuerySource][google.cloud.discoveryengine.v1alpha.BigQuerySource],
-            and when
-            [GcsSource.data_schema][google.cloud.discoveryengine.v1alpha.GcsSource.data_schema]
-            or
-            [BigQuerySource.data_schema][google.cloud.discoveryengine.v1alpha.BigQuerySource.data_schema]
-            is ``custom`` or ``csv``. Otherwise, an INVALID_ARGUMENT
-            error is thrown.
+            Supported data sources:
+
+            -  [GcsSource][google.cloud.discoveryengine.v1alpha.GcsSource].
+               [GcsSource.data_schema][google.cloud.discoveryengine.v1alpha.GcsSource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [BigQuerySource][google.cloud.discoveryengine.v1alpha.BigQuerySource].
+               [BigQuerySource.data_schema][google.cloud.discoveryengine.v1alpha.BigQuerySource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [SpannerSource][google.cloud.discoveryengine.v1alpha.SpannerSource].
+            -  [CloudSqlSource][google.cloud.discoveryengine.v1alpha.CloudSqlSource].
+            -  [FirestoreSource][google.cloud.discoveryengine.v1alpha.FirestoreSource].
+            -  [BigtableSource][google.cloud.discoveryengine.v1alpha.BigtableSource].
         id_field (str):
-            The field in the Cloud Storage and BigQuery sources that
-            indicates the unique IDs of the documents.
+            The field indicates the ID field or column to be used as
+            unique IDs of the documents.
 
             For
             [GcsSource][google.cloud.discoveryengine.v1alpha.GcsSource]
             it is the key of the JSON field. For instance, ``my_id`` for
-            JSON ``{"my_id": "some_uuid"}``. For
-            [BigQuerySource][google.cloud.discoveryengine.v1alpha.BigQuerySource]
-            it is the column name of the BigQuery table where the unique
-            ids are stored.
+            JSON ``{"my_id": "some_uuid"}``. For others, it may be the
+            column name of the table where the unique ids are stored.
 
-            The values of the JSON field or the BigQuery column are used
-            as the
+            The values of the JSON field or the table column are used as
+            the
             [Document.id][google.cloud.discoveryengine.v1alpha.Document.id]s.
-            The JSON field or the BigQuery column must be of string
-            type, and the values must be set as valid strings conform to
+            The JSON field or the table column must be of string type,
+            and the values must be set as valid strings conform to
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ with 1-63
             characters. Otherwise, documents without valid IDs fail to
             be imported.
 
-            Only set this field when using
-            [GcsSource][google.cloud.discoveryengine.v1alpha.GcsSource]
-            or
-            [BigQuerySource][google.cloud.discoveryengine.v1alpha.BigQuerySource],
-            and when
-            [GcsSource.data_schema][google.cloud.discoveryengine.v1alpha.GcsSource.data_schema]
-            or
-            [BigQuerySource.data_schema][google.cloud.discoveryengine.v1alpha.BigQuerySource.data_schema]
-            is ``custom``. And only set this field when
+            Only set this field when
             [auto_generate_ids][google.cloud.discoveryengine.v1alpha.ImportDocumentsRequest.auto_generate_ids]
             is unset or set as ``false``. Otherwise, an INVALID_ARGUMENT
             error is thrown.
 
             If it is unset, a default value ``_id`` is used when
             importing from the allowed data sources.
+
+            Supported data sources:
+
+            -  [GcsSource][google.cloud.discoveryengine.v1alpha.GcsSource].
+               [GcsSource.data_schema][google.cloud.discoveryengine.v1alpha.GcsSource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [BigQuerySource][google.cloud.discoveryengine.v1alpha.BigQuerySource].
+               [BigQuerySource.data_schema][google.cloud.discoveryengine.v1alpha.BigQuerySource.data_schema]
+               must be ``custom`` or ``csv``. Otherwise, an
+               INVALID_ARGUMENT error is thrown.
+            -  [SpannerSource][google.cloud.discoveryengine.v1alpha.SpannerSource].
+            -  [CloudSqlSource][google.cloud.discoveryengine.v1alpha.CloudSqlSource].
+            -  [FirestoreSource][google.cloud.discoveryengine.v1alpha.FirestoreSource].
+            -  [BigtableSource][google.cloud.discoveryengine.v1alpha.BigtableSource].
     """
 
     class ReconciliationMode(proto.Enum):
@@ -554,6 +999,36 @@ class ImportDocumentsRequest(proto.Message):
         oneof="source",
         message="BigQuerySource",
     )
+    fhir_store_source: "FhirStoreSource" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="source",
+        message="FhirStoreSource",
+    )
+    spanner_source: "SpannerSource" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="source",
+        message="SpannerSource",
+    )
+    cloud_sql_source: "CloudSqlSource" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="source",
+        message="CloudSqlSource",
+    )
+    firestore_source: "FirestoreSource" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="source",
+        message="FirestoreSource",
+    )
+    bigtable_source: "BigtableSource" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="source",
+        message="BigtableSource",
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
@@ -567,6 +1042,11 @@ class ImportDocumentsRequest(proto.Message):
         proto.ENUM,
         number=6,
         enum=ReconciliationMode,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=field_mask_pb2.FieldMask,
     )
     auto_generate_ids: bool = proto.Field(
         proto.BOOL,

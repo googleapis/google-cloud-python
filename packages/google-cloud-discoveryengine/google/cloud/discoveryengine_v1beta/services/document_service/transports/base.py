@@ -230,7 +230,7 @@ class DocumentServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_service.UpdateDocumentRequest],
-        Union[document.Document, Awaitable[document.Document]],
+        Union[gcd_document.Document, Awaitable[gcd_document.Document]],
     ]:
         raise NotImplementedError()
 

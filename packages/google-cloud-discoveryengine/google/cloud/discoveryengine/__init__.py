@@ -48,6 +48,18 @@ from google.cloud.discoveryengine_v1beta.services.engine_service.async_client im
 from google.cloud.discoveryengine_v1beta.services.engine_service.client import (
     EngineServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.async_client import (
+    GroundedGenerationServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.client import (
+    GroundedGenerationServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.rank_service.async_client import (
+    RankServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.rank_service.client import (
+    RankServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.recommendation_service.async_client import (
     RecommendationServiceAsyncClient,
 )
@@ -90,6 +102,7 @@ from google.cloud.discoveryengine_v1beta.services.user_event_service.async_clien
 from google.cloud.discoveryengine_v1beta.services.user_event_service.client import (
     UserEventServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.types.answer import Answer
 from google.cloud.discoveryengine_v1beta.types.common import (
     CustomAttribute,
     DoubleList,
@@ -114,14 +127,23 @@ from google.cloud.discoveryengine_v1beta.types.conversation import (
     TextInput,
 )
 from google.cloud.discoveryengine_v1beta.types.conversational_search_service import (
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     ConverseConversationRequest,
     ConverseConversationResponse,
     CreateConversationRequest,
+    CreateSessionRequest,
     DeleteConversationRequest,
+    DeleteSessionRequest,
+    GetAnswerRequest,
     GetConversationRequest,
+    GetSessionRequest,
     ListConversationsRequest,
     ListConversationsResponse,
+    ListSessionsRequest,
+    ListSessionsResponse,
     UpdateConversationRequest,
+    UpdateSessionRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.data_store import DataStore
 from google.cloud.discoveryengine_v1beta.types.data_store_service import (
@@ -155,10 +177,26 @@ from google.cloud.discoveryengine_v1beta.types.engine_service import (
     GetEngineRequest,
     ListEnginesRequest,
     ListEnginesResponse,
+    PauseEngineRequest,
+    ResumeEngineRequest,
+    TuneEngineMetadata,
+    TuneEngineRequest,
+    TuneEngineResponse,
     UpdateEngineRequest,
 )
+from google.cloud.discoveryengine_v1beta.types.grounded_generation_service import (
+    CheckGroundingRequest,
+    CheckGroundingResponse,
+    CheckGroundingSpec,
+)
+from google.cloud.discoveryengine_v1beta.types.grounding import FactChunk, GroundingFact
 from google.cloud.discoveryengine_v1beta.types.import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
@@ -170,6 +208,7 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
 )
 from google.cloud.discoveryengine_v1beta.types.purge_config import (
     PurgeDocumentsMetadata,
@@ -178,6 +217,11 @@ from google.cloud.discoveryengine_v1beta.types.purge_config import (
     PurgeSuggestionDenyListEntriesMetadata,
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
+)
+from google.cloud.discoveryengine_v1beta.types.rank_service import (
+    RankingRecord,
+    RankRequest,
+    RankResponse,
 )
 from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
     RecommendRequest,
@@ -211,6 +255,7 @@ from google.cloud.discoveryengine_v1beta.types.serving_config_service import (
     ListServingConfigsResponse,
     UpdateServingConfigRequest,
 )
+from google.cloud.discoveryengine_v1beta.types.session import Query, Session
 from google.cloud.discoveryengine_v1beta.types.site_search_engine import (
     SiteSearchEngine,
     SiteVerificationInfo,
@@ -271,6 +316,10 @@ __all__ = (
     "DocumentServiceAsyncClient",
     "EngineServiceClient",
     "EngineServiceAsyncClient",
+    "GroundedGenerationServiceClient",
+    "GroundedGenerationServiceAsyncClient",
+    "RankServiceClient",
+    "RankServiceAsyncClient",
     "RecommendationServiceClient",
     "RecommendationServiceAsyncClient",
     "SchemaServiceClient",
@@ -285,6 +334,7 @@ __all__ = (
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
+    "Answer",
     "CustomAttribute",
     "DoubleList",
     "EmbeddingConfig",
@@ -302,14 +352,23 @@ __all__ = (
     "ConversationMessage",
     "Reply",
     "TextInput",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
     "CreateConversationRequest",
+    "CreateSessionRequest",
     "DeleteConversationRequest",
+    "DeleteSessionRequest",
+    "GetAnswerRequest",
     "GetConversationRequest",
+    "GetSessionRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
+    "ListSessionsRequest",
+    "ListSessionsResponse",
     "UpdateConversationRequest",
+    "UpdateSessionRequest",
     "DataStore",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",
@@ -335,8 +394,23 @@ __all__ = (
     "GetEngineRequest",
     "ListEnginesRequest",
     "ListEnginesResponse",
+    "PauseEngineRequest",
+    "ResumeEngineRequest",
+    "TuneEngineMetadata",
+    "TuneEngineRequest",
+    "TuneEngineResponse",
     "UpdateEngineRequest",
+    "CheckGroundingRequest",
+    "CheckGroundingResponse",
+    "CheckGroundingSpec",
+    "FactChunk",
+    "GroundingFact",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CloudSqlSource",
+    "FhirStoreSource",
+    "FirestoreSource",
     "GcsSource",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
@@ -348,12 +422,16 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "SpannerSource",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "RankingRecord",
+    "RankRequest",
+    "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
     "Schema",
@@ -376,6 +454,8 @@ __all__ = (
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
     "UpdateServingConfigRequest",
+    "Query",
+    "Session",
     "SiteSearchEngine",
     "SiteVerificationInfo",
     "TargetSite",

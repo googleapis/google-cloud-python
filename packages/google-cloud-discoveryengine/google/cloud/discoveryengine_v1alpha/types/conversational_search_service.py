@@ -21,7 +21,10 @@ from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1alpha.types import answer as gcd_answer
+from google.cloud.discoveryengine_v1alpha.types import common
 from google.cloud.discoveryengine_v1alpha.types import search_service
+from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -34,6 +37,15 @@ __protobuf__ = proto.module(
         "GetConversationRequest",
         "ListConversationsRequest",
         "ListConversationsResponse",
+        "AnswerQueryRequest",
+        "AnswerQueryResponse",
+        "GetAnswerRequest",
+        "CreateSessionRequest",
+        "UpdateSessionRequest",
+        "DeleteSessionRequest",
+        "GetSessionRequest",
+        "ListSessionsRequest",
+        "ListSessionsResponse",
     },
 )
 
@@ -355,6 +367,819 @@ class ListConversationsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=gcd_conversation.Conversation,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AnswerQueryRequest(proto.Message):
+    r"""Request message for
+    [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.AnswerQuery]
+    method.
+
+    Attributes:
+        serving_config (str):
+            Required. The resource name of the Search serving config,
+            such as
+            ``projects/*/locations/global/collections/default_collection/engines/*/servingConfigs/default_serving_config``,
+            or
+            ``projects/*/locations/global/collections/default_collection/dataStores/*/servingConfigs/default_serving_config``.
+            This field is used to identify the serving configuration
+            name, set of models used to make the search.
+        query (google.cloud.discoveryengine_v1alpha.types.Query):
+            Required. Current user query.
+        session (str):
+            The session resource name. Not required.
+
+            When session field is not set, the API is in
+            sessionless mode.
+
+            We support auto session mode: users can use the
+            wildcard symbol “-” as session id.  A new id
+            will be automatically generated and assigned.
+        safety_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SafetySpec):
+            Model specification.
+        related_questions_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.RelatedQuestionsSpec):
+            Related questions specification.
+        answer_generation_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.AnswerGenerationSpec):
+            Answer generation specification.
+        search_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec):
+            Search specification.
+        query_understanding_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.QueryUnderstandingSpec):
+            Query understanding specification.
+        asynchronous_mode (bool):
+            Asynchronous mode control.
+
+            If enabled, the response will be returned with
+            answer/session resource name without final answer. The API
+            users need to do the polling to get the latest status of
+            answer/session by calling
+            [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetAnswer]
+            or
+            [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetSession]
+            method.
+        user_pseudo_id (str):
+            A unique identifier for tracking visitors. For example, this
+            could be implemented with an HTTP cookie, which should be
+            able to uniquely identify a visitor on a single device. This
+            unique identifier should not change if the visitor logs in
+            or out of the website.
+
+            This field should NOT have a fixed value such as
+            ``unknown_visitor``.
+
+            The field must be a UTF-8 encoded string with a length limit
+            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
+    """
+
+    class SafetySpec(proto.Message):
+        r"""Safety specification.
+
+        Attributes:
+            enable (bool):
+                Enable the safety filtering on the answer
+                response. It is false by default.
+        """
+
+        enable: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
+    class RelatedQuestionsSpec(proto.Message):
+        r"""Related questions specification.
+
+        Attributes:
+            enable (bool):
+                Enable related questions feature if true.
+        """
+
+        enable: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
+    class AnswerGenerationSpec(proto.Message):
+        r"""Answer generation specification.
+
+        Attributes:
+            model_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.AnswerGenerationSpec.ModelSpec):
+                Answer generation model specification.
+            prompt_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.AnswerGenerationSpec.PromptSpec):
+                Answer generation prompt specification.
+            include_citations (bool):
+                Specifies whether to include citation metadata in the
+                answer. The default value is ``false``.
+            answer_language_code (str):
+                Language code for Answer. Use language tags defined by
+                `BCP47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
+                Note: This is an experimental feature.
+            ignore_adversarial_query (bool):
+                Specifies whether to filter out adversarial queries. The
+                default value is ``false``.
+
+                Google employs search-query classification to detect
+                adversarial queries. No answer is returned if the search
+                query is classified as an adversarial query. For example, a
+                user might ask a question regarding negative comments about
+                the company or submit a query designed to generate unsafe,
+                policy-violating output. If this field is set to ``true``,
+                we skip generating answers for adversarial queries and
+                return fallback messages instead.
+            ignore_non_answer_seeking_query (bool):
+                Specifies whether to filter out queries that are not
+                answer-seeking. The default value is ``false``.
+
+                Google employs search-query classification to detect
+                answer-seeking queries. No answer is returned if the search
+                query is classified as a non-answer seeking query. If this
+                field is set to ``true``, we skip generating answers for
+                non-answer seeking queries and return fallback messages
+                instead.
+        """
+
+        class ModelSpec(proto.Message):
+            r"""Answer Generation Model specification.
+
+            Attributes:
+                model_version (str):
+                    Model version. If not set, it will use the
+                    default stable model. Allowed values are:
+                    stable, preview.
+            """
+
+            model_version: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        class PromptSpec(proto.Message):
+            r"""Answer generation prompt specification.
+
+            Attributes:
+                preamble (str):
+                    Customized preamble.
+            """
+
+            preamble: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        model_spec: "AnswerQueryRequest.AnswerGenerationSpec.ModelSpec" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="AnswerQueryRequest.AnswerGenerationSpec.ModelSpec",
+        )
+        prompt_spec: "AnswerQueryRequest.AnswerGenerationSpec.PromptSpec" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="AnswerQueryRequest.AnswerGenerationSpec.PromptSpec",
+        )
+        include_citations: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        answer_language_code: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        ignore_adversarial_query: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+        ignore_non_answer_seeking_query: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
+
+    class SearchSpec(proto.Message):
+        r"""Search specification.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            search_params (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchParams):
+                Search parameters.
+
+                This field is a member of `oneof`_ ``input``.
+            search_result_list (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList):
+                Search result list.
+
+                This field is a member of `oneof`_ ``input``.
+        """
+
+        class SearchParams(proto.Message):
+            r"""Search parameters.
+
+            Attributes:
+                max_return_results (int):
+                    Number of search results to return.
+                    The default value is 10.
+                filter (str):
+                    The filter syntax consists of an expression language for
+                    constructing a predicate from one or more fields of the
+                    documents being filtered. Filter expression is
+                    case-sensitive. This will be used to filter search results
+                    which may affect the Answer response.
+
+                    If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
+                    returned.
+
+                    Filtering in Vertex AI Search is done by mapping the LHS
+                    filter key to a key property defined in the Vertex AI Search
+                    backend -- this mapping is defined by the customer in their
+                    schema. For example a media customers might have a field
+                    'name' in their schema. In this case the filter would look
+                    like this: filter --> name:'ANY("king kong")'
+
+                    For more information about filtering including syntax and
+                    filter operators, see
+                    `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+                boost_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec):
+                    Boost specification to boost certain documents in search
+                    results which may affect the answer query response. For more
+                    information on boosting, see
+                    `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
+                order_by (str):
+                    The order in which documents are returned. Documents can be
+                    ordered by a field in an
+                    [Document][google.cloud.discoveryengine.v1alpha.Document]
+                    object. Leave it unset if ordered by relevance. ``order_by``
+                    expression is case-sensitive. For more information on
+                    ordering, see
+                    `Ordering <https://cloud.google.com/retail/docs/filter-and-order#order>`__
+
+                    If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
+                    returned.
+                search_result_mode (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SearchResultMode):
+                    Specifies the search result mode. If unspecified, the search
+                    result mode is based on
+                    [DataStore.DocumentProcessingConfig.chunking_config][]:
+
+                    -  If [DataStore.DocumentProcessingConfig.chunking_config][]
+                       is specified, it defaults to ``CHUNKS``.
+                    -  Otherwise, it defaults to ``DOCUMENTS``. See `parse and
+                       chunk
+                       documents <https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>`__
+                custom_fine_tuning_spec (google.cloud.discoveryengine_v1alpha.types.CustomFineTuningSpec):
+                    Custom fine tuning configs.
+            """
+
+            max_return_results: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            filter: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            boost_spec: search_service.SearchRequest.BoostSpec = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=search_service.SearchRequest.BoostSpec,
+            )
+            order_by: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+            search_result_mode: search_service.SearchRequest.ContentSearchSpec.SearchResultMode = proto.Field(
+                proto.ENUM,
+                number=5,
+                enum=search_service.SearchRequest.ContentSearchSpec.SearchResultMode,
+            )
+            custom_fine_tuning_spec: common.CustomFineTuningSpec = proto.Field(
+                proto.MESSAGE,
+                number=6,
+                message=common.CustomFineTuningSpec,
+            )
+
+        class SearchResultList(proto.Message):
+            r"""Search result list.
+
+            Attributes:
+                search_results (MutableSequence[google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult]):
+                    Search results.
+            """
+
+            class SearchResult(proto.Message):
+                r"""Search result.
+
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    unstructured_document_info (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo):
+                        Unstructured document information.
+
+                        This field is a member of `oneof`_ ``content``.
+                    chunk_info (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo):
+                        Chunk information.
+
+                        This field is a member of `oneof`_ ``content``.
+                """
+
+                class UnstructuredDocumentInfo(proto.Message):
+                    r"""Unstructured document information.
+
+                    Attributes:
+                        document (str):
+                            Document resource name.
+                        uri (str):
+                            URI for the document.
+                        title (str):
+                            Title.
+                        document_contexts (MutableSequence[google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext]):
+                            List of document contexts.
+                        extractive_segments (MutableSequence[google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment]):
+                            List of extractive segments.
+                        extractive_answers (MutableSequence[google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer]):
+                            List of extractive answers.
+                    """
+
+                    class DocumentContext(proto.Message):
+                        r"""Document context.
+
+                        Attributes:
+                            page_identifier (str):
+                                Page identifier.
+                            content (str):
+                                Document content.
+                        """
+
+                        page_identifier: str = proto.Field(
+                            proto.STRING,
+                            number=1,
+                        )
+                        content: str = proto.Field(
+                            proto.STRING,
+                            number=2,
+                        )
+
+                    class ExtractiveSegment(proto.Message):
+                        r"""Extractive segment.
+                        `Guide <https://cloud.google.com/generative-ai-app-builder/docs/snippets#extractive-segments>`__
+
+                        Attributes:
+                            page_identifier (str):
+                                Page identifier.
+                            content (str):
+                                Extractive segment content.
+                        """
+
+                        page_identifier: str = proto.Field(
+                            proto.STRING,
+                            number=1,
+                        )
+                        content: str = proto.Field(
+                            proto.STRING,
+                            number=2,
+                        )
+
+                    class ExtractiveAnswer(proto.Message):
+                        r"""Extractive answer.
+                        `Guide <https://cloud.google.com/generative-ai-app-builder/docs/snippets#get-answers>`__
+
+                        Attributes:
+                            page_identifier (str):
+                                Page identifier.
+                            content (str):
+                                Extractive answer content.
+                        """
+
+                        page_identifier: str = proto.Field(
+                            proto.STRING,
+                            number=1,
+                        )
+                        content: str = proto.Field(
+                            proto.STRING,
+                            number=2,
+                        )
+
+                    document: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    uri: str = proto.Field(
+                        proto.STRING,
+                        number=2,
+                    )
+                    title: str = proto.Field(
+                        proto.STRING,
+                        number=3,
+                    )
+                    document_contexts: MutableSequence[
+                        "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext"
+                    ] = proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=4,
+                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext",
+                    )
+                    extractive_segments: MutableSequence[
+                        "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment"
+                    ] = proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=5,
+                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment",
+                    )
+                    extractive_answers: MutableSequence[
+                        "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer"
+                    ] = proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=6,
+                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer",
+                    )
+
+                class ChunkInfo(proto.Message):
+                    r"""Chunk information.
+
+                    Attributes:
+                        chunk (str):
+                            Chunk resource name.
+                        content (str):
+                            Chunk textual content.
+                    """
+
+                    chunk: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    content: str = proto.Field(
+                        proto.STRING,
+                        number=2,
+                    )
+
+                unstructured_document_info: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo" = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    oneof="content",
+                    message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo",
+                )
+                chunk_info: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    oneof="content",
+                    message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo",
+                )
+
+            search_results: MutableSequence[
+                "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult",
+            )
+
+        search_params: "AnswerQueryRequest.SearchSpec.SearchParams" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="input",
+            message="AnswerQueryRequest.SearchSpec.SearchParams",
+        )
+        search_result_list: "AnswerQueryRequest.SearchSpec.SearchResultList" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="input",
+                message="AnswerQueryRequest.SearchSpec.SearchResultList",
+            )
+        )
+
+    class QueryUnderstandingSpec(proto.Message):
+        r"""Query understanding specification.
+
+        Attributes:
+            query_classification_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec):
+                Query classification specification.
+            query_rephraser_spec (google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec):
+                Query rephraser specification.
+        """
+
+        class QueryClassificationSpec(proto.Message):
+            r"""Query classification specification.
+
+            Attributes:
+                types (MutableSequence[google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type]):
+                    Enabled query classification types.
+            """
+
+            class Type(proto.Enum):
+                r"""Query classification types.
+
+                Values:
+                    TYPE_UNSPECIFIED (0):
+                        Unspecified query classification type.
+                    ADVERSARIAL_QUERY (1):
+                        Adversarial query classification type.
+                    NON_ANSWER_SEEKING_QUERY (2):
+                        Non-answer-seeking query classification type.
+                """
+                TYPE_UNSPECIFIED = 0
+                ADVERSARIAL_QUERY = 1
+                NON_ANSWER_SEEKING_QUERY = 2
+
+            types: MutableSequence[
+                "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"
+            ] = proto.RepeatedField(
+                proto.ENUM,
+                number=1,
+                enum="AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type",
+            )
+
+        class QueryRephraserSpec(proto.Message):
+            r"""Query rephraser specification.
+
+            Attributes:
+                disable (bool):
+                    Disable query rephraser.
+                max_rephrase_steps (int):
+                    Max rephrase steps.
+                    The max number is 10 steps.
+                    If not set or set to < 1, it will be set to 1 by
+                    default.
+            """
+
+            disable: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            max_rephrase_steps: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        query_classification_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec",
+        )
+        query_rephraser_spec: "AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec",
+        )
+
+    serving_config: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query: gcd_session.Query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_session.Query,
+    )
+    session: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    safety_spec: SafetySpec = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=SafetySpec,
+    )
+    related_questions_spec: RelatedQuestionsSpec = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=RelatedQuestionsSpec,
+    )
+    answer_generation_spec: AnswerGenerationSpec = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=AnswerGenerationSpec,
+    )
+    search_spec: SearchSpec = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=SearchSpec,
+    )
+    query_understanding_spec: QueryUnderstandingSpec = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=QueryUnderstandingSpec,
+    )
+    asynchronous_mode: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    user_pseudo_id: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+
+
+class AnswerQueryResponse(proto.Message):
+    r"""Response message for
+    [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.AnswerQuery]
+    method.
+
+    Attributes:
+        answer (google.cloud.discoveryengine_v1alpha.types.Answer):
+            Answer resource object. If
+            [AnswerQueryRequest.StepSpec.max_step_count][] is greater
+            than 1, use
+            [Answer.name][google.cloud.discoveryengine.v1alpha.Answer.name]
+            to fetch answer information using
+            [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetAnswer]
+            API.
+        session (google.cloud.discoveryengine_v1alpha.types.Session):
+            Session resource object. It will be only available when
+            session field is set and valid in the
+            [AnswerQueryRequest][google.cloud.discoveryengine.v1alpha.AnswerQueryRequest]
+            request.
+    """
+
+    answer: gcd_answer.Answer = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_answer.Answer,
+    )
+    session: gcd_session.Session = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_session.Session,
+    )
+
+
+class GetAnswerRequest(proto.Message):
+    r"""Request for GetAnswer method.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Answer to get. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateSessionRequest(proto.Message):
+    r"""Request for CreateSession method.
+
+    Attributes:
+        parent (str):
+            Required. Full resource name of parent data store. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+        session (google.cloud.discoveryengine_v1alpha.types.Session):
+            Required. The session to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    session: gcd_session.Session = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_session.Session,
+    )
+
+
+class UpdateSessionRequest(proto.Message):
+    r"""Request for UpdateSession method.
+
+    Attributes:
+        session (google.cloud.discoveryengine_v1alpha.types.Session):
+            Required. The Session to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            [Session][google.cloud.discoveryengine.v1alpha.Session] to
+            update. The following are NOT supported:
+
+            -  [Session.name][google.cloud.discoveryengine.v1alpha.Session.name]
+
+            If not set or empty, all supported fields are updated.
+    """
+
+    session: gcd_session.Session = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_session.Session,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteSessionRequest(proto.Message):
+    r"""Request for DeleteSession method.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Session to delete.
+            Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetSessionRequest(proto.Message):
+    r"""Request for GetSession method.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Session to get. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSessionsRequest(proto.Message):
+    r"""Request for ListSessions method.
+
+    Attributes:
+        parent (str):
+            Required. The data store resource name. Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+        page_size (int):
+            Maximum number of results to return. If
+            unspecified, defaults to 50. Max allowed value
+            is 1000.
+        page_token (str):
+            A page token, received from a previous ``ListSessions``
+            call. Provide this to retrieve the subsequent page.
+        filter (str):
+            A filter to apply on the list results. The supported
+            features are: user_pseudo_id, state.
+
+            Example: "user_pseudo_id = some_id".
+        order_by (str):
+            A comma-separated list of fields to order by, sorted in
+            ascending order. Use "desc" after a field name for
+            descending. Supported fields:
+
+            -  ``update_time``
+            -  ``create_time``
+            -  ``session_name``
+
+            Example: "update_time desc" "create_time".
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListSessionsResponse(proto.Message):
+    r"""Response for ListSessions method.
+
+    Attributes:
+        sessions (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Session]):
+            All the Sessions for a given data store.
+        next_page_token (str):
+            Pagination token, if not returned indicates
+            the last page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    sessions: MutableSequence[gcd_session.Session] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_session.Session,
     )
     next_page_token: str = proto.Field(
         proto.STRING,
