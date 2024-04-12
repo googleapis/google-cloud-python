@@ -385,7 +385,6 @@ class Table(_TableBase):
         "clone_definition": "cloneDefinition",
         "streaming_buffer": "streamingBuffer",
         "self_link": "selfLink",
-        "time_partitioning": "timePartitioning",
         "type": "type",
         "view_use_legacy_sql": "view",
         "view_query": "view",
