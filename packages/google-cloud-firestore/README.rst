@@ -15,7 +15,7 @@ Python Client for Cloud Firestore API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
    :target: https://pypi.org/project/google-cloud-firestore/
 .. _Cloud Firestore API: https://cloud.google.com/firestore
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/firestore/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/firestore/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/firestore
 
 Quick Start
