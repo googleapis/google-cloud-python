@@ -12,7 +12,7 @@ class {{ message.name }}({{ p }}.Message):
     {% endif %}
     {% endif %}
     {# Use select filter to capture nested values. See https://github.com/googleapis/gapic-generator-python/issues/1083 #} 
-    {%- if message.fields.values() | map(attribute="oneof") | select | list %}
+    {%- if message.fields.values() | map(attribute="oneof", default="") | select | list %}
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     {% endif %}
@@ -43,7 +43,7 @@ class {{ message.name }}({{ p }}.Message):
         {% endif %}
     {% endfor %}
 
-    {% if "next_page_token" in message.fields.values()|map(attribute='name') %}
+    {% if "next_page_token" in message.fields.values()|map(attribute='name', default="") %}
     @property
     def raw_page(self):
         return self

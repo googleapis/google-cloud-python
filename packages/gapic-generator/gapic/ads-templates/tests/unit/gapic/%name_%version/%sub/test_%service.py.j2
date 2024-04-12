@@ -607,7 +607,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     for message in response:
         assert isinstance(message, {{ method.output.ident }})
     {% else %}
-    {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
+    {% if "next_page_token" in method.output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
     {% endif %}
@@ -1215,7 +1215,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         response = client.{{ method_name }}(request)
         {% endif %}
 
-    {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
+    {% if "next_page_token" in method.output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
 
