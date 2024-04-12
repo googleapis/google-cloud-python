@@ -20,3 +20,8 @@ Changelog
     :maxdepth: 2
 
     changelog
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md
