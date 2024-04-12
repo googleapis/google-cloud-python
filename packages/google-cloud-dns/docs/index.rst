@@ -21,3 +21,7 @@ For a list of all ``google-cloud-dns`` releases:
 
    changelog
 
+.. toctree::
+  :hidden:
+
+  summary_overview.md
