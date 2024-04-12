@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import functools
+import inspect
 import itertools
 import numbers
 import os
@@ -179,6 +180,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def __len__(self):
         return self.shape[0]
+
+    __len__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__len__)
 
     def __iter__(self) -> typing.Iterator:
         self._optimize_query_complexity()
@@ -423,6 +426,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
 
     pad = ffill
+    pad.__doc__ = inspect.getdoc(vendored_pandas_series.Series.ffill)
 
     def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
         window = bigframes.core.window_spec.WindowSpec(preceding=0, following=limit)
@@ -609,27 +613,37 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_unary_op(ops.isnull_op)
 
     isnull = isna
+    isnull.__doc__ = inspect.getdoc(vendored_pandas_series.Series.isna)
 
     def notna(self) -> "Series":
         return self._apply_unary_op(ops.notnull_op)
 
     notnull = notna
+    notnull.__doc__ = inspect.getdoc(vendored_pandas_series.Series.notna)
 
     def __and__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.and_op)
+
+    __and__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__and__)
 
     __rand__ = __and__
 
     def __or__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.or_op)
 
+    __or__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__or__)
+
     __ror__ = __or__
 
     def __add__(self, other: float | int | Series) -> Series:
         return self.add(other)
 
+    __add__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__add__)
+
     def __radd__(self, other: float | int | Series) -> Series:
         return self.radd(other)
+
+    __radd__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__radd__)
 
     def add(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.add_op)
@@ -640,8 +654,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def __sub__(self, other: float | int | Series) -> Series:
         return self.sub(other)
 
+    __sub__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__sub__)
+
     def __rsub__(self, other: float | int | Series) -> Series:
         return self.rsub(other)
+
+    __rsub__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rsub__)
 
     def sub(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.sub_op)
@@ -650,12 +668,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_binary_op(other, ops.sub_op, reverse=True)
 
     subtract = sub
+    subtract.__doc__ = inspect.getdoc(vendored_pandas_series.Series.sub)
 
     def __mul__(self, other: float | int | Series) -> Series:
         return self.mul(other)
 
+    __mul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__mul__)
+
     def __rmul__(self, other: float | int | Series) -> Series:
         return self.rmul(other)
+
+    __rmul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rmul__)
 
     def mul(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.mul_op)
@@ -664,12 +687,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_binary_op(other, ops.mul_op, reverse=True)
 
     multiply = mul
+    multiply.__doc__ = inspect.getdoc(vendored_pandas_series.Series.mul)
 
     def __truediv__(self, other: float | int | Series) -> Series:
         return self.truediv(other)
 
+    __truediv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__truediv__)
+
     def __rtruediv__(self, other: float | int | Series) -> Series:
         return self.rtruediv(other)
+
+    __rtruediv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rtruediv__)
 
     def truediv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op)
@@ -677,17 +705,21 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def rtruediv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op, reverse=True)
 
-    div = truediv
-
-    divide = truediv
+    truediv.__doc__ = inspect.getdoc(vendored_pandas_series.Series.truediv)
+    div = divide = truediv
 
     rdiv = rtruediv
+    rdiv.__doc__ = inspect.getdoc(vendored_pandas_series.Series.rtruediv)
 
     def __floordiv__(self, other: float | int | Series) -> Series:
         return self.floordiv(other)
 
+    __floordiv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__floordiv__)
+
     def __rfloordiv__(self, other: float | int | Series) -> Series:
         return self.rfloordiv(other)
+
+    __rfloordiv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rfloordiv__)
 
     def floordiv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.floordiv_op)
@@ -698,8 +730,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def __pow__(self, other: float | int | Series) -> Series:
         return self.pow(other)
 
+    __pow__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__pow__)
+
     def __rpow__(self, other: float | int | Series) -> Series:
         return self.rpow(other)
+
+    __rpow__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rpow__)
 
     def pow(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.pow_op)
@@ -734,8 +770,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def __mod__(self, other) -> Series:  # type: ignore
         return self.mod(other)
 
+    __mod__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__mod__)
+
     def __rmod__(self, other) -> Series:  # type: ignore
         return self.rmod(other)
+
+    __rmod__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rmod__)
 
     def mod(self, other) -> Series:  # type: ignore
         return self._apply_binary_op(other, ops.mod_op)
@@ -753,10 +793,18 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # the output should be dtype float, both floordiv and mod returns dtype int in this case.
         return (self.rfloordiv(other), self.rmod(other))
 
-    def __matmul__(self, other):
+    def dot(self, other):
         return (self * other).sum()
 
-    dot = __matmul__
+    def __matmul__(self, other):
+        return self.dot(other)
+
+    __matmul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__matmul__)
+
+    def __rmatmul__(self, other):
+        return self.dot(other)
+
+    __rmatmul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rmatmul__)
 
     def combine_first(self, other: Series) -> Series:
         result = self._apply_binary_op(other, ops.coalesce_op)
@@ -849,6 +897,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
 
     aggregate = agg
+    aggregate.__doc__ = inspect.getdoc(vendored_pandas_series.Series.agg)
 
     def skew(self):
         count = self.count()
@@ -883,6 +932,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return (numerator / denominator) - adjustment
 
     kurtosis = kurt
+    kurtosis.__doc__ = inspect.getdoc(vendored_pandas_series.Series.kurt)
 
     def mode(self) -> Series:
         block = self._block
@@ -930,6 +980,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return typing.cast(float, self._apply_aggregation(agg_ops.product_op))
 
     product = prod
+    product.__doc__ = inspect.getdoc(vendored_pandas_series.Series.prod)
 
     def __eq__(self, other: object) -> Series:  # type: ignore
         return self.eq(other)
@@ -939,6 +990,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def __invert__(self) -> Series:
         return self._apply_unary_op(ops.invert_op)
+
+    __invert__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__invert__)
 
     def eq(self, other: object) -> Series:
         # TODO: enforce stricter alignment
@@ -1073,6 +1126,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block = block.select_column(left)
             return Series(block)
         return self.loc[indexer]
+
+    __getitem__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__getitem__)
 
     def __getattr__(self, key: str):
         if hasattr(pandas.Series, key):
@@ -1461,6 +1516,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self.to_pandas().to_list()
 
     to_list = tolist
+    to_list.__doc__ = inspect.getdoc(vendored_pandas_series.Series.tolist)
 
     def to_markdown(
         self,
@@ -1476,7 +1532,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> numpy.ndarray:
         return self.to_pandas().to_numpy(dtype, copy, na_value, **kwargs)
 
-    __array__ = to_numpy
+    def __array__(self, dtype=None) -> numpy.ndarray:
+        return self.to_numpy(dtype=dtype)
+
+    __array__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__array__)
 
     def to_pickle(self, path, **kwargs) -> None:
         return self.to_pandas().to_pickle(path, **kwargs)

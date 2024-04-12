@@ -1120,9 +1120,39 @@ class NDFrame(indexing.IndexingMixin):
         return common.pipe(self, func, *args, **kwargs)
 
     def __nonzero__(self):
+        """Returns the truth value of the object."""
         raise ValueError(
             f"The truth value of a {type(self).__name__} is ambiguous. "
             "Use a.empty, a.bool(), a.item(), a.any() or a.all()."
         )
 
     __bool__ = __nonzero__
+
+    def __getattr__(self, name: str):
+        """
+        After regular attribute access, try looking up the name
+        This allows simpler access to columns for interactive use.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def equals(self, other) -> bool:
+        """
+        Test whether two objects contain the same elements.
+
+        This function allows two Series or DataFrames to be compared against
+        each other to see if they have the same shape and elements. NaNs in
+        the same location are considered equal.
+
+        The row/column index do not need to have the same type, as long
+        as the values are considered equal. Corresponding columns must be of
+        the same dtype.
+
+        Args:
+            other (Series or DataFrame):
+                The other Series or DataFrame to be compared with the first.
+
+        Returns:
+            bool: True if all elements are the same in both objects, False
+            otherwise.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

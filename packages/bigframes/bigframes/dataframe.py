@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import datetime
+import inspect
 import re
 import sys
 import textwrap
@@ -314,6 +315,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         rows, _ = self.shape
         return rows
 
+    __len__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__len__)
+
     def __iter__(self):
         return iter(self.columns)
 
@@ -466,7 +469,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             bigframes.series.Series,
         ],
     ):  # No return type annotations (like pandas) as type cannot always be determined statically
-        """Gets the specified column(s) from the DataFrame."""
         # NOTE: This implements the operations described in
         # https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html
 
@@ -497,6 +499,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             selected_ids = (*selected_ids, *col_ids)
 
         return DataFrame(self._block.select_columns(selected_ids))
+
+    __getitem__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__getitem__)
 
     def _getitem_label(self, key: blocks.Label):
         col_ids = self._block.cols_matching_label(key)
@@ -642,13 +646,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return html_string
 
     def __setitem__(self, key: str, value: SingleItemValue):
-        """Modify or insert a column into the DataFrame.
-
-        Note: This does **not** modify the original table the DataFrame was
-        derived from.
-        """
         df = self._assign_single_item(key, value)
         self._set_block(df._get_block())
+
+    __setitem__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__setitem__)
 
     def _apply_binop(
         self,
@@ -838,32 +839,50 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def eq(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.eq_op, axis=axis)
 
+    def __eq__(self, other) -> DataFrame:  # type: ignore
+        return self.eq(other)
+
+    __eq__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__eq__)
+
     def ne(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.ne_op, axis=axis)
 
-    __eq__ = eq  # type: ignore
+    def __ne__(self, other) -> DataFrame:  # type: ignore
+        return self.ne(other)
 
-    __ne__ = ne  # type: ignore
+    __ne__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__ne__)
 
     def le(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.le_op, axis=axis)
 
+    def __le__(self, other) -> DataFrame:
+        return self.le(other)
+
+    __le__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__le__)
+
     def lt(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.lt_op, axis=axis)
+
+    def __lt__(self, other) -> DataFrame:
+        return self.lt(other)
+
+    __lt__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__lt__)
 
     def ge(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.ge_op, axis=axis)
 
+    def __ge__(self, other) -> DataFrame:
+        return self.ge(other)
+
+    __ge__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__ge__)
+
     def gt(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.gt_op, axis=axis)
 
-    __lt__ = lt
+    def __gt__(self, other) -> DataFrame:
+        return self.gt(other)
 
-    __le__ = le
-
-    __gt__ = gt
-
-    __ge__ = ge
+    __gt__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__gt__)
 
     def add(
         self,
@@ -874,7 +893,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # TODO(swast): Support level parameter with MultiIndex.
         return self._apply_binop(other, ops.add_op, axis=axis)
 
-    __radd__ = __add__ = radd = add
+    def radd(
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
+    ) -> DataFrame:
+        # TODO(swast): Support fill_value parameter.
+        # TODO(swast): Support level parameter with MultiIndex.
+        return self.add(other, axis=axis)
+
+    def __add__(self, other) -> DataFrame:
+        return self.add(other)
+
+    __add__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__add__)
+
+    __radd__ = __add__
 
     def sub(
         self,
@@ -883,7 +916,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.sub_op, axis=axis)
 
-    __sub__ = subtract = sub
+    subtract = sub
+    subtract.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.sub)
+
+    def __sub__(self, other):
+        return self.sub(other)
+
+    __sub__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__sub__)
 
     def rsub(
         self,
@@ -892,7 +931,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.sub_op, axis=axis, reverse=True)
 
-    __rsub__ = rsub
+    def __rsub__(self, other):
+        return self.rsub(other)
+
+    __rsub__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__rsub__)
 
     def mul(
         self,
@@ -901,7 +943,25 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.mul_op, axis=axis)
 
-    __rmul__ = __mul__ = rmul = multiply = mul
+    multiply = mul
+    multiply.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.mul)
+
+    def __mul__(self, other):
+        return self.mul(other)
+
+    __mul__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__mul__)
+
+    def rmul(
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
+    ) -> DataFrame:
+        return self.mul(other, axis=axis)
+
+    def __rmul__(self, other):
+        return self.rmul(other)
+
+    __rmul__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__rmul__)
 
     def truediv(
         self,
@@ -910,7 +970,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.div_op, axis=axis)
 
-    div = divide = __truediv__ = truediv
+    truediv.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.truediv)
+    div = divide = truediv
+
+    def __truediv__(self, other):
+        return self.truediv(other)
+
+    __truediv__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__truediv__)
 
     def rtruediv(
         self,
@@ -919,7 +985,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.div_op, axis=axis, reverse=True)
 
-    __rtruediv__ = rdiv = rtruediv
+    rdiv = rtruediv
+    rdiv.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.rtruediv)
+
+    def __rtruediv__(self, other):
+        return self.rtruediv(other)
+
+    __rtruediv__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__rtruediv__)
 
     def floordiv(
         self,
@@ -928,7 +1000,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.floordiv_op, axis=axis)
 
-    __floordiv__ = floordiv
+    def __floordiv__(self, other):
+        return self.floordiv(other)
+
+    __floordiv__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__floordiv__)
 
     def rfloordiv(
         self,
@@ -937,31 +1012,48 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_binop(other, ops.floordiv_op, axis=axis, reverse=True)
 
-    __rfloordiv__ = rfloordiv
+    def __rfloordiv__(self, other):
+        return self.rfloordiv(other)
+
+    __rfloordiv__.__doc__ = inspect.getdoc(
+        vendored_pandas_frame.DataFrame.__rfloordiv__
+    )
 
     def mod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
         return self._apply_binop(other, ops.mod_op, axis=axis)
 
+    def __mod__(self, other):
+        return self.mod(other)
+
+    __mod__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__mod__)
+
     def rmod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
         return self._apply_binop(other, ops.mod_op, axis=axis, reverse=True)
 
-    __mod__ = mod
+    def __rmod__(self, other):
+        return self.rmod(other)
 
-    __rmod__ = rmod
+    __rmod__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__rmod__)
 
     def pow(
         self, other: int | bigframes.series.Series, axis: str | int = "columns"
     ) -> DataFrame:
         return self._apply_binop(other, ops.pow_op, axis=axis)
 
+    def __pow__(self, other):
+        return self.pow(other)
+
+    __pow__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__pow__)
+
     def rpow(
         self, other: int | bigframes.series.Series, axis: str | int = "columns"
     ) -> DataFrame:
         return self._apply_binop(other, ops.pow_op, axis=axis, reverse=True)
 
-    __pow__ = pow
+    def __rpow__(self, other):
+        return self.rpow(other)
 
-    __rpow__ = rpow
+    __rpow__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__rpow__)
 
     def align(
         self,
@@ -1971,6 +2063,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return bigframes.series.Series(block.select_column("values"))
 
     product = prod
+    product.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.prod)
 
     def count(self, *, numeric_only: bool = False) -> bigframes.series.Series:
         if not numeric_only:
@@ -2010,6 +2103,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
 
     aggregate = agg
+    aggregate.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.agg)
 
     def idxmin(self) -> bigframes.series.Series:
         return bigframes.series.Series(block_ops.idxmin(self._block))
@@ -2083,6 +2177,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return bigframes.series.Series(result_block)
 
     kurtosis = kurt
+    kurtosis.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.kurt)
 
     def _pivot(
         self,
@@ -2542,11 +2637,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self._apply_unary_op(ops.isnull_op)
 
     isnull = isna
+    isnull.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.isna)
 
     def notna(self) -> DataFrame:
         return self._apply_unary_op(ops.notnull_op)
 
     notnull = notna
+    notnull.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.notna)
 
     def cumsum(self):
         is_numeric_types = [
@@ -2860,7 +2957,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> numpy.ndarray:
         return self.to_pandas().to_numpy(dtype, copy, na_value, **kwargs)
 
-    __array__ = to_numpy
+    def __array__(self, dtype=None) -> numpy.ndarray:
+        return self.to_numpy(dtype=dtype)
+
+    __array__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__array__)
 
     def to_parquet(
         self,
@@ -3227,6 +3327,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return
 
     applymap = map
+    applymap.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.map)
 
     def _slice(
         self,
@@ -3367,4 +3468,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def plot(self):
         return plotting.PlotAccessor(self)
 
-    __matmul__ = dot
+    def __matmul__(self, other) -> DataFrame:
+        return self.dot(other)
+
+    __matmul__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__matmul__)
