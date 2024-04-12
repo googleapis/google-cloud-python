@@ -21,6 +21,7 @@ from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -246,7 +247,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         descriptors method over gRPC.
 
         Lists monitored resource descriptors that match a
-        filter. This method does not require a Workspace.
+        filter.
 
         Returns:
             Callable[[~.ListMonitoredResourceDescriptorsRequest],
@@ -278,8 +279,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         r"""Return a callable for the get monitored resource
         descriptor method over gRPC.
 
-        Gets a single monitored resource descriptor. This
-        method does not require a Workspace.
+        Gets a single monitored resource descriptor.
 
         Returns:
             Callable[[~.GetMonitoredResourceDescriptorRequest],
@@ -310,8 +310,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     ]:
         r"""Return a callable for the list metric descriptors method over gRPC.
 
-        Lists metric descriptors that match a filter. This
-        method does not require a Workspace.
+        Lists metric descriptors that match a filter.
 
         Returns:
             Callable[[~.ListMetricDescriptorsRequest],
@@ -340,8 +339,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     ]:
         r"""Return a callable for the get metric descriptor method over gRPC.
 
-        Gets a single metric descriptor. This method does not
-        require a Workspace.
+        Gets a single metric descriptor.
 
         Returns:
             Callable[[~.GetMetricDescriptorRequest],
@@ -371,10 +369,10 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         r"""Return a callable for the create metric descriptor method over gRPC.
 
         Creates a new metric descriptor. The creation is executed
-        asynchronously and callers may check the returned operation to
-        track its progress. User-created metric descriptors define
-        `custom
+        asynchronously. User-created metric descriptors define `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
+        The metric descriptor is updated if it already exists, except
+        that metric labels are never removed.
 
         Returns:
             Callable[[~.CreateMetricDescriptorRequest],
@@ -433,8 +431,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     ]:
         r"""Return a callable for the list time series method over gRPC.
 
-        Lists time series that match a filter. This method
-        does not require a Workspace.
+        Lists time series that match a filter.
 
         Returns:
             Callable[[~.ListTimeSeriesRequest],
@@ -460,11 +457,12 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     ) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the create time series method over gRPC.
 
-        Creates or adds data to one or more time series.
-        The response is empty if all time series in the request
-        were written. If any time series could not be written, a
-        corresponding failure message is included in the error
-        response.
+        Creates or adds data to one or more time series. The response is
+        empty if all time series in the request were written. If any
+        time series could not be written, a corresponding failure
+        message is included in the error response. This method does not
+        support `resource locations constraint of an organization
+        policy <https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations#setting_the_organization_policy>`__.
 
         Returns:
             Callable[[~.CreateTimeSeriesRequest],

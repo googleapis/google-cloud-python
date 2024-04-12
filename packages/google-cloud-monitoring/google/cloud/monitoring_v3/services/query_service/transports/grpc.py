@@ -20,6 +20,7 @@ from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.monitoring_v3.types import metric_service
@@ -31,7 +32,7 @@ class QueryServiceGrpcTransport(QueryServiceTransport):
     """gRPC backend transport for QueryService.
 
     The QueryService API is used to manage time series data in
-    Stackdriver Monitoring. Time series data is a collection of data
+    Cloud Monitoring. Time series data is a collection of data
     points that describes the time-varying values of a metric.
 
     This class defines the same methods as the primary client, so the
@@ -239,7 +240,6 @@ class QueryServiceGrpcTransport(QueryServiceTransport):
         r"""Return a callable for the query time series method over gRPC.
 
         Queries time series using Monitoring Query Language.
-        This method does not require a Workspace.
 
         Returns:
             Callable[[~.QueryTimeSeriesRequest],
