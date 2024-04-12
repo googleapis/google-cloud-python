@@ -40,6 +40,7 @@ def sample_start_manual_transfer_runs():
 
     # Initialize request argument(s)
     request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
+        parent="parent_value",
     )
 
     # Make the request

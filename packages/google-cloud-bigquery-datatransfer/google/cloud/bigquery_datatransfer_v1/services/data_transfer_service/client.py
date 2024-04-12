@@ -1708,6 +1708,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -2363,6 +2364,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
+                    name="name_value",
                 )
 
                 # Make the request
@@ -2440,6 +2442,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.UnenrollDataSourcesRequest(
+                    name="name_value",
                 )
 
                 # Make the request

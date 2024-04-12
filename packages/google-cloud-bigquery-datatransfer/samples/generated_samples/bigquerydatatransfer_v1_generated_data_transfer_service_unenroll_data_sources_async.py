@@ -40,6 +40,7 @@ async def sample_unenroll_data_sources():
 
     # Initialize request argument(s)
     request = bigquery_datatransfer_v1.UnenrollDataSourcesRequest(
+        name="name_value",
     )
 
     # Make the request
