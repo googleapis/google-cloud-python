@@ -2,7 +2,7 @@
   "name": "generativelanguage",
   "name_pretty": "Generative Language API",
   "api_description": "Generative Language API",
-  "product_documentation": "https://developers.generativeai.google/",
+  "product_documentation": "https://ai.google.dev/docs",
   "client_documentation": "https://googleapis.dev/python/generativelanguage/latest",
   "issue_tracker": "https://github.com/google/generative-ai-python/issues/new",
   "release_level": "preview",
