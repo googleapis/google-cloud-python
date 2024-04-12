@@ -30,18 +30,11 @@ env | grep KOKORO
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 
-# Setup project id.
-export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
-
 # Set up creating a new instance for each system test run
 export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true
 
-# Remove old nox
-python3 -m pip uninstall --yes --quiet nox-automation
-
-# Install nox
-python3 -m pip install --upgrade --quiet nox
-python3 -m nox --version
+# Setup project id.
+export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
 # If this is a continuous build, send the test log to the FlakyBot.
 # See https://github.com/googleapis/repo-automation-bots/tree/main/packages/flakybot.

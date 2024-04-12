@@ -144,12 +144,12 @@ s.move(
 # Ensure CI runs on a new instance each time
 s.replace(
     ".kokoro/build.sh",
-    "# Remove old nox",
+    "# Setup project id.",
     """\
 # Set up creating a new instance for each system test run
 export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true
 
-# Remove old nox""",
+# Setup project id.""",
 )
 
 # Update samples folder in CONTRIBUTING.rst
