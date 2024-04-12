@@ -553,10 +553,6 @@ class AclConfigServiceRestTransport(AclConfigServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/evaluations/*/operations/*}",
-                },
-                {
-                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/operations/*}",
                 },
                 {

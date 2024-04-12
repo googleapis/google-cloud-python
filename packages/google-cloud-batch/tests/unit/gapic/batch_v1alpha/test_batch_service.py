@@ -5242,6 +5242,7 @@ def test_create_job_rest(request_type):
                 "require_hosts_file": True,
                 "permissive_ssh": True,
                 "run_as_non_root": True,
+                "service_account": {},
             }
         ],
         "scheduling_policy": 1,

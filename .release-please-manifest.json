@@ -24,6 +24,7 @@
     "packages/google-cloud-asset": "3.26.0",
     "packages/google-cloud-assured-workloads": "1.12.3",
     "packages/google-cloud-automl": "2.13.3",
+    "packages/google-cloud-backupdr": "0.0.0",
     "packages/google-cloud-bare-metal-solution": "1.7.3",
     "packages/google-cloud-batch": "0.17.17",
     "packages/google-cloud-beyondcorp-appconnections": "0.4.9",

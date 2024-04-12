@@ -78,7 +78,7 @@ class Place(proto.Message):
             "Google Sydney", "Starbucks", "Pyrmont", etc.
         types (MutableSequence[str]):
             A set of type tags for this result. For
-            example, "political" and "locality".  For the
+            example, "political" and "locality". For the
             complete list of possible values, see Table A
             and Table B at
             https://developers.google.com/maps/documentation/places/web-service/place-types

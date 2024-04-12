@@ -36,8 +36,7 @@ from .base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
 class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     """gRPC backend transport for ServingConfigService.
 
-    Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig].
+    Service for operations related to [ServingConfig][].
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

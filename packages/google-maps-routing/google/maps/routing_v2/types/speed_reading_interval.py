@@ -30,8 +30,8 @@ __protobuf__ = proto.module(
 class SpeedReadingInterval(proto.Message):
     r"""Traffic density indicator on a contiguous segment of a polyline or
     path. Given a path with points P_0, P_1, ... , P_N (zero-based
-    index), the SpeedReadingInterval defines an interval and describes
-    its traffic using the following categories.
+    index), the ``SpeedReadingInterval`` defines an interval and
+    describes its traffic using the following categories.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

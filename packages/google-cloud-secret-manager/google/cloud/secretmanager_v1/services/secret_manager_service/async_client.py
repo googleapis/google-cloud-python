@@ -332,7 +332,7 @@ class SecretManagerServiceAsyncClient:
         Returns:
             google.cloud.secretmanager_v1.services.secret_manager_service.pagers.ListSecretsAsyncPager:
                 Response message for
-                [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
+                   [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1043,7 +1043,7 @@ class SecretManagerServiceAsyncClient:
         Returns:
             google.cloud.secretmanager_v1.services.secret_manager_service.pagers.ListSecretVersionsAsyncPager:
                 Response message for
-                [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
+                   [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1286,7 +1286,7 @@ class SecretManagerServiceAsyncClient:
         Returns:
             google.cloud.secretmanager_v1.types.AccessSecretVersionResponse:
                 Response message for
-                [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
+                   [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
 
         """
         # Create or coerce a protobuf request object.

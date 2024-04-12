@@ -1112,7 +1112,7 @@ class AutocompletePlacesResponse(proto.Message):
                 text (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.FormattableText):
                     The predicted text. This text does not represent a Place,
                     but rather a text query that could be used in a search
-                    endpoint (for example, TextSearch).
+                    endpoint (for example, Text Search).
 
                     ``text`` is recommended for developers who wish to show a
                     single UI element. Developers who wish to show two separate,
