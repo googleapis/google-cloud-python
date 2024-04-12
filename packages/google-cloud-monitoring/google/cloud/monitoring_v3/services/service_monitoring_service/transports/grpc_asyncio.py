@@ -19,6 +19,7 @@ import warnings
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -35,9 +36,10 @@ class ServiceMonitoringServiceGrpcAsyncIOTransport(ServiceMonitoringServiceTrans
     """gRPC AsyncIO backend transport for ServiceMonitoringService.
 
     The Cloud Monitoring Service-Oriented Monitoring API has endpoints
-    for managing and querying aspects of a workspace's services. These
-    include the ``Service``'s monitored resources, its Service-Level
-    Objectives, and a taxonomy of categorized Health Metrics.
+    for managing and querying aspects of a Metrics Scope's services.
+    These include the ``Service``'s monitored resources, its
+    Service-Level Objectives, and a taxonomy of categorized Health
+    Metrics.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -300,7 +302,7 @@ class ServiceMonitoringServiceGrpcAsyncIOTransport(ServiceMonitoringServiceTrans
     ]:
         r"""Return a callable for the list services method over gRPC.
 
-        List ``Service``\ s for this workspace.
+        List ``Service``\ s for this Metrics Scope.
 
         Returns:
             Callable[[~.ListServicesRequest],

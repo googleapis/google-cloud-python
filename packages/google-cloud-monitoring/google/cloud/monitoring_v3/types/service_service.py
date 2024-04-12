@@ -48,7 +48,7 @@ class CreateServiceRequest(proto.Message):
         parent (str):
             Required. Resource
             `name <https://cloud.google.com/monitoring/api/v3#project_name>`__
-            of the parent workspace. The format is:
+            of the parent Metrics Scope. The format is:
 
             ::
 
@@ -102,7 +102,7 @@ class ListServicesRequest(proto.Message):
             Required. Resource name of the parent containing the listed
             services, either a
             `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
-            or a Monitoring Workspace. The formats are:
+            or a Monitoring Metrics Scope. The formats are:
 
             ::
 
@@ -110,28 +110,28 @@ class ListServicesRequest(proto.Message):
                 workspaces/[HOST_PROJECT_ID_OR_NUMBER]
         filter (str):
             A filter specifying what ``Service``\ s to return. The
-            filter currently supports the following fields:
+            filter supports filtering on a particular service-identifier
+            type or one of its attributes.
 
-            ::
-
-                - `identifier_case`
-                - `app_engine.module_id`
-                - `cloud_endpoints.service` (reserved for future use)
-                - `mesh_istio.mesh_uid`
-                - `mesh_istio.service_namespace`
-                - `mesh_istio.service_name`
-                - `cluster_istio.location` (deprecated)
-                - `cluster_istio.cluster_name` (deprecated)
-                - `cluster_istio.service_namespace` (deprecated)
-                - `cluster_istio.service_name` (deprecated)
-
-            ``identifier_case`` refers to which option in the identifier
-            oneof is populated. For example, the filter
+            To filter on a particular service-identifier type, the
+            ``identifier_case`` refers to which option in the
+            ``identifier`` field is populated. For example, the filter
             ``identifier_case = "CUSTOM"`` would match all services with
-            a value for the ``custom`` field. Valid options are
-            "CUSTOM", "APP_ENGINE", "MESH_ISTIO", plus "CLUSTER_ISTIO"
-            (deprecated) and "CLOUD_ENDPOINTS" (reserved for future
-            use).
+            a value for the ``custom`` field. Valid options include
+            "CUSTOM", "APP_ENGINE", "MESH_ISTIO", and the other options
+            listed at
+            https://cloud.google.com/monitoring/api/ref_v3/rest/v3/services#Service
+
+            To filter on an attribute of a service-identifier type,
+            apply the filter name by using the snake case of the
+            service-identifier type and the attribute of that
+            service-identifier type, and join the two with a period. For
+            example, to filter by the ``meshUid`` field of the
+            ``MeshIstio`` service-identifier type, you must filter on
+            ``mesh_istio.mesh_uid = "123"`` to match all services with
+            mesh UID "123". Service-identifier types and their
+            attributes are described at
+            https://cloud.google.com/monitoring/api/ref_v3/rest/v3/services#Service
         page_size (int):
             A non-negative number that is the maximum
             number of results to return. When 0, use default
@@ -246,7 +246,7 @@ class CreateServiceLevelObjectiveRequest(proto.Message):
         service_level_objective_id (str):
             Optional. The ServiceLevelObjective id to use for this
             ServiceLevelObjective. If omitted, an id will be generated
-            instead. Must match the pattern ``[a-z0-9\-]+``
+            instead. Must match the pattern ``^[a-zA-Z0-9-_:.]+$``
         service_level_objective (google.cloud.monitoring_v3.types.ServiceLevelObjective):
             Required. The ``ServiceLevelObjective`` to create. The
             provided ``name`` will be respected if no
@@ -305,7 +305,7 @@ class ListServiceLevelObjectivesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the parent containing the listed
-            SLOs, either a project or a Monitoring Workspace. The
+            SLOs, either a project or a Monitoring Metrics Scope. The
             formats are:
 
             ::

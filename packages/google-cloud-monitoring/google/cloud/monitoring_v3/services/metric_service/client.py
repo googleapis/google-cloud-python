@@ -51,6 +51,7 @@ from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.api import monitored_resource_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.metric_service import pagers
 from google.cloud.monitoring_v3.types import common
@@ -719,7 +720,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMonitoredResourceDescriptorsPager:
         r"""Lists monitored resource descriptors that match a
-        filter. This method does not require a Workspace.
+        filter.
 
         .. code-block:: python
 
@@ -846,8 +847,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> monitored_resource_pb2.MonitoredResourceDescriptor:
-        r"""Gets a single monitored resource descriptor. This
-        method does not require a Workspace.
+        r"""Gets a single monitored resource descriptor.
 
         .. code-block:: python
 
@@ -975,8 +975,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetricDescriptorsPager:
-        r"""Lists metric descriptors that match a filter. This
-        method does not require a Workspace.
+        r"""Lists metric descriptors that match a filter.
 
         .. code-block:: python
 
@@ -1099,8 +1098,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
-        r"""Gets a single metric descriptor. This method does not
-        require a Workspace.
+        r"""Gets a single metric descriptor.
 
         .. code-block:: python
 
@@ -1218,10 +1216,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
         r"""Creates a new metric descriptor. The creation is executed
-        asynchronously and callers may check the returned operation to
-        track its progress. User-created metric descriptors define
-        `custom
+        asynchronously. User-created metric descriptors define `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
+        The metric descriptor is updated if it already exists, except
+        that metric labels are never removed.
 
         .. code-block:: python
 
@@ -1446,8 +1444,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTimeSeriesPager:
-        r"""Lists time series that match a filter. This method
-        does not require a Workspace.
+        r"""Lists time series that match a filter.
 
         .. code-block:: python
 
@@ -1613,11 +1610,12 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Creates or adds data to one or more time series.
-        The response is empty if all time series in the request
-        were written. If any time series could not be written, a
-        corresponding failure message is included in the error
-        response.
+        r"""Creates or adds data to one or more time series. The response is
+        empty if all time series in the request were written. If any
+        time series could not be written, a corresponding failure
+        message is included in the error response. This method does not
+        support `resource locations constraint of an organization
+        policy <https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations#setting_the_organization_policy>`__.
 
         .. code-block:: python
 

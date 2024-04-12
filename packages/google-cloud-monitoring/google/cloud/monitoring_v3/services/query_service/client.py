@@ -47,6 +47,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+from google.longrunning import operations_pb2  # type: ignore
+
 from google.cloud.monitoring_v3.services.query_service import pagers
 from google.cloud.monitoring_v3.types import metric, metric_service
 
@@ -91,7 +93,7 @@ class QueryServiceClientMeta(type):
 
 class QueryServiceClient(metaclass=QueryServiceClientMeta):
     """The QueryService API is used to manage time series data in
-    Stackdriver Monitoring. Time series data is a collection of data
+    Cloud Monitoring. Time series data is a collection of data
     points that describes the time-varying values of a metric.
     """
 
@@ -648,7 +650,6 @@ class QueryServiceClient(metaclass=QueryServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.QueryTimeSeriesPager:
         r"""Queries time series using Monitoring Query Language.
-        This method does not require a Workspace.
 
         .. code-block:: python
 

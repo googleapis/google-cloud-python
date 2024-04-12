@@ -42,6 +42,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.type import calendar_period_pb2  # type: ignore
 
@@ -57,9 +58,10 @@ from .transports.grpc_asyncio import ServiceMonitoringServiceGrpcAsyncIOTranspor
 
 class ServiceMonitoringServiceAsyncClient:
     """The Cloud Monitoring Service-Oriented Monitoring API has endpoints
-    for managing and querying aspects of a workspace's services. These
-    include the ``Service``'s monitored resources, its Service-Level
-    Objectives, and a taxonomy of categorized Health Metrics.
+    for managing and querying aspects of a Metrics Scope's services.
+    These include the ``Service``'s monitored resources, its
+    Service-Level Objectives, and a taxonomy of categorized Health
+    Metrics.
     """
 
     _client: ServiceMonitoringServiceClient
@@ -318,7 +320,7 @@ class ServiceMonitoringServiceAsyncClient:
             parent (:class:`str`):
                 Required. Resource
                 `name <https://cloud.google.com/monitoring/api/v3#project_name>`__
-                of the parent workspace. The format is:
+                of the parent Metrics Scope. The format is:
 
                 ::
 
@@ -525,7 +527,7 @@ class ServiceMonitoringServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
-        r"""List ``Service``\ s for this workspace.
+        r"""List ``Service``\ s for this Metrics Scope.
 
         .. code-block:: python
 
@@ -561,7 +563,7 @@ class ServiceMonitoringServiceAsyncClient:
                 Required. Resource name of the parent containing the
                 listed services, either a
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
-                or a Monitoring Workspace. The formats are:
+                or a Monitoring Metrics Scope. The formats are:
 
                 ::
 
@@ -1169,8 +1171,8 @@ class ServiceMonitoringServiceAsyncClient:
                 The request object. The ``ListServiceLevelObjectives`` request.
             parent (:class:`str`):
                 Required. Resource name of the parent containing the
-                listed SLOs, either a project or a Monitoring Workspace.
-                The formats are:
+                listed SLOs, either a project or a Monitoring Metrics
+                Scope. The formats are:
 
                 ::
 
