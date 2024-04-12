@@ -20,3 +20,7 @@ For a list of all ``google-cloud-runtimeconfig`` releases:
 
    changelog
 
+.. toctree::
+  :hidden:
+
+  summary_overview.md

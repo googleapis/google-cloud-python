@@ -15,7 +15,7 @@ Python Client for Google Cloud Runtime Configurator API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-runtimeconfig.svg
    :target: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Google Cloud Runtime Configurator API: https://cloud.google.com/deployment-manager/runtime-configurator/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/runtimeconfig/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/runtimeconfig/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/deployment-manager/runtime-configurator/
 
 Quick Start
