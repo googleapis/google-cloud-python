@@ -41,3 +41,8 @@ For a list of all ``google-cloud-pubsub`` releases:
 
   changelog
 
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

@@ -432,6 +432,7 @@ s.replace(
     "noxfile.py", "--cov=google", "--cov=google/cloud",
 )
 
+s.replace(".github/blunderbuss.yml", "googleapis/api-pubsub", "mukund-ananthu")
 
 python.py_samples(skip_readmes=True)
 
