@@ -43,3 +43,8 @@ For a list of all ``google-cloud-datastore`` releases:
   :maxdepth: 2
 
   changelog
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md

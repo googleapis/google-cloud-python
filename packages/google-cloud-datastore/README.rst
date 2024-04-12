@@ -19,7 +19,7 @@ consistency for all other queries.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
    :target: https://pypi.org/project/google-cloud-datastore/
 .. _Google Cloud Datastore API: https://cloud.google.com/datastore
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastore/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastore/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/datastore
 
 Quick Start
