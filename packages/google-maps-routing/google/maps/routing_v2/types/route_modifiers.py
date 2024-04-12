@@ -39,22 +39,22 @@ class RouteModifiers(proto.Message):
             When set to true, avoids toll roads where reasonable, giving
             preference to routes not containing toll roads. Applies only
             to the ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode].
         avoid_highways (bool):
             When set to true, avoids highways where reasonable, giving
             preference to routes not containing highways. Applies only
             to the ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode].
         avoid_ferries (bool):
             When set to true, avoids ferries where reasonable, giving
             preference to routes not containing ferries. Applies only to
             the ``DRIVE`` and\ ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode].
         avoid_indoor (bool):
             When set to true, avoids navigating indoors where
             reasonable, giving preference to routes not containing
             indoor navigation. Applies only to the ``WALK``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode].
         vehicle_info (google.maps.routing_v2.types.VehicleInfo):
             Specifies the vehicle information.
         toll_passes (MutableSequence[google.maps.routing_v2.types.TollPass]):
@@ -63,7 +63,7 @@ class RouteModifiers(proto.Message):
             toll passes are not provided, the API treats the toll pass
             as unknown and tries to return the cash price. Applies only
             to the ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode].
     """
 
     avoid_tolls: bool = proto.Field(

@@ -85,6 +85,7 @@ class TollPass(proto.Enum):
             E-card provided by multiple banks used to pay
             for tolls. All e-cards via banks are charged the
             same so only one enum value is needed. E.g.
+
             - Bank Mandiri
               https://www.bankmandiri.co.id/e-money
             - BCA https://www.bca.co.id/flazz
@@ -94,6 +95,16 @@ class TollPass(proto.Enum):
             India.
         IN_LOCAL_HP_PLATE_EXEMPT (79):
             India, HP state plate exemption.
+        JP_ETC (98):
+            Japan
+            ETC. Electronic wireless system to collect
+            tolls. https://www.go-etc.jp/
+        JP_ETC2 (99):
+            Japan
+            ETC2.0. New version of ETC with further discount
+            and bidirectional communication between devices
+            on vehicles and antennas on the road.
+            https://www.go-etc.jp/etc2/index.html
         MX_IAVE (90):
             Mexico toll pass.
             https://iave.capufe.gob.mx/#/
@@ -256,6 +267,8 @@ class TollPass(proto.Enum):
             WV, USA.
         US_WV_MEMORIAL_BRIDGE_TICKETS (63):
             WV, USA.
+        US_WV_MOV_PASS (100):
+            WV, USA
         US_WV_NEWELL_TOLL_BRIDGE_TICKET (64):
             WV, USA.
     """
@@ -279,6 +292,8 @@ class TollPass(proto.Enum):
     ID_E_TOLL = 16
     IN_FASTAG = 78
     IN_LOCAL_HP_PLATE_EXEMPT = 79
+    JP_ETC = 98
+    JP_ETC2 = 99
     MX_IAVE = 90
     MX_PASE = 91
     MX_QUICKPASS = 93
@@ -354,6 +369,7 @@ class TollPass(proto.Enum):
     US_WA_GOOD_TO_GO = 1
     US_WV_EZPASSWV = 62
     US_WV_MEMORIAL_BRIDGE_TICKETS = 63
+    US_WV_MOV_PASS = 100
     US_WV_NEWELL_TOLL_BRIDGE_TICKET = 64
 
 

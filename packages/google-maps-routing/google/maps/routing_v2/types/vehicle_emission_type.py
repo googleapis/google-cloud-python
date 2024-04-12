@@ -30,7 +30,7 @@ __protobuf__ = proto.module(
 class VehicleEmissionType(proto.Enum):
     r"""A set of values describing the vehicle's emission type. Applies only
     to the ``DRIVE``
-    [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+    [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode].
 
     Values:
         VEHICLE_EMISSION_TYPE_UNSPECIFIED (0):

@@ -101,13 +101,16 @@ class ComputeRoutesRequest(proto.Message):
             then this value defaults to the time that you made the
             request. NOTE: You can only specify a ``departure_time`` in
             the past when
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
-            set to ``TRANSIT``.
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode]
+            is set to ``TRANSIT``. Transit trips are available for up to
+            7 days in the past or 100 days in the future.
         arrival_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The arrival time. NOTE: Can only be set when
             [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
-            set to ``TRANSIT``. You can specify either departure_time or
-            arrival_time, but not both.
+            set to ``TRANSIT``. You can specify either
+            ``departure_time`` or ``arrival_time``, but not both.
+            Transit trips are available for up to 7 days in the past or
+            100 days in the future.
         compute_alternative_routes (bool):
             Optional. Specifies whether to calculate
             alternate routes in addition to the route. No
@@ -118,8 +121,8 @@ class ComputeRoutesRequest(proto.Message):
             affect the way routes are calculated.
         language_code (str):
             Optional. The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see
-            http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+            "sr-Latn". For more information, see `Unicode Locale
+            Identifier <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__.
             See `Language
             Support <https://developers.google.com/maps/faq#languagesupport>`__
             for the list of supported languages. When you don't provide
@@ -128,11 +131,12 @@ class ComputeRoutesRequest(proto.Message):
         region_code (str):
             Optional. The region code, specified as a ccTLD ("top-level
             domain") two-character value. For more information see
-            https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains
+            `Country code top-level
+            domains <https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains>`__.
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for the display
             fields. These fields include the ``instruction`` field in
-            [NavigationInstruction][google.maps.routing.v2.NavigationInstruction].
+            [``NavigationInstruction``][google.maps.routing.v2.NavigationInstruction].
             The units of measure used for the route, leg, step distance,
             and duration are not affected by this value. If you don't
             provide this value, then the display units are inferred from
@@ -169,22 +173,22 @@ class ComputeRoutesRequest(proto.Message):
             Optional. Specifies the assumptions to use when calculating
             time in traffic. This setting affects the value returned in
             the duration field in the
-            [Route][google.maps.routing.v2.Route] and
-            [RouteLeg][google.maps.routing.v2.RouteLeg] which contains
-            the predicted time in traffic based on historical averages.
-            ``TrafficModel`` is only available for requests that have
-            set
-            [RoutingPreference][google.maps.routing.v2.RoutingPreference]
+            [``Route``][google.maps.routing.v2.Route] and
+            [``RouteLeg``][google.maps.routing.v2.RouteLeg] which
+            contains the predicted time in traffic based on historical
+            averages. ``TrafficModel`` is only available for requests
+            that have set
+            [``RoutingPreference``][google.maps.routing.v2.RoutingPreference]
             to ``TRAFFIC_AWARE_OPTIMAL`` and
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] to
-            ``DRIVE``. Defaults to ``BEST_GUESS`` if traffic is
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode]
+            to ``DRIVE``. Defaults to ``BEST_GUESS`` if traffic is
             requested and ``TrafficModel`` is not specified.
         transit_preferences (google.maps.routing_v2.types.TransitPreferences):
             Optional. Specifies preferences that influence the route
             returned for ``TRANSIT`` routes. NOTE: You can only specify
             a ``transit_preferences`` when
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
-            set to ``TRANSIT``.
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode]
+            is set to ``TRANSIT``.
     """
 
     class ReferenceRoute(proto.Enum):
@@ -216,8 +220,7 @@ class ComputeRoutesRequest(proto.Message):
             TRAFFIC_ON_POLYLINE (3):
                 Traffic aware polylines for the route(s).
             HTML_FORMATTED_NAVIGATION_INSTRUCTIONS (4):
-                [Navigation
-                Instructions][google.maps.routing.v2.NavigationInstructions.instructions]
+                ```NavigationInstructions`` <google.maps.routing.v2.NavigationInstructions.instructions>`__
                 presented as a formatted HTML text string. This content is
                 meant to be read as-is. This content is for display only. Do
                 not programmatically parse it.
@@ -327,8 +330,8 @@ class ComputeRoutesResponse(proto.Message):
     Attributes:
         routes (MutableSequence[google.maps.routing_v2.types.Route]):
             Contains an array of computed routes (up to three) when you
-            specify compute_alternatives_routes, and contains just one
-            route when you don't. When this array contains multiple
+            specify ``compute_alternatives_routes``, and contains just
+            one route when you don't. When this array contains multiple
             entries, the first one is the most recommended route. If the
             array is empty, then it means no route could be found.
         fallback_info (google.maps.routing_v2.types.FallbackInfo):
@@ -370,13 +373,17 @@ class ComputeRouteMatrixRequest(proto.Message):
             response matrix. Several size restrictions apply to the
             cardinality of origins and destinations:
 
-            -  The number of elements (origins × destinations) must be
-               no greater than 625 in any case.
-            -  The number of elements (origins × destinations) must be
-               no greater than 100 if routing_preference is set to
-               ``TRAFFIC_AWARE_OPTIMAL``.
-            -  The number of waypoints (origins + destinations)
-               specified as ``place_id`` must be no greater than 50.
+            -  The sum of the number of origins + the number of
+               destinations specified as either ``place_id`` or
+               ``address`` must be no greater than 50.
+            -  The product of number of origins × number of destinations
+               must be no greater than 625 in any case.
+            -  The product of the number of origins × number of
+               destinations must be no greater than 100 if
+               routing_preference is set to ``TRAFFIC_AWARE_OPTIMAL``.
+            -  The product of the number of origins × number of
+               destinations must be no greater than 100 if travel_mode
+               is set to ``TRANSIT``.
         destinations (MutableSequence[google.maps.routing_v2.types.RouteMatrixDestination]):
             Required. Array of destinations, which
             determines the columns of the response matrix.
@@ -395,17 +402,17 @@ class ComputeRouteMatrixRequest(proto.Message):
             then this value defaults to the time that you made the
             request. NOTE: You can only specify a ``departure_time`` in
             the past when
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
-            set to ``TRANSIT``.
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode]
+            is set to ``TRANSIT``.
         arrival_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The arrival time. NOTE: Can only be set when
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
-            set to ``TRANSIT``. You can specify either departure_time or
-            arrival_time, but not both.
+            [``RouteTravelMode``][google.maps.routing.v2.RouteTravelMode]
+            is set to ``TRANSIT``. You can specify either
+            ``departure_time`` or ``arrival_time``, but not both.
         language_code (str):
             Optional. The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see
-            http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+            "sr-Latn". For more information, see `Unicode Locale
+            Identifier <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__.
             See `Language
             Support <https://developers.google.com/maps/faq#languagesupport>`__
             for the list of supported languages. When you don't provide
@@ -414,7 +421,11 @@ class ComputeRouteMatrixRequest(proto.Message):
         region_code (str):
             Optional. The region code, specified as a ccTLD ("top-level
             domain") two-character value. For more information see
-            https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains
+            `Country code top-level
+            domains <https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains>`__.
+        units (google.maps.routing_v2.types.Units):
+            Optional. Specifies the units of measure for
+            the display fields.
         extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRouteMatrixRequest.ExtraComputation]):
             Optional. A list of extra computations which
             may be used to complete the request. Note: These
@@ -492,6 +503,11 @@ class ComputeRouteMatrixRequest(proto.Message):
     region_code: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    units: gmr_units.Units = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=gmr_units.Units,
     )
     extra_computations: MutableSequence[ExtraComputation] = proto.RepeatedField(
         proto.ENUM,

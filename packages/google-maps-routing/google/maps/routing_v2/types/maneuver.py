@@ -29,7 +29,8 @@ __protobuf__ = proto.module(
 
 class Maneuver(proto.Enum):
     r"""A set of values that specify the navigation action to take
-    for the current step (e.g., turn left, merge, straight, etc.).
+    for the current step (for example, turn left, merge, or
+    straight).
 
     Values:
         MANEUVER_UNSPECIFIED (0):
