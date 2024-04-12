@@ -782,6 +782,39 @@ class TestCredentials(object):
             "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
+    def test_info_with_default_token_url(self):
+        credentials = identity_pool.Credentials(
+            audience=AUDIENCE,
+            subject_token_type=SUBJECT_TOKEN_TYPE,
+            credential_source=self.CREDENTIAL_SOURCE_TEXT_URL.copy(),
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE_TEXT_URL,
+            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
+        }
+
+    def test_info_with_default_token_url_with_universe_domain(self):
+        credentials = identity_pool.Credentials(
+            audience=AUDIENCE,
+            subject_token_type=SUBJECT_TOKEN_TYPE,
+            credential_source=self.CREDENTIAL_SOURCE_TEXT_URL.copy(),
+            universe_domain="testdomain.org",
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": "https://sts.testdomain.org/v1/token",
+            "credential_source": self.CREDENTIAL_SOURCE_TEXT_URL,
+            "universe_domain": "testdomain.org",
+        }
+
     def test_retrieve_subject_token_missing_subject_token(self, tmpdir):
         # Provide empty text file.
         empty_file = tmpdir.join("empty.txt")

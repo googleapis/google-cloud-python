@@ -52,7 +52,7 @@ _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 # Cloud resource manager URL used to retrieve project information.
 _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projects/"
 # Default Google sts token url.
-_DEFAULT_TOKEN_URL = "https://sts.googleapis.com/v1/token"
+_DEFAULT_TOKEN_URL = "https://sts.{universe_domain}/v1/token"
 
 
 @dataclass
@@ -147,7 +147,12 @@ class Credentials(
         super(Credentials, self).__init__()
         self._audience = audience
         self._subject_token_type = subject_token_type
+        self._universe_domain = universe_domain
         self._token_url = token_url
+        if self._token_url == _DEFAULT_TOKEN_URL:
+            self._token_url = self._token_url.replace(
+                "{universe_domain}", self._universe_domain
+            )
         self._token_info_url = token_info_url
         self._credential_source = credential_source
         self._service_account_impersonation_url = service_account_impersonation_url
@@ -160,7 +165,6 @@ class Credentials(
         self._scopes = scopes
         self._default_scopes = default_scopes
         self._workforce_pool_user_project = workforce_pool_user_project
-        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         self._trust_boundary = {
             "locations": [],
             "encoded_locations": "0x0",

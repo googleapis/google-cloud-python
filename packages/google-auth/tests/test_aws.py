@@ -1220,6 +1220,39 @@ class TestCredentials(object):
                 url + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
             )
 
+    def test_info_with_default_token_url(self):
+        credentials = aws.Credentials(
+            audience=AUDIENCE,
+            subject_token_type=SUBJECT_TOKEN_TYPE,
+            credential_source=self.CREDENTIAL_SOURCE.copy(),
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE.copy(),
+            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
+        }
+
+    def test_info_with_default_token_url_with_universe_domain(self):
+        credentials = aws.Credentials(
+            audience=AUDIENCE,
+            subject_token_type=SUBJECT_TOKEN_TYPE,
+            credential_source=self.CREDENTIAL_SOURCE.copy(),
+            universe_domain="testdomain.org",
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": "https://sts.testdomain.org/v1/token",
+            "credential_source": self.CREDENTIAL_SOURCE.copy(),
+            "universe_domain": "testdomain.org",
+        }
+
     def test_retrieve_subject_token_missing_region_url(self):
         # When AWS_REGION envvar is not available, region_url is required for
         # determining the current AWS region.
