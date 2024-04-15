@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.11...google-maps-places-v0.1.12) (2024-04-15)
+
+
+### Documentation
+
+* Fix designation of Text Search ([8b87391](https://github.com/googleapis/google-cloud-python/commit/8b87391ebcd2a5daac50195fcc31a10a007a1c5c))
+* Update field mask guidance ([8b87391](https://github.com/googleapis/google-cloud-python/commit/8b87391ebcd2a5daac50195fcc31a10a007a1c5c))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.10...google-maps-places-v0.1.11) (2024-04-03)
 
 
