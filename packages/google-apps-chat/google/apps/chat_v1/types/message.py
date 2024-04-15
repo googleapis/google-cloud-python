@@ -75,13 +75,13 @@ class Message(proto.Message):
             ``clientAssignedMessageId`` field. For example,
             ``spaces/AAAAAAAAAAA/messages/client-custom-name``. For
             details, see `Name a
-            message <https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message>`__.
+            message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
         sender (google.apps.chat_v1.types.User):
             Output only. The user who created the message. If your Chat
             app `authenticates as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__,
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             the output populates the
-            `user <https://developers.google.com/chat/api/reference/rest/v1/User>`__
+            `user <https://developers.google.com/workspace/chat/api/reference/rest/v1/User>`__
             ``name`` and ``type``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Immutable. For spaces created in
@@ -104,13 +104,13 @@ class Message(proto.Message):
         text (str):
             Plain-text body of the message. The first link to an image,
             video, or web page generates a `preview
-            chip <https://developers.google.com/chat/how-tos/preview-links>`__.
+            chip <https://developers.google.com/workspace/chat/preview-links>`__.
             You can also `@mention a Google Chat
-            user <https://developers.google.com/chat/format-messages#messages-@mention>`__,
+            user <https://developers.google.com/workspace/chat/format-messages#messages-@mention>`__,
             or everyone in the space.
 
             To learn about creating text messages, see `Send a text
-            message <https://developers.google.com/chat/api/guides/v1/messages/create#create-text-messages>`__.
+            message <https://developers.google.com/workspace/chat/create-messages#create-text-messages>`__.
         formatted_text (str):
             Output only. Contains the message ``text`` with markups
             added to communicate formatting. This field might not
@@ -118,12 +118,12 @@ class Message(proto.Message):
             following:
 
             -  `Markup
-               syntax <https://developers.google.com/chat/format-messages>`__
-               for bold, italic, strikethrough, monospace, and monospace
-               block.
+               syntax <https://developers.google.com/workspace/chat/format-messages>`__
+               for bold, italic, strikethrough, monospace, monospace
+               block, and bulleted list.
 
             -  `User
-               mentions <https://developers.google.com/chat/format-messages#messages-@mention>`__
+               mentions <https://developers.google.com/workspace/chat/format-messages#messages-@mention>`__
                using the format ``<users/{user}>``.
 
             -  Custom hyperlinks using the format
@@ -136,7 +136,7 @@ class Message(proto.Message):
                emoji, such as ``U+1F600`` for a grinning face emoji.
 
             For more information, see `View text formatting sent in a
-            message <https://developers.google.com/chat/format-messages#view_text_formatting_sent_in_a_message>`__
+            message <https://developers.google.com/workspace/chat/format-messages#view_text_formatting_sent_in_a_message>`__
         cards (MutableSequence[google.apps.chat_v1.types.ContextualAddOnMarkup.Card]):
             Deprecated: Use ``cards_v2`` instead.
 
@@ -147,16 +147,15 @@ class Message(proto.Message):
             can have a maximum size of 32 KB.
         cards_v2 (MutableSequence[google.apps.chat_v1.types.CardWithId]):
             An array of
-            `cards <https://developers.google.com/chat/api/reference/rest/v1/cards>`__.
+            `cards <https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>`__.
 
             Only Chat apps can create cards. If your Chat app
             `authenticates as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__,
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             the messages can't contain cards.
 
-            To learn about cards and how to create them, see `Design
-            dynamic, interactive, and consistent UIs with
-            cards <https://developers.google.com/chat/ui>`__.
+            To learn about cards and how to create them, see `Send card
+            messages <https://developers.google.com/workspace/chat/create-messages#create>`__.
 
             `Card
             builder <https://addons.gsuite.google.com/uikit/builder>`__
@@ -166,12 +165,12 @@ class Message(proto.Message):
         thread (google.apps.chat_v1.types.Thread):
             The thread the message belongs to. For example usage, see
             `Start or reply to a message
-            thread <https://developers.google.com/chat/api/guides/v1/messages/create#create-message-thread>`__.
+            thread <https://developers.google.com/workspace/chat/create-messages#create-message-thread>`__.
         space (google.apps.chat_v1.types.Space):
             If your Chat app `authenticates as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__,
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             the output populates the
-            `space <https://developers.google.com/chat/api/reference/rest/v1/spaces>`__
+            `space <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>`__
             ``name``.
         fallback_text (str):
             A plain-text description of the message's
@@ -191,7 +190,7 @@ class Message(proto.Message):
         matched_url (google.apps.chat_v1.types.MatchedUrl):
             Output only. A URL in ``spaces.messages.text`` that matches
             a link preview pattern. For more information, see `Preview
-            links <https://developers.google.com/chat/how-tos/preview-links>`__.
+            links <https://developers.google.com/workspace/chat/preview-links>`__.
         thread_reply (bool):
             Output only. When ``true``, the message is a response in a
             reply thread. When ``false``, the message is visible in the
@@ -204,9 +203,9 @@ class Message(proto.Message):
             Optional. A custom ID for the message. You can use field to
             identify a message, or to get, delete, or update a message.
             To set a custom ID, specify the
-            ```messageId`` <https://developers.google.com/chat/api/reference/rest/v1/spaces.messages/create#body.QUERY_PARAMETERS.message_id>`__
+            ```messageId`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages/create#body.QUERY_PARAMETERS.message_id>`__
             field when you create the message. For details, see `Name a
-            message <https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message>`__.
+            message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
         emoji_reaction_summaries (MutableSequence[google.apps.chat_v1.types.EmojiReactionSummary]):
             Output only. The list of emoji reaction
             summaries on the message.
@@ -219,12 +218,12 @@ class Message(proto.Message):
 
             Only Chat apps can send private messages. If your Chat app
             `authenticates as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
             to send a message, the message can't be private and must
             omit this field.
 
             For details, see `Send private messages to Google Chat
-            users <https://developers.google.com/chat/api/guides/v1/messages/private>`__.
+            users <https://developers.google.com/workspace/chat/private-messages>`__.
         deletion_metadata (google.apps.chat_v1.types.DeletionMetadata):
             Output only. Information about a deleted message. A message
             is deleted when ``delete_time`` is set.
@@ -240,69 +239,13 @@ class Message(proto.Message):
             One or more interactive widgets that appear at the bottom of
             a message. You can add accessory widgets to messages that
             contain text, cards, or both text and cards. Not supported
-            for messages that contain dialogs.
+            for messages that contain dialogs. For details, see `Add
+            interactive widgets at the bottom of a
+            message <https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets>`__.
 
             Creating a message with accessory widgets requires [app
             authentication]
-            (https://developers.google.com/chat/api/guides/auth/service-accounts).
-
-            The following example shows a Chat app that uses accessory
-            widgets (thumbs up and thumbs down buttons) in a text
-            message:
-
-            |Example accessory widgets message|
-
-            The JSON for this example message is the following:
-
-            ::
-
-               {
-                 "text": "Rate your experience with this Chat app.",
-                 "accessoryWidgets": [
-                   {
-                     "buttonList": {
-                       "buttons": [
-                         {
-                           "icon": {
-                             "material_icon": {
-                               "name": "thumb_up"
-                             }
-                           },
-                           "color": {
-                             "red": 0,
-                             "blue": 255,
-                             "green": 0
-                           },
-                           "onClick": {
-                             "action": {
-                               "function": "doUpvote",
-                             }
-                           }
-                         },
-                         {
-                           "icon": {
-                             "material_icon": {
-                               "name": "thumb_down"
-                             }
-                           },
-                           "color": {
-                             "red": 0,
-                             "blue": 255,
-                             "green": 0
-                           },
-                           "onClick": {
-                             "action": {
-                               "function": "doDownvote",
-                             }
-                           }
-                         }
-                       ]
-                     }
-                   }
-                 ]
-               }
-
-            .. |Example accessory widgets message| image:: https://developers.google.com/chat/images/message-accessory-widgets-reference.png
+            (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
     """
 
     name: str = proto.Field(
@@ -477,10 +420,10 @@ class QuotedMessageMetadata(proto.Message):
 class Thread(proto.Message):
     r"""A thread in a Google Chat space. For example usage, see `Start or
     reply to a message
-    thread <https://developers.google.com/chat/api/guides/v1/messages/create#create-message-thread>`__.
+    thread <https://developers.google.com/workspace/chat/create-messages#create-message-thread>`__.
 
     If you specify a thread when creating a message, you can set the
-    ```messageReplyOption`` <https://developers.google.com/chat/api/reference/rest/v1/spaces.messages/create#messagereplyoption>`__
+    ```messageReplyOption`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages/create#messagereplyoption>`__
     field to determine what happens if no matching thread is found.
 
     Attributes:
@@ -522,7 +465,7 @@ class ActionResponse(proto.Message):
             (Only for ``REQUEST_CONFIG`` response types.)
         dialog_action (google.apps.chat_v1.types.DialogAction):
             Input only. A response to an interaction event related to a
-            `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+            `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
             Must be accompanied by ``ResponseType.Dialog``.
         updated_widget (google.apps.chat_v1.types.ActionResponse.UpdatedWidget):
             Input only. The response of the updated
@@ -551,7 +494,7 @@ class ActionResponse(proto.Message):
                 authentication or configuration.
             DIALOG (4):
                 Presents a
-                `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+                `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
             UPDATE_WIDGET (7):
                 Widget text autocomplete options query.
         """
@@ -630,16 +573,17 @@ class ActionResponse(proto.Message):
 
 
 class AccessoryWidget(proto.Message):
-    r"""A borderless widget attached to the bottom of an app's
-    message.
+    r"""One or more interactive widgets that appear at the bottom of a
+    message. For details, see `Add interactive widgets at the bottom of
+    a
+    message <https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         button_list (google.apps.card_v1.types.ButtonList):
-            A list of buttons that are displayed under
-            the message.
+            A list of buttons.
 
             This field is a member of `oneof`_ ``action``.
     """
@@ -653,7 +597,7 @@ class AccessoryWidget(proto.Message):
 
 
 class GetMessageRequest(proto.Message):
-    r"""
+    r"""Request to get a message.
 
     Attributes:
         name (str):
@@ -664,7 +608,7 @@ class GetMessageRequest(proto.Message):
             If you've set a custom ID for your message, you can use the
             value from the ``clientAssignedMessageId`` field for
             ``{message}``. For details, see [Name a message]
-            (https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message).
+            (https://developers.google.com/workspace/chat/create-messages#name_a_created_message).
     """
 
     name: str = proto.Field(
@@ -674,7 +618,7 @@ class GetMessageRequest(proto.Message):
 
 
 class DeleteMessageRequest(proto.Message):
-    r"""
+    r"""Request to delete a message.
 
     Attributes:
         name (str):
@@ -685,16 +629,16 @@ class DeleteMessageRequest(proto.Message):
             If you've set a custom ID for your message, you can use the
             value from the ``clientAssignedMessageId`` field for
             ``{message}``. For details, see [Name a message]
-            (https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message).
+            (https://developers.google.com/workspace/chat/create-messages#name_a_created_message).
         force (bool):
             When ``true``, deleting a message also deletes its threaded
             replies. When ``false``, if a message has threaded replies,
             deletion fails.
 
             Only applies when `authenticating as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__.
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
             Has no effect when [authenticating as a Chat app]
-            (https://developers.google.com/chat/api/guides/auth/service-accounts).
+            (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
     """
 
     name: str = proto.Field(
@@ -708,7 +652,7 @@ class DeleteMessageRequest(proto.Message):
 
 
 class UpdateMessageRequest(proto.Message):
-    r"""
+    r"""Request to update a message.
 
     Attributes:
         message (google.apps.chat_v1.types.Message):
@@ -735,7 +679,7 @@ class UpdateMessageRequest(proto.Message):
             Optional. If ``true`` and the message isn't found, a new
             message is created and ``updateMask`` is ignored. The
             specified message ID must be
-            `client-assigned <https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message>`__
+            `client-assigned <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__
             or the request fails.
     """
 
@@ -774,7 +718,7 @@ class CreateMessageRequest(proto.Message):
             ``threadKey`` or the
             [thread.name][google.chat.v1.Thread.name]. For example
             usage, see `Start or reply to a message
-            thread <https://developers.google.com/chat/api/guides/v1/messages/create#create-message-thread>`__.
+            thread <https://developers.google.com/workspace/chat/create-messages#create-message-thread>`__.
         request_id (str):
             Optional. A unique request ID for this
             message. Specifying an existing request ID
@@ -802,7 +746,7 @@ class CreateMessageRequest(proto.Message):
                custom ID for different messages.
 
             For details, see `Name a
-            message <https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message>`__.
+            message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
     """
 
     class MessageReplyOption(proto.Enum):
@@ -876,8 +820,8 @@ class ListMessagesRequest(proto.Message):
 
             If unspecified, at most 25 are returned.
 
-            The maximum value is 1,000. If you use a value more than
-            1,000, it's automatically changed to 1,000.
+            The maximum value is 1000. If you use a value more than
+            1000, it's automatically changed to 1000.
 
             Negative values return an ``INVALID_ARGUMENT`` error.
         page_token (str):
@@ -979,7 +923,7 @@ class ListMessagesRequest(proto.Message):
 
 
 class ListMessagesResponse(proto.Message):
-    r"""
+    r"""Response message for listing messages.
 
     Attributes:
         messages (MutableSequence[google.apps.chat_v1.types.Message]):
@@ -1006,8 +950,8 @@ class ListMessagesResponse(proto.Message):
 
 class DialogAction(proto.Message):
     r"""Contains a
-    `dialog <https://developers.google.com/chat/how-tos/dialogs>`__ and
-    request status code.
+    `dialog <https://developers.google.com/workspace/chat/dialogs>`__
+    and request status code.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1015,14 +959,14 @@ class DialogAction(proto.Message):
     Attributes:
         dialog (google.apps.chat_v1.types.Dialog):
             Input only.
-            `Dialog <https://developers.google.com/chat/how-tos/dialogs>`__
+            `Dialog <https://developers.google.com/workspace/chat/dialogs>`__
             for the request.
 
             This field is a member of `oneof`_ ``action``.
         action_status (google.apps.chat_v1.types.ActionStatus):
             Input only. Status for a request to either invoke or submit
             a
-            `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+            `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
             Displays a status and message to users, if necessary. For
             example, in case of an error or success.
     """
@@ -1059,12 +1003,12 @@ class Dialog(proto.Message):
 
 class CardWithId(proto.Message):
     r"""A
-    `card <https://developers.google.com/chat/api/reference/rest/v1/cards>`__
+    `card <https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>`__
     in a Google Chat message.
 
     Only Chat apps can create cards. If your Chat app `authenticates as
     a
-    user <https://developers.google.com/chat/api/guides/auth/users>`__,
+    user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
     the message can't contain cards.
 
     `Card builder <https://addons.gsuite.google.com/uikit/builder>`__

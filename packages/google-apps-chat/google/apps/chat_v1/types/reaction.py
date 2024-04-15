@@ -198,9 +198,9 @@ class ListReactionsRequest(proto.Message):
             Optional. A query filter.
 
             You can filter reactions by
-            `emoji <https://developers.google.com/chat/api/reference/rest/v1/Emoji>`__
+            `emoji <https://developers.google.com/workspace/chat/api/reference/rest/v1/Emoji>`__
             (either ``emoji.unicode`` or ``emoji.custom_emoji.uid``) and
-            `user <https://developers.google.com/chat/api/reference/rest/v1/User>`__
+            `user <https://developers.google.com/workspace/chat/api/reference/rest/v1/User>`__
             (``user.name``).
 
             To filter reactions for multiple emojis or users, join
@@ -263,7 +263,7 @@ class ListReactionsRequest(proto.Message):
 
 
 class ListReactionsResponse(proto.Message):
-    r"""
+    r"""Response to a list reactions request.
 
     Attributes:
         reactions (MutableSequence[google.apps.chat_v1.types.Reaction]):

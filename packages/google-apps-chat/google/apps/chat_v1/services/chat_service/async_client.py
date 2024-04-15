@@ -299,11 +299,11 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_message.Message:
         r"""Creates a message in a Google Chat space. For an example, see
-        `Create a
-        message <https://developers.google.com/chat/api/guides/v1/messages/create>`__.
+        `Send a
+        message <https://developers.google.com/workspace/chat/create-messages>`__.
 
         Calling this method requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__
         and supports the following authentication types:
 
         -  For text messages, user authentication or app authentication
@@ -372,7 +372,7 @@ class ChatServiceAsyncClient:
                    same custom ID for different messages.
 
                 For details, see `Name a
-                message <https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message>`__.
+                message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
 
                 This corresponds to the ``message_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -458,7 +458,7 @@ class ChatServiceAsyncClient:
         including messages from blocked members and spaces. For an
         example, see `List
         messages </chat/api/guides/v1/messages/list>`__. Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -508,6 +508,8 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListMessagesAsyncPager:
+                Response message for listing
+                messages.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -585,23 +587,24 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMembershipsAsyncPager:
-        r"""Lists memberships in a space. For an example, see `List
-        memberships <https://developers.google.com/chat/api/guides/v1/members/list>`__.
+        r"""Lists memberships in a space. For an example, see `List users
+        and Google Chat apps in a
+        space <https://developers.google.com/workspace/chat/list-members>`__.
         Listing memberships with `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         lists memberships in spaces that the Chat app has access to, but
         excludes Chat app memberships, including its own. Listing
         memberships with `User
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
         lists memberships in spaces that the authenticated user has
         access to.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -632,7 +635,8 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.ListMembershipsRequest, dict]]):
-                The request object.
+                The request object. Request message for listing
+                memberships.
             parent (:class:`str`):
                 Required. The resource name of the
                 space for which to fetch a membership
@@ -651,6 +655,8 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListMembershipsAsyncPager:
+                Response to list memberships of the
+                space.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -728,15 +734,16 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> membership.Membership:
-        r"""Returns details about a membership. For an example, see `Get a
-        membership <https://developers.google.com/chat/api/guides/v1/members/get>`__.
+        r"""Returns details about a membership. For an example, see `Get
+        details about a user's or Google Chat app's
+        membership <https://developers.google.com/workspace/chat/get-members>`__.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -766,7 +773,8 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.GetMembershipRequest, dict]]):
-                The request object.
+                The request object. Request to get a membership of a
+                space.
             name (:class:`str`):
                 Required. Resource name of the membership to retrieve.
 
@@ -777,7 +785,7 @@ class ChatServiceAsyncClient:
                 ``spaces/{space}/members/app``
 
                 When `authenticated as a
-                user <https://developers.google.com/chat/api/guides/auth/users>`__,
+                user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
                 you can use the user's email as an alias for
                 ``{member}``. For example,
                 ``spaces/{space}/members/example@gmail.com`` where
@@ -864,15 +872,16 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> message.Message:
-        r"""Returns details about a message. For an example, see `Read a
-        message <https://developers.google.com/chat/api/guides/v1/messages/get>`__.
+        r"""Returns details about a message. For an example, see `Get
+        details about a
+        message <https://developers.google.com/workspace/chat/get-messages>`__.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         Note: Might return a message from a blocked member or space.
 
@@ -904,7 +913,7 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.GetMessageRequest, dict]]):
-                The request object.
+                The request object. Request to get a message.
             name (:class:`str`):
                 Required. Resource name of the message.
 
@@ -913,7 +922,7 @@ class ChatServiceAsyncClient:
                 If you've set a custom ID for your message, you can use
                 the value from the ``clientAssignedMessageId`` field for
                 ``{message}``. For details, see [Name a message]
-                (https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message).
+                (https://developers.google.com/workspace/chat/create-messages#name_a_created_message).
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -997,14 +1006,14 @@ class ChatServiceAsyncClient:
         request while the ``update`` method uses a ``put`` request. We
         recommend using the ``patch`` method. For an example, see
         `Update a
-        message <https://developers.google.com/chat/api/guides/v1/messages/update>`__.
+        message <https://developers.google.com/workspace/chat/update-messages>`__.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
         When using app authentication, requests can only update messages
         created by the calling Chat app.
 
@@ -1035,7 +1044,7 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.UpdateMessageRequest, dict]]):
-                The request object.
+                The request object. Request to update a message.
             message (:class:`google.apps.chat_v1.types.Message`):
                 Required. Message with fields
                 updated.
@@ -1144,14 +1153,14 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a message. For an example, see `Delete a
-        message <https://developers.google.com/chat/api/guides/v1/messages/delete>`__.
+        message <https://developers.google.com/workspace/chat/delete-messages>`__.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
         When using app authentication, requests can only delete messages
         created by the calling Chat app.
 
@@ -1180,7 +1189,7 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.DeleteMessageRequest, dict]]):
-                The request object.
+                The request object. Request to delete a message.
             name (:class:`str`):
                 Required. Resource name of the message.
 
@@ -1189,7 +1198,7 @@ class ChatServiceAsyncClient:
                 If you've set a custom ID for your message, you can use
                 the value from the ``clientAssignedMessageId`` field for
                 ``{message}``. For details, see [Name a message]
-                (https://developers.google.com/chat/api/guides/v1/messages/create#name_a_created_message).
+                (https://developers.google.com/workspace/chat/create-messages#name_a_created_message).
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1262,11 +1271,11 @@ class ChatServiceAsyncClient:
     ) -> attachment.Attachment:
         r"""Gets the metadata of a message attachment. The attachment data
         is fetched using the `media
-        API <https://developers.google.com/chat/api/reference/rest/v1/media/download>`__.
-        For an example, see `Get a message
-        attachment <https://developers.google.com/chat/api/guides/v1/media-and-attachments/get>`__.
+        API <https://developers.google.com/workspace/chat/api/reference/rest/v1/media/download>`__.
+        For an example, see `Get metadata about a message
+        attachment <https://developers.google.com/workspace/chat/get-media-attachments>`__.
         Requires `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
 
         .. code-block:: python
 
@@ -1296,7 +1305,7 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.GetAttachmentRequest, dict]]):
-                The request object.
+                The request object. Request to get an attachment.
             name (:class:`str`):
                 Required. Resource name of the attachment, in the form
                 ``spaces/*/messages/*/attachments/*``.
@@ -1378,9 +1387,9 @@ class ChatServiceAsyncClient:
     ) -> attachment.UploadAttachmentResponse:
         r"""Uploads an attachment. For an example, see `Upload media as a
         file
-        attachment <https://developers.google.com/chat/api/guides/v1/media-and-attachments/upload>`__.
+        attachment <https://developers.google.com/workspace/chat/upload-media-attachments>`__.
         Requires user
-        `authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         You can upload attachments up to 200 MB. Certain file types
         aren't supported. For details, see `File types blocked by Google
@@ -1415,7 +1424,7 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.UploadAttachmentRequest, dict]]):
-                The request object.
+                The request object. Request to upload an attachment.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1424,7 +1433,7 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.types.UploadAttachmentResponse:
-
+                Response of uploading an attachment.
         """
         # Create or coerce a protobuf request object.
         request = attachment.UploadAttachmentRequest(request)
@@ -1477,14 +1486,14 @@ class ChatServiceAsyncClient:
         r"""Lists spaces the caller is a member of. Group chats and DMs
         aren't listed until the first message is sent. For an example,
         see `List
-        spaces <https://developers.google.com/chat/api/guides/v1/spaces/list>`__.
+        spaces <https://developers.google.com/workspace/chat/list-spaces>`__.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         Lists spaces visible to the caller or authenticated user. Group
         chats and DMs aren't listed until the first message is sent.
@@ -1527,6 +1536,8 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListSpacesAsyncPager:
+                The response for a list spaces
+                request.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1584,15 +1595,16 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> space.Space:
-        r"""Returns details about a space. For an example, see `Get a
-        space <https://developers.google.com/chat/api/guides/v1/spaces/get>`__.
+        r"""Returns details about a space. For an example, see `Get details
+        about a
+        space <https://developers.google.com/workspace/chat/get-spaces>`__.
 
         Requires
-        `authentication <https://developers.google.com/chat/api/guides/auth>`__.
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
         Supports `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
         and `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -1625,7 +1637,7 @@ class ChatServiceAsyncClient:
                 The request object. A request to return a single space.
             name (:class:`str`):
                 Required. Resource name of the space, in the form
-                `spaces/*`.
+                "spaces/*".
 
                 Format: ``spaces/{space}``
 
@@ -1711,7 +1723,7 @@ class ChatServiceAsyncClient:
     ) -> gc_space.Space:
         r"""Creates a named space. Spaces grouped by topics aren't
         supported. For an example, see `Create a
-        space <https://developers.google.com/chat/api/guides/v1/spaces/create>`__.
+        space <https://developers.google.com/workspace/chat/create-spaces>`__.
 
         If you receive the error message ``ALREADY_EXISTS`` when
         creating a space, try a different ``displayName``. An existing
@@ -1719,7 +1731,7 @@ class ChatServiceAsyncClient:
         this display name.
 
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -1748,7 +1760,7 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.CreateSpaceRequest, dict]]):
-                The request object.
+                The request object. A request to create a named space.
             space (:class:`google.apps.chat_v1.types.Space`):
                 Required. The ``displayName`` and ``spaceType`` fields
                 must be populated. Only ``SpaceType.SPACE`` is
@@ -1838,7 +1850,8 @@ class ChatServiceAsyncClient:
         r"""Creates a space and adds specified users to it. The calling user
         is automatically added to the space, and shouldn't be specified
         as a membership in the request. For an example, see `Set up a
-        space <https://developers.google.com/chat/api/guides/v1/spaces/set-up>`__.
+        space with initial
+        members <https://developers.google.com/workspace/chat/set-up-spaces>`__.
 
         To specify the human members to add, add memberships with the
         appropriate ``member.name`` in the ``SetUpSpaceRequest``. To add
@@ -1864,8 +1877,9 @@ class ChatServiceAsyncClient:
         ``Space.singleUserBotDm`` to ``true`` and don't specify any
         memberships. You can only use this method to set up a DM with
         the calling app. To add the calling app as a member of a space
-        or an existing DM between two human users, see `create a
-        membership <https://developers.google.com/chat/api/guides/v1/members/create>`__.
+        or an existing DM between two human users, see `Invite or add a
+        user or app to a
+        space <https://developers.google.com/workspace/chat/create-members>`__.
 
         If a DM already exists between two users, even when one user
         blocks the other at the time a request is made, then the
@@ -1878,7 +1892,7 @@ class ChatServiceAsyncClient:
         name.
 
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -1907,7 +1921,8 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.SetUpSpaceRequest, dict]]):
-                The request object.
+                The request object. Request to create a space and add
+                specified users to it.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1967,7 +1982,7 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_space.Space:
         r"""Updates a space. For an example, see `Update a
-        space <https://developers.google.com/chat/api/guides/v1/spaces/update>`__.
+        space <https://developers.google.com/workspace/chat/update-spaces>`__.
 
         If you're updating the ``displayName`` field and receive the
         error message ``ALREADY_EXISTS``, try a different display name..
@@ -1975,7 +1990,7 @@ class ChatServiceAsyncClient:
         already use this display name.
 
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -2150,9 +2165,9 @@ class ChatServiceAsyncClient:
         means that the space's child resources—like messages posted in
         the space and memberships in the space—are also deleted. For an
         example, see `Delete a
-        space <https://developers.google.com/chat/api/guides/v1/spaces/delete>`__.
+        space <https://developers.google.com/workspace/chat/delete-spaces>`__.
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
         from a user who has permission to delete the space.
 
         .. code-block:: python
@@ -2255,11 +2270,11 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> space.CompleteImportSpaceResponse:
         r"""Completes the `import
-        process <https://developers.google.com/chat/api/guides/import-data>`__
+        process <https://developers.google.com/workspace/chat/import-data>`__
         for the specified space and makes it visible to users. Requires
         app authentication and domain-wide delegation. For more
         information, see `Authorize Google Chat apps to import
-        data <https://developers.google.com/chat/api/guides/authorize-import>`__.
+        data <https://developers.google.com/workspace/chat/authorize-import>`__.
 
         .. code-block:: python
 
@@ -2299,6 +2314,8 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.types.CompleteImportSpaceResponse:
+                Response message for completing the
+                import process for a space.
 
         """
         # Create or coerce a protobuf request object.
@@ -2355,19 +2372,19 @@ class ChatServiceAsyncClient:
         message </chat/api/guides/v1/spaces/find-direct-message>`__.
 
         With `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__,
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
         returns the direct message space between the specified user and
         the authenticated user.
 
         With `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__,
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
         returns the direct message space between the specified user and
         the calling Chat app.
 
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
         or `app
-        authentication <https://developers.google.com/chat/api/guides/auth/service-accounts>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
 
         .. code-block:: python
 
@@ -2459,14 +2476,14 @@ class ChatServiceAsyncClient:
     ) -> gc_membership.Membership:
         r"""Creates a human membership or app membership for the calling
         app. Creating memberships for other apps isn't supported. For an
-        example, see `Create a
-        membership <https://developers.google.com/chat/api/guides/v1/members/create>`__.
+        example, see `Invite or add a user or a Google Chat app to a
+        space <https://developers.google.com/workspace/chat/create-members>`__.
         When creating a membership, if the specified member has their
         auto-accept policy turned off, then they're invited, and must
         accept the space invitation before joining. Otherwise, creating
         a membership adds the member directly to the specified space.
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         To specify the member to add, set the ``membership.member.name``
         in the ``CreateMembershipRequest``:
@@ -2513,7 +2530,8 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.CreateMembershipRequest, dict]]):
-                The request object.
+                The request object. Request message for creating a
+                membership.
             parent (:class:`str`):
                 Required. The resource name of the
                 space for which to create the
@@ -2629,11 +2647,12 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> membership.Membership:
-        r"""Deletes a membership. For an example, see `Delete a
-        membership <https://developers.google.com/chat/api/guides/v1/members/delete>`__.
+        r"""Deletes a membership. For an example, see `Remove a user or a
+        Google Chat app from a
+        space <https://developers.google.com/workspace/chat/delete-members>`__.
 
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -2663,7 +2682,8 @@ class ChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.chat_v1.types.DeleteMembershipRequest, dict]]):
-                The request object.
+                The request object. Request to delete a membership in a
+                space.
             name (:class:`str`):
                 Required. Resource name of the membership to delete.
                 Chat apps can delete human users' or their own
@@ -2766,12 +2786,11 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gc_reaction.Reaction:
-        r"""Creates a reaction and adds it to a message. For an example, see
-        `Create a
-        reaction <https://developers.google.com/chat/api/guides/v1/reactions/create>`__.
+        r"""Creates a reaction and adds it to a message. Only unicode emojis
+        are supported. For an example, see `Add a reaction to a
+        message <https://developers.google.com/workspace/chat/create-reactions>`__.
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
-        Only unicode emoji are supported.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -2891,9 +2910,10 @@ class ChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReactionsAsyncPager:
         r"""Lists reactions to a message. For an example, see `List
-        reactions <https://developers.google.com/chat/api/guides/v1/reactions/list>`__.
+        reactions for a
+        message <https://developers.google.com/workspace/chat/list-reactions>`__.
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
@@ -2941,6 +2961,8 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListReactionsAsyncPager:
+                Response to a list reactions request.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3018,10 +3040,11 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a reaction to a message. For an example, see `Delete a
-        reaction <https://developers.google.com/chat/api/guides/v1/reactions/delete>`__.
+        r"""Deletes a reaction to a message. Only unicode emojis are
+        supported. For an example, see `Delete a
+        reaction <https://developers.google.com/workspace/chat/delete-reactions>`__.
         Requires `user
-        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
         .. code-block:: python
 
