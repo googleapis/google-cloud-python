@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.1...google-cloud-bigquery-datatransfer-v3.15.2) (2024-04-15)
+
+
+### Bug Fixes
+
+* mark parent/name fields with the REQUIRED field_behavior annotation  ([9a89508](https://github.com/googleapis/google-cloud-python/commit/9a895082325619339c0c17e9544e50410ed63784))
+
+
+### Documentation
+
+* updated comments ([9a89508](https://github.com/googleapis/google-cloud-python/commit/9a895082325619339c0c17e9544e50410ed63784))
+
 ## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.15.0...google-cloud-bigquery-datatransfer-v3.15.1) (2024-03-05)
 
 

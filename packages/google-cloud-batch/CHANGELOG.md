@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.17.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.17...google-cloud-batch-v0.17.18) (2024-04-15)
+
+
+### Features
+
+* Add a service_account field to taskGroup for service account support ([93b90df](https://github.com/googleapis/google-cloud-python/commit/93b90df7f4c6b667e638f1725dd4a686423bd8aa))
+
+
+### Bug Fixes
+
+* Add optional flag of existing fields `limit` and `consumed` in ResourceAllowance ([93b90df](https://github.com/googleapis/google-cloud-python/commit/93b90df7f4c6b667e638f1725dd4a686423bd8aa))
+
+
+### Documentation
+
+* Update comments for ServiceAccount email and scopes fields ([93b90df](https://github.com/googleapis/google-cloud-python/commit/93b90df7f4c6b667e638f1725dd4a686423bd8aa))
+
 ## [0.17.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.16...google-cloud-batch-v0.17.17) (2024-04-04)
 
 

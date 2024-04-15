@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.5...google-shopping-merchant-reports-v0.1.6) (2024-04-15)
+
+
+### Features
+
+* [google-shopping-merchant-reports] Add click potential to Reports sub-API ([#12557](https://github.com/googleapis/google-cloud-python/issues/12557)) ([bd69999](https://github.com/googleapis/google-cloud-python/commit/bd69999f52d31437719c660fa2b0b389b0dfc23f))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.4...google-shopping-merchant-reports-v0.1.5) (2024-03-05)
 
 
