@@ -314,7 +314,7 @@ def test__validate_scalar_invalid(dtype):
         (False, None),
         (True, None),
         (True, pd.NaT if pd else None),
-        (True, np.NaN if pd else None),
+        (True, "np.nan" if pd else None),
         (True, 42),
     ],
 )
@@ -328,6 +328,13 @@ def test_take(dtype, allow_fill, fill_value):
                 if dtype == "dbdate"
                 else datetime.time(0, 42, 42, 424242)
             )
+        elif fill_value == "np.nan":
+            expected_fill = pd.NaT
+            try:
+                fill_value = np.NaN
+            except AttributeError:
+                # `np.NaN` was removed in NumPy 2.0 release. Use `np.nan` instead
+                fill_value = np.nan
         else:
             expected_fill = pd.NaT
         b = a.take([1, -1, 3], allow_fill=True, fill_value=fill_value)

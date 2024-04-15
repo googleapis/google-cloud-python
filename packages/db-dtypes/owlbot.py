@@ -34,7 +34,7 @@ templated_files = common.py_library(
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/"
     },
 )
-s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst"])
+s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst", ".github/workflows/unittest.yml"])
 
 # ----------------------------------------------------------------------------
 # Fixup files
