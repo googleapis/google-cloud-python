@@ -101,6 +101,7 @@ from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.dbapi import _helpers
 
 from bigquery_magics import line_arg_parser as lap
+import bigquery_magics._versions_helpers
 import bigquery_magics.config
 import bigquery_magics.line_arg_parser.exceptions
 

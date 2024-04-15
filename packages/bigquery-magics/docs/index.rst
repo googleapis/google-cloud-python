@@ -37,7 +37,6 @@ of this library (from ``1.x`` to ``2.x``, or from ``2.x`` to ``3.x``).
 .. toctree::
     :maxdepth: 2
 
-    UPGRADING
 
 Changelog
 ---------
