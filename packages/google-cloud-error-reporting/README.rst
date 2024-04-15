@@ -15,7 +15,7 @@ Python Client for Error Reporting API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-error-reporting.svg
    :target: https://pypi.org/project/google-cloud-error-reporting/
 .. _Error Reporting API: https://cloud.google.com/error-reporting
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/clouderrorreporting/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/clouderrorreporting/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/error-reporting
 
 Quick Start
