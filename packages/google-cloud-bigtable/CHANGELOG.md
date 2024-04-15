@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.23.1](https://github.com/googleapis/python-bigtable/compare/v2.23.0...v2.23.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* Use insecure grpc channel with emulator ([#946](https://github.com/googleapis/python-bigtable/issues/946)) ([aa31706](https://github.com/googleapis/python-bigtable/commit/aa3170663f9bd09d70c99d4e76c07f7f293ad935))
+
 ## [2.23.0](https://github.com/googleapis/python-bigtable/compare/v2.22.0...v2.23.0) (2024-02-07)
 
 
