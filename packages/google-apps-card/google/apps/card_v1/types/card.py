@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "DateTimePicker",
         "Button",
         "Icon",
+        "MaterialIcon",
         "ImageCropStyle",
         "BorderStyle",
         "ImageComponent",
@@ -61,9 +62,8 @@ class Card(proto.Message):
 
     To learn how to build cards, see the following documentation:
 
-    -  For Google Chat apps, see `Design dynamic, interactive, and
-       consistent UIs with
-       cards <https://developers.google.com/chat/ui>`__.
+    -  For Google Chat apps, see `Design the components of a card or
+       dialog <https://developers.google.com/workspace/chat/design-components-card-dialog>`__.
     -  For Google Workspace Add-ons, see `Card-based
        interfaces <https://developers.google.com/apps-script/add-ons/concepts/cards>`__.
 
@@ -82,80 +82,80 @@ class Card(proto.Message):
              "cardId": "unique-card-id",
              "card": {
                "header": {
-                 "title": "Sasha",
-                 "subtitle": "Software Engineer",
-                 "imageUrl":
-                 "https://developers.google.com/chat/images/quickstart-app-avatar.png",
-                 "imageType": "CIRCLE",
-                 "imageAltText": "Avatar for Sasha",
-               },
-               "sections": [
-                 {
-                   "header": "Contact Info",
-                   "collapsible": true,
-                   "uncollapsibleWidgetsCount": 1,
-                   "widgets": [
-                     {
-                       "decoratedText": {
-                         "startIcon": {
-                           "knownIcon": "EMAIL",
-                         },
-                         "text": "sasha@example.com",
-                       }
-                     },
-                     {
-                       "decoratedText": {
-                         "startIcon": {
-                           "knownIcon": "PERSON",
-                         },
-                         "text": "<font color=\"#80e27e\">Online</font>",
-                       },
-                     },
-                     {
-                       "decoratedText": {
-                         "startIcon": {
-                           "knownIcon": "PHONE",
-                         },
-                         "text": "+1 (555) 555-1234",
-                       }
-                     },
-                     {
-                       "buttonList": {
-                         "buttons": [
-                           {
-                             "text": "Share",
-                             "onClick": {
+                  "title": "Sasha",
+                  "subtitle": "Software Engineer",
+                  "imageUrl":
+                  "https://developers.google.com/workspace/chat/images/quickstart-app-avatar.png",
+                  "imageType": "CIRCLE",
+                  "imageAltText": "Avatar for Sasha"
+                },
+                "sections": [
+                  {
+                    "header": "Contact Info",
+                    "collapsible": true,
+                    "uncollapsibleWidgetsCount": 1,
+                    "widgets": [
+                      {
+                        "decoratedText": {
+                          "startIcon": {
+                            "knownIcon": "EMAIL"
+                          },
+                          "text": "sasha@example.com"
+                        }
+                      },
+                      {
+                        "decoratedText": {
+                          "startIcon": {
+                            "knownIcon": "PERSON"
+                          },
+                          "text": "<font color=\"#80e27e\">Online</font>"
+                        }
+                      },
+                      {
+                        "decoratedText": {
+                          "startIcon": {
+                            "knownIcon": "PHONE"
+                          },
+                          "text": "+1 (555) 555-1234"
+                        }
+                      },
+                      {
+                        "buttonList": {
+                          "buttons": [
+                            {
+                              "text": "Share",
+                              "onClick": {
                                "openLink": {
-                                 "url": "https://example.com/share",
-                               }
-                             }
-                           },
-                           {
-                             "text": "Edit",
-                             "onClick": {
-                               "action": {
-                                 "function": "goToView",
-                                 "parameters": [
-                                   {
-                                     "key": "viewType",
-                                     "value": "EDIT",
-                                   }
-                                 ],
-                               }
-                             }
-                           },
-                         ],
-                       }
-                     },
-                   ],
-                 },
-               ],
-             },
+                                  "url": "https://example.com/share"
+                                }
+                              }
+                            },
+                            {
+                              "text": "Edit",
+                              "onClick": {
+                                "action": {
+                                  "function": "goToView",
+                                  "parameters": [
+                                    {
+                                      "key": "viewType",
+                                      "value": "EDIT"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
            }
-         ],
+         ]
        }
 
-    .. |Example contact card| image:: https://developers.google.com/chat/images/card_api_reference.png
+    .. |Example contact card| image:: https://developers.google.com/workspace/chat/images/card_api_reference.png
 
     Attributes:
         header (google.apps.card_v1.types.Card.CardHeader):
@@ -165,8 +165,9 @@ class Card(proto.Message):
         sections (MutableSequence[google.apps.card_v1.types.Card.Section]):
             Contains a collection of widgets. Each section has its own,
             optional header. Sections are visually separated by a line
-            divider. For an example in Google Chat apps, see `Card
-            section <https://developers.google.com/chat/ui/widgets/card-section>`__.
+            divider. For an example in Google Chat apps, see `Define a
+            section of a
+            card <https://developers.google.com/workspace/chat/design-components-card-dialog#define_a_section_of_a_card>`__.
         section_divider_style (google.apps.card_v1.types.Card.DividerStyle):
             The divider style between sections.
         card_actions (MutableSequence[google.apps.card_v1.types.Card.CardAction]):
@@ -218,9 +219,9 @@ class Card(proto.Message):
             Setting ``fixedFooter`` without specifying a
             ``primaryButton`` or a ``secondaryButton`` causes an error.
             For Chat apps, you can use fixed footers in
-            `dialogs <https://developers.google.com/chat/how-tos/dialogs>`__,
+            `dialogs <https://developers.google.com/workspace/chat/dialogs>`__,
             but not `card
-            messages <https://developers.google.com/chat/api/guides/v1/messages/create#create>`__.
+            messages <https://developers.google.com/workspace/chat/create-messages#create>`__.
 
             `Google Workspace Add-ons and Chat
             apps <https://developers.google.com/workspace/extend>`__:
@@ -285,8 +286,8 @@ class Card(proto.Message):
 
     class CardHeader(proto.Message):
         r"""Represents a card header. For an example in Google Chat apps, see
-        `Card
-        header <https://developers.google.com/chat/ui/widgets/card-header>`__.
+        `Add a
+        header <https://developers.google.com/workspace/chat/design-components-card-dialog#add_a_header>`__.
 
         `Google Workspace Add-ons and Chat
         apps <https://developers.google.com/workspace/extend>`__:
@@ -348,7 +349,7 @@ class Card(proto.Message):
                 Text that appears at the top of a section. Supports simple
                 HTML formatted text. For more information about formatting
                 text, see `Formatting text in Google Chat
-                apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
                 and `Formatting text in Google Workspace
                 Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
             widgets (MutableSequence[google.apps.card_v1.types.Widget]):
@@ -427,11 +428,11 @@ class Card(proto.Message):
         ``secondaryButton`` causes an error.
 
         For Chat apps, you can use fixed footers in
-        `dialogs <https://developers.google.com/chat/how-tos/dialogs>`__,
+        `dialogs <https://developers.google.com/workspace/chat/dialogs>`__,
         but not `card
-        messages <https://developers.google.com/chat/api/guides/v1/messages/create#create>`__.
-        For an example in Google Chat apps, see `Card
-        footer <https://developers.google.com/chat/ui/widgets/card-fixed-footer>`__.
+        messages <https://developers.google.com/workspace/chat/create-messages#create>`__.
+        For an example in Google Chat apps, see `Add a persistent
+        footer <https://developers.google.com/workspace/chat/design-components-card-dialog#add_a_persistent_footer>`__.
 
         `Google Workspace Add-ons and Chat
         apps <https://developers.google.com/workspace/extend>`__:
@@ -518,7 +519,7 @@ class Widget(proto.Message):
             Displays a text paragraph. Supports simple HTML formatted
             text. For more information about formatting text, see
             `Formatting text in Google Chat
-            apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+            apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
             and `Formatting text in Google Workspace
             Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
 
@@ -541,7 +542,7 @@ class Widget(proto.Message):
 
                "image": {
                  "imageUrl":
-                 "https://developers.google.com/chat/images/quickstart-app-avatar.png",
+                 "https://developers.google.com/workspace/chat/images/quickstart-app-avatar.png",
                  "altText": "Chat app avatar"
                }
 
@@ -827,7 +828,7 @@ class Widget(proto.Message):
         r"""Specifies whether widgets align to the left, right, or center of a
         column.
 
-        `Google Chat apps <https://developers.google.com/chat>`__:
+        `Google Chat apps <https://developers.google.com/workspace/chat>`__:
 
         Values:
             HORIZONTAL_ALIGNMENT_UNSPECIFIED (0):
@@ -919,11 +920,11 @@ class Widget(proto.Message):
 
 class TextParagraph(proto.Message):
     r"""A paragraph of text that supports formatting. For an example in
-    Google Chat apps, see `Text
-    paragraph <https://developers.google.com/chat/ui/widgets/text-paragraph>`__.
+    Google Chat apps, see `Add a paragraph of formatted
+    text <https://developers.google.com/workspace/chat/add-text-image-card-dialog#add_a_paragraph_of_formatted_text>`__.
     For more information about formatting text, see `Formatting text in
     Google Chat
-    apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+    apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
     and `Formatting text in Google Workspace
     Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
 
@@ -943,8 +944,8 @@ class TextParagraph(proto.Message):
 
 class Image(proto.Message):
     r"""An image that is specified by a URL and can have an ``onClick``
-    action. For an example, see
-    `Image <https://developers.google.com/chat/ui/widgets/image>`__.
+    action. For an example, see `Add an
+    image <https://developers.google.com/workspace/chat/add-text-image-card-dialog#add_an_image>`__.
 
     `Google Workspace Add-ons and Chat
     apps <https://developers.google.com/workspace/extend>`__:
@@ -957,7 +958,7 @@ class Image(proto.Message):
 
             ::
 
-               https://developers.google.com/chat/images/quickstart-app-avatar.png
+               https://developers.google.com/workspace/chat/images/quickstart-app-avatar.png
         on_click (google.apps.card_v1.types.OnClick):
             When a user clicks the image, the click
             triggers this action.
@@ -983,8 +984,8 @@ class Image(proto.Message):
 
 class Divider(proto.Message):
     r"""Displays a divider between widgets as a horizontal line. For an
-    example in Google Chat apps, see
-    `Divider <https://developers.google.com/chat/ui/widgets/divider>`__.
+    example in Google Chat apps, see `Add a horizontal divider between
+    widgets <https://developers.google.com/workspace/chat/format-structure-card-dialog#add_a_horizontal_divider_between_widgets>`__.
 
     `Google Workspace Add-ons and Chat
     apps <https://developers.google.com/workspace/extend>`__:
@@ -1002,8 +1003,8 @@ class DecoratedText(proto.Message):
     r"""A widget that displays text with optional decorations such as a
     label above or below the text, an icon in front of the text, a
     selection widget, or a button after the text. For an example in
-    Google Chat apps, see `Decorated
-    text <https://developers.google.com/chat/ui/widgets/decorated-text>`__.
+    Google Chat apps, see `Display text with decorative
+    text <https://developers.google.com/workspace/chat/add-text-image-card-dialog#display_text_with_decorative_elements>`__.
 
     `Google Workspace Add-ons and Chat
     apps <https://developers.google.com/workspace/extend>`__:
@@ -1027,7 +1028,7 @@ class DecoratedText(proto.Message):
 
             Supports simple formatting. For more information about
             formatting text, see `Formatting text in Google Chat
-            apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+            apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
             and `Formatting text in Google Workspace
             Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
         wrap_text (bool):
@@ -1056,9 +1057,9 @@ class DecoratedText(proto.Message):
             An icon displayed after the text.
 
             Supports
-            `built-in <https://developers.google.com/chat/format-messages#builtinicons>`__
+            `built-in <https://developers.google.com/workspace/chat/format-messages#builtinicons>`__
             and
-            `custom <https://developers.google.com/chat/format-messages#customicons>`__
+            `custom <https://developers.google.com/workspace/chat/format-messages#customicons>`__
             icons.
 
             This field is a member of `oneof`_ ``control``.
@@ -1080,14 +1081,14 @@ class DecoratedText(proto.Message):
 
                 For details about working with form inputs, see `Receive
                 form
-                data <https://developers.google.com/chat/ui/read-form-data>`__.
+                data <https://developers.google.com/workspace/chat/read-form-data>`__.
             value (str):
                 The value entered by a user, returned as part of a form
                 input event.
 
                 For details about working with form inputs, see `Receive
                 form
-                data <https://developers.google.com/chat/ui/read-form-data>`__.
+                data <https://developers.google.com/workspace/chat/read-form-data>`__.
             selected (bool):
                 When ``true``, the switch is selected.
             on_change_action (google.apps.card_v1.types.Action):
@@ -1194,13 +1195,14 @@ class DecoratedText(proto.Message):
 
 class TextInput(proto.Message):
     r"""A field in which users can enter text. Supports suggestions and
-    on-change actions. For an example in Google Chat apps, see `Text
-    input <https://developers.google.com/chat/ui/widgets/text-input>`__.
+    on-change actions. For an example in Google Chat apps, see `Add a
+    field in which a user can enter
+    text <https://developers.google.com/workspace/chat/design-interactive-card-dialog#add_a_field_in_which_a_user_can_enter_text>`__.
 
     Chat apps receive and can process the value of entered text during
     form input events. For details about working with form inputs, see
     `Receive form
-    data <https://developers.google.com/chat/ui/read-form-data>`__.
+    data <https://developers.google.com/workspace/chat/read-form-data>`__.
 
     When you need to collect undefined or abstract data from users, use
     a text input. To collect defined or enumerated data from users, use
@@ -1216,7 +1218,7 @@ class TextInput(proto.Message):
 
             For details about working with form inputs, see `Receive
             form
-            data <https://developers.google.com/chat/ui/read-form-data>`__.
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         label (str):
             The text that appears above the text input field in the user
             interface.
@@ -1240,7 +1242,7 @@ class TextInput(proto.Message):
 
             For details about working with form inputs, see `Receive
             form
-            data <https://developers.google.com/chat/ui/read-form-data>`__.
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         type_ (google.apps.card_v1.types.TextInput.Type):
             How a text input field appears in the user
             interface. For example, whether the field is
@@ -1251,7 +1253,7 @@ class TextInput(proto.Message):
 
             Examples of actions to take include running a custom
             function or opening a
-            `dialog <https://developers.google.com/chat/how-tos/dialogs>`__
+            `dialog <https://developers.google.com/workspace/chat/dialogs>`__
             in Google Chat.
         initial_suggestions (google.apps.card_v1.types.Suggestions):
             Suggested values that users can enter. These values appear
@@ -1292,7 +1294,8 @@ class TextInput(proto.Message):
             empty. Use this text to prompt users to enter a value. For
             example, ``Enter a number from 0 to 100``.
 
-            `Google Chat apps <https://developers.google.com/chat>`__:
+            `Google Chat
+            apps <https://developers.google.com/workspace/chat>`__:
     """
 
     class Type(proto.Enum):
@@ -1418,8 +1421,8 @@ class Suggestions(proto.Message):
 
 class ButtonList(proto.Message):
     r"""A list of buttons layed out horizontally. For an example in Google
-    Chat apps, see `Button
-    list <https://developers.google.com/chat/ui/widgets/button-list>`__.
+    Chat apps, see `Add a
+    button <https://developers.google.com/workspace/chat/design-interactive-card-dialog#add_a_button>`__.
 
     `Google Workspace Add-ons and Chat
     apps <https://developers.google.com/workspace/extend>`__:
@@ -1440,12 +1443,12 @@ class SelectionInput(proto.Message):
     r"""A widget that creates one or more UI items that users can select.
     For example, a dropdown menu or checkboxes. You can use this widget
     to collect data that can be predicted or enumerated. For an example
-    in Google Chat apps, see `Selection
-    input <https://developers.google.com/chat/ui/widgets/selection-input>`__.
+    in Google Chat apps, see `Add selectable UI
+    elements </workspace/chat/design-interactive-card-dialog#add_selectable_ui_elements>`__.
 
     Chat apps can process the value of items that users select or input.
     For details about working with form inputs, see `Receive form
-    data <https://developers.google.com/chat/ui/read-form-data>`__.
+    data <https://developers.google.com/workspace/chat/read-form-data>`__.
 
     To collect undefined or abstract data from users, use the
     [TextInput][google.apps.card.v1.TextInput] widget.
@@ -1467,7 +1470,7 @@ class SelectionInput(proto.Message):
 
             For details about working with form inputs, see `Receive
             form
-            data <https://developers.google.com/chat/ui/read-form-data>`__.
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         label (str):
             The text that appears above the selection
             input field in the user interface.
@@ -1494,15 +1497,15 @@ class SelectionInput(proto.Message):
 
             For details about working with form inputs, see `Receive
             form
-            data <https://developers.google.com/chat/ui/read-form-data>`__.
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         multi_select_max_selected_items (int):
             For multiselect menus, the maximum number of
             items that a user can select. Minimum value is 1
             item. If unspecified, defaults to 3 items.
         multi_select_min_query_length (int):
             For multiselect menus, the number of text
-            characters that a user inputs before the Chat
-            app queries autocomplete and displays suggested
+            characters that a user inputs before the app
+            queries autocomplete and displays suggested
             items in the menu.
 
             If unspecified, defaults to 0 characters for
@@ -1562,14 +1565,14 @@ class SelectionInput(proto.Message):
                 -  External data: Items are populated from an external data
                    source outside of Google Workspace.
 
-                For examples of how to implement multiselect menus, see the
-                ```SelectionInput`` widget
-                page <https://developers.google.com/chat/ui/widgets/selection-input#multiselect-menu>`__.
+                For examples of how to implement multiselect menus, see `Add
+                a multiselect
+                menu <https://developers.google.com/workspace/chat/design-interactive-card-dialog#multiselect-menu>`__.
 
                 `Google Workspace Add-ons and Chat
                 apps <https://developers.google.com/workspace/extend>`__:
-                multiselect for Google Workspace Add-ons are in `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
+                Multiselect for Google Workspace Add-ons are in Developer
+                Preview.
         """
         CHECK_BOX = 0
         RADIO_BUTTON = 1
@@ -1594,7 +1597,7 @@ class SelectionInput(proto.Message):
 
                 For details about working with form inputs, see `Receive
                 form
-                data <https://developers.google.com/chat/ui/read-form-data>`__.
+                data <https://developers.google.com/workspace/chat/read-form-data>`__.
             selected (bool):
                 Whether the item is selected by default. If
                 the selection input only accepts one value (such
@@ -1604,7 +1607,7 @@ class SelectionInput(proto.Message):
                 For multiselect menus, the URL for the icon displayed next
                 to the item's ``text`` field. Supports PNG and JPEG files.
                 Must be an ``HTTPS`` URL. For example,
-                ``https://developers.google.com/chat/images/quickstart-app-avatar.png``.
+                ``https://developers.google.com/workspace/chat/images/quickstart-app-avatar.png``.
             bottom_text (str):
                 For multiselect menus, a text description or label that's
                 displayed below the item's ``text`` field.
@@ -1636,7 +1639,7 @@ class SelectionInput(proto.Message):
         widget that uses a multiselect menu, a data source from Google
         Workspace. Used to populate items in a multiselect menu.
 
-        `Google Chat apps <https://developers.google.com/chat>`__:
+        `Google Chat apps <https://developers.google.com/workspace/chat>`__:
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1652,9 +1655,9 @@ class SelectionInput(proto.Message):
 
         class CommonDataSource(proto.Enum):
             r"""A data source shared by all [Google Workspace applications]
-            (https://developers.google.com/chat/api/reference/rest/v1/HostApp).
+            (https://developers.google.com/workspace/chat/api/reference/rest/v1/HostApp).
 
-            `Google Chat apps <https://developers.google.com/chat>`__:
+            `Google Chat apps <https://developers.google.com/workspace/chat>`__:
 
             Values:
                 UNKNOWN (0):
@@ -1723,8 +1726,8 @@ class SelectionInput(proto.Message):
 
 class DateTimePicker(proto.Message):
     r"""Lets users input a date, a time, or both a date and a time. For an
-    example in Google Chat apps, see `Date time
-    picker <https://developers.google.com/chat/ui/widgets/date-time-picker>`__.
+    example in Google Chat apps, see `Let a user pick a date and
+    time <https://developers.google.com/workspace/chat/design-interactive-card-dialog#let_a_user_pick_a_date_and_time>`__.
 
     Users can input text or use the picker to select dates and times. If
     users input an invalid date or time, the picker shows an error that
@@ -1740,7 +1743,7 @@ class DateTimePicker(proto.Message):
 
             For details about working with form inputs, see `Receive
             form
-            data <https://developers.google.com/chat/ui/read-form-data>`__.
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         label (str):
             The text that prompts users to input a date, a time, or a
             date and time. For example, if users are scheduling an
@@ -1825,8 +1828,8 @@ class DateTimePicker(proto.Message):
 
 class Button(proto.Message):
     r"""A text, icon, or text and icon button that users can click. For an
-    example in Google Chat apps, see `Button
-    list <https://developers.google.com/chat/ui/widgets/button-list>`__.
+    example in Google Chat apps, see `Add a
+    button <https://developers.google.com/workspace/chat/design-interactive-card-dialog#add_a_button>`__.
 
     To make an image a clickable button, specify an
     [``Image``][google.apps.card.v1.Image] (not an
@@ -1895,7 +1898,7 @@ class Button(proto.Message):
             a hyperlink, you might write: "Opens a new
             browser tab and navigates to the Google Chat
             developer documentation at
-            https://developers.google.com/chat".
+            https://developers.google.com/workspace/chat".
     """
 
     text: str = proto.Field(
@@ -1929,13 +1932,13 @@ class Button(proto.Message):
 
 class Icon(proto.Message):
     r"""An icon displayed in a widget on a card. For an example in Google
-    Chat apps, see
-    `Icon <https://developers.google.com/chat/ui/widgets/icon>`__.
+    Chat apps, see `Add an
+    icon <https://developers.google.com/workspace/chat/add-text-image-card-dialog#add_an_icon>`__.
 
     Supports
-    `built-in <https://developers.google.com/chat/format-messages#builtinicons>`__
+    `built-in <https://developers.google.com/workspace/chat/format-messages#builtinicons>`__
     and
-    `custom <https://developers.google.com/chat/format-messages#customicons>`__
+    `custom <https://developers.google.com/workspace/chat/format-messages#customicons>`__
     icons.
 
     `Google Workspace Add-ons and Chat
@@ -1957,7 +1960,7 @@ class Icon(proto.Message):
             ``AIRPLANE``. For a bus, specify ``BUS``.
 
             For a full list of supported icons, see `built-in
-            icons <https://developers.google.com/chat/format-messages#builtinicons>`__.
+            icons <https://developers.google.com/workspace/chat/format-messages#builtinicons>`__.
 
             This field is a member of `oneof`_ ``icons``.
         icon_url (str):
@@ -1968,9 +1971,27 @@ class Icon(proto.Message):
             ::
 
                "iconUrl":
-               "https://developers.google.com/chat/images/quickstart-app-avatar.png"
+               "https://developers.google.com/workspace/chat/images/quickstart-app-avatar.png"
 
             Supported file types include ``.png`` and ``.jpg``.
+
+            This field is a member of `oneof`_ ``icons``.
+        material_icon (google.apps.card_v1.types.MaterialIcon):
+            Display one of the `Google Material
+            Icons <https://fonts.google.com/icons>`__.
+
+            For example, to display a `checkbox
+            icon <https://fonts.google.com/icons?selected=Material%20Symbols%20Outlined%3Acheck_box%3AFILL%400%3Bwght%40400%3BGRAD%400%3Bopsz%4048>`__,
+            use
+
+            ::
+
+               "material_icon": {
+                 "name": "check_box"
+               }
+
+            `Google Chat
+            apps <https://developers.google.com/workspace/chat>`__:
 
             This field is a member of `oneof`_ ``icons``.
         alt_text (str):
@@ -1979,7 +2000,7 @@ class Icon(proto.Message):
             a best practice, you should set a helpful description for
             what the icon displays, and if applicable, what it does. For
             example, ``A user's account portrait``, or
-            ``Opens a new browser tab and navigates to the Google Chat developer documentation at https://developers.google.com/chat``.
+            ``Opens a new browser tab and navigates to the Google Chat developer documentation at https://developers.google.com/workspace/chat``.
 
             If the icon is set in a
             [``Button``][google.apps.card.v1.Button], the ``altText``
@@ -2002,6 +2023,12 @@ class Icon(proto.Message):
         number=2,
         oneof="icons",
     )
+    material_icon: "MaterialIcon" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="icons",
+        message="MaterialIcon",
+    )
     alt_text: str = proto.Field(
         proto.STRING,
         number=3,
@@ -2010,6 +2037,75 @@ class Icon(proto.Message):
         proto.ENUM,
         number=4,
         enum="Widget.ImageType",
+    )
+
+
+class MaterialIcon(proto.Message):
+    r"""A `Google Material Icon <https://fonts.google.com/icons>`__, which
+    includes over 2500+ options.
+
+    For example, to display a `checkbox
+    icon <https://fonts.google.com/icons?selected=Material%20Symbols%20Outlined%3Acheck_box%3AFILL%400%3Bwght%40400%3BGRAD%400%3Bopsz%4048>`__
+    with customized weight and grade, write the following:
+
+    ::
+
+       {
+         "name": "check_box",
+         "fill": true,
+         "weight": 300,
+         "grade": -25
+       }
+
+    `Google Chat apps <https://developers.google.com/workspace/chat>`__:
+
+    Attributes:
+        name (str):
+            The icon name defined in the `Google Material
+            Icon <https://fonts.google.com/icons>`__, for example,
+            ``check_box``. Any invalid names are abandoned and replaced
+            with empty string and results in the icon failing to render.
+        fill (bool):
+            Whether the icon renders as filled. Default value is false.
+
+            To preview different icon settings, go to `Google Font
+            Icons <https://fonts.google.com/icons>`__ and adjust the
+            settings under **Customize**.
+        weight (int):
+            The stroke weight of the icon. Choose from {100, 200, 300,
+            400, 500, 600, 700}. If absent, default value is 400. If any
+            other value is specified, the default value is used.
+
+            To preview different icon settings, go to `Google Font
+            Icons <https://fonts.google.com/icons>`__ and adjust the
+            settings under **Customize**.
+        grade (int):
+            Weight and grade affect a symbol’s thickness. Adjustments to
+            grade are more granular than adjustments to weight and have
+            a small impact on the size of the symbol. Choose from {-25,
+            0, 200}. If absent, default value is 0. If any other value
+            is specified, the default value is used.
+
+            To preview different icon settings, go to `Google Font
+            Icons <https://fonts.google.com/icons>`__ and adjust the
+            settings under **Customize**.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fill: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    weight: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    grade: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
 
 
@@ -2173,8 +2269,9 @@ class Grid(proto.Message):
     r"""Displays a grid with a collection of items. Items can only include
     text or images. For responsive columns, or to include more than text
     or images, use [``Columns``][google.apps.card.v1.Columns]. For an
-    example in Google Chat apps, see
-    `Grid <https://developers.google.com/chat/ui/widgets/grid>`__.
+    example in Google Chat apps, see `Display a Grid with a collection
+    of
+    items <https://developers.google.com/workspace/chat/format-structure-card-dialog#display_a_grid_with_a_collection_of_items>`__.
 
     A grid supports any number of columns and items. The number of rows
     is determined by items divided by columns. A grid with 10 items and
@@ -2331,7 +2428,8 @@ class Columns(proto.Message):
     r"""The ``Columns`` widget displays up to 2 columns in a card or dialog.
     You can add widgets to each column; the widgets appear in the order
     that they are specified. For an example in Google Chat apps, see
-    `Columns <https://developers.google.com/chat/ui/widgets/columns>`__.
+    `Display cards and dialogs in
+    columns <https://developers.google.com/workspace/chat/format-structure-card-dialog#display_cards_and_dialogs_in_columns>`__.
 
     The height of each column is determined by the taller column. For
     example, if the first column is taller than the second column, both
@@ -2355,8 +2453,7 @@ class Columns(proto.Message):
 
     `Google Workspace Add-ons and Chat
     apps <https://developers.google.com/workspace/extend>`__: Columns
-    for Google Workspace Add-ons are in `Developer
-    Preview <https://developers.google.com/workspace/preview>`__.
+    for Google Workspace Add-ons are in Developer Preview.
 
     Attributes:
         column_items (MutableSequence[google.apps.card_v1.types.Columns.Column]):
@@ -2367,21 +2464,20 @@ class Columns(proto.Message):
     class Column(proto.Message):
         r"""A column.
 
-        `Google Chat apps <https://developers.google.com/chat>`__:
+        `Google Workspace Add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__: Columns
+        for Google Workspace Add-ons are in Developer Preview.
 
         Attributes:
             horizontal_size_style (google.apps.card_v1.types.Columns.Column.HorizontalSizeStyle):
-                Specifies how a column fills the width of the card.
-
-                `Google Chat apps <https://developers.google.com/chat>`__:
+                Specifies how a column fills the width of the
+                card.
             horizontal_alignment (google.apps.card_v1.types.Widget.HorizontalAlignment):
                 Specifies whether widgets align to the left,
                 right, or center of a column.
             vertical_alignment (google.apps.card_v1.types.Columns.Column.VerticalAlignment):
-                Specifies whether widgets align to the top, bottom, or
-                center of a column.
-
-                `Google Chat apps <https://developers.google.com/chat>`__:
+                Specifies whether widgets align to the top,
+                bottom, or center of a column.
             widgets (MutableSequence[google.apps.card_v1.types.Columns.Column.Widgets]):
                 An array of widgets included in a column.
                 Widgets appear in the order that they are
@@ -2393,7 +2489,9 @@ class Columns(proto.Message):
             each column depends on both the ``HorizontalSizeStyle`` and the
             width of the widgets within the column.
 
-            `Google Chat apps <https://developers.google.com/chat>`__:
+            `Google Workspace Add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__: Columns
+            for Google Workspace Add-ons are in Developer Preview.
 
             Values:
                 HORIZONTAL_SIZE_STYLE_UNSPECIFIED (0):
@@ -2416,7 +2514,9 @@ class Columns(proto.Message):
             r"""Specifies whether widgets align to the top, bottom, or center of a
             column.
 
-            `Google Chat apps <https://developers.google.com/chat>`__:
+            `Google Workspace Add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__: Columns
+            for Google Workspace Add-ons are in Developer Preview.
 
             Values:
                 VERTICAL_ALIGNMENT_UNSPECIFIED (0):
@@ -2437,7 +2537,9 @@ class Columns(proto.Message):
         class Widgets(proto.Message):
             r"""The supported widgets that you can include in a column.
 
-            `Google Chat apps <https://developers.google.com/chat>`__:
+            `Google Workspace Add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__: Columns
+            for Google Workspace Add-ons are in Developer Preview.
 
             This message has `oneof`_ fields (mutually exclusive fields).
             For each oneof, at most one member field can be set at the same time.
@@ -2721,8 +2823,8 @@ class Action(proto.Message):
             A custom function to invoke when the containing element is
             clicked or othrwise activated.
 
-            For example usage, see `Create interactive
-            cards <https://developers.google.com/chat/how-tos/cards-onclick>`__.
+            For example usage, see `Read form
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         parameters (MutableSequence[google.apps.card_v1.types.Action.ActionParameter]):
             List of action parameters.
         load_indicator (google.apps.card_v1.types.Action.LoadIndicator):
@@ -2738,11 +2840,11 @@ class Action(proto.Message):
             being processed, set
             ```LoadIndicator`` <https://developers.google.com/workspace/add-ons/reference/rpc/google.apps.card.v1#loadindicator>`__
             to ``NONE``. For `card
-            messages <https://developers.google.com/chat/api/guides/v1/messages/create#create>`__
+            messages <https://developers.google.com/workspace/chat/api/guides/v1/messages/create#create>`__
             in Chat apps, you must also set the action's
-            ```ResponseType`` <https://developers.google.com/chat/api/reference/rest/v1/spaces.messages#responsetype>`__
+            ```ResponseType`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages#responsetype>`__
             to ``UPDATE_MESSAGE`` and use the same
-            ```card_id`` <https://developers.google.com/chat/api/reference/rest/v1/spaces.messages#CardWithId>`__
+            ```card_id`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages#CardWithId>`__
             from the card that contained the action.
 
             If ``false``, the form values are cleared when the action is
@@ -2752,7 +2854,7 @@ class Action(proto.Message):
             to ``SPINNER``.
         interaction (google.apps.card_v1.types.Action.Interaction):
             Optional. Required when opening a
-            `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+            `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
 
             What to do in response to an interaction with a user, such
             as a user clicking a button in a card message.
@@ -2764,12 +2866,13 @@ class Action(proto.Message):
             By specifying an ``interaction``, the app can respond in
             special interactive ways. For example, by setting
             ``interaction`` to ``OPEN_DIALOG``, the app can open a
-            `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+            `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
             When specified, a loading indicator isn't shown. If
             specified for an add-on, the entire card is stripped and
             nothing is shown in the client.
 
-            `Google Chat apps <https://developers.google.com/chat>`__:
+            `Google Chat
+            apps <https://developers.google.com/workspace/chat>`__:
     """
 
     class LoadIndicator(proto.Enum):
@@ -2791,7 +2894,7 @@ class Action(proto.Message):
 
     class Interaction(proto.Enum):
         r"""Optional. Required when opening a
-        `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+        `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
 
         What to do in response to an interaction with a user, such as a user
         clicking a button in a card message.
@@ -2802,20 +2905,20 @@ class Action(proto.Message):
         By specifying an ``interaction``, the app can respond in special
         interactive ways. For example, by setting ``interaction`` to
         ``OPEN_DIALOG``, the app can open a
-        `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+        `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
 
         When specified, a loading indicator isn't shown. If specified for an
         add-on, the entire card is stripped and nothing is shown in the
         client.
 
-        `Google Chat apps <https://developers.google.com/chat>`__:
+        `Google Chat apps <https://developers.google.com/workspace/chat>`__:
 
         Values:
             INTERACTION_UNSPECIFIED (0):
                 Default value. The ``action`` executes as normal.
             OPEN_DIALOG (1):
                 Opens a
-                `dialog <https://developers.google.com/chat/how-tos/dialogs>`__,
+                `dialog <https://developers.google.com/workspace/chat/dialogs>`__,
                 a windowed, card-based interface that Chat apps use to
                 interact with users.
 
@@ -2823,7 +2926,8 @@ class Action(proto.Message):
                 card messages. If specified for an add-on, the entire card
                 is stripped and nothing is shown in the client.
 
-                `Google Chat apps <https://developers.google.com/chat>`__:
+                `Google Chat
+                apps <https://developers.google.com/workspace/chat>`__:
         """
         INTERACTION_UNSPECIFIED = 0
         OPEN_DIALOG = 1
@@ -2836,7 +2940,7 @@ class Action(proto.Message):
         time in the list of string parameters.
 
         To learn more, see
-        ```CommonEventObject`` <https://developers.google.com/chat/api/reference/rest/v1/Event#commoneventobject>`__.
+        ```CommonEventObject`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/Event#commoneventobject>`__.
 
         `Google Workspace Add-ons and Chat
         apps <https://developers.google.com/workspace/extend>`__:
