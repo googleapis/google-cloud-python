@@ -3463,9 +3463,8 @@ def test_series_pipe(
     ],
 )
 def test_series_explode(data):
-    data = [[1, 2, 3], [], numpy.nan, [3, 4]]
     s = bigframes.pandas.Series(data)
-    pd_s = pd.Series(data)
+    pd_s = s.to_pandas()
     pd.testing.assert_series_equal(
         s.explode().to_pandas(),
         pd_s.explode(),
