@@ -87,6 +87,26 @@ for library in s.get_staging_dirs(default_version):
         '"DataFormat",\n    \\g<0>',
     )
 
+    # Expose handwritten classes AppendRowsStream and ReadRowsStream here.
+    s.replace(
+        library / "google/cloud/bigquery_storage/__init__.py",
+        f"from google.cloud.bigquery_storage_{library.name} import BigQueryReadClient",
+        (
+            f"from google.cloud.bigquery_storage_{library.name}.writer import AppendRowsStream\n"
+            "\\g<0>"
+            f"from google.cloud.bigquery_storage_{library.name}.reader import ReadRowsStream\n"
+        ),
+    )
+    s.replace(
+        library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
+        r"""["']ReadSession["']""",
+        (
+            '"AppendRowsStream",\n'
+            '    "ReadRowsStream",\n'
+            '    \\g<0>'
+        ),
+    )
+
     s.move(
         [library],
         excludes=[
