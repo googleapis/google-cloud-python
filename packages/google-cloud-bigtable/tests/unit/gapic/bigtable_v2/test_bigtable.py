@@ -3428,7 +3428,6 @@ def test_read_rows_rest_required_fields(request_type=bigtable.ReadRowsRequest):
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -3716,7 +3715,6 @@ def test_sample_row_keys_rest_required_fields(
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -3992,7 +3990,6 @@ def test_mutate_row_rest_required_fields(request_type=bigtable.MutateRowRequest)
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -4290,7 +4287,6 @@ def test_mutate_rows_rest_required_fields(request_type=bigtable.MutateRowsReques
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -4580,7 +4576,6 @@ def test_check_and_mutate_row_rest_required_fields(
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -4904,7 +4899,6 @@ def test_ping_and_warm_rest_required_fields(request_type=bigtable.PingAndWarmReq
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -5170,7 +5164,6 @@ def test_read_modify_write_row_rest_required_fields(
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -5466,7 +5459,6 @@ def test_generate_initial_change_stream_partitions_rest_required_fields(
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
@@ -5770,7 +5762,6 @@ def test_read_change_stream_rest_required_fields(
     jsonified_request = json.loads(
         json_format.MessageToJson(
             pb_request,
-            including_default_value_fields=False,
             use_integers_for_enums=False,
         )
     )
