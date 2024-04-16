@@ -2048,7 +2048,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Returns:
             google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListFirewallPoliciesPager:
                 Response to request to list firewall
-                policies belonging to a key.
+                policies belonging to a project.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

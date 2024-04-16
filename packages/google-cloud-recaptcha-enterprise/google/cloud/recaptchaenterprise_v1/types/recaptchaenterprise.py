@@ -1828,7 +1828,7 @@ class ListFirewallPoliciesRequest(proto.Message):
 
 class ListFirewallPoliciesResponse(proto.Message):
     r"""Response to request to list firewall policies belonging to a
-    key.
+    project.
 
     Attributes:
         firewall_policies (MutableSequence[google.cloud.recaptchaenterprise_v1.types.FirewallPolicy]):
