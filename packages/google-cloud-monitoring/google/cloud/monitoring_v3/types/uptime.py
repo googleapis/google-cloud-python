@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "UptimeCheckRegion",
         "GroupResourceType",
         "InternalChecker",
+        "SyntheticMonitorTarget",
         "UptimeCheckConfig",
         "UptimeCheckIp",
     },
@@ -188,6 +189,52 @@ class InternalChecker(proto.Message):
     )
 
 
+class SyntheticMonitorTarget(proto.Message):
+    r"""Describes a Synthetic Monitor to be invoked by Uptime.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_function_v2 (google.cloud.monitoring_v3.types.SyntheticMonitorTarget.CloudFunctionV2Target):
+            Target a Synthetic Monitor GCFv2 instance.
+
+            This field is a member of `oneof`_ ``target``.
+    """
+
+    class CloudFunctionV2Target(proto.Message):
+        r"""A Synthetic Monitor deployed to a Cloud Functions V2
+        instance.
+
+        Attributes:
+            name (str):
+                Required. Fully qualified GCFv2 resource name i.e.
+                ``projects/{project}/locations/{location}/functions/{function}``
+                Required.
+            cloud_run_revision (google.api.monitored_resource_pb2.MonitoredResource):
+                Output only. The ``cloud_run_revision`` Monitored Resource
+                associated with the GCFv2. The Synthetic Monitor execution
+                results (metrics, logs, and spans) are reported against this
+                Monitored Resource. This field is output only.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        cloud_run_revision: monitored_resource_pb2.MonitoredResource = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=monitored_resource_pb2.MonitoredResource,
+        )
+
+    cloud_function_v2: CloudFunctionV2Target = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="target",
+        message=CloudFunctionV2Target,
+    )
+
+
 class UptimeCheckConfig(proto.Message):
     r"""This message configures which resources and services to
     monitor for availability.
@@ -201,8 +248,8 @@ class UptimeCheckConfig(proto.Message):
 
     Attributes:
         name (str):
-            A unique resource name for this Uptime check configuration.
-            The format is:
+            Identifier. A unique resource name for this Uptime check
+            configuration. The format is:
 
             ::
 
@@ -233,6 +280,10 @@ class UptimeCheckConfig(proto.Message):
         resource_group (google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup):
             The group resource associated with the
             configuration.
+
+            This field is a member of `oneof`_ ``resource``.
+        synthetic_monitor (google.cloud.monitoring_v3.types.SyntheticMonitorTarget):
+            Specifies a Synthetic Monitor to invoke.
 
             This field is a member of `oneof`_ ``resource``.
         http_check (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck):
@@ -361,6 +412,8 @@ class UptimeCheckConfig(proto.Message):
     class HttpCheck(proto.Message):
         r"""Information involved in an HTTP/HTTPS Uptime check request.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             request_method (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.RequestMethod):
                 The HTTP request method to use for the check. If set to
@@ -381,8 +434,9 @@ class UptimeCheckConfig(proto.Message):
                 host (specified within the ``monitored_resource``) and
                 ``path`` to construct the full URL.
             auth_info (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.BasicAuthentication):
-                The authentication information. Optional when
-                creating an HTTP check; defaults to empty.
+                The authentication information. Optional when creating an
+                HTTP check; defaults to empty. Do not set both
+                ``auth_method`` and ``auth_info``.
             mask_headers (bool):
                 Boolean specifying whether to encrypt the header
                 information. Encryption should be specified for any headers
@@ -453,6 +507,12 @@ class UptimeCheckConfig(proto.Message):
             ping_config (google.cloud.monitoring_v3.types.UptimeCheckConfig.PingConfig):
                 Contains information needed to add pings to
                 an HTTP check.
+            service_agent_authentication (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication):
+                If specified, Uptime will generate and attach an OIDC JWT
+                token for the Monitoring service agent service account as an
+                ``Authorization`` header in the HTTP request when probing.
+
+                This field is a member of `oneof`_ ``auth_method``.
         """
 
         class RequestMethod(proto.Enum):
@@ -580,6 +640,36 @@ class UptimeCheckConfig(proto.Message):
                 enum="UptimeCheckConfig.HttpCheck.ResponseStatusCode.StatusClass",
             )
 
+        class ServiceAgentAuthentication(proto.Message):
+            r"""Contains information needed for generating an `OpenID Connect
+            token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
+            The OIDC token will be generated for the Monitoring service agent
+            service account.
+
+            Attributes:
+                type_ (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication.ServiceAgentAuthenticationType):
+                    Type of authentication.
+            """
+
+            class ServiceAgentAuthenticationType(proto.Enum):
+                r"""Type of authentication.
+
+                Values:
+                    SERVICE_AGENT_AUTHENTICATION_TYPE_UNSPECIFIED (0):
+                        Default value, will result in OIDC
+                        Authentication.
+                    OIDC_TOKEN (1):
+                        OIDC Authentication
+                """
+                SERVICE_AGENT_AUTHENTICATION_TYPE_UNSPECIFIED = 0
+                OIDC_TOKEN = 1
+
+            type_: "UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication.ServiceAgentAuthenticationType" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication.ServiceAgentAuthenticationType",
+            )
+
         request_method: "UptimeCheckConfig.HttpCheck.RequestMethod" = proto.Field(
             proto.ENUM,
             number=8,
@@ -639,6 +729,12 @@ class UptimeCheckConfig(proto.Message):
             proto.MESSAGE,
             number=12,
             message="UptimeCheckConfig.PingConfig",
+        )
+        service_agent_authentication: "UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication" = proto.Field(
+            proto.MESSAGE,
+            number=14,
+            oneof="auth_method",
+            message="UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication",
         )
 
     class TcpCheck(proto.Message):
@@ -815,6 +911,12 @@ class UptimeCheckConfig(proto.Message):
         number=4,
         oneof="resource",
         message=ResourceGroup,
+    )
+    synthetic_monitor: "SyntheticMonitorTarget" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="resource",
+        message="SyntheticMonitorTarget",
     )
     http_check: HttpCheck = proto.Field(
         proto.MESSAGE,

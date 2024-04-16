@@ -74,6 +74,8 @@ class UptimeCheckServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = UptimeCheckServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = UptimeCheckServiceClient._DEFAULT_UNIVERSE
 
+    function_path = staticmethod(UptimeCheckServiceClient.function_path)
+    parse_function_path = staticmethod(UptimeCheckServiceClient.parse_function_path)
     uptime_check_config_path = staticmethod(
         UptimeCheckServiceClient.uptime_check_config_path
     )

@@ -116,6 +116,7 @@ from .span_context import SpanContext
 from .uptime import (
     GroupResourceType,
     InternalChecker,
+    SyntheticMonitorTarget,
     UptimeCheckConfig,
     UptimeCheckIp,
     UptimeCheckRegion,
@@ -222,6 +223,7 @@ __all__ = (
     "UpdateSnoozeRequest",
     "SpanContext",
     "InternalChecker",
+    "SyntheticMonitorTarget",
     "UptimeCheckConfig",
     "UptimeCheckIp",
     "GroupResourceType",
