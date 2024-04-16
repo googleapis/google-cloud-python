@@ -4509,10 +4509,48 @@ class DataFrame(generic.NDFrame):
                 Default False. Include only float, int, boolean columns.
             exact (bool. default False):
                 Default False. Get the exact median instead of an approximate
-                one. Note: ``exact=True`` not yet supported.
+                one.
 
         Returns:
             bigframes.series.Series: Series with the median of values.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def quantile(
+        self, q: Union[float, Sequence[float]] = 0.5, *, numeric_only: bool = False
+    ):
+        """
+        Return values at the given quantile over requested axis.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame(np.array([[1, 1], [2, 10], [3, 100], [4, 100]]),
+            ...                   columns=['a', 'b'])
+            >>> df.quantile(.1)
+            a    1.3
+            b    3.7
+            Name: 0.1, dtype: Float64
+            >>> df.quantile([.1, .5])
+                   a     b
+            0.1  1.3   3.7
+            0.5  2.5  55.0
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Args:
+            q (float or array-like, default 0.5 (50% quantile)):
+                Value between 0 <= q <= 1, the quantile(s) to compute.
+            numeric_only (bool, default False):
+                Include only `float`, `int` or `boolean` data.
+
+        Returns:
+            Series or DataFrame:
+                If ``q`` is an array, a DataFrame will be returned where the
+                index is ``q``, the columns are the columns of self, and the
+                values are the quantiles.
+                If ``q`` is a float, a Series will be returned where the
+                index is the columns of self and the values are the quantiles.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import functools
 import typing
+from typing import Sequence
 
 import pandas as pd
 
@@ -103,6 +104,39 @@ def indicate_duplicates(
         ),
         duplicate_indicator,
     )
+
+
+def quantile(
+    block: blocks.Block,
+    columns: Sequence[str],
+    qs: Sequence[float],
+    grouping_column_ids: Sequence[str] = (),
+) -> blocks.Block:
+    # TODO: handle windowing and more interpolation methods
+    window = core.WindowSpec(
+        grouping_keys=tuple(grouping_column_ids),
+    )
+    quantile_cols = []
+    labels = []
+    if len(columns) * len(qs) > constants.MAX_COLUMNS:
+        raise NotImplementedError("Too many aggregates requested.")
+    for col in columns:
+        for q in qs:
+            label = block.col_id_to_label[col]
+            new_label = (*label, q) if isinstance(label, tuple) else (label, q)
+            labels.append(new_label)
+            block, quantile_col = block.apply_window_op(
+                col,
+                agg_ops.QuantileOp(q),
+                window_spec=window,
+            )
+            quantile_cols.append(quantile_col)
+    block, results = block.aggregate(
+        grouping_column_ids,
+        tuple((col, agg_ops.AnyValueOp()) for col in quantile_cols),
+        dropna=True,
+    )
+    return block.select_columns(results).with_column_labels(labels)
 
 
 def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:

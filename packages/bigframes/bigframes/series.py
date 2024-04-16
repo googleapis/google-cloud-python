@@ -23,7 +23,7 @@ import numbers
 import os
 import textwrap
 import typing
-from typing import Any, Literal, Mapping, Optional, Sequence, Tuple, Union
+from typing import Any, cast, Literal, Mapping, Optional, Sequence, Tuple, Union
 
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
 import google.cloud.bigquery as bigquery
@@ -968,10 +968,19 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def median(self, *, exact: bool = False) -> float:
         if exact:
-            raise NotImplementedError(
-                f"Only approximate median is supported. {constants.FEEDBACK_LINK}"
-            )
-        return typing.cast(float, self._apply_aggregation(agg_ops.median_op))
+            return typing.cast(float, self.quantile(0.5))
+        else:
+            return typing.cast(float, self._apply_aggregation(agg_ops.median_op))
+
+    def quantile(self, q: Union[float, Sequence[float]] = 0.5) -> Union[Series, float]:
+        qs = tuple(q) if utils.is_list_like(q) else (q,)
+        result = block_ops.quantile(self._block, (self._value_column,), qs=qs)
+        if utils.is_list_like(q):
+            result = result.stack()
+            result = result.drop_levels([result.index_columns[0]])
+            return Series(result)
+        else:
+            return cast(float, Series(result).to_pandas().squeeze())
 
     def sum(self) -> float:
         return typing.cast(float, self._apply_aggregation(agg_ops.sum_op))

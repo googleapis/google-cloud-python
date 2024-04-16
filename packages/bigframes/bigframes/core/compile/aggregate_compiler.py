@@ -151,6 +151,14 @@ def _(
 @compile_unary_agg.register
 @numeric_op
 def _(
+    op: agg_ops.QuantileOp, column: ibis_types.NumericColumn, window=None
+) -> ibis_types.NumericValue:
+    return _apply_window_if_present(column.quantile(op.q), window)
+
+
+@compile_unary_agg.register
+@numeric_op
+def _(
     op: agg_ops.MeanOp, column: ibis_types.NumericColumn, window=None
 ) -> ibis_types.NumericValue:
     return _apply_window_if_present(column.mean(), window)

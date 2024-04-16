@@ -11,6 +11,7 @@ class PlotAccessor:
     For Series:
 
         >>> import bigframes.pandas as bpd
+        >>> bpd.options.display.progress_bar = None
         >>> ser = bpd.Series([1, 2, 3, 3])
         >>> plot = ser.plot(kind='hist', title="My plot")
 
@@ -57,6 +58,7 @@ class PlotAccessor:
 
             >>> import bigframes.pandas as bpd
             >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
             >>> df = bpd.DataFrame(np.random.randint(1, 7, 6000), columns=['one'])
             >>> df['two'] = np.random.randint(1, 7, 6000) + np.random.randint(1, 7, 6000)
             >>> ax = df.plot.hist(bins=12, alpha=0.5)
@@ -93,6 +95,7 @@ class PlotAccessor:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
             >>> df = bpd.DataFrame(
             ...     {
             ...         'one': [1, 2, 3, 4],
@@ -160,6 +163,7 @@ class PlotAccessor:
         Draw an area plot based on basic business metrics:
 
             >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
             >>> df = bpd.DataFrame(
             ...     {
             ...         'sales': [3, 2, 3, 9, 10, 6],

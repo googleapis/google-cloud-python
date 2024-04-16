@@ -2009,8 +2009,34 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             frame = self._raise_on_non_numeric("median")
         else:
             frame = self._drop_non_numeric()
-        block = frame._block.aggregate_all_and_stack(agg_ops.median_op)
-        return bigframes.series.Series(block.select_column("values"))
+        if exact:
+            return self.quantile()
+        else:
+            block = frame._block.aggregate_all_and_stack(agg_ops.median_op)
+            return bigframes.series.Series(block.select_column("values"))
+
+    def quantile(
+        self, q: Union[float, Sequence[float]] = 0.5, *, numeric_only: bool = False
+    ):
+        if not numeric_only:
+            frame = self._raise_on_non_numeric("median")
+        else:
+            frame = self._drop_non_numeric()
+        multi_q = utils.is_list_like(q)
+        result = block_ops.quantile(
+            frame._block, frame._block.value_columns, qs=tuple(q) if multi_q else (q,)  # type: ignore
+        )
+        if multi_q:
+            return DataFrame(result.stack()).droplevel(0)
+        else:
+            result_df = (
+                DataFrame(result)
+                .stack(list(range(0, frame.columns.nlevels)))
+                .droplevel(0)
+            )
+            result_series = bigframes.series.Series(result_df._block)
+            result_series.name = q
+            return result_series
 
     def std(
         self, axis: typing.Union[str, int] = 0, *, numeric_only: bool = False

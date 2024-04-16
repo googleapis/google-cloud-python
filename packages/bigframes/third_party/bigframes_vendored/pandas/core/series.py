@@ -3,7 +3,16 @@ Data structure for 1-dimensional cross-sectional and time series data
 """
 from __future__ import annotations
 
-from typing import Hashable, IO, Literal, Mapping, Optional, Sequence, TYPE_CHECKING
+from typing import (
+    Hashable,
+    IO,
+    Literal,
+    Mapping,
+    Optional,
+    Sequence,
+    TYPE_CHECKING,
+    Union,
+)
 
 from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy
@@ -3148,6 +3157,37 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Returns:
             scalar: Scalar.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def quantile(
+        self,
+        q: Union[float, Sequence[float]] = 0.5,
+    ) -> Union[Series, float]:
+        """
+        Return value at the given quantile.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([1, 2, 3, 4])
+            >>> s.quantile(.5)
+            2.5
+            >>> s.quantile([.25, .5, .75])
+            0.25    1.75
+            0.5      2.5
+            0.75    3.25
+            dtype: Float64
+
+        Args:
+            q (float or array-like, default 0.5 (50% quantile)):
+                The quantile(s) to compute, which can lie in range: 0 <= q <= 1.
+
+        Returns:
+            float or Series:
+                If ``q`` is an array, a Series will be returned where the
+                index is ``q`` and the values are the quantiles, otherwise
+                a float will be returned.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

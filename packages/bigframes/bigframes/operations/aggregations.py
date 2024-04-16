@@ -110,6 +110,18 @@ class MedianOp(UnaryAggregateOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class QuantileOp(UnaryAggregateOp):
+    q: float
+
+    @property
+    def name(self):
+        return f"{int(self.q*100)}%"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return signatures.UNARY_REAL_NUMERIC.output_type(input_types[0])
+
+
+@dataclasses.dataclass(frozen=True)
 class ApproxQuartilesOp(UnaryAggregateOp):
     quartile: int
 
