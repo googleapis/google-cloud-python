@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.19.4...google-cloud-monitoring-v2.20.0) (2024-04-16)
+
+
+### Features
+
+* Added ServiceAgentAuthentication auth method for Uptime ([25e126a](https://github.com/googleapis/google-cloud-python/commit/25e126aa3438417a50329f5079d13a955b840a29))
+* Added Synthetic Monitor targets to Uptime data model ([25e126a](https://github.com/googleapis/google-cloud-python/commit/25e126aa3438417a50329f5079d13a955b840a29))
+
+
+### Documentation
+
+* Updated comments accordingly ([25e126a](https://github.com/googleapis/google-cloud-python/commit/25e126aa3438417a50329f5079d13a955b840a29))
+
 ## [2.19.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.19.3...google-cloud-monitoring-v2.19.4) (2024-04-15)
 
 

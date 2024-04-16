@@ -174,6 +174,7 @@ from google.cloud.monitoring_v3.types.span_context import SpanContext
 from google.cloud.monitoring_v3.types.uptime import (
     GroupResourceType,
     InternalChecker,
+    SyntheticMonitorTarget,
     UptimeCheckConfig,
     UptimeCheckIp,
     UptimeCheckRegion,
@@ -296,6 +297,7 @@ __all__ = (
     "UpdateSnoozeRequest",
     "SpanContext",
     "InternalChecker",
+    "SyntheticMonitorTarget",
     "UptimeCheckConfig",
     "UptimeCheckIp",
     "GroupResourceType",
