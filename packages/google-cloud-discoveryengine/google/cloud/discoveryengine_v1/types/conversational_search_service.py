@@ -110,6 +110,11 @@ class ConverseConversationRequest(proto.Message):
             For more information about filtering including syntax and
             filter operators, see
             `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+        boost_spec (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec):
+            Boost specification to boost certain documents in search
+            results which may affect the converse response. For more
+            information on boosting, see
+            `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
     """
 
     name: str = proto.Field(
@@ -149,6 +154,11 @@ class ConverseConversationRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    boost_spec: search_service.SearchRequest.BoostSpec = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=search_service.SearchRequest.BoostSpec,
     )
 
 

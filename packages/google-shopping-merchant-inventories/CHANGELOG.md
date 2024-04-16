@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.5...google-shopping-merchant-inventories-v0.1.6) (2024-04-15)
+
+
+### Documentation
+
+* Add `Immutable` in comment for field `region` in message `RegionalInventory` ([7b2fadf](https://github.com/googleapis/google-cloud-python/commit/7b2fadf9b68fd57adc0c9e17d4b44463d5eee68d))
+* Add `Immutable` in comment for field `store_code` in message `LocalInventory` ([7b2fadf](https://github.com/googleapis/google-cloud-python/commit/7b2fadf9b68fd57adc0c9e17d4b44463d5eee68d))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.4...google-shopping-merchant-inventories-v0.1.5) (2024-03-05)
 
 

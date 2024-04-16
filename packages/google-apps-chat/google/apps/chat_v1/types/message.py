@@ -41,6 +41,7 @@ __protobuf__ = proto.module(
         "QuotedMessageMetadata",
         "Thread",
         "ActionResponse",
+        "AccessoryWidget",
         "GetMessageRequest",
         "DeleteMessageRequest",
         "UpdateMessageRequest",
@@ -235,6 +236,73 @@ class Message(proto.Message):
         attached_gifs (MutableSequence[google.apps.chat_v1.types.AttachedGif]):
             Output only. GIF images that are attached to
             the message.
+        accessory_widgets (MutableSequence[google.apps.chat_v1.types.AccessoryWidget]):
+            One or more interactive widgets that appear at the bottom of
+            a message. You can add accessory widgets to messages that
+            contain text, cards, or both text and cards. Not supported
+            for messages that contain dialogs.
+
+            Creating a message with accessory widgets requires [app
+            authentication]
+            (https://developers.google.com/chat/api/guides/auth/service-accounts).
+
+            The following example shows a Chat app that uses accessory
+            widgets (thumbs up and thumbs down buttons) in a text
+            message:
+
+            |Example accessory widgets message|
+
+            The JSON for this example message is the following:
+
+            ::
+
+               {
+                 "text": "Rate your experience with this Chat app.",
+                 "accessoryWidgets": [
+                   {
+                     "buttonList": {
+                       "buttons": [
+                         {
+                           "icon": {
+                             "material_icon": {
+                               "name": "thumb_up"
+                             }
+                           },
+                           "color": {
+                             "red": 0,
+                             "blue": 255,
+                             "green": 0
+                           },
+                           "onClick": {
+                             "action": {
+                               "function": "doUpvote",
+                             }
+                           }
+                         },
+                         {
+                           "icon": {
+                             "material_icon": {
+                               "name": "thumb_down"
+                             }
+                           },
+                           "color": {
+                             "red": 0,
+                             "blue": 255,
+                             "green": 0
+                           },
+                           "onClick": {
+                             "action": {
+                               "function": "doDownvote",
+                             }
+                           }
+                         }
+                       ]
+                     }
+                   }
+                 ]
+               }
+
+            .. |Example accessory widgets message| image:: https://developers.google.com/chat/images/message-accessory-widgets-reference.png
     """
 
     name: str = proto.Field(
@@ -358,6 +426,11 @@ class Message(proto.Message):
         proto.MESSAGE,
         number=42,
         message="AttachedGif",
+    )
+    accessory_widgets: MutableSequence["AccessoryWidget"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=44,
+        message="AccessoryWidget",
     )
 
 
@@ -556,6 +629,29 @@ class ActionResponse(proto.Message):
     )
 
 
+class AccessoryWidget(proto.Message):
+    r"""A borderless widget attached to the bottom of an app's
+    message.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        button_list (google.apps.card_v1.types.ButtonList):
+            A list of buttons that are displayed under
+            the message.
+
+            This field is a member of `oneof`_ ``action``.
+    """
+
+    button_list: gac_card.ButtonList = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="action",
+        message=gac_card.ButtonList,
+    )
+
+
 class GetMessageRequest(proto.Message):
     r"""
 
@@ -633,7 +729,7 @@ class UpdateMessageRequest(proto.Message):
             -  ``cards_v2`` (Requires `app
                authentication </chat/api/guides/auth/service-accounts>`__.)
 
-            -  Developer Preview: ``accessory_widgets`` (Requires `app
+            -  ``accessory_widgets`` (Requires `app
                authentication </chat/api/guides/auth/service-accounts>`__.)
         allow_missing (bool):
             Optional. If ``true`` and the message isn't found, a new

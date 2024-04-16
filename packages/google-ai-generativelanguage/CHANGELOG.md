@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.1...google-ai-generativelanguage-v0.6.2) (2024-04-15)
+
+
+### Features
+
+* **v1:** Add `output dimensionality` to `EmbedContentRequest` message ([e3bfbc6](https://github.com/googleapis/google-cloud-python/commit/e3bfbc6d55935b2120f282926aae1c4683f8e0ca))
+* **v1:** Add `QUESTION_ANSWERING` and `FACT_VERIFICATION` to `TaskType` Enum ([e3bfbc6](https://github.com/googleapis/google-cloud-python/commit/e3bfbc6d55935b2120f282926aae1c4683f8e0ca))
+* **v1:** Add rest binding for tuned models ([e3bfbc6](https://github.com/googleapis/google-cloud-python/commit/e3bfbc6d55935b2120f282926aae1c4683f8e0ca))
+* **v1beta:** Add `output dimensionality` to `EmbedContentRequest` message ([e2cf0c4](https://github.com/googleapis/google-cloud-python/commit/e2cf0c45ea82e6cb6144d6702d68b47099da0376))
+* **v1beta:** Add `QUESTION_ANSWERING` and `FACT_VERIFICATION` to `TaskType` Enum ([e2cf0c4](https://github.com/googleapis/google-cloud-python/commit/e2cf0c45ea82e6cb6144d6702d68b47099da0376))
+* **v1beta:** Add `response_mime_type` to `GenerationConfig` message ([e2cf0c4](https://github.com/googleapis/google-cloud-python/commit/e2cf0c45ea82e6cb6144d6702d68b47099da0376))
+
+
+### Documentation
+
+* **v1beta:** A bunch of small fixes ([e2cf0c4](https://github.com/googleapis/google-cloud-python/commit/e2cf0c45ea82e6cb6144d6702d68b47099da0376))
+* **v1:** Lots of small fixes ([e3bfbc6](https://github.com/googleapis/google-cloud-python/commit/e3bfbc6d55935b2120f282926aae1c4683f8e0ca))
+
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.0...google-ai-generativelanguage-v0.6.1) (2024-04-03)
+
+
+### Features
+
+* Add file upload service ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+* Add file_data to part options ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+* Add system instructions ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+* Add tool_config ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+
+
+### Documentation
+
+* A comment for field `candidate_count` in message `.[google.ai](https://www.google.com/url?sa=D&q=http%3A%2F%2Fgoogle.ai).generativelanguage.v1beta.GenerationConfig` is changed ([c0a0bf6](https://github.com/googleapis/google-cloud-python/commit/c0a0bf61ab85888c186332a761044994885bec62))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.5.4...google-ai-generativelanguage-v0.6.0) (2024-03-22)
 
 

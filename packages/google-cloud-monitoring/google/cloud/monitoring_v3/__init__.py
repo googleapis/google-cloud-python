@@ -147,6 +147,7 @@ from .types.span_context import SpanContext
 from .types.uptime import (
     GroupResourceType,
     InternalChecker,
+    SyntheticMonitorTarget,
     UptimeCheckConfig,
     UptimeCheckIp,
     UptimeCheckRegion,
@@ -261,6 +262,7 @@ __all__ = (
     "Snooze",
     "SnoozeServiceClient",
     "SpanContext",
+    "SyntheticMonitorTarget",
     "TextLocator",
     "TimeInterval",
     "TimeSeries",

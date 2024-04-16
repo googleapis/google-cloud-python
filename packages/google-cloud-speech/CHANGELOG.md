@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.25.1...google-cloud-speech-v2.26.0) (2024-04-04)
+
+
+### Features
+
+* add `translation_config` in `RecognitionConfig` message ([4ed87f1](https://github.com/googleapis/google-cloud-python/commit/4ed87f14b7917ebd3379f6da7ee4064027be1852))
+
 ## [2.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.25.0...google-cloud-speech-v2.25.1) (2024-03-05)
 
 

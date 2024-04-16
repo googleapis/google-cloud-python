@@ -35,6 +35,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
@@ -3401,6 +3402,12 @@ def test_create_page_rest(request_type):
             ],
             "advanced_settings": {
                 "audio_export_gcs_destination": {"uri": "uri_value"},
+                "speech_settings": {
+                    "endpointer_sensitivity": 2402,
+                    "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                    "use_timeout_based_endpointing": True,
+                    "models": {},
+                },
                 "dtmf_settings": {
                     "enabled": True,
                     "max_digits": 1065,
@@ -3884,6 +3891,12 @@ def test_update_page_rest(request_type):
             ],
             "advanced_settings": {
                 "audio_export_gcs_destination": {"uri": "uri_value"},
+                "speech_settings": {
+                    "endpointer_sensitivity": 2402,
+                    "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                    "use_timeout_based_endpointing": True,
+                    "models": {},
+                },
                 "dtmf_settings": {
                     "enabled": True,
                     "max_digits": 1065,

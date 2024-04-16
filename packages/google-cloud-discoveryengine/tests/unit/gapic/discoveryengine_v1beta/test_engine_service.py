@@ -2852,6 +2852,876 @@ async def test_list_engines_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        engine_service.PauseEngineRequest,
+        dict,
+    ],
+)
+def test_pause_engine(request_type, transport: str = "grpc"):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = engine.Engine(
+            name="name_value",
+            display_name="display_name_value",
+            data_store_ids=["data_store_ids_value"],
+            solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+            industry_vertical=common.IndustryVertical.GENERIC,
+        )
+        response = client.pause_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = engine_service.PauseEngineRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, engine.Engine)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.data_store_ids == ["data_store_ids_value"]
+    assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    assert response.industry_vertical == common.IndustryVertical.GENERIC
+
+
+def test_pause_engine_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        client.pause_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.PauseEngineRequest()
+
+
+def test_pause_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.PauseEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        client.pause_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.PauseEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.pause_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.PauseEngineRequest()
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_async(
+    transport: str = "grpc_asyncio", request_type=engine_service.PauseEngineRequest
+):
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.pause_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = engine_service.PauseEngineRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, engine.Engine)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.data_store_ids == ["data_store_ids_value"]
+    assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    assert response.industry_vertical == common.IndustryVertical.GENERIC
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_async_from_dict():
+    await test_pause_engine_async(request_type=dict)
+
+
+def test_pause_engine_field_headers():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = engine_service.PauseEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        call.return_value = engine.Engine()
+        client.pause_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_field_headers_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = engine_service.PauseEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(engine.Engine())
+        await client.pause_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_pause_engine_flattened():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = engine.Engine()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.pause_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_pause_engine_flattened_error():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pause_engine(
+            engine_service.PauseEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_flattened_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = engine.Engine()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(engine.Engine())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.pause_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_pause_engine_flattened_error_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.pause_engine(
+            engine_service.PauseEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        engine_service.ResumeEngineRequest,
+        dict,
+    ],
+)
+def test_resume_engine(request_type, transport: str = "grpc"):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = engine.Engine(
+            name="name_value",
+            display_name="display_name_value",
+            data_store_ids=["data_store_ids_value"],
+            solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+            industry_vertical=common.IndustryVertical.GENERIC,
+        )
+        response = client.resume_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = engine_service.ResumeEngineRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, engine.Engine)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.data_store_ids == ["data_store_ids_value"]
+    assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    assert response.industry_vertical == common.IndustryVertical.GENERIC
+
+
+def test_resume_engine_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        client.resume_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ResumeEngineRequest()
+
+
+def test_resume_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.ResumeEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        client.resume_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ResumeEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.resume_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.ResumeEngineRequest()
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_async(
+    transport: str = "grpc_asyncio", request_type=engine_service.ResumeEngineRequest
+):
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            engine.Engine(
+                name="name_value",
+                display_name="display_name_value",
+                data_store_ids=["data_store_ids_value"],
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                industry_vertical=common.IndustryVertical.GENERIC,
+            )
+        )
+        response = await client.resume_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = engine_service.ResumeEngineRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, engine.Engine)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.data_store_ids == ["data_store_ids_value"]
+    assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    assert response.industry_vertical == common.IndustryVertical.GENERIC
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_async_from_dict():
+    await test_resume_engine_async(request_type=dict)
+
+
+def test_resume_engine_field_headers():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = engine_service.ResumeEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        call.return_value = engine.Engine()
+        client.resume_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_field_headers_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = engine_service.ResumeEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(engine.Engine())
+        await client.resume_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_resume_engine_flattened():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = engine.Engine()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.resume_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_resume_engine_flattened_error():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resume_engine(
+            engine_service.ResumeEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_flattened_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = engine.Engine()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(engine.Engine())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.resume_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_resume_engine_flattened_error_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.resume_engine(
+            engine_service.ResumeEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        engine_service.TuneEngineRequest,
+        dict,
+    ],
+)
+def test_tune_engine(request_type, transport: str = "grpc"):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.tune_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = engine_service.TuneEngineRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_tune_engine_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        client.tune_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.TuneEngineRequest()
+
+
+def test_tune_engine_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = engine_service.TuneEngineRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        client.tune_engine(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.TuneEngineRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.tune_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == engine_service.TuneEngineRequest()
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_async(
+    transport: str = "grpc_asyncio", request_type=engine_service.TuneEngineRequest
+):
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.tune_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = engine_service.TuneEngineRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_async_from_dict():
+    await test_tune_engine_async(request_type=dict)
+
+
+def test_tune_engine_field_headers():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = engine_service.TuneEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.tune_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_field_headers_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = engine_service.TuneEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.tune_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_tune_engine_flattened():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.tune_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_tune_engine_flattened_error():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.tune_engine(
+            engine_service.TuneEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_flattened_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tune_engine), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.tune_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_tune_engine_flattened_error_async():
+    client = EngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.tune_engine(
+            engine_service.TuneEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         engine_service.CreateEngineRequest,
         dict,
     ],
@@ -4511,6 +5381,832 @@ def test_list_engines_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        engine_service.PauseEngineRequest,
+        dict,
+    ],
+)
+def test_pause_engine_rest(request_type):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = engine.Engine(
+            name="name_value",
+            display_name="display_name_value",
+            data_store_ids=["data_store_ids_value"],
+            solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+            industry_vertical=common.IndustryVertical.GENERIC,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = engine.Engine.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.pause_engine(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, engine.Engine)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.data_store_ids == ["data_store_ids_value"]
+    assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    assert response.industry_vertical == common.IndustryVertical.GENERIC
+
+
+def test_pause_engine_rest_required_fields(
+    request_type=engine_service.PauseEngineRequest,
+):
+    transport_class = transports.EngineServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pause_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = engine.Engine()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = engine.Engine.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.pause_engine(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_pause_engine_rest_unset_required_fields():
+    transport = transports.EngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.pause_engine._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_pause_engine_rest_interceptors(null_interceptor):
+    transport = transports.EngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EngineServiceRestInterceptor(),
+    )
+    client = EngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EngineServiceRestInterceptor, "post_pause_engine"
+    ) as post, mock.patch.object(
+        transports.EngineServiceRestInterceptor, "pre_pause_engine"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = engine_service.PauseEngineRequest.pb(
+            engine_service.PauseEngineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = engine.Engine.to_json(engine.Engine())
+
+        request = engine_service.PauseEngineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = engine.Engine()
+
+        client.pause_engine(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_pause_engine_rest_bad_request(
+    transport: str = "rest", request_type=engine_service.PauseEngineRequest
+):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.pause_engine(request)
+
+
+def test_pause_engine_rest_flattened():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = engine.Engine()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = engine.Engine.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.pause_engine(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/collections/*/engines/*}:pause"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_pause_engine_rest_flattened_error(transport: str = "rest"):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pause_engine(
+            engine_service.PauseEngineRequest(),
+            name="name_value",
+        )
+
+
+def test_pause_engine_rest_error():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        engine_service.ResumeEngineRequest,
+        dict,
+    ],
+)
+def test_resume_engine_rest(request_type):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = engine.Engine(
+            name="name_value",
+            display_name="display_name_value",
+            data_store_ids=["data_store_ids_value"],
+            solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+            industry_vertical=common.IndustryVertical.GENERIC,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = engine.Engine.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.resume_engine(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, engine.Engine)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.data_store_ids == ["data_store_ids_value"]
+    assert response.solution_type == common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
+    assert response.industry_vertical == common.IndustryVertical.GENERIC
+
+
+def test_resume_engine_rest_required_fields(
+    request_type=engine_service.ResumeEngineRequest,
+):
+    transport_class = transports.EngineServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resume_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = engine.Engine()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = engine.Engine.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.resume_engine(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_resume_engine_rest_unset_required_fields():
+    transport = transports.EngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.resume_engine._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resume_engine_rest_interceptors(null_interceptor):
+    transport = transports.EngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EngineServiceRestInterceptor(),
+    )
+    client = EngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EngineServiceRestInterceptor, "post_resume_engine"
+    ) as post, mock.patch.object(
+        transports.EngineServiceRestInterceptor, "pre_resume_engine"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = engine_service.ResumeEngineRequest.pb(
+            engine_service.ResumeEngineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = engine.Engine.to_json(engine.Engine())
+
+        request = engine_service.ResumeEngineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = engine.Engine()
+
+        client.resume_engine(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_resume_engine_rest_bad_request(
+    transport: str = "rest", request_type=engine_service.ResumeEngineRequest
+):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.resume_engine(request)
+
+
+def test_resume_engine_rest_flattened():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = engine.Engine()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = engine.Engine.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.resume_engine(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/collections/*/engines/*}:resume"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_resume_engine_rest_flattened_error(transport: str = "rest"):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resume_engine(
+            engine_service.ResumeEngineRequest(),
+            name="name_value",
+        )
+
+
+def test_resume_engine_rest_error():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        engine_service.TuneEngineRequest,
+        dict,
+    ],
+)
+def test_tune_engine_rest(request_type):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.tune_engine(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_tune_engine_rest_required_fields(
+    request_type=engine_service.TuneEngineRequest,
+):
+    transport_class = transports.EngineServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tune_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tune_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.tune_engine(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_tune_engine_rest_unset_required_fields():
+    transport = transports.EngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.tune_engine._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_tune_engine_rest_interceptors(null_interceptor):
+    transport = transports.EngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EngineServiceRestInterceptor(),
+    )
+    client = EngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EngineServiceRestInterceptor, "post_tune_engine"
+    ) as post, mock.patch.object(
+        transports.EngineServiceRestInterceptor, "pre_tune_engine"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = engine_service.TuneEngineRequest.pb(
+            engine_service.TuneEngineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = engine_service.TuneEngineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.tune_engine(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_tune_engine_rest_bad_request(
+    transport: str = "rest", request_type=engine_service.TuneEngineRequest
+):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.tune_engine(request)
+
+
+def test_tune_engine_rest_flattened():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.tune_engine(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=projects/*/locations/*/collections/*/engines/*}:tune"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_tune_engine_rest_flattened_error(transport: str = "rest"):
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.tune_engine(
+            engine_service.TuneEngineRequest(),
+            name="name_value",
+        )
+
+
+def test_tune_engine_rest_error():
+    client = EngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EngineServiceGrpcTransport(
@@ -4655,6 +6351,9 @@ def test_engine_service_base_transport():
         "update_engine",
         "get_engine",
         "list_engines",
+        "pause_engine",
+        "resume_engine",
+        "tune_engine",
         "get_operation",
         "list_operations",
     )
@@ -4951,6 +6650,15 @@ def test_engine_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_engines._session
     session2 = client2.transport.list_engines._session
+    assert session1 != session2
+    session1 = client1.transport.pause_engine._session
+    session2 = client2.transport.pause_engine._session
+    assert session1 != session2
+    session1 = client1.transport.resume_engine._session
+    session2 = client2.transport.resume_engine._session
+    assert session1 != session2
+    session1 = client1.transport.tune_engine._session
+    session2 = client2.transport.tune_engine._session
     assert session1 != session2
 
 

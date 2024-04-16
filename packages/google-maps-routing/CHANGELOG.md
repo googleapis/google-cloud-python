@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.7...google-maps-routing-v0.6.8) (2024-04-15)
+
+
+### Features
+
+* adds support for new toll passes ([30cf437](https://github.com/googleapis/google-cloud-python/commit/30cf4373474e0f753aaecf419110b7f67a3cb386))
+* adds support for specifying units in the ComputeRouteMatrix request ([30cf437](https://github.com/googleapis/google-cloud-python/commit/30cf4373474e0f753aaecf419110b7f67a3cb386))
+
+
+### Documentation
+
+* various formatting and grammar fixes for proto documentation ([30cf437](https://github.com/googleapis/google-cloud-python/commit/30cf4373474e0f753aaecf419110b7f67a3cb386))
+
 ## [0.6.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.6...google-maps-routing-v0.6.7) (2024-03-05)
 
 

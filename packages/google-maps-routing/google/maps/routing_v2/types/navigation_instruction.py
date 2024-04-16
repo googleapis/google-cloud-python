@@ -31,14 +31,14 @@ __protobuf__ = proto.module(
 
 class NavigationInstruction(proto.Message):
     r"""Encapsulates navigation instructions for a
-    [RouteLegStep][google.maps.routing.v2.RouteLegStep]
+    [``RouteLegStep``][google.maps.routing.v2.RouteLegStep].
 
     Attributes:
         maneuver (google.maps.routing_v2.types.Maneuver):
             Encapsulates the navigation instructions for
-            the current step (e.g., turn left, merge,
-            straight, etc.). This field determines which
-            icon to display.
+            the current step (for example, turn left, merge,
+            or straight). This field determines which icon
+            to display.
         instructions (str):
             Instructions for navigating this step.
     """

@@ -69,6 +69,12 @@ class TaskType(proto.Enum):
         CLUSTERING (5):
             Specifies that the embeddings will be used
             for clustering.
+        QUESTION_ANSWERING (6):
+            Specifies that the given text will be used
+            for question answering.
+        FACT_VERIFICATION (7):
+            Specifies that the given text will be used
+            for fact verification.
     """
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
@@ -76,6 +82,8 @@ class TaskType(proto.Enum):
     SEMANTIC_SIMILARITY = 3
     CLASSIFICATION = 4
     CLUSTERING = 5
+    QUESTION_ANSWERING = 6
+    FACT_VERIFICATION = 7
 
 
 class GenerateContentRequest(proto.Message):
@@ -89,6 +97,11 @@ class GenerateContentRequest(proto.Message):
             the completion.
 
             Format: ``name=models/{model}``.
+        system_instruction (google.ai.generativelanguage_v1beta.types.Content):
+            Optional. Developer set system instruction.
+            Currently, text only.
+
+            This field is a member of `oneof`_ ``_system_instruction``.
         contents (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
             Required. The content of the current
             conversation with the model.
@@ -104,6 +117,9 @@ class GenerateContentRequest(proto.Message):
             interact with external systems to perform an action, or set
             of actions, outside of knowledge and scope of the model. The
             only supported tool is currently ``Function``.
+        tool_config (google.ai.generativelanguage_v1beta.types.ToolConfig):
+            Optional. Tool configuration for any ``Tool`` specified in
+            the request.
         safety_settings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetySetting]):
             Optional. A list of unique ``SafetySetting`` instances for
             blocking unsafe content.
@@ -133,6 +149,12 @@ class GenerateContentRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+    system_instruction: gag_content.Content = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        optional=True,
+        message=gag_content.Content,
+    )
     contents: MutableSequence[gag_content.Content] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
@@ -142,6 +164,11 @@ class GenerateContentRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=gag_content.Tool,
+    )
+    tool_config: gag_content.ToolConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=gag_content.ToolConfig,
     )
     safety_settings: MutableSequence[safety.SafetySetting] = proto.RepeatedField(
         proto.MESSAGE,
@@ -165,10 +192,10 @@ class GenerationConfig(proto.Message):
 
     Attributes:
         candidate_count (int):
-            Optional. Number of generated responses to return.
-
-            This value must be between [1, 8], inclusive. If unset, this
-            will default to 1.
+            Optional. Number of generated responses to
+            return.
+            Currently, this value can only be set to 1. If
+            unset, this will default to 1.
 
             This field is a member of `oneof`_ ``_candidate_count``.
         stop_sequences (MutableSequence[str]):
@@ -193,7 +220,7 @@ class GenerationConfig(proto.Message):
             ``Model.temperature`` attribute of the ``Model`` returned
             from the ``getModel`` function.
 
-            Values can range from [0.0, infinity).
+            Values can range from [0.0, 2.0].
 
             This field is a member of `oneof`_ ``_temperature``.
         top_p (float):
@@ -217,16 +244,23 @@ class GenerationConfig(proto.Message):
             Optional. The maximum number of tokens to consider when
             sampling.
 
-            The model uses combined Top-k and nucleus sampling.
-
-            Top-k sampling considers the set of ``top_k`` most probable
-            tokens.
+            Models use nucleus sampling or combined Top-k and nucleus
+            sampling. Top-k sampling considers the set of ``top_k`` most
+            probable tokens. Models running with nucleus sampling don't
+            allow top_k setting.
 
             Note: The default value varies by model, see the
             ``Model.top_k`` attribute of the ``Model`` returned from the
-            ``getModel`` function.
+            ``getModel`` function. Empty ``top_k`` field in ``Model``
+            indicates the model doesn't apply top-k sampling and doesn't
+            allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
+        response_mime_type (str):
+            Optional. Output response mimetype of the generated
+            candidate text. Supported mimetype: ``text/plain``:
+            (default) Text output. ``application/json``: JSON response
+            in the candidates.
     """
 
     candidate_count: int = proto.Field(
@@ -257,6 +291,10 @@ class GenerationConfig(proto.Message):
         proto.INT32,
         number=7,
         optional=True,
+    )
+    response_mime_type: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
@@ -877,6 +915,13 @@ class EmbedContentRequest(proto.Message):
             provides better quality embeddings for retrieval.
 
             This field is a member of `oneof`_ ``_title``.
+        output_dimensionality (int):
+            Optional. Optional reduced dimension for the output
+            embedding. If set, excessive values in the output embedding
+            are truncated from the end. Supported by
+            ``models/text-embedding-latest``.
+
+            This field is a member of `oneof`_ ``_output_dimensionality``.
     """
 
     model: str = proto.Field(
@@ -897,6 +942,11 @@ class EmbedContentRequest(proto.Message):
     title: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
+    )
+    output_dimensionality: int = proto.Field(
+        proto.INT32,
+        number=5,
         optional=True,
     )
 

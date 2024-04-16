@@ -27,7 +27,10 @@ import grpc  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1beta.types import conversational_search_service
+from google.cloud.discoveryengine_v1beta.types import answer
 from google.cloud.discoveryengine_v1beta.types import conversation
+from google.cloud.discoveryengine_v1beta.types import session
+from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
 from .base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
 
@@ -419,6 +422,212 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
                 response_deserializer=conversational_search_service.ListConversationsResponse.deserialize,
             )
         return self._stubs["list_conversations"]
+
+    @property
+    def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        conversational_search_service.AnswerQueryResponse,
+    ]:
+        r"""Return a callable for the answer query method over gRPC.
+
+        Answer query method.
+
+        Returns:
+            Callable[[~.AnswerQueryRequest],
+                    ~.AnswerQueryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "answer_query" not in self._stubs:
+            self._stubs["answer_query"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/AnswerQuery",
+                request_serializer=conversational_search_service.AnswerQueryRequest.serialize,
+                response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
+            )
+        return self._stubs["answer_query"]
+
+    @property
+    def get_answer(
+        self,
+    ) -> Callable[[conversational_search_service.GetAnswerRequest], answer.Answer]:
+        r"""Return a callable for the get answer method over gRPC.
+
+        Gets a Answer.
+
+        Returns:
+            Callable[[~.GetAnswerRequest],
+                    ~.Answer]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_answer" not in self._stubs:
+            self._stubs["get_answer"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/GetAnswer",
+                request_serializer=conversational_search_service.GetAnswerRequest.serialize,
+                response_deserializer=answer.Answer.deserialize,
+            )
+        return self._stubs["get_answer"]
+
+    @property
+    def create_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.CreateSessionRequest], gcd_session.Session
+    ]:
+        r"""Return a callable for the create session method over gRPC.
+
+        Creates a Session.
+
+        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
+        create already exists, an ALREADY_EXISTS error is returned.
+
+        Returns:
+            Callable[[~.CreateSessionRequest],
+                    ~.Session]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_session" not in self._stubs:
+            self._stubs["create_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/CreateSession",
+                request_serializer=conversational_search_service.CreateSessionRequest.serialize,
+                response_deserializer=gcd_session.Session.deserialize,
+            )
+        return self._stubs["create_session"]
+
+    @property
+    def delete_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.DeleteSessionRequest], empty_pb2.Empty
+    ]:
+        r"""Return a callable for the delete session method over gRPC.
+
+        Deletes a Session.
+
+        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
+        delete does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.DeleteSessionRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_session" not in self._stubs:
+            self._stubs["delete_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/DeleteSession",
+                request_serializer=conversational_search_service.DeleteSessionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_session"]
+
+    @property
+    def update_session(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateSessionRequest], gcd_session.Session
+    ]:
+        r"""Return a callable for the update session method over gRPC.
+
+        Updates a Session.
+
+        [Session][google.cloud.discoveryengine.v1beta.Session] action
+        type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1beta.Session] to update
+        does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.UpdateSessionRequest],
+                    ~.Session]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_session" not in self._stubs:
+            self._stubs["update_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/UpdateSession",
+                request_serializer=conversational_search_service.UpdateSessionRequest.serialize,
+                response_deserializer=gcd_session.Session.deserialize,
+            )
+        return self._stubs["update_session"]
+
+    @property
+    def get_session(
+        self,
+    ) -> Callable[[conversational_search_service.GetSessionRequest], session.Session]:
+        r"""Return a callable for the get session method over gRPC.
+
+        Gets a Session.
+
+        Returns:
+            Callable[[~.GetSessionRequest],
+                    ~.Session]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_session" not in self._stubs:
+            self._stubs["get_session"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/GetSession",
+                request_serializer=conversational_search_service.GetSessionRequest.serialize,
+                response_deserializer=session.Session.deserialize,
+            )
+        return self._stubs["get_session"]
+
+    @property
+    def list_sessions(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListSessionsRequest],
+        conversational_search_service.ListSessionsResponse,
+    ]:
+        r"""Return a callable for the list sessions method over gRPC.
+
+        Lists all Sessions by their parent
+        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+
+        Returns:
+            Callable[[~.ListSessionsRequest],
+                    ~.ListSessionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sessions" not in self._stubs:
+            self._stubs["list_sessions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/ListSessions",
+                request_serializer=conversational_search_service.ListSessionsRequest.serialize,
+                response_deserializer=conversational_search_service.ListSessionsResponse.deserialize,
+            )
+        return self._stubs["list_sessions"]
 
     def close(self):
         self.grpc_channel.close()

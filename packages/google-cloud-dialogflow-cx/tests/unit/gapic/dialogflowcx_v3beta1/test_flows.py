@@ -44,6 +44,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -3977,6 +3978,12 @@ def test_create_flow_rest(request_type):
                     ],
                     "advanced_settings": {
                         "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "speech_settings": {
+                            "endpointer_sensitivity": 2402,
+                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                            "use_timeout_based_endpointing": True,
+                            "models": {},
+                        },
                         "dtmf_settings": {
                             "enabled": True,
                             "max_digits": 1065,
@@ -4019,6 +4026,13 @@ def test_create_flow_rest(request_type):
             "target_flow": "target_flow_value",
             "data_store_connections": [
                 {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
+        },
+        "multi_language_settings": {
+            "enable_multi_language_detection": True,
+            "supported_response_language_codes": [
+                "supported_response_language_codes_value1",
+                "supported_response_language_codes_value2",
             ],
         },
     }
@@ -5304,6 +5318,12 @@ def test_update_flow_rest(request_type):
                     ],
                     "advanced_settings": {
                         "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "speech_settings": {
+                            "endpointer_sensitivity": 2402,
+                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                            "use_timeout_based_endpointing": True,
+                            "models": {},
+                        },
                         "dtmf_settings": {
                             "enabled": True,
                             "max_digits": 1065,
@@ -5346,6 +5366,13 @@ def test_update_flow_rest(request_type):
             "target_flow": "target_flow_value",
             "data_store_connections": [
                 {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
+        },
+        "multi_language_settings": {
+            "enable_multi_language_detection": True,
+            "supported_response_language_codes": [
+                "supported_response_language_codes_value1",
+                "supported_response_language_codes_value2",
             ],
         },
     }

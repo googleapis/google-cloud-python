@@ -16467,7 +16467,11 @@ def test_create_ca_pool_rest(request_type):
                 "additional_extensions": {},
             },
         },
-        "publishing_options": {"publish_ca_cert": True, "publish_crl": True},
+        "publishing_options": {
+            "publish_ca_cert": True,
+            "publish_crl": True,
+            "encoding_format": 1,
+        },
         "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -16927,7 +16931,11 @@ def test_update_ca_pool_rest(request_type):
                 "additional_extensions": {},
             },
         },
-        "publishing_options": {"publish_ca_cert": True, "publish_crl": True},
+        "publishing_options": {
+            "publish_ca_cert": True,
+            "publish_crl": True,
+            "encoding_format": 1,
+        },
         "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

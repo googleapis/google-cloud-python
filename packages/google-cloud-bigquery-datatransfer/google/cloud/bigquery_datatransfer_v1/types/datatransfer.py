@@ -1064,7 +1064,7 @@ class StartManualTransferRunsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Transfer configuration name in the form:
+            Required. Transfer configuration name in the form:
             ``projects/{project_id}/transferConfigs/{config_id}`` or
             ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
         requested_time_range (google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange):
@@ -1153,7 +1153,7 @@ class EnrollDataSourcesRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the project resource in the form:
+            Required. The name of the project resource in the form:
             ``projects/{project_id}``
         data_source_ids (MutableSequence[str]):
             Data sources that are enrolled. It is
@@ -1176,7 +1176,7 @@ class UnenrollDataSourcesRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the project resource in the form:
+            Required. The name of the project resource in the form:
             ``projects/{project_id}``
         data_source_ids (MutableSequence[str]):
             Data sources that are unenrolled. It is

@@ -298,7 +298,7 @@ class EngineServiceAsyncClient:
                 # Initialize request argument(s)
                 engine = discoveryengine_v1beta.Engine()
                 engine.display_name = "display_name_value"
-                engine.solution_type = "SOLUTION_TYPE_CHAT"
+                engine.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
 
                 request = discoveryengine_v1beta.CreateEngineRequest(
                     parent="parent_value",
@@ -591,7 +591,7 @@ class EngineServiceAsyncClient:
                 # Initialize request argument(s)
                 engine = discoveryengine_v1beta.Engine()
                 engine.display_name = "display_name_value"
-                engine.solution_type = "SOLUTION_TYPE_CHAT"
+                engine.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
 
                 request = discoveryengine_v1beta.UpdateEngineRequest(
                     engine=engine,
@@ -922,6 +922,348 @@ class EngineServiceAsyncClient:
             request=request,
             response=response,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def pause_engine(
+        self,
+        request: Optional[Union[engine_service.PauseEngineRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> engine.Engine:
+        r"""Pauses the training of an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
+        is
+        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_pause_engine():
+                # Create a client
+                client = discoveryengine_v1beta.EngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.PauseEngineRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.pause_engine(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.PauseEngineRequest, dict]]):
+                The request object. Request for pausing training of an
+                engine.
+            name (:class:`str`):
+                Required. The name of the engine to pause. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.Engine:
+                Metadata that describes the training and serving parameters of an
+                   [Engine][google.cloud.discoveryengine.v1beta.Engine].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = engine_service.PauseEngineRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.pause_engine,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def resume_engine(
+        self,
+        request: Optional[Union[engine_service.ResumeEngineRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> engine.Engine:
+        r"""Resumes the training of an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
+        is
+        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_resume_engine():
+                # Create a client
+                client = discoveryengine_v1beta.EngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.ResumeEngineRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.resume_engine(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ResumeEngineRequest, dict]]):
+                The request object. Request for resuming training of an
+                engine.
+            name (:class:`str`):
+                Required. The name of the engine to resume. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.Engine:
+                Metadata that describes the training and serving parameters of an
+                   [Engine][google.cloud.discoveryengine.v1beta.Engine].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = engine_service.ResumeEngineRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.resume_engine,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def tune_engine(
+        self,
+        request: Optional[Union[engine_service.TuneEngineRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Tunes an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
+        is
+        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_tune_engine():
+                # Create a client
+                client = discoveryengine_v1beta.EngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.TuneEngineRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.tune_engine(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.TuneEngineRequest, dict]]):
+                The request object. Request to manually start a tuning
+                process now (instead of waiting for the
+                periodically scheduled tuning to
+                happen).
+            name (:class:`str`):
+                Required. The resource name of the engine to tune.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.discoveryengine_v1beta.types.TuneEngineResponse`
+                Response associated with a tune operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = engine_service.TuneEngineRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.tune_engine,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            engine_service.TuneEngineResponse,
+            metadata_type=engine_service.TuneEngineMetadata,
         )
 
         # Done; return the response.

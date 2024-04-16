@@ -44,6 +44,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -2316,7 +2317,7 @@ def test_update_document(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = document.Document(
+        call.return_value = gcd_document.Document(
             name="name_value",
             id="id_value",
             schema_id="schema_id_value",
@@ -2332,7 +2333,7 @@ def test_update_document(request_type, transport: str = "grpc"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, document.Document)
+    assert isinstance(response, gcd_document.Document)
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.schema_id == "schema_id_value"
@@ -2389,7 +2390,7 @@ async def test_update_document_empty_call_async():
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            document.Document(
+            gcd_document.Document(
                 name="name_value",
                 id="id_value",
                 schema_id="schema_id_value",
@@ -2419,7 +2420,7 @@ async def test_update_document_async(
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            document.Document(
+            gcd_document.Document(
                 name="name_value",
                 id="id_value",
                 schema_id="schema_id_value",
@@ -2435,7 +2436,7 @@ async def test_update_document_async(
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, document.Document)
+    assert isinstance(response, gcd_document.Document)
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.schema_id == "schema_id_value"
@@ -2460,7 +2461,7 @@ def test_update_document_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
-        call.return_value = document.Document()
+        call.return_value = gcd_document.Document()
         client.update_document(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2490,7 +2491,9 @@ async def test_update_document_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(document.Document())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_document.Document()
+        )
         await client.update_document(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2504,6 +2507,146 @@ async def test_update_document_field_headers_async():
         "x-goog-request-params",
         "document.name=name_value",
     ) in kw["metadata"]
+
+
+def test_update_document_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_document.Document()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_document(
+            document=gcd_document.Document(
+                struct_data=struct_pb2.Struct(
+                    fields={
+                        "key_value": struct_pb2.Value(
+                            null_value=struct_pb2.NullValue.NULL_VALUE
+                        )
+                    }
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].document
+        mock_val = gcd_document.Document(
+            struct_data=struct_pb2.Struct(
+                fields={
+                    "key_value": struct_pb2.Value(
+                        null_value=struct_pb2.NullValue.NULL_VALUE
+                    )
+                }
+            )
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_document_flattened_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_document(
+            document_service.UpdateDocumentRequest(),
+            document=gcd_document.Document(
+                struct_data=struct_pb2.Struct(
+                    fields={
+                        "key_value": struct_pb2.Value(
+                            null_value=struct_pb2.NullValue.NULL_VALUE
+                        )
+                    }
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_document_flattened_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_document.Document()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_document.Document()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_document(
+            document=gcd_document.Document(
+                struct_data=struct_pb2.Struct(
+                    fields={
+                        "key_value": struct_pb2.Value(
+                            null_value=struct_pb2.NullValue.NULL_VALUE
+                        )
+                    }
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].document
+        mock_val = gcd_document.Document(
+            struct_data=struct_pb2.Struct(
+                fields={
+                    "key_value": struct_pb2.Value(
+                        null_value=struct_pb2.NullValue.NULL_VALUE
+                    )
+                }
+            )
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_document_flattened_error_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_document(
+            document_service.UpdateDocumentRequest(),
+            document=gcd_document.Document(
+                struct_data=struct_pb2.Struct(
+                    fields={
+                        "key_value": struct_pb2.Value(
+                            null_value=struct_pb2.NullValue.NULL_VALUE
+                        )
+                    }
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
 
 
 @pytest.mark.parametrize(
@@ -4298,7 +4441,7 @@ def test_update_document_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = document.Document(
+        return_value = gcd_document.Document(
             name="name_value",
             id="id_value",
             schema_id="schema_id_value",
@@ -4310,7 +4453,7 @@ def test_update_document_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = document.Document.pb(return_value)
+        return_value = gcd_document.Document.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -4318,7 +4461,7 @@ def test_update_document_rest(request_type):
         response = client.update_document(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, document.Document)
+    assert isinstance(response, gcd_document.Document)
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.schema_id == "schema_id_value"
@@ -4350,7 +4493,12 @@ def test_update_document_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).update_document._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing",))
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4362,7 +4510,7 @@ def test_update_document_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = document.Document()
+    return_value = gcd_document.Document()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -4384,7 +4532,7 @@ def test_update_document_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = document.Document.pb(return_value)
+            return_value = gcd_document.Document.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -4403,7 +4551,15 @@ def test_update_document_rest_unset_required_fields():
     )
 
     unset_fields = transport.update_document._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing",)) & set(("document",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "updateMask",
+            )
+        )
+        & set(("document",))
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4439,7 +4595,9 @@ def test_update_document_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = document.Document.to_json(document.Document())
+        req.return_value._content = gcd_document.Document.to_json(
+            gcd_document.Document()
+        )
 
         request = document_service.UpdateDocumentRequest()
         metadata = [
@@ -4447,7 +4605,7 @@ def test_update_document_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = document.Document()
+        post.return_value = gcd_document.Document()
 
         client.update_document(
             request,
@@ -4487,6 +4645,85 @@ def test_update_document_rest_bad_request(
         response_value.request = Request()
         req.return_value = response_value
         client.update_document(request)
+
+
+def test_update_document_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_document.Document()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "document": {
+                "name": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/documents/sample5"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            document=gcd_document.Document(
+                struct_data=struct_pb2.Struct(
+                    fields={
+                        "key_value": struct_pb2.Value(
+                            null_value=struct_pb2.NullValue.NULL_VALUE
+                        )
+                    }
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcd_document.Document.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_document(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{document.name=projects/*/locations/*/dataStores/*/branches/*/documents/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_document_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_document(
+            document_service.UpdateDocumentRequest(),
+            document=gcd_document.Document(
+                struct_data=struct_pb2.Struct(
+                    fields={
+                        "key_value": struct_pb2.Value(
+                            null_value=struct_pb2.NullValue.NULL_VALUE
+                        )
+                    }
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
 
 
 def test_update_document_rest_error():
@@ -5854,8 +6091,39 @@ def test_parse_document_path():
     assert expected == actual
 
 
+def test_fhir_store_path():
+    project = "cuttlefish"
+    location = "mussel"
+    dataset = "winkle"
+    fhir_store = "nautilus"
+    expected = "projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}".format(
+        project=project,
+        location=location,
+        dataset=dataset,
+        fhir_store=fhir_store,
+    )
+    actual = DocumentServiceClient.fhir_store_path(
+        project, location, dataset, fhir_store
+    )
+    assert expected == actual
+
+
+def test_parse_fhir_store_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "dataset": "squid",
+        "fhir_store": "clam",
+    }
+    path = DocumentServiceClient.fhir_store_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentServiceClient.parse_fhir_store_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5865,7 +6133,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = DocumentServiceClient.common_billing_account_path(**expected)
 
@@ -5875,7 +6143,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5885,7 +6153,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = DocumentServiceClient.common_folder_path(**expected)
 
@@ -5895,7 +6163,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5905,7 +6173,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = DocumentServiceClient.common_organization_path(**expected)
 
@@ -5915,7 +6183,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5925,7 +6193,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = DocumentServiceClient.common_project_path(**expected)
 
@@ -5935,8 +6203,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5947,8 +6215,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = DocumentServiceClient.common_location_path(**expected)
 

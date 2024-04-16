@@ -210,8 +210,8 @@ class AlertPolicy(proto.Message):
         WARNING = 3
 
     class Documentation(proto.Message):
-        r"""A content string and a MIME type that describes the content
-        string's format.
+        r"""Documentation that is included in the notifications and
+        incidents pertaining to this policy.
 
         Attributes:
             content (str):
@@ -491,9 +491,10 @@ class AlertPolicy(proto.Message):
                     ratio, if ``denominator_filter`` and
                     ``denominator_aggregations`` are specified.
                 evaluation_missing_data (google.cloud.monitoring_v3.types.AlertPolicy.Condition.EvaluationMissingData):
-                    A condition control that determines how
-                    metric-threshold conditions are evaluated when
-                    data stops arriving.
+                    A condition control that determines how metric-threshold
+                    conditions are evaluated when data stops arriving. To use
+                    this control, the value of the ``duration`` field must be
+                    greater than or equal to 60 seconds.
             """
 
             class ForecastOptions(proto.Message):

@@ -72,8 +72,8 @@ class TrainCustomModelRequest(proto.Message):
                 delimited jsonl/ndjson file.
 
                 For search-tuning model, each line should have the \_id,
-                title and text. Example: {"_id": "doc1", title: "relevant
-                doc", "text": "relevant text"}
+                title and text. Example:
+                ``{"_id": "doc1", title: "relevant doc", "text": "relevant text"}``
             query_data_path (str):
                 The gcs query data which could be associated in train data.
                 The data path format is
@@ -158,8 +158,14 @@ class TrainCustomModelResponse(proto.Message):
             -  **bad-data**: The training data quality is bad.
             -  **no-improvement**: Tuning didn't improve performance.
                Won't deploy.
-            -  **in-progress**: Model training is in progress.
+            -  **in-progress**: Model training job creation is in
+               progress.
+            -  **training**: Model is actively training.
+            -  **evaluating**: The model is evaluating trained metrics.
+            -  **indexing**: The model trained metrics are indexing.
             -  **ready**: The model is ready for serving.
+        metrics (MutableMapping[str, float]):
+            The metrics of the trained model.
     """
 
     error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
@@ -175,6 +181,11 @@ class TrainCustomModelResponse(proto.Message):
     model_status: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    metrics: MutableMapping[str, float] = proto.MapField(
+        proto.STRING,
+        proto.DOUBLE,
+        number=4,
     )
 
 

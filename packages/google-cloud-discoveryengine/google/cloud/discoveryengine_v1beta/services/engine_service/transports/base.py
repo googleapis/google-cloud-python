@@ -155,6 +155,21 @@ class EngineServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.pause_engine: gapic_v1.method.wrap_method(
+                self.pause_engine,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.resume_engine: gapic_v1.method.wrap_method(
+                self.resume_engine,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.tune_engine: gapic_v1.method.wrap_method(
+                self.tune_engine,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -216,6 +231,33 @@ class EngineServiceTransport(abc.ABC):
             engine_service.ListEnginesResponse,
             Awaitable[engine_service.ListEnginesResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def pause_engine(
+        self,
+    ) -> Callable[
+        [engine_service.PauseEngineRequest],
+        Union[engine.Engine, Awaitable[engine.Engine]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resume_engine(
+        self,
+    ) -> Callable[
+        [engine_service.ResumeEngineRequest],
+        Union[engine.Engine, Awaitable[engine.Engine]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def tune_engine(
+        self,
+    ) -> Callable[
+        [engine_service.TuneEngineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

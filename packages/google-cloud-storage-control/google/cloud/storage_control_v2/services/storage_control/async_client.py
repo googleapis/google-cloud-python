@@ -72,6 +72,10 @@ class StorageControlAsyncClient:
 
     folder_path = staticmethod(StorageControlClient.folder_path)
     parse_folder_path = staticmethod(StorageControlClient.parse_folder_path)
+    managed_folder_path = staticmethod(StorageControlClient.managed_folder_path)
+    parse_managed_folder_path = staticmethod(
+        StorageControlClient.parse_managed_folder_path
+    )
     storage_layout_path = staticmethod(StorageControlClient.storage_layout_path)
     parse_storage_layout_path = staticmethod(
         StorageControlClient.parse_storage_layout_path
@@ -324,8 +328,12 @@ class StorageControlAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             folder_id (:class:`str`):
-                Required. The absolute path of the folder, using a
-                single ``/`` as delimiter.
+                Required. The full name of a folder, including all its
+                parent folders. Folders use single '/' characters as a
+                delimiter. The folder_id must end with a slash. For
+                example, the folder_id of "books/biographies/" would
+                create a new "biographies/" folder under the "books/"
+                folder.
 
                 This corresponds to the ``folder_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -962,6 +970,468 @@ class StorageControlAsyncClient:
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_managed_folder(
+        self,
+        request: Optional[
+            Union[storage_control.CreateManagedFolderRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        managed_folder: Optional[storage_control.ManagedFolder] = None,
+        managed_folder_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> storage_control.ManagedFolder:
+        r"""Creates a new managed folder.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_create_managed_folder():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.CreateManagedFolderRequest(
+                    parent="parent_value",
+                    managed_folder_id="managed_folder_id_value",
+                )
+
+                # Make the request
+                response = await client.create_managed_folder(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.CreateManagedFolderRequest, dict]]):
+                The request object. Request message for
+                CreateManagedFolder.
+            parent (:class:`str`):
+                Required. Name of the bucket this
+                managed folder belongs to.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            managed_folder (:class:`google.cloud.storage_control_v2.types.ManagedFolder`):
+                Required. Properties of the managed folder being
+                created. The bucket and managed folder names are
+                specified in the ``parent`` and ``managed_folder_id``
+                fields. Populating these fields in ``managed_folder``
+                will result in an error.
+
+                This corresponds to the ``managed_folder`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            managed_folder_id (:class:`str`):
+                Required. The name of the managed folder. It uses a
+                single ``/`` as delimiter and leading and trailing ``/``
+                are allowed.
+
+                This corresponds to the ``managed_folder_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.storage_control_v2.types.ManagedFolder:
+                A managed folder.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, managed_folder, managed_folder_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = storage_control.CreateManagedFolderRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if managed_folder is not None:
+            request.managed_folder = managed_folder
+        if managed_folder_id is not None:
+            request.managed_folder_id = managed_folder_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_managed_folder,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_managed_folder(
+        self,
+        request: Optional[
+            Union[storage_control.DeleteManagedFolderRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Permanently deletes an empty managed folder.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_delete_managed_folder():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.DeleteManagedFolderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_managed_folder(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.DeleteManagedFolderRequest, dict]]):
+                The request object. DeleteManagedFolder RPC request
+                message.
+            name (:class:`str`):
+                Required. Name of the managed folder. Format:
+                ``projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = storage_control.DeleteManagedFolderRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_managed_folder,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_managed_folder(
+        self,
+        request: Optional[Union[storage_control.GetManagedFolderRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> storage_control.ManagedFolder:
+        r"""Returns metadata for the specified managed folder.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_get_managed_folder():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetManagedFolderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_managed_folder(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.GetManagedFolderRequest, dict]]):
+                The request object. Request message for GetManagedFolder.
+            name (:class:`str`):
+                Required. Name of the managed folder. Format:
+                ``projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.storage_control_v2.types.ManagedFolder:
+                A managed folder.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = storage_control.GetManagedFolderRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_managed_folder,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=2,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ResourceExhausted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_managed_folders(
+        self,
+        request: Optional[
+            Union[storage_control.ListManagedFoldersRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListManagedFoldersAsyncPager:
+        r"""Retrieves a list of managed folders for a given
+        bucket.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_list_managed_folders():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.ListManagedFoldersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_managed_folders(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.ListManagedFoldersRequest, dict]]):
+                The request object. Request message for
+                ListManagedFolders.
+            parent (:class:`str`):
+                Required. Name of the bucket this
+                managed folder belongs to.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.storage_control_v2.services.storage_control.pagers.ListManagedFoldersAsyncPager:
+                Response message for
+                ListManagedFolders.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = storage_control.ListManagedFoldersRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_managed_folders,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=2,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ResourceExhausted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListManagedFoldersAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 

@@ -35,6 +35,12 @@ __protobuf__ = proto.module(
         "RenameFolderMetadata",
         "StorageLayout",
         "GetStorageLayoutRequest",
+        "ManagedFolder",
+        "GetManagedFolderRequest",
+        "CreateManagedFolderRequest",
+        "DeleteManagedFolderRequest",
+        "ListManagedFoldersRequest",
+        "ListManagedFoldersResponse",
     },
 )
 
@@ -165,8 +171,11 @@ class CreateFolderRequest(proto.Message):
             and folder_id fields, respectively. Populating those fields
             in ``folder`` will result in an error.
         folder_id (str):
-            Required. The absolute path of the folder, using a single
-            ``/`` as delimiter.
+            Required. The full name of a folder, including all its
+            parent folders. Folders use single '/' characters as a
+            delimiter. The folder_id must end with a slash. For example,
+            the folder_id of "books/biographies/" would create a new
+            "biographies/" folder under the "books/" folder.
         recursive (bool):
             Optional. If true, parent folder doesn't have
             to be present and all missing ancestor folders
@@ -599,6 +608,267 @@ class GetStorageLayoutRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class ManagedFolder(proto.Message):
+    r"""A managed folder.
+
+    Attributes:
+        name (str):
+            Identifier. The name of this managed folder. Format:
+            ``projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}``
+        metageneration (int):
+            Output only. The metadata version of this
+            managed folder. It increases whenever the
+            metadata is updated. Used for preconditions and
+            for detecting changes in metadata. Managed
+            folders don't have a generation number.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time of the managed
+            folder.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The modification time of the
+            managed folder.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metageneration: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetManagedFolderRequest(proto.Message):
+    r"""Request message for GetManagedFolder.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. Name of the managed folder. Format:
+            ``projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}``
+        if_metageneration_match (int):
+            The operation succeeds conditional on the
+            managed folder's current metageneration matching
+            the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_match``.
+        if_metageneration_not_match (int):
+            The operation succeeds conditional on the
+            managed folder's current metageneration NOT
+            matching the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_not_match``.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    if_metageneration_match: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    if_metageneration_not_match: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class CreateManagedFolderRequest(proto.Message):
+    r"""Request message for CreateManagedFolder.
+
+    Attributes:
+        parent (str):
+            Required. Name of the bucket this managed
+            folder belongs to.
+        managed_folder (google.cloud.storage_control_v2.types.ManagedFolder):
+            Required. Properties of the managed folder being created.
+            The bucket and managed folder names are specified in the
+            ``parent`` and ``managed_folder_id`` fields. Populating
+            these fields in ``managed_folder`` will result in an error.
+        managed_folder_id (str):
+            Required. The name of the managed folder. It uses a single
+            ``/`` as delimiter and leading and trailing ``/`` are
+            allowed.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    managed_folder: "ManagedFolder" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ManagedFolder",
+    )
+    managed_folder_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteManagedFolderRequest(proto.Message):
+    r"""DeleteManagedFolder RPC request message.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. Name of the managed folder. Format:
+            ``projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}``
+        if_metageneration_match (int):
+            The operation succeeds conditional on the
+            managed folder's current metageneration matching
+            the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_match``.
+        if_metageneration_not_match (int):
+            The operation succeeds conditional on the
+            managed folder's current metageneration NOT
+            matching the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_not_match``.
+        allow_non_empty (bool):
+            Allows deletion of a managed folder even if
+            it is not empty. A managed folder is empty if it
+            manages no child managed folders or objects.
+            Caller must have permission for
+            storage.managedFolders.setIamPolicy.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    if_metageneration_match: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    if_metageneration_not_match: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+    allow_non_empty: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class ListManagedFoldersRequest(proto.Message):
+    r"""Request message for ListManagedFolders.
+
+    Attributes:
+        parent (str):
+            Required. Name of the bucket this managed
+            folder belongs to.
+        page_size (int):
+            Optional. Maximum number of managed folders
+            to return in a single response. The service will
+            use this parameter or 1,000 items, whichever is
+            smaller.
+        page_token (str):
+            Optional. A previously-returned page token
+            representing part of the larger set of results
+            to view.
+        prefix (str):
+            Optional. Filter results to match managed
+            folders with name starting with this prefix.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    prefix: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListManagedFoldersResponse(proto.Message):
+    r"""Response message for ListManagedFolders.
+
+    Attributes:
+        managed_folders (MutableSequence[google.cloud.storage_control_v2.types.ManagedFolder]):
+            The list of matching managed folders
+        next_page_token (str):
+            The continuation token, used to page through
+            large result sets. Provide this value in a
+            subsequent request to return the next page of
+            results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    managed_folders: MutableSequence["ManagedFolder"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ManagedFolder",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

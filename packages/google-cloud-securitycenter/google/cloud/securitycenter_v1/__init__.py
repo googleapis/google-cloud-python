@@ -48,6 +48,7 @@ from .types.load_balancer import LoadBalancer
 from .types.log_entry import CloudLoggingEntry, LogEntry
 from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
+from .types.notebook import Notebook
 from .types.notification_config import NotificationConfig
 from .types.notification_message import NotificationMessage
 from .types.org_policy import OrgPolicy
@@ -208,6 +209,7 @@ __all__ = (
     "LogEntry",
     "MitreAttack",
     "MuteConfig",
+    "Notebook",
     "NotificationConfig",
     "NotificationMessage",
     "OrgPolicy",

@@ -2891,7 +2891,7 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> service.FetchCaCertsResponse:
         r"""FetchCaCerts returns the current trust anchor for the
         [CaPool][google.cloud.security.privateca.v1.CaPool]. This will
-        include CA certificate chains for all Certificate Authorities in
+        include CA certificate chains for all certificate authorities in
         the ENABLED, DISABLED, or STAGED states.
 
         .. code-block:: python

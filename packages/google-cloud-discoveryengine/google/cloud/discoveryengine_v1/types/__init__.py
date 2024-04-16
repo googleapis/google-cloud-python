@@ -74,6 +74,11 @@ from .engine_service import (
 )
 from .import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
@@ -85,6 +90,7 @@ from .import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
 )
 from .purge_config import (
     PurgeDocumentsMetadata,
@@ -94,6 +100,7 @@ from .purge_config import (
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
 )
+from .recommendation_service import RecommendRequest, RecommendResponse
 from .schema import Schema
 from .schema_service import (
     CreateSchemaMetadata,
@@ -199,6 +206,11 @@ __all__ = (
     "ListEnginesResponse",
     "UpdateEngineRequest",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CloudSqlSource",
+    "FhirStoreSource",
+    "FirestoreSource",
     "GcsSource",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
@@ -210,12 +222,15 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "SpannerSource",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "RecommendRequest",
+    "RecommendResponse",
     "Schema",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",

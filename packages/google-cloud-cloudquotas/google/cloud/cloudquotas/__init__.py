@@ -40,6 +40,7 @@ from google.cloud.cloudquotas_v1.types.resources import (
     QuotaInfo,
     QuotaPreference,
     QuotaSafetyCheck,
+    RolloutInfo,
 )
 
 __all__ = (
@@ -59,5 +60,6 @@ __all__ = (
     "QuotaIncreaseEligibility",
     "QuotaInfo",
     "QuotaPreference",
+    "RolloutInfo",
     "QuotaSafetyCheck",
 )

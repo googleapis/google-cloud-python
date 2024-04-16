@@ -98,7 +98,9 @@ class Model(proto.Message):
 
             Top-k sampling considers the set of ``top_k`` most probable
             tokens. This value specifies default to be used by the
-            backend while making the call to the model.
+            backend while making the call to the model. If empty,
+            indicates the model doesn't use top-k sampling, and
+            ``top_k`` isn't allowed as a generation parameter.
 
             This field is a member of `oneof`_ ``_top_k``.
     """

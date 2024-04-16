@@ -3,7 +3,7 @@ Python Client for Generative Language API
 
 |preview| |pypi| |versions|
 
-`Generative Language API`_: Generative Language API
+`Generative Language API`_: The Gemini API allows developers to build generative AI applications using Gemini models. Gemini is our most capable model, built from the ground up to be multimodal. It can generalize and seamlessly understand, operate across, and combine different types of information including language, images, audio, video, and code. You can use the Gemini API for use cases like reasoning across text and images, content generation, dialogue agents, summarization and classification systems, and more.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Generative Language API
    :target: https://pypi.org/project/google-ai-generativelanguage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-ai-generativelanguage.svg
    :target: https://pypi.org/project/google-ai-generativelanguage/
-.. _Generative Language API: https://developers.generativeai.google/
+.. _Generative Language API: https://ai.google.dev/docs
 .. _Client Library Documentation: https://googleapis.dev/python/generativelanguage/latest
-.. _Product Documentation:  https://developers.generativeai.google/
+.. _Product Documentation:  https://ai.google.dev/docs
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Generative Language API.:  https://developers.generativeai.google/
+.. _Enable the Generative Language API.:  https://ai.google.dev/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,5 +104,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Generative Language API Product documentation:  https://developers.generativeai.google/
+.. _Generative Language API Product documentation:  https://ai.google.dev/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

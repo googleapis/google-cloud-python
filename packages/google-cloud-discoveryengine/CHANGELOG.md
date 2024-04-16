@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.11.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.10...google-cloud-discoveryengine-v0.11.11) (2024-04-15)
+
+
+### Features
+
+* add advanced engine model APIs ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* add answer generation APIs ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* add project provision and terms APIs ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* add standalone grounding API ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* add standalone ranking API ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* promote blending search to v1 ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* promote healthcare search to v1 ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* promote online chunking search to v1 ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* promote recommendation service to v1 ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* support advanced search boosting ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* support boost/bury on multi-turn search ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+* support import data from Cloud Spanner, BigTable, SQL and Firestore ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([4b3e751](https://github.com/googleapis/google-cloud-python/commit/4b3e75174618ee670418ed23ed8aefdf514ce7e9))
+
 ## [0.11.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.9...google-cloud-discoveryengine-v0.11.10) (2024-03-12)
 
 

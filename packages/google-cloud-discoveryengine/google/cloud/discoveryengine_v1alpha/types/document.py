@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
     manifest={
         "Document",
+        "ProcessedDocument",
     },
 )
 
@@ -250,6 +251,36 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ProcessedDocument(proto.Message):
+    r"""Document captures all raw metadata information of items to be
+    recommended or searched.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        json_data (str):
+            The JSON string representation of the
+            processed document.
+
+            This field is a member of `oneof`_ ``processed_data_format``.
+        document (str):
+            Required. Full resource name of the referenced document, in
+            the format
+            ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
+    """
+
+    json_data: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="processed_data_format",
+    )
+    document: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

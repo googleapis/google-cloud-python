@@ -31,6 +31,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -3752,9 +3753,35 @@ def test_uptime_check_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_uptime_check_config_path():
+def test_function_path():
     project = "squid"
-    uptime_check_config = "clam"
+    location = "clam"
+    function = "whelk"
+    expected = "projects/{project}/locations/{location}/functions/{function}".format(
+        project=project,
+        location=location,
+        function=function,
+    )
+    actual = UptimeCheckServiceClient.function_path(project, location, function)
+    assert expected == actual
+
+
+def test_parse_function_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "function": "nudibranch",
+    }
+    path = UptimeCheckServiceClient.function_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = UptimeCheckServiceClient.parse_function_path(path)
+    assert expected == actual
+
+
+def test_uptime_check_config_path():
+    project = "cuttlefish"
+    uptime_check_config = "mussel"
     expected = "projects/{project}/uptimeCheckConfigs/{uptime_check_config}".format(
         project=project,
         uptime_check_config=uptime_check_config,
@@ -3767,8 +3794,8 @@ def test_uptime_check_config_path():
 
 def test_parse_uptime_check_config_path():
     expected = {
-        "project": "whelk",
-        "uptime_check_config": "octopus",
+        "project": "winkle",
+        "uptime_check_config": "nautilus",
     }
     path = UptimeCheckServiceClient.uptime_check_config_path(**expected)
 
@@ -3778,7 +3805,7 @@ def test_parse_uptime_check_config_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3788,7 +3815,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = UptimeCheckServiceClient.common_billing_account_path(**expected)
 
@@ -3798,7 +3825,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3808,7 +3835,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = UptimeCheckServiceClient.common_folder_path(**expected)
 
@@ -3818,7 +3845,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3828,7 +3855,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = UptimeCheckServiceClient.common_organization_path(**expected)
 
@@ -3838,7 +3865,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3848,7 +3875,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = UptimeCheckServiceClient.common_project_path(**expected)
 
@@ -3858,8 +3885,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3870,8 +3897,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = UptimeCheckServiceClient.common_location_path(**expected)
 

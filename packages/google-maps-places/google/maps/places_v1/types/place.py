@@ -51,7 +51,7 @@ class PriceLevel(proto.Enum):
         PRICE_LEVEL_EXPENSIVE (4):
             Place provides expensive services.
         PRICE_LEVEL_VERY_EXPENSIVE (5):
-            Place provides very expensive service s.
+            Place provides very expensive services.
     """
     PRICE_LEVEL_UNSPECIFIED = 0
     PRICE_LEVEL_FREE = 1
@@ -78,7 +78,7 @@ class Place(proto.Message):
             "Google Sydney", "Starbucks", "Pyrmont", etc.
         types (MutableSequence[str]):
             A set of type tags for this result. For
-            example, "political" and "locality".  For the
+            example, "political" and "locality". For the
             complete list of possible values, see Table A
             and Table B at
             https://developers.google.com/maps/documentation/places/web-service/place-types
@@ -149,7 +149,8 @@ class Place(proto.Message):
             individual store, not the overall chain.
         reviews (MutableSequence[google.maps.places_v1.types.Review]):
             List of reviews about this place, sorted by
-            relevance.
+            relevance. A maximum of 5 reviews can be
+            returned.
         regular_opening_hours (google.maps.places_v1.types.Place.OpeningHours):
             The regular hours of operation.
         utc_offset_minutes (int):
@@ -162,7 +163,8 @@ class Place(proto.Message):
             This field is a member of `oneof`_ ``_utc_offset_minutes``.
         photos (MutableSequence[google.maps.places_v1.types.Photo]):
             Information (including references) about
-            photos of this place.
+            photos of this place. A maximum of 10 photos can
+            be returned.
         adr_format_address (str):
             The place's address in adr microformat:
             http://microformats.org/wiki/adr.

@@ -3587,6 +3587,7 @@ def test_create_data_store_rest(request_type):
                     "completable_option": 1,
                     "recs_filterable_option": 1,
                     "key_property_type": "key_property_type_value",
+                    "advanced_site_search_data_sources": [1],
                 }
             ],
         },
@@ -4888,6 +4889,7 @@ def test_update_data_store_rest(request_type):
                     "completable_option": 1,
                     "recs_filterable_option": 1,
                     "key_property_type": "key_property_type_value",
+                    "advanced_site_search_data_sources": [1],
                 }
             ],
         },

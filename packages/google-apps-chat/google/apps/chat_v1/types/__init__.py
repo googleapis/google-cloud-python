@@ -44,6 +44,7 @@ from .membership import (
     Membership,
 )
 from .message import (
+    AccessoryWidget,
     ActionResponse,
     AttachedGif,
     CardWithId,
@@ -111,6 +112,7 @@ __all__ = (
     "ListMembershipsRequest",
     "ListMembershipsResponse",
     "Membership",
+    "AccessoryWidget",
     "ActionResponse",
     "AttachedGif",
     "CardWithId",

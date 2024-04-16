@@ -59,9 +59,15 @@ class SearchRequest(proto.Message):
         page_size (int):
             Maximum number of
             [Document][google.cloud.discoveryengine.v1beta.Document]s to
-            return. If unspecified, defaults to a reasonable value. The
-            maximum allowed value is 100. Values above 100 are coerced
-            to 100.
+            return. The maximum allowed value depends on the data type.
+            Values above the maximum value are coerced to the maximum
+            value.
+
+            -  Websites with basic indexing: Default ``10``, Maximum
+               ``25``.
+            -  Websites with advanced indexing: Default ``25``, Maximum
+               ``50``.
+            -  Other: Default ``50``, Maximum ``100``.
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
@@ -203,7 +209,7 @@ class SearchRequest(proto.Message):
             If
             [SearchRequest.EmbeddingSpec.EmbeddingVector.field_path][google.cloud.discoveryengine.v1beta.SearchRequest.EmbeddingSpec.EmbeddingVector.field_path]
             is not provided, it will use
-            [ServingConfig.EmbeddingConfig.field_path][].
+            [ServingConfig.EmbeddingConfig.field_path][google.cloud.discoveryengine.v1beta.ServingConfig.embedding_config].
         ranking_expression (str):
             The ranking expression controls the customized ranking on
             retrieval documents. This overrides
@@ -523,8 +529,130 @@ class SearchRequest(proto.Message):
                     ranking, but it is not blocked out completely.
 
                     Setting to 0.0 means no boost applied. The boosting
-                    condition is ignored.
+                    condition is ignored. Only one of the (condition, boost)
+                    combination or the boost_control_spec below are set. If both
+                    are set then the global boost is ignored and the more
+                    fine-grained boost_control_spec is applied.
+                boost_control_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec):
+                    Complex specification for custom ranking
+                    based on customer defined attribute value.
             """
+
+            class BoostControlSpec(proto.Message):
+                r"""Specification for custom ranking based on customer specified
+                attribute value. It provides more controls for customized
+                ranking than the simple (condition, boost) combination above.
+
+                Attributes:
+                    field_name (str):
+                        The name of the field whose value will be
+                        used to determine the boost amount.
+                    attribute_type (google.cloud.discoveryengine_v1beta.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
+                        The attribute type to be used to determine the boost amount.
+                        The attribute value can be derived from the field value of
+                        the specified field_name. In the case of numerical it is
+                        straightforward i.e. attribute_value =
+                        numerical_field_value. In the case of freshness however,
+                        attribute_value = (time.now() - datetime_field_value).
+                    interpolation_type (google.cloud.discoveryengine_v1beta.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
+                        The interpolation type to be applied to
+                        connect the control points listed below.
+                    control_points (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
+                        The control points used to define the curve. The monotonic
+                        function (defined through the interpolation_type above)
+                        passes through the control points listed here.
+                """
+
+                class AttributeType(proto.Enum):
+                    r"""The attribute(or function) for which the custom ranking is to
+                    be applied.
+
+                    Values:
+                        ATTRIBUTE_TYPE_UNSPECIFIED (0):
+                            Unspecified AttributeType.
+                        NUMERICAL (1):
+                            The value of the numerical field will be used to dynamically
+                            update the boost amount. In this case, the attribute_value
+                            (the x value) of the control point will be the actual value
+                            of the numerical field for which the boost_amount is
+                            specified.
+                        FRESHNESS (2):
+                            For the freshness use case the attribute value will be the
+                            duration between the current time and the date in the
+                            datetime field specified. The value must be formatted as an
+                            XSD ``dayTimeDuration`` value (a restricted subset of an ISO
+                            8601 duration value). The pattern for this is:
+                            ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
+                            ``T24H``.
+                    """
+                    ATTRIBUTE_TYPE_UNSPECIFIED = 0
+                    NUMERICAL = 1
+                    FRESHNESS = 2
+
+                class InterpolationType(proto.Enum):
+                    r"""The interpolation type to be applied. Default will be linear
+                    (Piecewise Linear).
+
+                    Values:
+                        INTERPOLATION_TYPE_UNSPECIFIED (0):
+                            Interpolation type is unspecified. In this
+                            case, it defaults to Linear.
+                        LINEAR (1):
+                            Piecewise linear interpolation will be
+                            applied.
+                    """
+                    INTERPOLATION_TYPE_UNSPECIFIED = 0
+                    LINEAR = 1
+
+                class ControlPoint(proto.Message):
+                    r"""The control points used to define the curve. The curve
+                    defined through these control points can only be monotonically
+                    increasing or decreasing(constant values are acceptable).
+
+                    Attributes:
+                        attribute_value (str):
+                            Can be one of:
+
+                            1. The numerical field value.
+                            2. The duration spec for freshness: The value must be
+                               formatted as an XSD ``dayTimeDuration`` value (a
+                               restricted subset of an ISO 8601 duration value). The
+                               pattern for this is: ``[nD][T[nH][nM][nS]]``.
+                        boost_amount (float):
+                            The value between -1 to 1 by which to boost the score if the
+                            attribute_value evaluates to the value specified above.
+                    """
+
+                    attribute_value: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    boost_amount: float = proto.Field(
+                        proto.FLOAT,
+                        number=2,
+                    )
+
+                field_name: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                attribute_type: "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType" = proto.Field(
+                    proto.ENUM,
+                    number=2,
+                    enum="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType",
+                )
+                interpolation_type: "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType" = proto.Field(
+                    proto.ENUM,
+                    number=3,
+                    enum="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
+                )
+                control_points: MutableSequence[
+                    "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
+                )
 
             condition: str = proto.Field(
                 proto.STRING,
@@ -533,6 +661,11 @@ class SearchRequest(proto.Message):
             boost: float = proto.Field(
                 proto.FLOAT,
                 number=2,
+            )
+            boost_control_spec: "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec",
             )
 
         condition_boost_specs: MutableSequence[
@@ -747,6 +880,15 @@ class SearchRequest(proto.Message):
                 model_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec):
                     If specified, the spec will be used to modify
                     the model specification provided to the LLM.
+                use_semantic_chunks (bool):
+                    If true, answer will be generated from most
+                    relevant chunks from top search results. This
+                    feature will improve summary quality. Note that
+                    with this feature enabled, not all top search
+                    results will be referenced and included in the
+                    reference list, so the citation source index
+                    only points to the search results listed in the
+                    reference list.
             """
 
             class ModelPromptSpec(proto.Message):
@@ -774,11 +916,14 @@ class SearchRequest(proto.Message):
                         Supported values are:
 
                         -  ``stable``: string. Default value when no value is
-                           specified. Uses a generally available, fine-tuned version
-                           of the text-bison@001 model.
-                        -  ``preview``: string. (Public preview) Uses a fine-tuned
-                           version of the text-bison@002 model. This model works
-                           only for summaries in English.
+                           specified. Uses a generally available, fine-tuned model.
+                           For more information, see `Answer generation model
+                           versions and
+                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
+                        -  ``preview``: string. (Public preview) Uses a preview
+                           model. For more information, see `Answer generation model
+                           versions and
+                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
                 """
 
                 version: str = proto.Field(
@@ -817,6 +962,10 @@ class SearchRequest(proto.Message):
                     number=7,
                     message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
                 )
+            )
+            use_semantic_chunks: bool = proto.Field(
+                proto.BOOL,
+                number=8,
             )
 
         class ExtractiveContentSpec(proto.Message):
@@ -861,12 +1010,10 @@ class SearchRequest(proto.Message):
                     ``max_extractive_segment_count``.
                 return_extractive_segment_score (bool):
                     Specifies whether to return the confidence score from the
-                    extractive segments in each search result. The default value
-                    is ``false``.
-
-                    Note: this is a priavte preview feature and only works for
-                    allowlisted users, please reach out to Cloud Support team if
-                    you want to use it.
+                    extractive segments in each search result. This feature is
+                    available only for new or allowlisted data stores. To
+                    allowlist your data store, contact your Customer Engineer.
+                    The default value is ``false``.
                 num_previous_segments (int):
                     Specifies whether to also include the adjacent from each
                     selected segments. Return at most ``num_previous_segments``
@@ -1106,6 +1253,10 @@ class SearchResponse(proto.Message):
         applied_controls (MutableSequence[str]):
             Controls applied as part of the Control
             service.
+        geo_search_debug_info (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.GeoSearchDebugInfo]):
+            Debug information specifically related to
+            forward geocoding issues arising from
+            Geolocation Search.
         query_expansion_info (google.cloud.discoveryengine_v1beta.types.SearchResponse.QueryExpansionInfo):
             Query expansion information for the returned
             results.
@@ -1422,7 +1573,29 @@ class SearchResponse(proto.Message):
                     ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
                 uri (str):
                     Cloud Storage or HTTP uri for the document.
+                chunk_contents (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.Reference.ChunkContent]):
+                    List of cited chunk contents derived from
+                    document content.
             """
+
+            class ChunkContent(proto.Message):
+                r"""Chunk content.
+
+                Attributes:
+                    content (str):
+                        Chunk textual content.
+                    page_identifier (str):
+                        Page identifier.
+                """
+
+                content: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                page_identifier: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
 
             title: str = proto.Field(
                 proto.STRING,
@@ -1435,6 +1608,13 @@ class SearchResponse(proto.Message):
             uri: str = proto.Field(
                 proto.STRING,
                 number=3,
+            )
+            chunk_contents: MutableSequence[
+                "SearchResponse.Summary.Reference.ChunkContent"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="SearchResponse.Summary.Reference.ChunkContent",
             )
 
         class SummaryWithMetadata(proto.Message):
@@ -1488,6 +1668,27 @@ class SearchResponse(proto.Message):
                 number=4,
                 message="SearchResponse.Summary.SummaryWithMetadata",
             )
+        )
+
+    class GeoSearchDebugInfo(proto.Message):
+        r"""Debug information specifically related to forward geocoding
+        issues arising from Geolocation Search.
+
+        Attributes:
+            original_address_query (str):
+                The address from which forward geocoding
+                ingestion produced issues.
+            error_message (str):
+                The error produced.
+        """
+
+        original_address_query: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        error_message: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     class QueryExpansionInfo(proto.Message):
@@ -1561,6 +1762,11 @@ class SearchResponse(proto.Message):
     applied_controls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
+    )
+    geo_search_debug_info: MutableSequence[GeoSearchDebugInfo] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=16,
+        message=GeoSearchDebugInfo,
     )
     query_expansion_info: QueryExpansionInfo = proto.Field(
         proto.MESSAGE,

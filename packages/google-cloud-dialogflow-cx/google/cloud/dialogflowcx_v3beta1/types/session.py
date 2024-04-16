@@ -26,6 +26,7 @@ import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import (
     audio_config,
+    data_store_connection,
     example,
     flow,
     generative_settings,
@@ -957,6 +958,11 @@ class QueryParameters(proto.Message):
         search_config (google.cloud.dialogflowcx_v3beta1.types.SearchConfig):
             Optional. Search configuration for UCS search
             queries.
+        populate_data_store_connection_signals (bool):
+            Optional. If set to true and data stores are involved in
+            serving the request then
+            DetectIntentResponse.query_result.data_store_connection_signals
+            will be filled with data that can help evaluations.
     """
 
     time_zone: str = proto.Field(
@@ -1033,6 +1039,10 @@ class QueryParameters(proto.Message):
         proto.MESSAGE,
         number=20,
         message="SearchConfig",
+    )
+    populate_data_store_connection_signals: bool = proto.Field(
+        proto.BOOL,
+        number=25,
     )
 
 
@@ -1469,6 +1479,12 @@ class QueryResult(proto.Message):
             Indicates whether the Thumbs up/Thumbs down
             rating controls are need to be shown for the
             response in the Dialogflow Messenger widget.
+        data_store_connection_signals (google.cloud.dialogflowcx_v3beta1.types.DataStoreConnectionSignals):
+            Optional. Data store connection feature output signals.
+            Filled only when data stores are involved in serving the
+            query and DetectIntentRequest.populate
+            data_store_connection_quality_signals is set to true in the
+            request.
     """
 
     text: str = proto.Field(
@@ -1587,6 +1603,13 @@ class QueryResult(proto.Message):
     allow_answer_feedback: bool = proto.Field(
         proto.BOOL,
         number=32,
+    )
+    data_store_connection_signals: data_store_connection.DataStoreConnectionSignals = (
+        proto.Field(
+            proto.MESSAGE,
+            number=35,
+            message=data_store_connection.DataStoreConnectionSignals,
+        )
     )
 
 

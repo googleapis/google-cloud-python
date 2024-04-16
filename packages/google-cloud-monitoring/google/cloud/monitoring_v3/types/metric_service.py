@@ -176,8 +176,10 @@ class ListMetricDescriptorsRequest(proto.Message):
 
                 metric.type = starts_with("custom.googleapis.com/")
         page_size (int):
-            A positive number that is the maximum number
-            of results to return.
+            A positive number that is the maximum number of results to
+            return. The default and maximum value is 10,000. If a
+            page_size <= 0 or > 10,000 is submitted, will instead return
+            a maximum of 10,000 results.
         page_token (str):
             If this field is not empty then it must contain the
             ``nextPageToken`` value returned by a previous call to this
@@ -368,7 +370,7 @@ class ListTimeSeriesRequest(proto.Message):
     """
 
     class TimeSeriesView(proto.Enum):
-        r"""Controls which fields are returned by ``ListTimeSeries``.
+        r"""Controls which fields are returned by ``ListTimeSeries*``.
 
         Values:
             FULL (0):

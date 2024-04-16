@@ -44,6 +44,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -1580,6 +1581,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            enable_multi_language_training=True,
             locked=True,
         )
         response = client.get_agent(request)
@@ -1604,6 +1606,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -1674,6 +1677,7 @@ async def test_get_agent_empty_call_async():
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                enable_multi_language_training=True,
                 locked=True,
             )
         )
@@ -1713,6 +1717,7 @@ async def test_get_agent_async(
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                enable_multi_language_training=True,
                 locked=True,
             )
         )
@@ -1738,6 +1743,7 @@ async def test_get_agent_async(
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -1918,6 +1924,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            enable_multi_language_training=True,
             locked=True,
         )
         response = client.create_agent(request)
@@ -1942,6 +1949,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -2012,6 +2020,7 @@ async def test_create_agent_empty_call_async():
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                enable_multi_language_training=True,
                 locked=True,
             )
         )
@@ -2051,6 +2060,7 @@ async def test_create_agent_async(
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                enable_multi_language_training=True,
                 locked=True,
             )
         )
@@ -2076,6 +2086,7 @@ async def test_create_agent_async(
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -2266,6 +2277,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            enable_multi_language_training=True,
             locked=True,
         )
         response = client.update_agent(request)
@@ -2290,6 +2302,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -2356,6 +2369,7 @@ async def test_update_agent_empty_call_async():
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                enable_multi_language_training=True,
                 locked=True,
             )
         )
@@ -2395,6 +2409,7 @@ async def test_update_agent_async(
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                enable_multi_language_training=True,
                 locked=True,
             )
         )
@@ -2420,6 +2435,7 @@ async def test_update_agent_async(
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -4737,6 +4753,7 @@ def test_get_agent_rest(request_type):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            enable_multi_language_training=True,
             locked=True,
         )
 
@@ -4765,6 +4782,7 @@ def test_get_agent_rest(request_type):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -5019,9 +5037,16 @@ def test_create_agent_rest(request_type):
         "security_settings": "security_settings_value",
         "enable_stackdriver_logging": True,
         "enable_spell_correction": True,
+        "enable_multi_language_training": True,
         "locked": True,
         "advanced_settings": {
             "audio_export_gcs_destination": {"uri": "uri_value"},
+            "speech_settings": {
+                "endpointer_sensitivity": 2402,
+                "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                "use_timeout_based_endpointing": True,
+                "models": {},
+            },
             "dtmf_settings": {
                 "enabled": True,
                 "max_digits": 1065,
@@ -5044,6 +5069,7 @@ def test_create_agent_rest(request_type):
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
         "answer_feedback_settings": {"enable_answer_feedback": True},
+        "personalization_settings": {"default_end_user_metadata": {"fields": {}}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5130,6 +5156,7 @@ def test_create_agent_rest(request_type):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            enable_multi_language_training=True,
             locked=True,
         )
 
@@ -5158,6 +5185,7 @@ def test_create_agent_rest(request_type):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 
@@ -5425,9 +5453,16 @@ def test_update_agent_rest(request_type):
         "security_settings": "security_settings_value",
         "enable_stackdriver_logging": True,
         "enable_spell_correction": True,
+        "enable_multi_language_training": True,
         "locked": True,
         "advanced_settings": {
             "audio_export_gcs_destination": {"uri": "uri_value"},
+            "speech_settings": {
+                "endpointer_sensitivity": 2402,
+                "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                "use_timeout_based_endpointing": True,
+                "models": {},
+            },
             "dtmf_settings": {
                 "enabled": True,
                 "max_digits": 1065,
@@ -5450,6 +5485,7 @@ def test_update_agent_rest(request_type):
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
         "answer_feedback_settings": {"enable_answer_feedback": True},
+        "personalization_settings": {"default_end_user_metadata": {"fields": {}}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5536,6 +5572,7 @@ def test_update_agent_rest(request_type):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            enable_multi_language_training=True,
             locked=True,
         )
 
@@ -5564,6 +5601,7 @@ def test_update_agent_rest(request_type):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.enable_multi_language_training is True
     assert response.locked is True
 
 

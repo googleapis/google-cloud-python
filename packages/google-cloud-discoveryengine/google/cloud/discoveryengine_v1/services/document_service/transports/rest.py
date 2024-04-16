@@ -274,7 +274,9 @@ class DocumentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_document(self, response: document.Document) -> document.Document:
+    def post_update_document(
+        self, response: gcd_document.Document
+    ) -> gcd_document.Document:
         """Post-rpc interceptor for update_document
 
         Override in a subclass to manipulate the response
@@ -1173,7 +1175,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> document.Document:
+        ) -> gcd_document.Document:
             r"""Call the update document method over HTTP.
 
             Args:
@@ -1188,7 +1190,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.document.Document:
+                ~.gcd_document.Document:
                     Document captures all raw metadata
                 information of items to be recommended
                 or searched.
@@ -1247,8 +1249,8 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = document.Document()
-            pb_resp = document.Document.pb(resp)
+            resp = gcd_document.Document()
+            pb_resp = gcd_document.Document.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_document(resp)
@@ -1307,7 +1309,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
     @property
     def update_document(
         self,
-    ) -> Callable[[document_service.UpdateDocumentRequest], document.Document]:
+    ) -> Callable[[document_service.UpdateDocumentRequest], gcd_document.Document]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDocument(self._session, self._host, self._interceptor)  # type: ignore

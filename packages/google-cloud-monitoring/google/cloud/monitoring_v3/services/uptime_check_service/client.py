@@ -48,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.uptime_check_service import pagers
@@ -190,6 +191,28 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def function_path(
+        project: str,
+        location: str,
+        function: str,
+    ) -> str:
+        """Returns a fully-qualified function string."""
+        return "projects/{project}/locations/{location}/functions/{function}".format(
+            project=project,
+            location=location,
+            function=function,
+        )
+
+    @staticmethod
+    def parse_function_path(path: str) -> Dict[str, str]:
+        """Parses a function path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def uptime_check_config_path(

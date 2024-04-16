@@ -43,6 +43,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.uptime_check_service import pagers
@@ -73,6 +74,8 @@ class UptimeCheckServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = UptimeCheckServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = UptimeCheckServiceClient._DEFAULT_UNIVERSE
 
+    function_path = staticmethod(UptimeCheckServiceClient.function_path)
+    parse_function_path = staticmethod(UptimeCheckServiceClient.parse_function_path)
     uptime_check_config_path = staticmethod(
         UptimeCheckServiceClient.uptime_check_config_path
     )

@@ -142,12 +142,9 @@ class DocumentProcessingConfig(proto.Message):
 
             Attributes:
                 enhanced_document_elements (MutableSequence[str]):
-                    Apply additional enhanced OCR processing to a list of
-                    document elements.
-
-                    Supported values:
-
-                    -  ``table``: advanced table parsing model.
+                    [DEPRECATED] This field is deprecated. To use the additional
+                    enhanced document elements processing, please switch to
+                    ``layout_parsing_config``.
                 use_native_text (bool):
                     If true, will use native text instead of OCR
                     text on pages containing native text.

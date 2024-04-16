@@ -44,6 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore

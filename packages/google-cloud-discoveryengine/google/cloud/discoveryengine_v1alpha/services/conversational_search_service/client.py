@@ -60,7 +60,10 @@ from google.cloud.discoveryengine_v1alpha.types import (
     search_service,
 )
 from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1alpha.types import answer
 from google.cloud.discoveryengine_v1alpha.types import conversation
+from google.cloud.discoveryengine_v1alpha.types import session
+from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
 from .transports.grpc import ConversationalSearchServiceGrpcTransport
@@ -199,6 +202,32 @@ class ConversationalSearchServiceClient(
         return self._transport
 
     @staticmethod
+    def answer_path(
+        project: str,
+        location: str,
+        data_store: str,
+        session: str,
+        answer: str,
+    ) -> str:
+        """Returns a fully-qualified answer string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}/answers/{answer}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            session=session,
+            answer=answer,
+        )
+
+    @staticmethod
+    def parse_answer_path(path: str) -> Dict[str, str]:
+        """Parses a answer path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/sessions/(?P<session>.+?)/answers/(?P<answer>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def chunk_path(
         project: str,
         location: str,
@@ -318,6 +347,30 @@ class ConversationalSearchServiceClient(
         """Parses a serving_config path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/servingConfigs/(?P<serving_config>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def session_path(
+        project: str,
+        location: str,
+        data_store: str,
+        session: str,
+    ) -> str:
+        """Returns a fully-qualified session string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            session=session,
+        )
+
+    @staticmethod
+    def parse_session_path(path: str) -> Dict[str, str]:
+        """Parses a session path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/sessions/(?P<session>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1486,6 +1539,767 @@ class ConversationalSearchServiceClient(
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConversationsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def answer_query(
+        self,
+        request: Optional[
+            Union[conversational_search_service.AnswerQueryRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversational_search_service.AnswerQueryResponse:
+        r"""Answer query method.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_answer_query():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                query = discoveryengine_v1alpha.Query()
+                query.text = "text_value"
+
+                request = discoveryengine_v1alpha.AnswerQueryRequest(
+                    serving_config="serving_config_value",
+                    query=query,
+                )
+
+                # Make the request
+                response = client.answer_query(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.AnswerQueryRequest, dict]):
+                The request object. Request message for
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.AnswerQuery]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.AnswerQueryResponse:
+                Response message for
+                   [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.AnswerQuery]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.AnswerQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.AnswerQueryRequest):
+            request = conversational_search_service.AnswerQueryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.answer_query]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("serving_config", request.serving_config),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_answer(
+        self,
+        request: Optional[
+            Union[conversational_search_service.GetAnswerRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> answer.Answer:
+        r"""Gets a Answer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_get_answer():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.GetAnswerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_answer(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.GetAnswerRequest, dict]):
+                The request object. Request for GetAnswer method.
+            name (str):
+                Required. The resource name of the Answer to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.Answer:
+                Defines an answer.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.GetAnswerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.GetAnswerRequest):
+            request = conversational_search_service.GetAnswerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_answer]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_session(
+        self,
+        request: Optional[
+            Union[conversational_search_service.CreateSessionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        session: Optional[gcd_session.Session] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_session.Session:
+        r"""Creates a Session.
+
+        If the [Session][google.cloud.discoveryengine.v1alpha.Session]
+        to create already exists, an ALREADY_EXISTS error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_create_session():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.CreateSessionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_session(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.CreateSessionRequest, dict]):
+                The request object. Request for CreateSession method.
+            parent (str):
+                Required. Full resource name of parent data store.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            session (google.cloud.discoveryengine_v1alpha.types.Session):
+                Required. The session to create.
+                This corresponds to the ``session`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.Session:
+                External session proto definition.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, session])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.CreateSessionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.CreateSessionRequest):
+            request = conversational_search_service.CreateSessionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if session is not None:
+                request.session = session
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_session]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_session(
+        self,
+        request: Optional[
+            Union[conversational_search_service.DeleteSessionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a Session.
+
+        If the [Session][google.cloud.discoveryengine.v1alpha.Session]
+        to delete does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_delete_session():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.DeleteSessionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_session(request=request)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.DeleteSessionRequest, dict]):
+                The request object. Request for DeleteSession method.
+            name (str):
+                Required. The resource name of the Session to delete.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.DeleteSessionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.DeleteSessionRequest):
+            request = conversational_search_service.DeleteSessionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_session]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def update_session(
+        self,
+        request: Optional[
+            Union[conversational_search_service.UpdateSessionRequest, dict]
+        ] = None,
+        *,
+        session: Optional[gcd_session.Session] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_session.Session:
+        r"""Updates a Session.
+
+        [Session][google.cloud.discoveryengine.v1alpha.Session] action
+        type cannot be changed. If the
+        [Session][google.cloud.discoveryengine.v1alpha.Session] to
+        update does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_update_session():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.UpdateSessionRequest(
+                )
+
+                # Make the request
+                response = client.update_session(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.UpdateSessionRequest, dict]):
+                The request object. Request for UpdateSession method.
+            session (google.cloud.discoveryengine_v1alpha.types.Session):
+                Required. The Session to update.
+                This corresponds to the ``session`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Indicates which fields in the provided
+                [Session][google.cloud.discoveryengine.v1alpha.Session]
+                to update. The following are NOT supported:
+
+                -  [Session.name][google.cloud.discoveryengine.v1alpha.Session.name]
+
+                If not set or empty, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.Session:
+                External session proto definition.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([session, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.UpdateSessionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.UpdateSessionRequest):
+            request = conversational_search_service.UpdateSessionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if session is not None:
+                request.session = session
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_session]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("session.name", request.session.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_session(
+        self,
+        request: Optional[
+            Union[conversational_search_service.GetSessionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> session.Session:
+        r"""Gets a Session.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_get_session():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.GetSessionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_session(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.GetSessionRequest, dict]):
+                The request object. Request for GetSession method.
+            name (str):
+                Required. The resource name of the Session to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.Session:
+                External session proto definition.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.GetSessionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.GetSessionRequest):
+            request = conversational_search_service.GetSessionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_session]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_sessions(
+        self,
+        request: Optional[
+            Union[conversational_search_service.ListSessionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSessionsPager:
+        r"""Lists all Sessions by their parent
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            def sample_list_sessions():
+                # Create a client
+                client = discoveryengine_v1alpha.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.ListSessionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sessions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1alpha.types.ListSessionsRequest, dict]):
+                The request object. Request for ListSessions method.
+            parent (str):
+                Required. The data store resource name. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.services.conversational_search_service.pagers.ListSessionsPager:
+                Response for ListSessions method.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.ListSessionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversational_search_service.ListSessionsRequest):
+            request = conversational_search_service.ListSessionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_sessions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSessionsPager(
             method=rpc,
             request=request,
             response=response,

@@ -32,6 +32,10 @@ from .services.data_store_service import (
 )
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .services.engine_service import EngineServiceAsyncClient, EngineServiceClient
+from .services.recommendation_service import (
+    RecommendationServiceAsyncClient,
+    RecommendationServiceClient,
+)
 from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
 from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
 from .services.site_search_engine_service import (
@@ -103,6 +107,11 @@ from .types.engine_service import (
 )
 from .types.import_config import (
     BigQuerySource,
+    BigtableOptions,
+    BigtableSource,
+    CloudSqlSource,
+    FhirStoreSource,
+    FirestoreSource,
     GcsSource,
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
@@ -114,6 +123,7 @@ from .types.import_config import (
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
+    SpannerSource,
 )
 from .types.purge_config import (
     PurgeDocumentsMetadata,
@@ -123,6 +133,7 @@ from .types.purge_config import (
     PurgeSuggestionDenyListEntriesRequest,
     PurgeSuggestionDenyListEntriesResponse,
 )
+from .types.recommendation_service import RecommendRequest, RecommendResponse
 from .types.schema import Schema
 from .types.schema_service import (
     CreateSchemaMetadata,
@@ -184,6 +195,7 @@ __all__ = (
     "DataStoreServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "EngineServiceAsyncClient",
+    "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
@@ -195,6 +207,9 @@ __all__ = (
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
     "BigQuerySource",
+    "BigtableOptions",
+    "BigtableSource",
+    "CloudSqlSource",
     "CollectUserEventRequest",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -242,6 +257,8 @@ __all__ = (
     "EngineServiceClient",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
+    "FhirStoreSource",
+    "FirestoreSource",
     "GcsSource",
     "GetConversationRequest",
     "GetDataStoreRequest",
@@ -283,6 +300,9 @@ __all__ = (
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
+    "RecommendRequest",
+    "RecommendResponse",
+    "RecommendationServiceClient",
     "RecrawlUrisMetadata",
     "RecrawlUrisRequest",
     "RecrawlUrisResponse",
@@ -299,6 +319,7 @@ __all__ = (
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
     "SolutionType",
+    "SpannerSource",
     "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",

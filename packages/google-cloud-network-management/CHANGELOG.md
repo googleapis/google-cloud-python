@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.17.0...google-cloud-network-management-v1.17.1) (2024-03-28)
+
+
+### Documentation
+
+* [google-cloud-network-management] update possible firewall rule actions comment ([#12525](https://github.com/googleapis/google-cloud-python/issues/12525)) ([98814f7](https://github.com/googleapis/google-cloud-python/commit/98814f7a212947b8bb07a2bb38a67bad0c1fa4ea))
+
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.16.0...google-cloud-network-management-v1.17.0) (2024-03-27)
+
+
+### Features
+
+* [google-cloud-network-management] add an "unsupported" type of firewall policy rule ([#12520](https://github.com/googleapis/google-cloud-python/issues/12520)) ([6f64689](https://github.com/googleapis/google-cloud-python/commit/6f6468920d8e1e0933f97f6a91896cd8021295a1))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.15.1...google-cloud-network-management-v1.16.0) (2024-03-25)
 
 

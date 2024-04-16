@@ -40,6 +40,7 @@ async def sample_enroll_data_sources():
 
     # Initialize request argument(s)
     request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
+        name="name_value",
     )
 
     # Make the request

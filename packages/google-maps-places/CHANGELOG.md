@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.11...google-maps-places-v0.1.12) (2024-04-15)
+
+
+### Documentation
+
+* Fix designation of Text Search ([8b87391](https://github.com/googleapis/google-cloud-python/commit/8b87391ebcd2a5daac50195fcc31a10a007a1c5c))
+* Update field mask guidance ([8b87391](https://github.com/googleapis/google-cloud-python/commit/8b87391ebcd2a5daac50195fcc31a10a007a1c5c))
+
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.10...google-maps-places-v0.1.11) (2024-04-03)
+
+
+### Documentation
+
+* Correct requirements on Autocomplete and Details session token field ([b7a50a2](https://github.com/googleapis/google-cloud-python/commit/b7a50a218314784a619986c910a50618b551fe14))
+* Document the maximum number of reviews and photos returned ([b7a50a2](https://github.com/googleapis/google-cloud-python/commit/b7a50a218314784a619986c910a50618b551fe14))
+* Fix typo in PriceLevel enum ([b7a50a2](https://github.com/googleapis/google-cloud-python/commit/b7a50a218314784a619986c910a50618b551fe14))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.9...google-maps-places-v0.1.10) (2024-03-05)
 
 

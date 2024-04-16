@@ -85,7 +85,11 @@ from .types.changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
-from .types.data_store_connection import DataStoreConnection, DataStoreType
+from .types.data_store_connection import (
+    DataStoreConnection,
+    DataStoreConnectionSignals,
+    DataStoreType,
+)
 from .types.deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -442,6 +446,7 @@ __all__ = (
     "CreateVersionRequest",
     "CreateWebhookRequest",
     "DataStoreConnection",
+    "DataStoreConnectionSignals",
     "DataStoreType",
     "DeleteAgentRequest",
     "DeleteEntityTypeRequest",

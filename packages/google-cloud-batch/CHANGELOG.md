@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.17.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.17...google-cloud-batch-v0.17.18) (2024-04-15)
+
+
+### Features
+
+* Add a service_account field to taskGroup for service account support ([93b90df](https://github.com/googleapis/google-cloud-python/commit/93b90df7f4c6b667e638f1725dd4a686423bd8aa))
+
+
+### Bug Fixes
+
+* Add optional flag of existing fields `limit` and `consumed` in ResourceAllowance ([93b90df](https://github.com/googleapis/google-cloud-python/commit/93b90df7f4c6b667e638f1725dd4a686423bd8aa))
+
+
+### Documentation
+
+* Update comments for ServiceAccount email and scopes fields ([93b90df](https://github.com/googleapis/google-cloud-python/commit/93b90df7f4c6b667e638f1725dd4a686423bd8aa))
+
+## [0.17.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.16...google-cloud-batch-v0.17.17) (2024-04-04)
+
+
+### Documentation
+
+* A comment for field `max_run_duration` in message `.google.cloud.batch.v1alpha.TaskSpec` and `.google.cloud.batch.v1.TaskSpec` is changed ([3d35d8b](https://github.com/googleapis/google-cloud-python/commit/3d35d8b8c3458897ecb3afc16be807d6c64f148a))
+* add non-negative restriction comment for usage_resource_allowance.spec.limit.limit exposed on v1alpha ([3d35d8b](https://github.com/googleapis/google-cloud-python/commit/3d35d8b8c3458897ecb3afc16be807d6c64f148a))
+* state one Resource Allowance per region per project limitation on v1alpha ([3d35d8b](https://github.com/googleapis/google-cloud-python/commit/3d35d8b8c3458897ecb3afc16be807d6c64f148a))
+
+## [0.17.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.15...google-cloud-batch-v0.17.16) (2024-04-03)
+
+
+### Documentation
+
+* add non-negative restriction comment for usage_resource_allowance.spec.limit.limit exposed on v1alpha ([4be4f8d](https://github.com/googleapis/google-cloud-python/commit/4be4f8d37e7d007c3319dac30c2df6a031a15384))
+* state one Resource Allowance per region per project limitation on v1alpha ([4be4f8d](https://github.com/googleapis/google-cloud-python/commit/4be4f8d37e7d007c3319dac30c2df6a031a15384))
+
+## [0.17.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.14...google-cloud-batch-v0.17.15) (2024-03-28)
+
+
+### Features
+
+* [google-cloud-batch] onboard Resource Allowance API methods on v1alpha ([#12524](https://github.com/googleapis/google-cloud-python/issues/12524)) ([3092827](https://github.com/googleapis/google-cloud-python/commit/3092827c760d5876761a781c6b5f375aad2ae59e))
+
 ## [0.17.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.13...google-cloud-batch-v0.17.14) (2024-03-05)
 
 

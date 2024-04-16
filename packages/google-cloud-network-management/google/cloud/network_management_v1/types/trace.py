@@ -701,7 +701,7 @@ class FirewallInfo(proto.Message):
         direction (str):
             Possible values: INGRESS, EGRESS
         action (str):
-            Possible values: ALLOW, DENY
+            Possible values: ALLOW, DENY, APPLY_SECURITY_PROFILE_GROUP
         priority (int):
             The priority of the firewall rule.
         network_uri (str):
@@ -754,6 +754,12 @@ class FirewallInfo(proto.Message):
                 Regional network firewall policy rule. For details, see
                 `Regional network firewall
                 policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
+            UNSUPPORTED_FIREWALL_POLICY_RULE (100):
+                Firewall policy rule containing attributes not yet supported
+                in Connectivity tests. Firewall analysis is skipped if such
+                a rule can potentially be matched. Please see the `list of
+                unsupported
+                configurations <https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs>`__.
             TRACKING_STATE (101):
                 Tracking state for response traffic created when request
                 traffic goes through allow firewall rule. For details, see
@@ -767,6 +773,7 @@ class FirewallInfo(proto.Message):
         SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
         NETWORK_FIREWALL_POLICY_RULE = 5
         NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
+        UNSUPPORTED_FIREWALL_POLICY_RULE = 100
         TRACKING_STATE = 101
 
     display_name: str = proto.Field(
