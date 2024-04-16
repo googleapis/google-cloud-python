@@ -30,7 +30,7 @@ __protobuf__ = proto.module(
 class User(proto.Message):
     r"""A user in Google Chat. When returned as an output from a request, if
     your Chat app `authenticates as a
-    user <https://developers.google.com/chat/api/guides/auth/users>`__,
+    user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
     the output for a ``User`` resource only populates the user's
     ``name`` and ``type``.
 

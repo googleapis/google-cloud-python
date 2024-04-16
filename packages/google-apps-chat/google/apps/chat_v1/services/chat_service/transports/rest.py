@@ -819,6 +819,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Returns:
                 ~.space.CompleteImportSpaceResponse:
+                    Response message for completing the
+                import process for a space.
 
             """
 
@@ -904,7 +906,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.gc_membership.CreateMembershipRequest):
-                    The request object.
+                    The request object. Request message for creating a
+                membership.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1186,7 +1189,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.gc_space.CreateSpaceRequest):
-                    The request object.
+                    The request object. A request to create a named space.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1282,7 +1285,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.membership.DeleteMembershipRequest):
-                    The request object.
+                    The request object. Request to delete a membership in a
+                space.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1373,7 +1377,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.message.DeleteMessageRequest):
-                    The request object.
+                    The request object. Request to delete a message.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1686,7 +1690,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.attachment.GetAttachmentRequest):
-                    The request object.
+                    The request object. Request to get an attachment.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1771,7 +1775,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.membership.GetMembershipRequest):
-                    The request object.
+                    The request object. Request to get a membership of a
+                space.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1860,7 +1865,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.message.GetMessageRequest):
-                    The request object.
+                    The request object. Request to get a message.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2034,7 +2039,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.membership.ListMembershipsRequest):
-                    The request object.
+                    The request object. Request message for listing
+                memberships.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2043,6 +2049,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Returns:
                 ~.membership.ListMembershipsResponse:
+                    Response to list memberships of the
+                space.
 
             """
 
@@ -2131,6 +2139,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Returns:
                 ~.message.ListMessagesResponse:
+                    Response message for listing
+                messages.
 
             """
 
@@ -2216,7 +2226,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Returns:
                 ~.reaction.ListReactionsResponse:
-
+                    Response to a list reactions request.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -2292,6 +2302,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Returns:
                 ~.space.ListSpacesResponse:
+                    The response for a list spaces
+                request.
 
             """
 
@@ -2367,7 +2379,8 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.space_setup.SetUpSpaceRequest):
-                    The request object.
+                    The request object. Request to create a space and add
+                specified users to it.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2463,7 +2476,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.gc_message.UpdateMessageRequest):
-                    The request object.
+                    The request object. Request to update a message.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2656,7 +2669,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Args:
                 request (~.attachment.UploadAttachmentRequest):
-                    The request object.
+                    The request object. Request to upload an attachment.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2665,7 +2678,7 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             Returns:
                 ~.attachment.UploadAttachmentResponse:
-
+                    Response of uploading an attachment.
             """
 
             http_options: List[Dict[str, str]] = [

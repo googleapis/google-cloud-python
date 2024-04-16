@@ -64,7 +64,7 @@ class Space(proto.Message):
             instead. Whether messages are threaded in this space.
         display_name (str):
             The space's display name. Required when `creating a
-            space <https://developers.google.com/chat/api/reference/rest/v1/spaces/create>`__.
+            space <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/create>`__.
             If you receive the error message ``ALREADY_EXISTS`` when
             creating a space or updating the ``displayName``, try a
             different ``displayName``. An existing space within the
@@ -80,13 +80,18 @@ class Space(proto.Message):
             Workspace organization. Omit this field when creating spaces
             in the following conditions:
 
-            -  The authenticated user uses a Google Account. By default,
-               the space permits any Google Chat user.
+            -  The authenticated user uses a consumer account (unmanaged
+               user account). By default, a space created by a consumer
+               account permits any Google Chat user.
 
             -  The space is used to [import data to Google Chat]
-               (https://developers.google.com/chat/api/guides/import-data-overview).
-               Import mode spaces must only permit members from the same
-               Google Workspace organization.
+               (https://developers.google.com/chat/api/guides/import-data-overview)
+               because import mode spaces must only permit members from
+               the same Google Workspace organization. However, as part
+               of the `Google Workspace Developer Preview
+               Program <https://developers.google.com/workspace/preview>`__,
+               import mode spaces can permit any Google Chat user so
+               this field can then be set for import mode spaces.
 
             For existing spaces, this field is output only.
         space_threading_state (google.apps.chat_v1.types.Space.SpaceThreadingState):
@@ -132,7 +137,7 @@ class Space(proto.Message):
 
         Values:
             TYPE_UNSPECIFIED (0):
-                No description available.
+                Reserved.
             ROOM (1):
                 Conversations between two or more humans.
             DM (2):
@@ -277,7 +282,7 @@ class Space(proto.Message):
 
 
 class CreateSpaceRequest(proto.Message):
-    r"""
+    r"""A request to create a named space.
 
     Attributes:
         space (google.apps.chat_v1.types.Space):
@@ -323,8 +328,8 @@ class ListSpacesRequest(proto.Message):
 
             If unspecified, at most 100 spaces are returned.
 
-            The maximum value is 1,000. If you use a value more than
-            1,000, it's automatically changed to 1,000.
+            The maximum value is 1000. If you use a value more than
+            1000, it's automatically changed to 1000.
 
             Negative values return an ``INVALID_ARGUMENT`` error.
         page_token (str):
@@ -339,7 +344,7 @@ class ListSpacesRequest(proto.Message):
             Optional. A query filter.
 
             You can filter spaces by the space type
-            (```space_type`` <https://developers.google.com/chat/api/reference/rest/v1/spaces#spacetype>`__).
+            (```space_type`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces#spacetype>`__).
 
             To filter by space type, you must specify valid enum value,
             such as ``SPACE`` or ``GROUP_CHAT`` (the ``space_type``
@@ -372,7 +377,7 @@ class ListSpacesRequest(proto.Message):
 
 
 class ListSpacesResponse(proto.Message):
-    r"""
+    r"""The response for a list spaces request.
 
     Attributes:
         spaces (MutableSequence[google.apps.chat_v1.types.Space]):
@@ -433,7 +438,7 @@ class FindDirectMessageRequest(proto.Message):
             ID is ``123456789``, you can find a direct message with that
             person by using ``users/123456789`` as the ``name``. When
             `authenticated as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__,
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             you can use the email as an alias for ``{user}``. For
             example, ``users/example@gmail.com`` where
             ``example@gmail.com`` is the email of the Google Chat user.
@@ -546,7 +551,8 @@ class CompleteImportSpaceRequest(proto.Message):
 
 
 class CompleteImportSpaceResponse(proto.Message):
-    r"""
+    r"""Response message for completing the import process for a
+    space.
 
     Attributes:
         space (google.apps.chat_v1.types.Space):

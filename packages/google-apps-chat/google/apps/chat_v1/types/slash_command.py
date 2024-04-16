@@ -29,7 +29,7 @@ __protobuf__ = proto.module(
 
 class SlashCommand(proto.Message):
     r"""A `slash
-    command <https://developers.google.com/chat/how-tos/slash-commands>`__
+    command <https://developers.google.com/workspace/chat/slash-commands>`__
     in Google Chat.
 
     Attributes:
