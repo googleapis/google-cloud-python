@@ -193,6 +193,28 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def function_path(
+        project: str,
+        location: str,
+        function: str,
+    ) -> str:
+        """Returns a fully-qualified function string."""
+        return "projects/{project}/locations/{location}/functions/{function}".format(
+            project=project,
+            location=location,
+            function=function,
+        )
+
+    @staticmethod
+    def parse_function_path(path: str) -> Dict[str, str]:
+        """Parses a function path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def uptime_check_config_path(
         project: str,
         uptime_check_config: str,
