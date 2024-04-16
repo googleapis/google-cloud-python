@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.1...google-apps-card-v0.1.2) (2024-04-16)
+
+
+### Features
+
+* material icon in card ([fef36ac](https://github.com/googleapis/google-cloud-python/commit/fef36ac0532b145665c4e53c18d04058c4295d74))
+
+
+### Documentation
+
+* card proto update ([fef36ac](https://github.com/googleapis/google-cloud-python/commit/fef36ac0532b145665c4e53c18d04058c4295d74))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.0...google-apps-card-v0.1.1) (2024-03-05)
 
 
