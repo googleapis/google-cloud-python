@@ -65,9 +65,9 @@ class Membership(proto.Message):
         member (google.apps.chat_v1.types.User):
             The Google Chat user or app the membership corresponds to.
             If your Chat app `authenticates as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__,
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             the output populates the
-            `user <https://developers.google.com/chat/api/reference/rest/v1/User>`__
+            `user <https://developers.google.com/workspace/chat/api/reference/rest/v1/User>`__
             ``name`` and ``type``.
 
             This field is a member of `oneof`_ ``memberType``.
@@ -181,7 +181,7 @@ class Membership(proto.Message):
 
 
 class CreateMembershipRequest(proto.Message):
-    r"""
+    r"""Request message for creating a membership.
 
     Attributes:
         parent (str):
@@ -224,7 +224,7 @@ class CreateMembershipRequest(proto.Message):
 
 
 class ListMembershipsRequest(proto.Message):
-    r"""
+    r"""Request message for listing memberships.
 
     Attributes:
         parent (str):
@@ -238,8 +238,8 @@ class ListMembershipsRequest(proto.Message):
 
             If unspecified, at most 100 memberships are returned.
 
-            The maximum value is 1,000. If you use a value more than
-            1,000, it's automatically changed to 1,000.
+            The maximum value is 1000. If you use a value more than
+            1000, it's automatically changed to 1000.
 
             Negative values return an ``INVALID_ARGUMENT`` error.
         page_token (str):
@@ -255,9 +255,9 @@ class ListMembershipsRequest(proto.Message):
             Optional. A query filter.
 
             You can filter memberships by a member's role
-            (```role`` <https://developers.google.com/chat/api/reference/rest/v1/spaces.members#membershiprole>`__)
+            (```role`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.members#membershiprole>`__)
             and type
-            (```member.type`` <https://developers.google.com/chat/api/reference/rest/v1/User#type>`__).
+            (```member.type`` <https://developers.google.com/workspace/chat/api/reference/rest/v1/User#type>`__).
 
             To filter by role, set ``role`` to ``ROLE_MEMBER`` or
             ``ROLE_MANAGER``.
@@ -304,7 +304,7 @@ class ListMembershipsRequest(proto.Message):
             returned.
 
             Currently requires `user
-            authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
     """
 
     parent: str = proto.Field(
@@ -334,7 +334,7 @@ class ListMembershipsRequest(proto.Message):
 
 
 class ListMembershipsResponse(proto.Message):
-    r"""
+    r"""Response to list memberships of the space.
 
     Attributes:
         memberships (MutableSequence[google.apps.chat_v1.types.Membership]):
@@ -362,7 +362,7 @@ class ListMembershipsResponse(proto.Message):
 
 
 class GetMembershipRequest(proto.Message):
-    r"""
+    r"""Request to get a membership of a space.
 
     Attributes:
         name (str):
@@ -375,7 +375,7 @@ class GetMembershipRequest(proto.Message):
             ``spaces/{space}/members/app``
 
             When `authenticated as a
-            user <https://developers.google.com/chat/api/guides/auth/users>`__,
+            user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
             you can use the user's email as an alias for ``{member}``.
             For example, ``spaces/{space}/members/example@gmail.com``
             where ``example@gmail.com`` is the email of the Google Chat
@@ -389,7 +389,7 @@ class GetMembershipRequest(proto.Message):
 
 
 class DeleteMembershipRequest(proto.Message):
-    r"""
+    r"""Request to delete a membership in a space.
 
     Attributes:
         name (str):

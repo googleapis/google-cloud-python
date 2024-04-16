@@ -30,7 +30,7 @@ __protobuf__ = proto.module(
 
 class ActionStatus(proto.Message):
     r"""Represents the status for a request to either invoke or submit a
-    `dialog <https://developers.google.com/chat/how-tos/dialogs>`__.
+    `dialog <https://developers.google.com/workspace/chat/dialogs>`__.
 
     Attributes:
         status_code (google.rpc.code_pb2.Code):

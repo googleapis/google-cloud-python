@@ -157,7 +157,7 @@ class WidgetMarkup(proto.Message):
     class TextParagraph(proto.Message):
         r"""A paragraph of text. Formatted text supported. For more information
         about formatting text, see `Formatting text in Google Chat
-        apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+        apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
         and `Formatting text in Google Workspace
         Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
 
@@ -250,14 +250,14 @@ class WidgetMarkup(proto.Message):
                 The text of the top label. Formatted text supported. For
                 more information about formatting text, see `Formatting text
                 in Google Chat
-                apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
                 and `Formatting text in Google Workspace
                 Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
             content (str):
                 The text of the content. Formatted text supported and always
                 required. For more information about formatting text, see
                 `Formatting text in Google Chat
-                apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
                 and `Formatting text in Google Workspace
                 Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
             content_multiline (bool):
@@ -266,7 +266,7 @@ class WidgetMarkup(proto.Message):
                 The text of the bottom label. Formatted text supported. For
                 more information about formatting text, see `Formatting text
                 in Google Chat
-                apps <https://developers.google.com/chat/format-messages#card-formatting>`__
+                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
                 and `Formatting text in Google Workspace
                 Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
             on_click (google.apps.chat_v1.types.WidgetMarkup.OnClick):

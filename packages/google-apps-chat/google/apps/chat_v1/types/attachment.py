@@ -79,15 +79,15 @@ class Attachment(proto.Message):
     """
 
     class Source(proto.Enum):
-        r"""
+        r"""The source of the attachment.
 
         Values:
             SOURCE_UNSPECIFIED (0):
-                No description available.
+                Reserved.
             DRIVE_FILE (1):
-                No description available.
+                The file is a Google Drive file.
             UPLOADED_CONTENT (2):
-                No description available.
+                The file is uploaded to Chat.
         """
         SOURCE_UNSPECIFIED = 0
         DRIVE_FILE = 1
@@ -148,7 +148,7 @@ class DriveDataRef(proto.Message):
 
 
 class AttachmentDataRef(proto.Message):
-    r"""
+    r"""A reference to the attachment data.
 
     Attributes:
         resource_name (str):
@@ -173,7 +173,7 @@ class AttachmentDataRef(proto.Message):
 
 
 class GetAttachmentRequest(proto.Message):
-    r"""
+    r"""Request to get an attachment.
 
     Attributes:
         name (str):
@@ -188,7 +188,7 @@ class GetAttachmentRequest(proto.Message):
 
 
 class UploadAttachmentRequest(proto.Message):
-    r"""
+    r"""Request to upload an attachment.
 
     Attributes:
         parent (str):
@@ -211,7 +211,7 @@ class UploadAttachmentRequest(proto.Message):
 
 
 class UploadAttachmentResponse(proto.Message):
-    r"""
+    r"""Response of uploading an attachment.
 
     Attributes:
         attachment_data_ref (google.apps.chat_v1.types.AttachmentDataRef):

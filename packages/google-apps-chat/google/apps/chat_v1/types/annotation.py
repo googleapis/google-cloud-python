@@ -57,7 +57,7 @@ class AnnotationType(proto.Enum):
 class Annotation(proto.Message):
     r"""Output only. Annotations associated with the plain-text body of the
     message. To add basic formatting to a text message, see `Format text
-    messages <https://developers.google.com/chat/format-messages>`__.
+    messages <https://developers.google.com/workspace/chat/format-messages>`__.
 
     Example plain-text message body:
 
@@ -295,7 +295,7 @@ class DriveLinkData(proto.Message):
     Attributes:
         drive_data_ref (google.apps.chat_v1.types.DriveDataRef):
             A
-            `DriveDataRef <https://developers.google.com/chat/api/reference/rest/v1/spaces.messages.attachments#drivedataref>`__
+            `DriveDataRef <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.attachments#drivedataref>`__
             which references a Google Drive file.
         mime_type (str):
             The mime type of the linked Google Drive

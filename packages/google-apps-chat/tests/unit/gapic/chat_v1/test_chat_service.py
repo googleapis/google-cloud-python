@@ -8053,6 +8053,12 @@ def test_create_message_rest(request_type):
                                         "icon": {
                                             "known_icon": "known_icon_value",
                                             "icon_url": "icon_url_value",
+                                            "material_icon": {
+                                                "name": "name_value",
+                                                "fill": True,
+                                                "weight": 648,
+                                                "grade": 515,
+                                            },
                                             "alt_text": "alt_text_value",
                                             "image_type": 1,
                                         },
@@ -9996,6 +10002,12 @@ def test_update_message_rest(request_type):
                                         "icon": {
                                             "known_icon": "known_icon_value",
                                             "icon_url": "icon_url_value",
+                                            "material_icon": {
+                                                "name": "name_value",
+                                                "fill": True,
+                                                "weight": 648,
+                                                "grade": 515,
+                                            },
                                             "alt_text": "alt_text_value",
                                             "image_type": 1,
                                         },

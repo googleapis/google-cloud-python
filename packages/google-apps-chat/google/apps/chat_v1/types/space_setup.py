@@ -31,7 +31,7 @@ __protobuf__ = proto.module(
 
 
 class SetUpSpaceRequest(proto.Message):
-    r"""
+    r"""Request to create a space and add specified users to it.
 
     Attributes:
         space (google.apps.chat_v1.types.Space):
