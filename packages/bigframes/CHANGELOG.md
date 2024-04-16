@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.2.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.1.0...v1.2.0) (2024-04-15)
+
+
+### Features
+
+* Add hasnans, combine_first, update to Series ([#600](https://github.com/googleapis/python-bigquery-dataframes/issues/600)) ([86e0f38](https://github.com/googleapis/python-bigquery-dataframes/commit/86e0f38adc71d76e09dd832e5e33cb7c1aab02ac))
+* Add MultiIndex subclass. ([#596](https://github.com/googleapis/python-bigquery-dataframes/issues/596)) ([5d0f149](https://github.com/googleapis/python-bigquery-dataframes/commit/5d0f149dce5425098fcd154d96a302c1661ce5d3))
+* Add pivot_table for DataFrame. ([#473](https://github.com/googleapis/python-bigquery-dataframes/issues/473)) ([5f1d670](https://github.com/googleapis/python-bigquery-dataframes/commit/5f1d670e6b839a30acdb495a05011c2ce4e0c7a4))
+* Add Series.autocorr ([#605](https://github.com/googleapis/python-bigquery-dataframes/issues/605)) ([4ec8034](https://github.com/googleapis/python-bigquery-dataframes/commit/4ec80340459e675b82b437f6c48b2872d362bafe))
+* Support list of numerics in pandas.cut ([#580](https://github.com/googleapis/python-bigquery-dataframes/issues/580)) ([290f95d](https://github.com/googleapis/python-bigquery-dataframes/commit/290f95dc5198f9ab7cd9d726d40af704250c0449))
+
+
+### Bug Fixes
+
+* Address more technical writers feedback ([#581](https://github.com/googleapis/python-bigquery-dataframes/issues/581)) ([4b08d92](https://github.com/googleapis/python-bigquery-dataframes/commit/4b08d9243272229f71688152dbeb69d0ab7c68b4))
+* Error for object dtype on read_pandas ([#570](https://github.com/googleapis/python-bigquery-dataframes/issues/570)) ([8702dcf](https://github.com/googleapis/python-bigquery-dataframes/commit/8702dcf54c0f2073e21df42eaef51927481da421))
+* Inverting int now does bitwise inversion rather than sign flip ([#574](https://github.com/googleapis/python-bigquery-dataframes/issues/574)) ([5f1db8b](https://github.com/googleapis/python-bigquery-dataframes/commit/5f1db8b270b32ab366be3690761da137d9fe65f5))
+* Loc setitem dtype issue. ([#603](https://github.com/googleapis/python-bigquery-dataframes/issues/603)) ([b94bae9](https://github.com/googleapis/python-bigquery-dataframes/commit/b94bae9892e0fa79dc4bde0f4f1427d00accda6d))
+* Toc menu missing plotting name ([#591](https://github.com/googleapis/python-bigquery-dataframes/issues/591)) ([eed12c1](https://github.com/googleapis/python-bigquery-dataframes/commit/eed12c181ff8724333b1c426a0eb442c627528b8))
+
+
+### Documentation
+
+* (Series|Dataframe).dtypes ([#598](https://github.com/googleapis/python-bigquery-dataframes/issues/598)) ([edef48f](https://github.com/googleapis/python-bigquery-dataframes/commit/edef48f7a93e19bc1f6d37fb041dfd6314d881d5))
+* Add code samples for `str` accessor methdos ([#594](https://github.com/googleapis/python-bigquery-dataframes/issues/594)) ([a557ea2](https://github.com/googleapis/python-bigquery-dataframes/commit/a557ea2b64633932f730b56688f76806da6195fb))
+* Add docs for `DataFrame` and `Series` dunder methods ([#562](https://github.com/googleapis/python-bigquery-dataframes/issues/562)) ([8fc26c4](https://github.com/googleapis/python-bigquery-dataframes/commit/8fc26c424b29a8b78542372e402fcc4e8fface7b))
+* Add examples for at/iat ([#582](https://github.com/googleapis/python-bigquery-dataframes/issues/582)) ([3be4a2e](https://github.com/googleapis/python-bigquery-dataframes/commit/3be4a2e784e046ca9a1fac8d386d072537b6c4de))
+
 ## [1.1.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.0.0...v1.1.0) (2024-04-04)
 
 
