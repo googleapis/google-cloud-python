@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.2...google-apps-chat-v0.1.3) (2024-04-16)
+
+
+### Bug Fixes
+
+* **deps:** Require google-apps-card &gt;= 0.1.2 ([66162a7](https://github.com/googleapis/google-cloud-python/commit/66162a79254774329b38ff81e82193fda2eefe02))
+
+
+### Documentation
+
+* Chat API documentation update ([66162a7](https://github.com/googleapis/google-cloud-python/commit/66162a79254774329b38ff81e82193fda2eefe02))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.1...google-apps-chat-v0.1.2) (2024-03-27)
 
 
