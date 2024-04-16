@@ -53,7 +53,7 @@ class Service(proto.Message):
 
     Attributes:
         name (str):
-            Resource name for this Service. The format is:
+            Identifier. Resource name for this Service. The format is:
 
             ::
 
@@ -89,6 +89,28 @@ class Service(proto.Message):
             here <https://istio.io/latest/docs/reference/config/metrics/>`__
 
             This field is a member of `oneof`_ ``identifier``.
+        cloud_run (google.cloud.monitoring_v3.types.Service.CloudRun):
+            Type used for Cloud Run services.
+
+            This field is a member of `oneof`_ ``identifier``.
+        gke_namespace (google.cloud.monitoring_v3.types.Service.GkeNamespace):
+            Type used for GKE Namespaces.
+
+            This field is a member of `oneof`_ ``identifier``.
+        gke_workload (google.cloud.monitoring_v3.types.Service.GkeWorkload):
+            Type used for GKE Workloads.
+
+            This field is a member of `oneof`_ ``identifier``.
+        gke_service (google.cloud.monitoring_v3.types.Service.GkeService):
+            Type used for GKE Services (the Kubernetes
+            concept of a service).
+
+            This field is a member of `oneof`_ ``identifier``.
+        basic_service (google.cloud.monitoring_v3.types.Service.BasicService):
+            Message that contains the service type and service labels of
+            this service if it is a basic service. Documentation and
+            examples
+            `here <https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli>`__.
         telemetry (google.cloud.monitoring_v3.types.Service.Telemetry):
             Configuration for how to query telemetry on a
             Service.
@@ -106,8 +128,9 @@ class Service(proto.Message):
     """
 
     class Custom(proto.Message):
-        r"""Custom view of service telemetry. Currently a place-holder
-        pending final design.
+        r"""Use a custom service to designate a service that you want to
+        monitor when none of the other service types (like App Engine,
+        Cloud Run, or a GKE type) matches your intended service.
 
         """
 
@@ -119,8 +142,8 @@ class Service(proto.Message):
             module_id (str):
                 The ID of the App Engine module underlying this service.
                 Corresponds to the ``module_id`` resource label in the
-                ``gae_app`` monitored resource:
-                https://cloud.google.com/monitoring/api/resources#tag_gae_app
+                ```gae_app`` monitored
+                resource <https://cloud.google.com/monitoring/api/resources#tag_gae_app>`__.
         """
 
         module_id: str = proto.Field(
@@ -136,8 +159,8 @@ class Service(proto.Message):
             service (str):
                 The name of the Cloud Endpoints service underlying this
                 service. Corresponds to the ``service`` resource label in
-                the ``api`` monitored resource:
-                https://cloud.google.com/monitoring/api/resources#tag_api
+                the ```api`` monitored
+                resource <https://cloud.google.com/monitoring/api/resources#tag_api>`__.
         """
 
         service: str = proto.Field(
@@ -256,6 +279,188 @@ class Service(proto.Message):
             number=4,
         )
 
+    class CloudRun(proto.Message):
+        r"""Cloud Run service. Learn more at
+        https://cloud.google.com/run.
+
+        Attributes:
+            service_name (str):
+                The name of the Cloud Run service. Corresponds to the
+                ``service_name`` resource label in the
+                ```cloud_run_revision`` monitored
+                resource <https://cloud.google.com/monitoring/api/resources#tag_cloud_run_revision>`__.
+            location (str):
+                The location the service is run. Corresponds to the
+                ``location`` resource label in the ```cloud_run_revision``
+                monitored
+                resource <https://cloud.google.com/monitoring/api/resources#tag_cloud_run_revision>`__.
+        """
+
+        service_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class GkeNamespace(proto.Message):
+        r"""GKE Namespace. The field names correspond to the resource metadata
+        labels on monitored resources that fall under a namespace (for
+        example, ``k8s_container`` or ``k8s_pod``).
+
+        Attributes:
+            project_id (str):
+                Output only. The project this resource lives in. For legacy
+                services migrated from the ``Custom`` type, this may be a
+                distinct project from the one parenting the service itself.
+            location (str):
+                The location of the parent cluster. This may
+                be a zone or region.
+            cluster_name (str):
+                The name of the parent cluster.
+            namespace_name (str):
+                The name of this namespace.
+        """
+
+        project_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        cluster_name: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        namespace_name: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class GkeWorkload(proto.Message):
+        r"""A GKE Workload (Deployment, StatefulSet, etc). The field names
+        correspond to the metadata labels on monitored resources that fall
+        under a workload (for example, ``k8s_container`` or ``k8s_pod``).
+
+        Attributes:
+            project_id (str):
+                Output only. The project this resource lives in. For legacy
+                services migrated from the ``Custom`` type, this may be a
+                distinct project from the one parenting the service itself.
+            location (str):
+                The location of the parent cluster. This may
+                be a zone or region.
+            cluster_name (str):
+                The name of the parent cluster.
+            namespace_name (str):
+                The name of the parent namespace.
+            top_level_controller_type (str):
+                The type of this workload (for example,
+                "Deployment" or "DaemonSet")
+            top_level_controller_name (str):
+                The name of this workload.
+        """
+
+        project_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        cluster_name: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        namespace_name: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        top_level_controller_type: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        top_level_controller_name: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+
+    class GkeService(proto.Message):
+        r"""GKE Service. The "service" here represents a `Kubernetes service
+        object <https://kubernetes.io/docs/concepts/services-networking/service>`__.
+        The field names correspond to the resource labels on
+        ```k8s_service`` monitored
+        resources <https://cloud.google.com/monitoring/api/resources#tag_k8s_service>`__.
+
+        Attributes:
+            project_id (str):
+                Output only. The project this resource lives in. For legacy
+                services migrated from the ``Custom`` type, this may be a
+                distinct project from the one parenting the service itself.
+            location (str):
+                The location of the parent cluster. This may
+                be a zone or region.
+            cluster_name (str):
+                The name of the parent cluster.
+            namespace_name (str):
+                The name of the parent namespace.
+            service_name (str):
+                The name of this service.
+        """
+
+        project_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        cluster_name: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        namespace_name: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        service_name: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    class BasicService(proto.Message):
+        r"""A well-known service type, defined by its service type and service
+        labels. Documentation and examples
+        `here <https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli>`__.
+
+        Attributes:
+            service_type (str):
+                The type of service that this basic service defines, e.g.
+                APP_ENGINE service type. Documentation and valid values
+                `here <https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli>`__.
+            service_labels (MutableMapping[str, str]):
+                Labels that specify the resource that emits the monitoring
+                data which is used for SLO reporting of this ``Service``.
+                Documentation and valid values for given service types
+                `here <https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/api-structures#basic-svc-w-basic-sli>`__.
+        """
+
+        service_type: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        service_labels: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=2,
+        )
+
     class Telemetry(proto.Message):
         r"""Configuration for how to query telemetry on a Service.
 
@@ -315,6 +520,35 @@ class Service(proto.Message):
         oneof="identifier",
         message=IstioCanonicalService,
     )
+    cloud_run: CloudRun = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="identifier",
+        message=CloudRun,
+    )
+    gke_namespace: GkeNamespace = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="identifier",
+        message=GkeNamespace,
+    )
+    gke_workload: GkeWorkload = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="identifier",
+        message=GkeWorkload,
+    )
+    gke_service: GkeService = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="identifier",
+        message=GkeService,
+    )
+    basic_service: BasicService = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=BasicService,
+    )
     telemetry: Telemetry = proto.Field(
         proto.MESSAGE,
         number=13,
@@ -346,8 +580,8 @@ class ServiceLevelObjective(proto.Message):
 
     Attributes:
         name (str):
-            Resource name for this ``ServiceLevelObjective``. The format
-            is:
+            Identifier. Resource name for this
+            ``ServiceLevelObjective``. The format is:
 
             ::
 
