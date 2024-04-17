@@ -19,7 +19,10 @@ import json
 import logging
 
 from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
-from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
+from google.cloud.logging_v2.handlers._monitored_resources import (
+    detect_resource,
+    add_resource_labels,
+)
 from google.cloud.logging_v2.handlers._helpers import get_request_data
 
 DEFAULT_LOGGER_NAME = "python"
@@ -39,12 +42,6 @@ _INTERNAL_LOGGERS = (
 
 """These environments require us to remove extra handlers on setup"""
 _CLEAR_HANDLER_RESOURCE_TYPES = ("gae_app", "cloud_function")
-
-"""Extra trace label to be added on App Engine environments"""
-_GAE_TRACE_ID_LABEL = "appengine.googleapis.com/trace_id"
-
-"""Resource name for App Engine environments"""
-_GAE_RESOURCE_TYPE = "gae_app"
 
 
 class CloudLoggingFilter(logging.Filter):
@@ -206,9 +203,8 @@ class CloudLoggingHandler(logging.StreamHandler):
         labels = record._labels
         message = _format_and_parse_message(record, self)
 
-        if resource.type == _GAE_RESOURCE_TYPE and record._trace is not None:
-            # add GAE-specific label
-            labels = {_GAE_TRACE_ID_LABEL: record._trace, **(labels or {})}
+        labels = {**add_resource_labels(resource, record), **(labels or {})} or None
+
         # send off request
         self.transport.send(
             record,
