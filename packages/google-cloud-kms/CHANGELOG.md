@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.21.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.3...google-cloud-kms-v2.21.4) (2024-04-17)
+
+
+### Documentation
+
+* [google-cloud-kms] in google.cloud.kms.v1.PublicKey, pem field is always populated ([#12584](https://github.com/googleapis/google-cloud-python/issues/12584)) ([1392da5](https://github.com/googleapis/google-cloud-python/commit/1392da5054e922446a51b7302596ba3809896bf3))
+
 ## [2.21.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.2...google-cloud-kms-v2.21.3) (2024-03-05)
 
 

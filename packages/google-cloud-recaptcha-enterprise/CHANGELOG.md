@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.19.0...google-cloud-recaptcha-enterprise-v1.19.1) (2024-04-17)
+
+
+### Documentation
+
+* [google-cloud-recaptcha-enterprise] fixed the description of ListFirewallPoliciesResponse ([#12580](https://github.com/googleapis/google-cloud-python/issues/12580)) ([acdcb90](https://github.com/googleapis/google-cloud-python/commit/acdcb90c02a48af2190229172e50cf19aa0334b7))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.18.1...google-cloud-recaptcha-enterprise-v1.19.0) (2024-03-25)
 
 

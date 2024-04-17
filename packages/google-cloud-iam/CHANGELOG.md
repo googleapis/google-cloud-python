@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.14.3...google-cloud-iam-v2.15.0) (2024-04-17)
+
+
+### Features
+
+* add google.cloud.iam_admin_v1 ([#12519](https://github.com/googleapis/google-cloud-python/issues/12519)) ([7e97037](https://github.com/googleapis/google-cloud-python/commit/7e970377830a62295843f8987ca25246a200c99e)), closes [#12540](https://github.com/googleapis/google-cloud-python/issues/12540)
+
 ## [2.14.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.14.2...google-cloud-iam-v2.14.3) (2024-03-05)
 
 

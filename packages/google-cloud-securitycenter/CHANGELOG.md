@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.30.1...google-cloud-securitycenter-v1.31.0) (2024-04-17)
+
+
+### Features
+
+* [google-cloud-securitycenter] Add cloud_armor field to finding's list of attributes ([#12586](https://github.com/googleapis/google-cloud-python/issues/12586)) ([c704e63](https://github.com/googleapis/google-cloud-python/commit/c704e635b3fe21cdc69d321aeaf83f069a2d3c9c))
+
 ## [1.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.30.0...google-cloud-securitycenter-v1.30.1) (2024-04-04)
 
 
