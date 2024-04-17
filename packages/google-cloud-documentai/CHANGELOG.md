@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.25.0...google-cloud-documentai-v2.26.0) (2024-04-17)
+
+
+### Features
+
+* A new field `foundation_model_tuning_options` is added to message `TrainProcessorVersionRequest` ([69cfd79](https://github.com/googleapis/google-cloud-python/commit/69cfd7927fc1360ca3f78d223877217e010f4722))
+* A new message `FoundationModelTuningOptions` is added ([69cfd79](https://github.com/googleapis/google-cloud-python/commit/69cfd7927fc1360ca3f78d223877217e010f4722))
+
+
+### Documentation
+
+* updated comments ([69cfd79](https://github.com/googleapis/google-cloud-python/commit/69cfd7927fc1360ca3f78d223877217e010f4722))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.24.2...google-cloud-documentai-v2.25.0) (2024-04-03)
 
 

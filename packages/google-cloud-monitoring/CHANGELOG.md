@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.20.0...google-cloud-monitoring-v2.21.0) (2024-04-17)
+
+
+### Features
+
+* Added CloudRun, GkeNamespace, GkeWorkload, GkeService, and BasicService service types ([f43231d](https://github.com/googleapis/google-cloud-python/commit/f43231d23dfde210ea824e25c607ad551b286946))
+
+
+### Documentation
+
+* Updated comments accordingly ([f43231d](https://github.com/googleapis/google-cloud-python/commit/f43231d23dfde210ea824e25c607ad551b286946))
+
 ## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.19.4...google-cloud-monitoring-v2.20.0) (2024-04-16)
 
 
