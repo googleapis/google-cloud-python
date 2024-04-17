@@ -764,6 +764,8 @@ def notebook(session: nox.Session):
         "--nbmake-timeout=900",  # 15 minutes
     ]
 
+    logging_name_env_var = "BIGFRAMES_PERFORMANCE_LOG_NAME"
+
     try:
         # Populate notebook parameters and make a backup so that the notebooks
         # are runnable.
@@ -773,13 +775,21 @@ def notebook(session: nox.Session):
             *notebooks,
         )
 
-        # Run self-contained notebooks in single session.run
-        # achieve parallelization via -n
-        session.run(
-            *pytest_command,
-            "-nauto",
-            *notebooks,
-        )
+        # Run notebooks in parallel session.run's, since each notebook
+        # takes an environment variable for performance logging
+        processes = []
+        for notebook in notebooks:
+            session.env[logging_name_env_var] = os.path.basename(notebook)
+            process = Process(
+                target=session.run,
+                args=(*pytest_command, notebook),
+            )
+            process.start()
+            processes.append(process)
+
+        for process in processes:
+            process.join()
+
     finally:
         # Prevent our notebook changes from getting checked in to git
         # accidentally.
@@ -789,11 +799,12 @@ def notebook(session: nox.Session):
             *notebooks,
         )
 
-    # Run regionalized notebooks in parallel session.run's, since each notebook
-    # takes a different region via env param.
+    # Additionally run regionalized notebooks in parallel session.run's.
+    # Each notebook takes a different region via env param.
     processes = []
     for notebook, regions in notebooks_reg.items():
         for region in regions:
+            session.env[logging_name_env_var] = os.path.basename(notebook)
             process = Process(
                 target=session.run,
                 args=(*pytest_command, notebook),
@@ -804,6 +815,35 @@ def notebook(session: nox.Session):
 
     for process in processes:
         process.join()
+
+    # when run via pytest, notebooks output a .bytesprocessed report
+    # collect those reports and print a summary
+    _print_bytes_processed_report()
+
+
+def _print_bytes_processed_report():
+    """Add an informational report about http queries and bytes
+    processed to the testlog output for purposes of measuring
+    bigquery-related performance changes.
+    """
+    print("---BIGQUERY USAGE REPORT---")
+    cumulative_queries = 0
+    cumulative_bytes = 0
+    for report in Path("notebooks/").glob("*/*.bytesprocessed"):
+        with open(report, "r") as f:
+            filename = report.stem
+            lines = f.read().splitlines()
+            query_count = len(lines)
+            total_bytes = sum([int(line) for line in lines])
+            format_string = f"{filename} - query count: {query_count}, bytes processed sum: {total_bytes}"
+            print(format_string)
+            cumulative_bytes += total_bytes
+            cumulative_queries += query_count
+    print(
+        "---total queries: {total_queries}, total bytes: {total_bytes}---".format(
+            total_queries=cumulative_queries, total_bytes=cumulative_bytes
+        )
+    )
 
 
 @nox.session(python="3.10")

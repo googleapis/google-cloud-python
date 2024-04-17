@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import datetime
 import itertools
+import os
 import textwrap
 import types
 from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
@@ -33,6 +34,8 @@ import bigframes.formatting_helpers as formatting_helpers
 IO_ORDERING_ID = "bqdf_row_nums"
 MAX_LABELS_COUNT = 64
 TEMP_TABLE_PREFIX = "bqdf{date}_{random_id}"
+
+LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 
 
 def create_job_configs_labels(
@@ -243,4 +246,32 @@ def start_query_with_client(
         )
     else:
         results_iterator = query_job.result(max_results=max_results)
+
+    if LOGGING_NAME_ENV_VAR in os.environ:
+        # when running notebooks via pytest nbmake
+        pytest_log_job(query_job)
+
     return results_iterator, query_job
+
+
+def pytest_log_job(query_job: bigquery.QueryJob):
+    """For pytest runs only, log information about the query job
+    to a file in order to create a performance report.
+    """
+    if LOGGING_NAME_ENV_VAR not in os.environ:
+        raise EnvironmentError(
+            "Environment variable {env_var} is not set".format(
+                env_var=LOGGING_NAME_ENV_VAR
+            )
+        )
+    test_name = os.environ[LOGGING_NAME_ENV_VAR]
+    current_directory = os.getcwd()
+    bytes_processed = query_job.total_bytes_processed
+    if not isinstance(bytes_processed, int):
+        return  # filter out mocks
+    if query_job.configuration.dry_run:
+        # dry runs don't process their total_bytes_processed
+        bytes_processed = 0
+    bytes_file = os.path.join(current_directory, test_name + ".bytesprocessed")
+    with open(bytes_file, "a") as f:
+        f.write(str(bytes_processed) + "\n")
