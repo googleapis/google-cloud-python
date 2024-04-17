@@ -12,34 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 import unittest
 
+import logging
 import mock
 import os
 import functools
 
 from google.cloud.logging_v2.handlers._monitored_resources import (
-    _create_functions_resource,
-)
-from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_app_engine_resource,
-)
-from google.cloud.logging_v2.handlers._monitored_resources import (
+    _create_functions_resource,
     _create_kubernetes_resource,
-)
-from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_cloud_run_service_resource,
-)
-from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_cloud_run_job_resource,
-)
-from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_compute_resource,
-)
-from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_global_resource,
+    detect_resource,
+    add_resource_labels,
 )
-from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
 from google.cloud.logging_v2.handlers import _monitored_resources
 from google.cloud.logging_v2.resource import Resource
 
@@ -353,3 +344,45 @@ class Test_Resource_Detection(unittest.TestCase):
             # project id not returned from metadata serve
             # should be empty string
             self.assertEqual(resource.labels["project_id"], "")
+
+
+@pytest.mark.parametrize(
+    "resource_type,os_environ,record_attrs,expected_labels",
+    [
+        (
+            _monitored_resources._GAE_RESOURCE_TYPE,
+            {},
+            {"_trace": "trace_id"},
+            {_monitored_resources._GAE_TRACE_ID_LABEL: "trace_id"},
+        ),
+        (
+            _monitored_resources._CLOUD_RUN_JOB_RESOURCE_TYPE,
+            {
+                _monitored_resources._CLOUD_RUN_EXECUTION_ID: "test_job_12345",
+                _monitored_resources._CLOUD_RUN_TASK_INDEX: "1",
+                _monitored_resources._CLOUD_RUN_TASK_ATTEMPT: "12",
+            },
+            {},
+            {
+                _monitored_resources._CLOUD_RUN_JOBS_EXECUTION_NAME_LABEL: "test_job_12345",
+                _monitored_resources._CLOUD_RUN_JOBS_TASK_INDEX_LABEL: "1",
+                _monitored_resources._CLOUD_RUN_JOBS_TASK_ATTEMPT_LABEL: "12",
+            },
+        ),
+        ("global", {}, {}, {}),
+    ],
+)
+def test_add_resource_labels(resource_type, os_environ, record_attrs, expected_labels):
+    os.environ.clear()
+    record = logging.LogRecord("logname", None, None, None, "test", None, None)
+
+    resource = Resource(type=resource_type, labels={})
+
+    for attr, val in record_attrs.items():
+        setattr(record, attr, val)
+
+    os.environ.update(os_environ)
+
+    labels = add_resource_labels(resource, record)
+
+    assert expected_labels == labels
