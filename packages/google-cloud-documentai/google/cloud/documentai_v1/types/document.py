@@ -611,8 +611,7 @@ class Document(proto.Message):
                     pixel_font_size (float):
                         Font size in pixels, equal to *unrounded
                         [font_size][google.cloud.documentai.v1.Document.Page.Token.StyleInfo.font_size]*
-
-                        -  *resolution* ÷ ``72.0``.
+                        \* *resolution* ÷ ``72.0``.
                     letter_spacing (float):
                         Letter spacing in points.
                     font_type (str):

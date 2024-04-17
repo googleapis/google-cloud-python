@@ -59,7 +59,7 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'process_document': ('name', 'inline_document', 'raw_document', 'gcs_document', 'skip_human_review', 'field_mask', 'process_options', 'labels', ),
         'review_document': ('human_review_config', 'inline_document', 'enable_schema_validation', 'priority', 'document_schema', ),
         'set_default_processor_version': ('processor', 'default_processor_version', ),
-        'train_processor_version': ('parent', 'processor_version', 'custom_document_extraction_options', 'document_schema', 'input_data', 'base_processor_version', ),
+        'train_processor_version': ('parent', 'processor_version', 'custom_document_extraction_options', 'foundation_model_tuning_options', 'document_schema', 'input_data', 'base_processor_version', ),
         'undeploy_processor_version': ('name', ),
     }
 
