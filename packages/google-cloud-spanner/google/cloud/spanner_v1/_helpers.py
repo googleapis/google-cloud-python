@@ -24,7 +24,6 @@ from google.protobuf.struct_pb2 import Value
 
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _date_from_iso8601_date
-from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import JsonObject
@@ -122,6 +121,40 @@ def _assert_numeric_precision_and_scale(value):
         raise ValueError(NUMERIC_MAX_PRECISION_ERR_MSG.format(precision + scale))
 
 
+def _datetime_to_rfc3339(value):
+    """Format the provided datatime in the RFC 3339 format.
+
+    :type value: datetime.datetime
+    :param value: value to format
+
+    :rtype: str
+    :returns: RFC 3339 formatted datetime string
+    """
+    # Convert to UTC and then drop the timezone so we can append "Z" in lieu of
+    # allowing isoformat to append the "+00:00" zone offset.
+    value = value.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+    return value.isoformat(sep="T", timespec="microseconds") + "Z"
+
+
+def _datetime_to_rfc3339_nanoseconds(value):
+    """Format the provided datatime in the RFC 3339 format.
+
+    :type value: datetime_helpers.DatetimeWithNanoseconds
+    :param value: value to format
+
+    :rtype: str
+    :returns: RFC 3339 formatted datetime string
+    """
+
+    if value.nanosecond == 0:
+        return _datetime_to_rfc3339(value)
+    nanos = str(value.nanosecond).rjust(9, "0").rstrip("0")
+    # Convert to UTC and then drop the timezone so we can append "Z" in lieu of
+    # allowing isoformat to append the "+00:00" zone offset.
+    value = value.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+    return "{}.{}Z".format(value.isoformat(sep="T", timespec="seconds"), nanos)
+
+
 def _make_value_pb(value):
     """Helper for :func:`_make_list_value_pbs`.
 
@@ -150,9 +183,9 @@ def _make_value_pb(value):
                 return Value(string_value="-Infinity")
         return Value(number_value=value)
     if isinstance(value, datetime_helpers.DatetimeWithNanoseconds):
-        return Value(string_value=value.rfc3339())
+        return Value(string_value=_datetime_to_rfc3339_nanoseconds(value))
     if isinstance(value, datetime.datetime):
-        return Value(string_value=_datetime_to_rfc3339(value, ignore_zone=False))
+        return Value(string_value=_datetime_to_rfc3339(value))
     if isinstance(value, datetime.date):
         return Value(string_value=value.isoformat())
     if isinstance(value, bytes):

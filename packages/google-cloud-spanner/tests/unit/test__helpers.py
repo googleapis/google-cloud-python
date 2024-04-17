@@ -190,6 +190,15 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, today.isoformat())
 
+    def test_w_date_pre1000ad(self):
+        import datetime
+        from google.protobuf.struct_pb2 import Value
+
+        when = datetime.date(800, 2, 25)
+        value_pb = self._callFUT(when)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, "0800-02-25")
+
     def test_w_timestamp_w_nanos(self):
         import datetime
         from google.protobuf.struct_pb2 import Value
@@ -200,7 +209,19 @@ class Test_make_value_pb(unittest.TestCase):
         )
         value_pb = self._callFUT(when)
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, when.rfc3339())
+        self.assertEqual(value_pb.string_value, "2016-12-20T21:13:47.123456789Z")
+
+    def test_w_timestamp_w_nanos_pre1000ad(self):
+        import datetime
+        from google.protobuf.struct_pb2 import Value
+        from google.api_core import datetime_helpers
+
+        when = datetime_helpers.DatetimeWithNanoseconds(
+            850, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=datetime.timezone.utc
+        )
+        value_pb = self._callFUT(when)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, "0850-12-20T21:13:47.123456789Z")
 
     def test_w_listvalue(self):
         from google.protobuf.struct_pb2 import Value
@@ -214,12 +235,20 @@ class Test_make_value_pb(unittest.TestCase):
     def test_w_datetime(self):
         import datetime
         from google.protobuf.struct_pb2 import Value
-        from google.api_core import datetime_helpers
 
-        now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
-        value_pb = self._callFUT(now)
+        when = datetime.datetime(2021, 2, 8, 0, 0, 0, tzinfo=datetime.timezone.utc)
+        value_pb = self._callFUT(when)
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, datetime_helpers.to_rfc3339(now))
+        self.assertEqual(value_pb.string_value, "2021-02-08T00:00:00.000000Z")
+
+    def test_w_datetime_pre1000ad(self):
+        import datetime
+        from google.protobuf.struct_pb2 import Value
+
+        when = datetime.datetime(916, 2, 8, 0, 0, 0, tzinfo=datetime.timezone.utc)
+        value_pb = self._callFUT(when)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, "0916-02-08T00:00:00.000000Z")
 
     def test_w_timestamp_w_tz(self):
         import datetime
@@ -230,6 +259,16 @@ class Test_make_value_pb(unittest.TestCase):
         value_pb = self._callFUT(when)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, "2021-02-07T23:00:00.000000Z")
+
+    def test_w_timestamp_w_tz_pre1000ad(self):
+        import datetime
+        from google.protobuf.struct_pb2 import Value
+
+        zone = datetime.timezone(datetime.timedelta(hours=+1), name="CET")
+        when = datetime.datetime(721, 2, 8, 0, 0, 0, tzinfo=zone)
+        value_pb = self._callFUT(when)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, "0721-02-07T23:00:00.000000Z")
 
     def test_w_unknown_type(self):
         with self.assertRaises(ValueError):
