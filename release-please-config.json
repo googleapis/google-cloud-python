@@ -1565,10 +1565,17 @@
             "component": "google-cloud-iam",
             "extra-files": [
                 "google/cloud/iam/gapic_version.py",
+                "google/cloud/iam_admin/gapic_version.py",
+                "google/cloud/iam_admin_v1/gapic_version.py",
                 "google/cloud/iam_credentials/gapic_version.py",
                 "google/cloud/iam_credentials_v1/gapic_version.py",
                 "google/cloud/iam_v2/gapic_version.py",
                 "google/cloud/iam_v2beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.iam.admin.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.iam.credentials.v1.json",
