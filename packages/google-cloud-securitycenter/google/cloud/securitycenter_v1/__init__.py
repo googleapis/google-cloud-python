@@ -24,6 +24,13 @@ from .types.application import Application
 from .types.asset import Asset
 from .types.backup_disaster_recovery import BackupDisasterRecovery
 from .types.bigquery_export import BigQueryExport
+from .types.cloud_armor import (
+    AdaptiveProtection,
+    Attack,
+    CloudArmor,
+    Requests,
+    SecurityPolicy,
+)
 from .types.cloud_dlp_data_profile import CloudDlpDataProfile
 from .types.cloud_dlp_inspection import CloudDlpInspection
 from .types.compliance import Compliance
@@ -133,12 +140,15 @@ from .types.vulnerability import (
 __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
+    "AdaptiveProtection",
     "Application",
     "Asset",
+    "Attack",
     "BackupDisasterRecovery",
     "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "CloudArmor",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
     "CloudLoggingEntry",
@@ -217,6 +227,7 @@ __all__ = (
     "Package",
     "Process",
     "Reference",
+    "Requests",
     "Resource",
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
@@ -224,6 +235,7 @@ __all__ = (
     "SecurityCenterClient",
     "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",
+    "SecurityPolicy",
     "SecurityPosture",
     "ServiceAccountDelegationInfo",
     "SetFindingStateRequest",

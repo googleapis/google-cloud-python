@@ -35,6 +35,13 @@ from google.cloud.securitycenter_v1.types.backup_disaster_recovery import (
     BackupDisasterRecovery,
 )
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
+from google.cloud.securitycenter_v1.types.cloud_armor import (
+    AdaptiveProtection,
+    Attack,
+    CloudArmor,
+    Requests,
+    SecurityPolicy,
+)
 from google.cloud.securitycenter_v1.types.cloud_dlp_data_profile import (
     CloudDlpDataProfile,
 )
@@ -164,6 +171,11 @@ __all__ = (
     "Asset",
     "BackupDisasterRecovery",
     "BigQueryExport",
+    "AdaptiveProtection",
+    "Attack",
+    "CloudArmor",
+    "Requests",
+    "SecurityPolicy",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
     "Compliance",

@@ -18,6 +18,13 @@ from .application import Application
 from .asset import Asset
 from .backup_disaster_recovery import BackupDisasterRecovery
 from .bigquery_export import BigQueryExport
+from .cloud_armor import (
+    AdaptiveProtection,
+    Attack,
+    CloudArmor,
+    Requests,
+    SecurityPolicy,
+)
 from .cloud_dlp_data_profile import CloudDlpDataProfile
 from .cloud_dlp_inspection import CloudDlpInspection
 from .compliance import Compliance
@@ -130,6 +137,11 @@ __all__ = (
     "Asset",
     "BackupDisasterRecovery",
     "BigQueryExport",
+    "AdaptiveProtection",
+    "Attack",
+    "CloudArmor",
+    "Requests",
+    "SecurityPolicy",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
     "Compliance",

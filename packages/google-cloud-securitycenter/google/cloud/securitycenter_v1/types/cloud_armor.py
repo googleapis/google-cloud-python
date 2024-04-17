@@ -17,19 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import duration_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.securitycenter.v1',
+    package="google.cloud.securitycenter.v1",
     manifest={
-        'CloudArmor',
-        'SecurityPolicy',
-        'Requests',
-        'AdaptiveProtection',
-        'Attack',
+        "CloudArmor",
+        "SecurityPolicy",
+        "Requests",
+        "AdaptiveProtection",
+        "Attack",
     },
 )
 
@@ -62,25 +60,25 @@ class CloudArmor(proto.Message):
             current moment (updated every 5 minutes).
     """
 
-    security_policy: 'SecurityPolicy' = proto.Field(
+    security_policy: "SecurityPolicy" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SecurityPolicy',
+        message="SecurityPolicy",
     )
-    requests: 'Requests' = proto.Field(
+    requests: "Requests" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Requests',
+        message="Requests",
     )
-    adaptive_protection: 'AdaptiveProtection' = proto.Field(
+    adaptive_protection: "AdaptiveProtection" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='AdaptiveProtection',
+        message="AdaptiveProtection",
     )
-    attack: 'Attack' = proto.Field(
+    attack: "Attack" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='Attack',
+        message="Attack",
     )
     threat_vector: str = proto.Field(
         proto.STRING,

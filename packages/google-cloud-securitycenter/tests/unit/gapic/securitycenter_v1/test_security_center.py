@@ -72,6 +72,7 @@ from google.cloud.securitycenter_v1.types import (
     application,
     backup_disaster_recovery,
     bigquery_export,
+    cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
     compliance,
@@ -19025,6 +19026,27 @@ def test_create_finding_rest(request_type):
             }
         ],
         "load_balancers": [{"name": "name_value"}],
+        "cloud_armor": {
+            "security_policy": {
+                "name": "name_value",
+                "type_": "type__value",
+                "preview": True,
+            },
+            "requests": {
+                "ratio": 0.543,
+                "short_term_allowed": 1934,
+                "long_term_allowed": 1806,
+                "long_term_denied": 1679,
+            },
+            "adaptive_protection": {"confidence": 0.1038},
+            "attack": {
+                "volume_pps": 1098,
+                "volume_bps": 1084,
+                "classification": "classification_value",
+            },
+            "threat_vector": "threat_vector_value",
+            "duration": {"seconds": 751, "nanos": 543},
+        },
         "notebook": {
             "name": "name_value",
             "service": "service_value",
@@ -29024,6 +29046,27 @@ def test_update_finding_rest(request_type):
             }
         ],
         "load_balancers": [{"name": "name_value"}],
+        "cloud_armor": {
+            "security_policy": {
+                "name": "name_value",
+                "type_": "type__value",
+                "preview": True,
+            },
+            "requests": {
+                "ratio": 0.543,
+                "short_term_allowed": 1934,
+                "long_term_allowed": 1806,
+                "long_term_denied": 1679,
+            },
+            "adaptive_protection": {"confidence": 0.1038},
+            "attack": {
+                "volume_pps": 1098,
+                "volume_bps": 1084,
+                "classification": "classification_value",
+            },
+            "threat_vector": "threat_vector_value",
+            "duration": {"seconds": 751, "nanos": 543},
+        },
         "notebook": {
             "name": "name_value",
             "service": "service_value",

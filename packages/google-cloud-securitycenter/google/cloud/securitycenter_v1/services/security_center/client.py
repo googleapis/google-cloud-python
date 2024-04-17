@@ -62,6 +62,7 @@ from google.cloud.securitycenter_v1.types import (
     application,
     backup_disaster_recovery,
     bigquery_export,
+    cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
     compliance,
