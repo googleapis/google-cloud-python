@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.6.2...v1.7.0) (2024-02-07)
+
+
+### Features
+
+* Support sequences ([#336](https://github.com/googleapis/python-spanner-sqlalchemy/issues/336)) ([e35a8a0](https://github.com/googleapis/python-spanner-sqlalchemy/commit/e35a8a01fadce8b5a4b0208f9e6146a4241fa827))
+
+
+### Bug Fixes
+
+* Db.params OpenTelemetry integration issue ([#346](https://github.com/googleapis/python-spanner-sqlalchemy/issues/346)) ([0a69031](https://github.com/googleapis/python-spanner-sqlalchemy/commit/0a69031c9145945e5c438df48977329a67f94a78))
+* Fixing test for literals due to change in sqlalchemy core tests ([#384](https://github.com/googleapis/python-spanner-sqlalchemy/issues/384)) ([62cccc3](https://github.com/googleapis/python-spanner-sqlalchemy/commit/62cccc33cba504f8a4c67bd215341a3e747ec9bf))
+* Table name should be quoted by back quotes (`) on DROP TABLE ([#385](https://github.com/googleapis/python-spanner-sqlalchemy/issues/385)) ([628d26c](https://github.com/googleapis/python-spanner-sqlalchemy/commit/628d26c416cbe44871d8114251989d9f581bebf0))
+
 ## [1.6.2](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.6.1...v1.6.2) (2023-05-31)
 
 
