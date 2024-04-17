@@ -37,7 +37,7 @@ class DatetimeProperties:
         """The day of the week with Monday=0, Sunday=6.
 
         Return the day of the week. It is assumed the week starts on
-        Monday, which is denoted by 0 and ends on Sunday which is denoted
+        Monday, which is denoted by 0 and ends on Sunday, which is denoted
         by 6.
 
         **Examples:**

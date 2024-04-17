@@ -153,7 +153,7 @@ class TransformerMixin:
                 Target values (None for unsupervised transformations).
 
         Returns:
-            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_features_new)
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_features_new).
                 Transformed DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

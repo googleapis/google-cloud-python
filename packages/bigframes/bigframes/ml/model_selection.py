@@ -35,7 +35,7 @@ def train_test_split(
     Args:
         *arrays (bigframes.dataframe.DataFrame or bigframes.series.Series):
             A sequence of BigQuery DataFrames or Series that can be joined on
-            their indexes
+            their indexes.
         test_size (default None):
             The proportion of the dataset to include in the test split. If
             None, this will default to the complement of train_size. If both

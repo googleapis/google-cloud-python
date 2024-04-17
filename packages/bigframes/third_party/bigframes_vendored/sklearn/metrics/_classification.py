@@ -122,7 +122,7 @@ def recall_score(
 ):
     """Compute the recall.
 
-    The recall is the ratio ``tp / (tp + fn)`` where ``tp`` is the number of
+    The recall is the ratio ``tp / (tp + fn)``, where ``tp`` is the number of
     true positives and ``fn`` the number of false negatives. The recall is
     intuitively the ability of the classifier to find all the positive samples.
 
@@ -170,7 +170,7 @@ def precision_score(
 ):
     """Compute the precision.
 
-    The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number of
+    The precision is the ratio ``tp / (tp + fp)``, where ``tp`` is the number of
     true positives and ``fp`` the number of false positives. The precision is
     intuitively the ability of the classifier not to label as positive a sample
     that is negative.
@@ -244,9 +244,9 @@ def f1_score(
         dtype: float64
 
     Args:
-        y_true: Series or DataFrame of shape (n_samples,)
+        y_true: Series or DataFrame of shape (n_samples,).
             Ground truth (correct) target values.
-        y_pred: Series or DataFrame of shape (n_samples,)
+        y_pred: Series or DataFrame of shape (n_samples,).
             Estimated targets as returned by a classifier.
         average: {'micro', 'macro', 'samples', 'weighted', 'binary'} or None, \
                 default='binary'
