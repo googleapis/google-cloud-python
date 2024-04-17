@@ -2978,9 +2978,8 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
     ) -> schedule.BackupSchedule:
         r"""Creates a backup schedule on a database.
         At most two backup schedules can be configured on a
-        database, one daily backup schedule with retention up to
-        7 days and one weekly backup schedule with retention up
-        to 14 weeks.
+        database, one daily backup schedule and one weekly
+        backup schedule.
 
         .. code-block:: python
 
