@@ -22,6 +22,11 @@ class JoinSide(enum.Enum):
     LEFT = 0
     RIGHT = 1
 
+    def inverse(self) -> JoinSide:
+        if self == JoinSide.LEFT:
+            return JoinSide.RIGHT
+        return JoinSide.LEFT
+
 
 JoinType = Literal["inner", "outer", "left", "right", "cross"]
 

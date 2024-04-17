@@ -15,7 +15,9 @@
 from __future__ import annotations
 
 import dataclasses
+import functools
 import typing
+from typing import Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -34,11 +36,6 @@ class RowOp(typing.Protocol):
     def name(self) -> str:
         ...
 
-    @property
-    def arguments(self) -> int:
-        """The number of column argument the operation takes"""
-        ...
-
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         ...
 
@@ -48,20 +45,28 @@ class RowOp(typing.Protocol):
         ...
 
 
-# These classes can be used to create simple ops that don't take local parameters
-# All is needed is a unique name, and to register an implementation in ibis_mappings.py
 @dataclasses.dataclass(frozen=True)
-class UnaryOp:
+class NaryOp:
     @property
     def name(self) -> str:
         raise NotImplementedError("RowOp abstract base class has no implementation")
 
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        raise NotImplementedError("Abstract operation has no output type")
+
+    @property
+    def order_preserving(self) -> bool:
+        """Whether the row operation preserves total ordering. Can be pruned from ordering expressions."""
+        return False
+
+
+# These classes can be used to create simple ops that don't take local parameters
+# All is needed is a unique name, and to register an implementation in ibis_mappings.py
+@dataclasses.dataclass(frozen=True)
+class UnaryOp(NaryOp):
     @property
     def arguments(self) -> int:
         return 1
-
-    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        raise NotImplementedError("Abstract operation has no output type")
 
     def as_expr(
         self, input_id: typing.Union[str, bigframes.core.expression.Expression] = "arg"
@@ -72,24 +77,12 @@ class UnaryOp:
             self, (_convert_expr_input(input_id),)
         )
 
-    @property
-    def order_preserving(self) -> bool:
-        """Whether the row operation preserves total ordering. Can be pruned from ordering expressions."""
-        return False
-
 
 @dataclasses.dataclass(frozen=True)
-class BinaryOp:
-    @property
-    def name(self) -> str:
-        raise NotImplementedError("RowOp abstract base class has no implementation")
-
+class BinaryOp(NaryOp):
     @property
     def arguments(self) -> int:
         return 2
-
-    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        raise NotImplementedError("Abstract operation has no output type")
 
     def as_expr(
         self,
@@ -106,24 +99,12 @@ class BinaryOp:
             ),
         )
 
-    @property
-    def order_preserving(self) -> bool:
-        """Whether the row operation preserves total ordering. Can be pruned from ordering expressions."""
-        return False
-
 
 @dataclasses.dataclass(frozen=True)
-class TernaryOp:
-    @property
-    def name(self) -> str:
-        raise NotImplementedError("RowOp abstract base class has no implementation")
-
+class TernaryOp(NaryOp):
     @property
     def arguments(self) -> int:
         return 3
-
-    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        raise NotImplementedError("Abstract operation has no output type")
 
     def as_expr(
         self,
@@ -141,11 +122,6 @@ class TernaryOp:
                 _convert_expr_input(input3),
             ),
         )
-
-    @property
-    def order_preserving(self) -> bool:
-        """Whether the row operation preserves total ordering. Can be pruned from ordering expressions."""
-        return False
 
 
 def _convert_expr_input(
@@ -663,6 +639,46 @@ class ClipOp(TernaryOp):
 
 
 clip_op = ClipOp()
+
+
+class CaseWhenOp(NaryOp):
+    name: typing.ClassVar[str] = "switch"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        assert len(input_types) % 2 == 0
+        # predicate1, output1, predicate2, output2...
+        if not all(map(lambda x: x == dtypes.BOOL_DTYPE, input_types[::2])):
+            raise TypeError(f"Case inputs {input_types[::2]} must be boolean-valued")
+        output_expr_types = input_types[1::2]
+        return functools.reduce(
+            lambda t1, t2: dtypes.coerce_to_common(t1, t2),
+            output_expr_types,
+        )
+
+    def as_expr(
+        self,
+        *case_output_pairs: Tuple[
+            Union[str | bigframes.core.expression.Expression],
+            Union[str | bigframes.core.expression.Expression],
+        ],
+    ) -> bigframes.core.expression.Expression:
+        import bigframes.core.expression
+
+        # Keep this in sync with output_type and compilers
+        inputs: list[bigframes.core.expression.Expression] = []
+
+        for case, output in case_output_pairs:
+            inputs.append(_convert_expr_input(case))
+            inputs.append(_convert_expr_input(output))
+
+        return bigframes.core.expression.OpExpression(
+            self,
+            tuple(inputs),
+        )
+
+
+case_when_op = CaseWhenOp()
+
 
 # Just parameterless unary ops for now
 # TODO: Parameter mappings

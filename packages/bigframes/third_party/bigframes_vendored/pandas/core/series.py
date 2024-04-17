@@ -593,9 +593,9 @@ class Series(NDFrame):  # type: ignore[misc]
             1
 
             >>> s.agg(['min', 'max'])
-            min    1.0
-            max    4.0
-            dtype: Float64
+            min    1
+            max    4
+            dtype: Int64
 
         Args:
             func (function):

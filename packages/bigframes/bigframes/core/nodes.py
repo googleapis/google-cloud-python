@@ -21,8 +21,6 @@ import itertools
 import typing
 from typing import Callable, Tuple
 
-import pandas
-
 import bigframes.core.expression as ex
 import bigframes.core.guid
 from bigframes.core.join_def import JoinColumnMapping, JoinDefinition, JoinSide
@@ -577,88 +575,6 @@ class ReprojectOpNode(UnaryNode):
     def relation_ops_created(self) -> int:
         # This op is not a real transformation, just a hint to the sql generator
         return 0
-
-
-@dataclass(frozen=True)
-class UnpivotNode(UnaryNode):
-    # TODO: Refactor unpivot
-    row_labels: typing.Tuple[typing.Hashable, ...]
-    unpivot_columns: typing.Tuple[
-        typing.Tuple[str, typing.Tuple[typing.Optional[str], ...]], ...
-    ]
-    passthrough_columns: typing.Tuple[str, ...] = ()
-    index_col_ids: typing.Tuple[str, ...] = ("index",)
-    dtype: typing.Union[
-        bigframes.dtypes.Dtype, typing.Tuple[bigframes.dtypes.Dtype, ...]
-    ] = (pandas.Float64Dtype(),)
-    how: typing.Literal["left", "right"] = "left"
-
-    def __hash__(self):
-        return self._node_hash
-
-    @property
-    def row_preserving(self) -> bool:
-        return False
-
-    @property
-    def non_local(self) -> bool:
-        return True
-
-    @property
-    def joins(self) -> bool:
-        return True
-
-    @functools.cached_property
-    def schema(self) -> schemata.ArraySchema:
-        def infer_dtype(
-            values: typing.Iterable[typing.Hashable],
-        ) -> bigframes.dtypes.Dtype:
-            item_types = map(lambda x: bigframes.dtypes.infer_literal_type(x), values)
-            etype = functools.reduce(
-                lambda t1, t2: bigframes.dtypes.lcd_type(t1, t2)
-                if (t1 and t2)
-                else None,
-                item_types,
-            )
-            return bigframes.dtypes.dtype_for_etype(etype)
-
-        label_tuples = [
-            label if isinstance(label, tuple) else (label,) for label in self.row_labels
-        ]
-        idx_dtypes = [
-            infer_dtype(map(lambda x: typing.cast(tuple, x)[i], label_tuples))
-            for i in range(len(self.index_col_ids))
-        ]
-
-        index_items = [
-            schemata.SchemaItem(id, dtype)
-            for id, dtype in zip(self.index_col_ids, idx_dtypes)
-        ]
-        value_dtypes = (
-            self.dtype
-            if isinstance(self.dtype, tuple)
-            else (self.dtype,) * len(self.unpivot_columns)
-        )
-        value_items = [
-            schemata.SchemaItem(col[0], dtype)
-            for col, dtype in zip(self.unpivot_columns, value_dtypes)
-        ]
-        passthrough_items = [
-            schemata.SchemaItem(id, self.child.schema.get_type(id))
-            for id in self.passthrough_columns
-        ]
-        return schemata.ArraySchema((*index_items, *value_items, *passthrough_items))
-
-    @property
-    def variables_introduced(self) -> int:
-        return (
-            len(self.schema.items) - len(self.passthrough_columns) + OVERHEAD_VARIABLES
-        )
-
-    @property
-    def relation_ops_created(self) -> int:
-        # Unpivot is essentially a cross join and a projection.
-        return 2
 
 
 @dataclass(frozen=True)

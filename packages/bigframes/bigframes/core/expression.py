@@ -190,9 +190,6 @@ class OpExpression(Expression):
     op: bigframes.operations.RowOp
     inputs: typing.Tuple[Expression, ...]
 
-    def __post_init__(self):
-        assert self.op.arguments == len(self.inputs)
-
     @property
     def unbound_variables(self) -> typing.Tuple[str, ...]:
         return tuple(

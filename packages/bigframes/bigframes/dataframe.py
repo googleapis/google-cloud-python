@@ -1961,9 +1961,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             frame = self._raise_on_non_boolean("any")
         else:
             frame = self._drop_non_bool()
-        block = frame._block.aggregate_all_and_stack(
-            agg_ops.any_op, dtype=pandas.BooleanDtype(), axis=axis
-        )
+        block = frame._block.aggregate_all_and_stack(agg_ops.any_op, axis=axis)
         return bigframes.series.Series(block.select_column("values"))
 
     def all(
@@ -1973,9 +1971,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             frame = self._raise_on_non_boolean("all")
         else:
             frame = self._drop_non_bool()
-        block = frame._block.aggregate_all_and_stack(
-            agg_ops.all_op, dtype=pandas.BooleanDtype(), axis=axis
-        )
+        block = frame._block.aggregate_all_and_stack(agg_ops.all_op, axis=axis)
         return bigframes.series.Series(block.select_column("values"))
 
     def sum(

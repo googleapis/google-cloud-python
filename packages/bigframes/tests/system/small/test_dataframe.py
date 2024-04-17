@@ -2987,10 +2987,14 @@ def test_dataframe_aggregates(scalars_df_index, scalars_pandas_df_index, op, ord
     bf_result = bf_series.to_pandas(ordered=ordered)
 
     # Pandas may produce narrower numeric types, but bigframes always produces Float64
-    pd_series = pd_series.astype("Float64")
     # Pandas has object index type
+    pd_series.index = pd_series.index.astype(pd.StringDtype(storage="pyarrow"))
     assert_series_equal(
-        pd_series, bf_result, check_index_type=False, ignore_order=not ordered
+        pd_series,
+        bf_result,
+        check_index_type=False,
+        ignore_order=not ordered,
+        check_dtype=False,
     )
 
 
@@ -3079,7 +3083,7 @@ def test_dataframe_bool_aggregates(scalars_df_index, scalars_pandas_df_index, op
     pd_series = op(scalars_pandas_df_index).astype("boolean")
     bf_result = bf_series.to_pandas()
 
-    # Pandas has object index type
+    pd_series.index = pd_series.index.astype(bf_result.index.dtype)
     pd.testing.assert_series_equal(pd_series, bf_result, check_index_type=False)
 
 

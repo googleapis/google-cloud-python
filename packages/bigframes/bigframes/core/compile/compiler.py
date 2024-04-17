@@ -180,18 +180,6 @@ def compile_reproject(node: nodes.ReprojectOpNode, ordered: bool = True):
 
 
 @_compile_node.register
-def compile_unpivot(node: nodes.UnpivotNode, ordered: bool = True):
-    return compile_node(node.child, ordered).unpivot(
-        node.row_labels,
-        node.unpivot_columns,
-        passthrough_columns=node.passthrough_columns,
-        index_col_ids=node.index_col_ids,
-        dtype=node.dtype,
-        how=node.how,
-    )
-
-
-@_compile_node.register
 def compiler_explode(node: nodes.ExplodeNode, ordered: bool = True):
     return compile_node(node.child, ordered).explode(node.column_ids)
 

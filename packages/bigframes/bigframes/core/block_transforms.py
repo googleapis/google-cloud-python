@@ -857,5 +857,5 @@ def _idx_extrema(
     # Stack the entire column axis to produce single-column result
     # Assumption: uniform dtype for stackability
     return block.aggregate_all_and_stack(
-        agg_ops.AnyValueOp(), dtype=block.dtypes[0]
+        agg_ops.AnyValueOp(),
     ).with_column_labels([original_block.index.name])

@@ -4327,16 +4327,16 @@ class DataFrame(generic.NDFrame):
         Finding the minimum value in each column (the default behavior without an explicit axis parameter).
 
             >>> df.min()
-            A    1.0
-            B    2.0
-            dtype: Float64
+            A    1
+            B    2
+            dtype: Int64
 
         Finding the minimum value in each row.
 
             >>> df.min(axis=1)
-            0    1.0
-            1    3.0
-            dtype: Float64
+            0    1
+            1    3
+            dtype: Int64
 
         Args:
             axis ({index (0), columns (1)}):
@@ -4372,16 +4372,16 @@ class DataFrame(generic.NDFrame):
         Finding the maximum value in each column (the default behavior without an explicit axis parameter).
 
             >>> df.max()
-            A    3.0
-            B    4.0
-            dtype: Float64
+            A    3
+            B    4
+            dtype: Int64
 
         Finding the maximum value in each row.
 
             >>> df.max(axis=1)
-            0    2.0
-            1    4.0
-            dtype: Float64
+            0    2
+            1    4
+            dtype: Int64
 
         Args:
             axis ({index (0), columns (1)}):
@@ -4416,16 +4416,16 @@ class DataFrame(generic.NDFrame):
         Calculating the sum of each column (the default behavior without an explicit axis parameter).
 
             >>> df.sum()
-            A    4.0
-            B    6.0
-            dtype: Float64
+            A    4
+            B    6
+            dtype: Int64
 
         Calculating the sum of each row.
 
             >>> df.sum(axis=1)
-            0    3.0
-            1    7.0
-            dtype: Float64
+            0    3
+            1    7
+            dtype: Int64
 
         Args:
             axis ({index (0), columns (1)}):
@@ -4500,9 +4500,9 @@ class DataFrame(generic.NDFrame):
         Finding the median value of each column.
 
             >>> df.median()
-            A    1.0
-            B    2.0
-            dtype: Float64
+            A    1
+            B    2
+            dtype: Int64
 
         Args:
             numeric_only (bool. default False):
@@ -4748,10 +4748,10 @@ class DataFrame(generic.NDFrame):
         Counting non-NA values for each column:
 
             >>> df.count()
-            A    4.0
-            B    5.0
-            C    3.0
-            dtype: Float64
+            A    4
+            B    5
+            C    3
+            dtype: Int64
 
         Args:
             numeric_only (bool, default False):
@@ -5051,17 +5051,17 @@ class DataFrame(generic.NDFrame):
         Using `melt` with `id_vars` and `value_vars`:
 
             >>> df.melt(id_vars='A', value_vars=['B', 'C'])
-                   A	variable	value
-            0	 1.0	       B	    1
-            1	<NA>	       B	    2
-            2	 3.0	       B	    3
-            3	 4.0	       B	    4
-            4	 5.0	       B	    5
-            5	 1.0	       C	 <NA>
-            6	 <NA>	       C	    3
-            7	 3.0	       C	 <NA>
-            8	 4.0	       C	    4
-            9	 5.0	       C	    5
+                  A variable  value
+            0   1.0        B    1.0
+            1  <NA>        B    2.0
+            2   3.0        B    3.0
+            3   4.0        B    4.0
+            4   5.0        B    5.0
+            5   1.0        C   <NA>
+            6  <NA>        C    3.5
+            7   3.0        C   <NA>
+            8   4.0        C    4.5
+            9   5.0        C    5.0
             <BLANKLINE>
             [10 rows x 3 columns]
 
@@ -5102,9 +5102,9 @@ class DataFrame(generic.NDFrame):
             [3 rows x 2 columns]
 
             >>> df.nunique()
-            A    3.0
-            B    2.0
-            dtype: Float64
+            A    3
+            B    2
+            dtype: Int64
 
         Returns:
             bigframes.series.Series: Series with number of distinct elements.
@@ -5313,9 +5313,9 @@ class DataFrame(generic.NDFrame):
         Using a single function:
 
             >>> df.agg('sum')
-            A    6.0
-            B    6.0
-            dtype: Float64
+            A    6
+            B    6
+            dtype: Int64
 
         Using a list of functions:
 
