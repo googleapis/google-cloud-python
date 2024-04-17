@@ -3185,6 +3185,36 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-lfp": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-lfp",
+            "extra-files": [
+                "google/shopping/merchant_lfp/gapic_version.py",
+                "google/shopping/merchant_lfp_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.lfp.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-shopping-merchant-notifications": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-notifications",
+            "extra-files": [
+                "google/shopping/merchant_notifications/gapic_version.py",
+                "google/shopping/merchant_notifications_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.notifications.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-merchant-quota": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
