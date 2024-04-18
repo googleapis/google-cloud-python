@@ -5,6 +5,28 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.21.0](https://github.com/googleapis/python-bigquery/compare/v3.20.1...v3.21.0) (2024-04-18)
+
+
+### Features
+
+* Add compression option ZSTD. ([#1890](https://github.com/googleapis/python-bigquery/issues/1890)) ([5ed9cce](https://github.com/googleapis/python-bigquery/commit/5ed9ccee204b7cf8e96cb0e050f6830c05f3b4fd))
+* Adds billing to opentel ([#1889](https://github.com/googleapis/python-bigquery/issues/1889)) ([38697fb](https://github.com/googleapis/python-bigquery/commit/38697fb942516fc2f6f5e21e19a11811fbaeb1f4))
+* Support RANGE in queries Part 1: JSON ([#1884](https://github.com/googleapis/python-bigquery/issues/1884)) ([3634405](https://github.com/googleapis/python-bigquery/commit/3634405fa1b40ae5f69b06d7c7f8de4e3d246d92))
+
+
+### Bug Fixes
+
+* Add types to DatasetReference constructor ([#1601](https://github.com/googleapis/python-bigquery/issues/1601)) ([bf8861c](https://github.com/googleapis/python-bigquery/commit/bf8861c3473a1af978db7a06463ddc0bad86f326))
+* Creates linting-typing.cfg in presubmit ([#1881](https://github.com/googleapis/python-bigquery/issues/1881)) ([c852c15](https://github.com/googleapis/python-bigquery/commit/c852c153c55025ba1187d61e313ead2308616c55))
+* Remove duplicate key time_partitioning from Table._PROPERTY_TO_A… ([#1898](https://github.com/googleapis/python-bigquery/issues/1898)) ([82ae908](https://github.com/googleapis/python-bigquery/commit/82ae908fbf3b2361343fff1859d3533383dc50ec))
+* Retry query jobs that fail even with ambiguous `jobs.getQueryResults` REST errors ([#1903](https://github.com/googleapis/python-bigquery/issues/1903), [#1900](https://github.com/googleapis/python-bigquery/issues/1900)) ([1367b58](https://github.com/googleapis/python-bigquery/commit/1367b584b68d917ec325ce4383a0e9a36205b894))
+
+
+### Performance Improvements
+
+* Avoid unnecessary API call in `QueryJob.result()` when job is already finished ([#1900](https://github.com/googleapis/python-bigquery/issues/1900)) ([1367b58](https://github.com/googleapis/python-bigquery/commit/1367b584b68d917ec325ce4383a0e9a36205b894))
+
 ## [3.20.1](https://github.com/googleapis/python-bigquery/compare/v3.20.0...v3.20.1) (2024-04-01)
 
 
