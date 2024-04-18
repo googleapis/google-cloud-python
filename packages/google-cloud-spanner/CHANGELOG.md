@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.45.0](https://github.com/googleapis/python-spanner/compare/v3.44.0...v3.45.0) (2024-04-17)
+
+
+### Features
+
+* Add support for PG.OID in parameterized queries ([#1035](https://github.com/googleapis/python-spanner/issues/1035)) ([ea5efe4](https://github.com/googleapis/python-spanner/commit/ea5efe4d0bc2790b5172e43e1b66fa3997190adf))
+
+
+### Bug Fixes
+
+* Dates before 1000AD should use 4-digit years ([#1132](https://github.com/googleapis/python-spanner/issues/1132)) ([0ef6565](https://github.com/googleapis/python-spanner/commit/0ef65657de631d876636d11756237496b7713e22)), closes [#1131](https://github.com/googleapis/python-spanner/issues/1131)
+
 ## [3.44.0](https://github.com/googleapis/python-spanner/compare/v3.43.0...v3.44.0) (2024-03-13)
 
 
