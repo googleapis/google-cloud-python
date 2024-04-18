@@ -113,9 +113,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             self._raise_on_non_numeric("mean")
         return self._aggregate_all(agg_ops.mean_op, numeric_only=True)
 
-    def median(
-        self, numeric_only: bool = False, *, exact: bool = False
-    ) -> df.DataFrame:
+    def median(self, numeric_only: bool = False, *, exact: bool = True) -> df.DataFrame:
         if not numeric_only:
             self._raise_on_non_numeric("median")
         if exact:
@@ -138,6 +136,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             q_cols,
             qs=tuple(q) if multi_q else (q,),  # type: ignore
             grouping_column_ids=self._by_col_ids,
+            dropna=self._dropna,
         )
         result_df = df.DataFrame(result)
         if multi_q:
@@ -491,7 +490,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     def median(
         self,
         *args,
-        exact: bool = False,
+        exact: bool = True,
         **kwargs,
     ) -> series.Series:
         if exact:
@@ -508,6 +507,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             (self._value_column,),
             qs=tuple(q) if multi_q else (q,),  # type: ignore
             grouping_column_ids=self._by_col_ids,
+            dropna=self._dropna,
         )
         if multi_q:
             return series.Series(result.stack())

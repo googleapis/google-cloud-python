@@ -3150,13 +3150,13 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def median(self, *, exact: bool = False):
+    def median(self, *, exact: bool = True):
         """Return the median of the values over the requested axis.
 
         Args:
-            exact (bool. default False):
-                Default False. Get the exact median instead of an approximate
-                one. Note: ``exact=True`` not yet supported.
+            exact (bool. default True):
+                Default True. Get the exact median instead of an approximate
+                one.
 
         Returns:
             scalar: Scalar.

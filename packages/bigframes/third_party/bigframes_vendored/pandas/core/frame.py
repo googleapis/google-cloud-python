@@ -4481,7 +4481,7 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def median(self, *, numeric_only: bool = False, exact: bool = False):
+    def median(self, *, numeric_only: bool = False, exact: bool = True):
         """Return the median of the values over colunms.
 
         **Examples:**
@@ -4500,15 +4500,15 @@ class DataFrame(generic.NDFrame):
         Finding the median value of each column.
 
             >>> df.median()
-            A    1
-            B    2
-            dtype: Int64
+            A    2.0
+            B    3.0
+            dtype: Float64
 
         Args:
             numeric_only (bool. default False):
                 Default False. Include only float, int, boolean columns.
-            exact (bool. default False):
-                Default False. Get the exact median instead of an approximate
+            exact (bool. default True):
+                Default True. Get the exact median instead of an approximate
                 one.
 
         Returns:

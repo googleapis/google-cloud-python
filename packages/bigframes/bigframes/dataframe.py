@@ -1995,18 +1995,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return bigframes.series.Series(block.select_column("values"))
 
     def median(
-        self, *, numeric_only: bool = False, exact: bool = False
+        self, *, numeric_only: bool = False, exact: bool = True
     ) -> bigframes.series.Series:
-        if exact:
-            raise NotImplementedError(
-                f"Only approximate median is supported. {constants.FEEDBACK_LINK}"
-            )
         if not numeric_only:
             frame = self._raise_on_non_numeric("median")
         else:
             frame = self._drop_non_numeric()
         if exact:
-            return self.quantile()
+            result = frame.quantile()
+            result.name = None
+            return result
         else:
             block = frame._block.aggregate_all_and_stack(agg_ops.median_op)
             return bigframes.series.Series(block.select_column("values"))
