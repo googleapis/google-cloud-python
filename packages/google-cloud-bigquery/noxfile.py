@@ -208,6 +208,9 @@ def system(session):
         extras = "[all]"
     session.install("-e", f".{extras}", "-c", constraints_path)
 
+    # print versions of all dependencies
+    session.run("python", "-m", "pip", "freeze")
+
     # Run py.test against the system tests.
     session.run(
         "py.test",

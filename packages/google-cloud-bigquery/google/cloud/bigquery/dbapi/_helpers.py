@@ -277,12 +277,14 @@ def complex_query_parameter(
         param = query.ArrayQueryParameter(
             name,
             sub_type,
-            value
-            if isinstance(sub_type, query.ScalarQueryParameterType)
-            else [
-                complex_query_parameter(None, v, sub_type._complex__src, base)
-                for v in value
-            ],
+            (
+                value
+                if isinstance(sub_type, query.ScalarQueryParameterType)
+                else [
+                    complex_query_parameter(None, v, sub_type._complex__src, base)
+                    for v in value
+                ]
+            ),
         )
     elif type_type == STRUCT:
         if not isinstance(value, collections_abc.Mapping):

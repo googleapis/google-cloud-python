@@ -2044,6 +2044,13 @@ class RowIterator(HTTPIterator):
         datetime_dtype: Union[Any, None] = None,
         time_dtype: Union[Any, None] = DefaultPandasDTypes.TIME_DTYPE,
         timestamp_dtype: Union[Any, None] = None,
+        range_date_dtype: Union[Any, None] = DefaultPandasDTypes.RANGE_DATE_DTYPE,
+        range_datetime_dtype: Union[
+            Any, None
+        ] = DefaultPandasDTypes.RANGE_DATETIME_DTYPE,
+        range_timestamp_dtype: Union[
+            Any, None
+        ] = DefaultPandasDTypes.RANGE_TIMESTAMP_DTYPE,
     ) -> "pandas.DataFrame":
         """Create a pandas DataFrame by loading all pages of a query.
 
@@ -2183,6 +2190,63 @@ class RowIterator(HTTPIterator):
 
                 .. versionadded:: 3.10.0
 
+            range_date_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype, such as:
+
+                .. code-block:: python
+
+                    pandas.ArrowDtype(pyarrow.struct(
+                        [("start", pyarrow.date32()), ("end", pyarrow.date32())]
+                    ))
+
+                to convert BigQuery RANGE<DATE> type, instead of relying on
+                the default ``object``. If you explicitly set the value to
+                ``None``, the data type will be ``object``. BigQuery Range type
+                can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#range_type
+
+                .. versionadded:: 3.21.0
+
+            range_datetime_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype, such as:
+
+                .. code-block:: python
+
+                    pandas.ArrowDtype(pyarrow.struct(
+                        [
+                            ("start", pyarrow.timestamp("us")),
+                            ("end", pyarrow.timestamp("us")),
+                        ]
+                    ))
+
+                to convert BigQuery RANGE<DATETIME> type, instead of relying on
+                the default ``object``. If you explicitly set the value to
+                ``None``, the data type will be ``object``. BigQuery Range type
+                can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#range_type
+
+                .. versionadded:: 3.21.0
+
+            range_timestamp_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype, such as:
+
+                .. code-block:: python
+
+                    pandas.ArrowDtype(pyarrow.struct(
+                        [
+                            ("start", pyarrow.timestamp("us", tz="UTC")),
+                            ("end", pyarrow.timestamp("us", tz="UTC")),
+                        ]
+                    ))
+
+                to convert BigQuery RANGE<TIMESTAMP> type, instead of relying
+                on the default ``object``. If you explicitly set the value to
+                ``None``, the data type will be ``object``. BigQuery Range type
+                can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#range_type
+
+                .. versionadded:: 3.21.0
+
         Returns:
             pandas.DataFrame:
                 A :class:`~pandas.DataFrame` populated with row data and column
@@ -2213,6 +2277,69 @@ class RowIterator(HTTPIterator):
 
         if time_dtype is DefaultPandasDTypes.TIME_DTYPE:
             time_dtype = db_dtypes.TimeDtype()
+
+        if range_date_dtype is DefaultPandasDTypes.RANGE_DATE_DTYPE:
+            try:
+                range_date_dtype = pandas.ArrowDtype(
+                    pyarrow.struct(
+                        [("start", pyarrow.date32()), ("end", pyarrow.date32())]
+                    )
+                )
+            except AttributeError:
+                # pandas.ArrowDtype was introduced in pandas 1.5, but python 3.7
+                # only supports upto pandas 1.3. If pandas.ArrowDtype is not
+                # present, we raise a warning and set range_date_dtype to None.
+                msg = (
+                    "Unable to find class ArrowDtype in pandas, setting "
+                    "range_date_dtype to be None. To use ArrowDtype, please "
+                    "use pandas >= 1.5 and python >= 3.8."
+                )
+                warnings.warn(msg)
+                range_date_dtype = None
+
+        if range_datetime_dtype is DefaultPandasDTypes.RANGE_DATETIME_DTYPE:
+            try:
+                range_datetime_dtype = pandas.ArrowDtype(
+                    pyarrow.struct(
+                        [
+                            ("start", pyarrow.timestamp("us")),
+                            ("end", pyarrow.timestamp("us")),
+                        ]
+                    )
+                )
+            except AttributeError:
+                # pandas.ArrowDtype was introduced in pandas 1.5, but python 3.7
+                # only supports upto pandas 1.3. If pandas.ArrowDtype is not
+                # present, we raise a warning and set range_datetime_dtype to None.
+                msg = (
+                    "Unable to find class ArrowDtype in pandas, setting "
+                    "range_datetime_dtype to be None. To use ArrowDtype, "
+                    "please use pandas >= 1.5 and python >= 3.8."
+                )
+                warnings.warn(msg)
+                range_datetime_dtype = None
+
+        if range_timestamp_dtype is DefaultPandasDTypes.RANGE_TIMESTAMP_DTYPE:
+            try:
+                range_timestamp_dtype = pandas.ArrowDtype(
+                    pyarrow.struct(
+                        [
+                            ("start", pyarrow.timestamp("us", tz="UTC")),
+                            ("end", pyarrow.timestamp("us", tz="UTC")),
+                        ]
+                    )
+                )
+            except AttributeError:
+                # pandas.ArrowDtype was introduced in pandas 1.5, but python 3.7
+                # only supports upto pandas 1.3. If pandas.ArrowDtype is not
+                # present, we raise a warning and set range_timestamp_dtype to None.
+                msg = (
+                    "Unable to find class ArrowDtype in pandas, setting "
+                    "range_timestamp_dtype to be None. To use ArrowDtype, "
+                    "please use pandas >= 1.5 and python >= 3.8."
+                )
+                warnings.warn(msg)
+                range_timestamp_dtype = None
 
         if bool_dtype is not None and not hasattr(bool_dtype, "__from_arrow__"):
             raise ValueError("bool_dtype", _NO_SUPPORTED_DTYPE)
@@ -2298,6 +2425,9 @@ class RowIterator(HTTPIterator):
                     datetime_dtype=datetime_dtype,
                     time_dtype=time_dtype,
                     timestamp_dtype=timestamp_dtype,
+                    range_date_dtype=range_date_dtype,
+                    range_datetime_dtype=range_datetime_dtype,
+                    range_timestamp_dtype=range_timestamp_dtype,
                 ),
             )
         else:
@@ -2502,6 +2632,9 @@ class _EmptyRowIterator(RowIterator):
         datetime_dtype=None,
         time_dtype=None,
         timestamp_dtype=None,
+        range_date_dtype=None,
+        range_datetime_dtype=None,
+        range_timestamp_dtype=None,
     ) -> "pandas.DataFrame":
         """Create an empty dataframe.
 
@@ -2519,6 +2652,9 @@ class _EmptyRowIterator(RowIterator):
             datetime_dtype (Any): Ignored. Added for compatibility with RowIterator.
             time_dtype (Any): Ignored. Added for compatibility with RowIterator.
             timestamp_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            range_date_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            range_datetime_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            range_timestamp_dtype (Any): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
@@ -2541,6 +2677,7 @@ class _EmptyRowIterator(RowIterator):
             dtypes (Any): Ignored. Added for compatibility with RowIterator.
             progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
             create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
+            geography_column (str): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.

@@ -118,3 +118,17 @@ def test_list_rows_scalars_extreme(
             assert value == 4
         else:
             assert value is None
+
+
+def test_list_rows_range(bigquery_client: bigquery.Client, scalars_table_csv: str):
+    rows = bigquery_client.list_rows(scalars_table_csv)
+    rows = list(rows)
+    row = rows[0]
+    expected_range = {
+        "start": datetime.date(2020, 1, 1),
+        "end": datetime.date(2020, 2, 1),
+    }
+    assert row["range_date"] == expected_range
+
+    row_null = rows[1]
+    assert row_null["range_date"] is None

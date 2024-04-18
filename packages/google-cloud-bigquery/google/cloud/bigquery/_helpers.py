@@ -66,6 +66,8 @@ _DEFAULT_UNIVERSE = "googleapis.com"
 _UNIVERSE_DOMAIN_ENV = "GOOGLE_CLOUD_UNIVERSE_DOMAIN"
 """Environment variable for setting universe domain."""
 
+_SUPPORTED_RANGE_ELEMENTS = {"TIMESTAMP", "DATETIME", "DATE"}
+
 
 def _get_client_universe(
     client_options: Optional[Union[client_options_lib.ClientOptions, dict]]
@@ -310,17 +312,13 @@ def _json_from_json(value, field):
 
 
 def _range_element_from_json(value, field):
-    """Coerce 'value' to a range element value, if set or not nullable."""
+    """Coerce 'value' to a range element value."""
     if value == "UNBOUNDED":
         return None
-    elif field.element_type == "DATE":
-        return _date_from_json(value, None)
-    elif field.element_type == "DATETIME":
-        return _datetime_from_json(value, None)
-    elif field.element_type == "TIMESTAMP":
-        return _timestamp_from_json(value, None)
+    if field.element_type in _SUPPORTED_RANGE_ELEMENTS:
+        return _CELLDATA_FROM_JSON[field.element_type](value, field.element_type)
     else:
-        raise ValueError(f"Unsupported range field type: {value}")
+        raise ValueError(f"Unsupported range element type: {field.element_type}")
 
 
 def _range_from_json(value, field):
@@ -344,7 +342,7 @@ def _range_from_json(value, field):
             end = _range_element_from_json(end, field.range_element_type)
             return {"start": start, "end": end}
         else:
-            raise ValueError(f"Unknown range format: {value}")
+            raise ValueError(f"Unknown format for range value: {value}")
     else:
         return None
 

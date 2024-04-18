@@ -96,12 +96,14 @@ def load_scalars_table(
     project_id: str,
     dataset_id: str,
     data_path: str = "scalars.jsonl",
+    source_format=enums.SourceFormat.NEWLINE_DELIMITED_JSON,
+    schema_source="scalars_schema.json",
 ) -> str:
-    schema = bigquery_client.schema_from_json(DATA_DIR / "scalars_schema.json")
+    schema = bigquery_client.schema_from_json(DATA_DIR / schema_source)
     table_id = data_path.replace(".", "_") + hex(random.randrange(1000000))
     job_config = bigquery.LoadJobConfig()
     job_config.schema = schema
-    job_config.source_format = enums.SourceFormat.NEWLINE_DELIMITED_JSON
+    job_config.source_format = source_format
     full_table_id = f"{project_id}.{dataset_id}.{table_id}"
     with open(DATA_DIR / data_path, "rb") as data_file:
         job = bigquery_client.load_table_from_file(
@@ -149,6 +151,22 @@ def scalars_table_multi_location(
     else:
         raise ValueError(f"got unexpected location: {request.param}")
     return request.param, full_table_id
+
+
+@pytest.fixture(scope="session")
+def scalars_table_csv(
+    bigquery_client: bigquery.Client, project_id: str, dataset_id: str
+):
+    full_table_id = load_scalars_table(
+        bigquery_client,
+        project_id,
+        dataset_id,
+        data_path="scalars.csv",
+        source_format=enums.SourceFormat.CSV,
+        schema_source="scalars_schema_csv.json",
+    )
+    yield full_table_id
+    bigquery_client.delete_table(full_table_id, not_found_ok=True)
 
 
 @pytest.fixture

@@ -670,6 +670,67 @@ def test_bq_to_arrow_array_w_geography_type_wkb_data(module_under_test):
     assert array.to_pylist() == list(series)
 
 
+@pytest.mark.parametrize(
+    "bq_schema,expected",
+    [
+        (
+            schema.SchemaField(
+                "field1",
+                "RANGE",
+                range_element_type=schema.FieldElementType("DATE"),
+                mode="NULLABLE",
+            ),
+            pyarrow.struct(
+                [
+                    ("start", pyarrow.date32()),
+                    ("end", pyarrow.date32()),
+                ]
+            ),
+        ),
+        (
+            schema.SchemaField(
+                "field2",
+                "RANGE",
+                range_element_type=schema.FieldElementType("DATETIME"),
+                mode="NULLABLE",
+            ),
+            pyarrow.struct(
+                [
+                    ("start", pyarrow.timestamp("us", tz=None)),
+                    ("end", pyarrow.timestamp("us", tz=None)),
+                ]
+            ),
+        ),
+        (
+            schema.SchemaField(
+                "field3",
+                "RANGE",
+                range_element_type=schema.FieldElementType("TIMESTAMP"),
+                mode="NULLABLE",
+            ),
+            pyarrow.struct(
+                [
+                    ("start", pyarrow.timestamp("us", tz="UTC")),
+                    ("end", pyarrow.timestamp("us", tz="UTC")),
+                ]
+            ),
+        ),
+    ],
+)
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bq_to_arrow_data_type_w_range(module_under_test, bq_schema, expected):
+    actual = module_under_test.bq_to_arrow_data_type(bq_schema)
+    assert actual.equals(expected)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bq_to_arrow_data_type_w_range_no_element(module_under_test):
+    field = schema.SchemaField("field1", "RANGE", mode="NULLABLE")
+    with pytest.raises(ValueError, match="Range element type cannot be None"):
+        module_under_test.bq_to_arrow_data_type(field)
+
+
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_bq_to_arrow_schema_w_unknown_type(module_under_test):
     fields = (

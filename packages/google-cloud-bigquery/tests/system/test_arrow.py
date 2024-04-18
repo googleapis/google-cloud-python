@@ -167,3 +167,30 @@ def test_arrow_extension_types_same_for_storage_and_REST_APIs_894(
         b"ARROW:extension:name": b"google:sqlType:geography",
         b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
     }
+
+
+def test_list_rows_range_csv(
+    bigquery_client: bigquery.Client,
+    scalars_table_csv: str,
+):
+    table_id = scalars_table_csv
+
+    schema = [
+        bigquery.SchemaField(
+            "range_date", enums.SqlTypeNames.RANGE, range_element_type="DATE"
+        ),
+    ]
+
+    arrow_table = bigquery_client.list_rows(
+        table_id,
+        selected_fields=schema,
+    ).to_arrow()
+
+    schema = arrow_table.schema
+
+    expected_type = pyarrow.struct(
+        [("start", pyarrow.date32()), ("end", pyarrow.date32())]
+    )
+
+    range_type = schema.field("range_date").type
+    assert range_type == expected_type

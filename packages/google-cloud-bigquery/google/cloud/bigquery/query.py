@@ -24,13 +24,12 @@ from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery._helpers import _QUERY_PARAMS_FROM_JSON
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
+from google.cloud.bigquery._helpers import _SUPPORTED_RANGE_ELEMENTS
 
 
 _SCALAR_VALUE_TYPE = Optional[
     Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]
 ]
-
-_RANGE_ELEMENT_TYPE_STR = {"TIMESTAMP", "DATETIME", "DATE"}
 
 
 class ConnectionProperty:
@@ -388,14 +387,14 @@ class RangeQueryParameterType(_AbstractQueryParameterType):
             google.cloud.bigquery.query.ScalarQueryParameterType: Instance
         """
         if isinstance(type_, str):
-            if type_ not in _RANGE_ELEMENT_TYPE_STR:
+            if type_ not in _SUPPORTED_RANGE_ELEMENTS:
                 raise ValueError(
                     "If given as a string, range element type must be one of "
                     "'TIMESTAMP', 'DATE', or 'DATETIME'."
                 )
             return ScalarQueryParameterType(type_)
         elif isinstance(type_, ScalarQueryParameterType):
-            if type_._type not in _RANGE_ELEMENT_TYPE_STR:
+            if type_._type not in _SUPPORTED_RANGE_ELEMENTS:
                 raise ValueError(
                     "If given as a ScalarQueryParameter object, range element "
                     "type must be one of 'TIMESTAMP', 'DATE', or 'DATETIME' "
@@ -960,14 +959,14 @@ class RangeQueryParameter(_AbstractQueryParameter):
     @classmethod
     def _parse_range_element_type(self, range_element_type):
         if isinstance(range_element_type, str):
-            if range_element_type not in _RANGE_ELEMENT_TYPE_STR:
+            if range_element_type not in _SUPPORTED_RANGE_ELEMENTS:
                 raise ValueError(
                     "If given as a string, range_element_type must be one of "
                     f"'TIMESTAMP', 'DATE', or 'DATETIME'. Got {range_element_type}."
                 )
             return RangeQueryParameterType(range_element_type)
         elif isinstance(range_element_type, RangeQueryParameterType):
-            if range_element_type.type_._type not in _RANGE_ELEMENT_TYPE_STR:
+            if range_element_type.type_._type not in _SUPPORTED_RANGE_ELEMENTS:
                 raise ValueError(
                     "If given as a RangeQueryParameterType object, "
                     "range_element_type must be one of 'TIMESTAMP', 'DATE', "

@@ -99,6 +99,15 @@ class DefaultPandasDTypes(enum.Enum):
     TIME_DTYPE = object()
     """Specifies default time dtype"""
 
+    RANGE_DATE_DTYPE = object()
+    """Specifies default range date dtype"""
+
+    RANGE_DATETIME_DTYPE = object()
+    """Specifies default range datetime dtype"""
+
+    RANGE_TIMESTAMP_DTYPE = object()
+    """Specifies default range timestamp dtype"""
+
 
 class DestinationFormat(object):
     """The exported file format. The default value is :attr:`CSV`.

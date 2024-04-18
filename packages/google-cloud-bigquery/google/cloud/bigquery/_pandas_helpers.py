@@ -142,6 +142,17 @@ def bq_to_arrow_struct_data_type(field):
     return pyarrow.struct(arrow_fields)
 
 
+def bq_to_arrow_range_data_type(field):
+    if field is None:
+        raise ValueError(
+            "Range element type cannot be None, must be one of "
+            "DATE, DATETIME, or TIMESTAMP"
+        )
+    element_type = field.element_type.upper()
+    arrow_element_type = _pyarrow_helpers.bq_to_arrow_scalars(element_type)()
+    return pyarrow.struct([("start", arrow_element_type), ("end", arrow_element_type)])
+
+
 def bq_to_arrow_data_type(field):
     """Return the Arrow data type, corresponding to a given BigQuery column.
 
@@ -159,6 +170,9 @@ def bq_to_arrow_data_type(field):
     field_type_upper = field.field_type.upper() if field.field_type else ""
     if field_type_upper in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
+
+    if field_type_upper == "RANGE":
+        return bq_to_arrow_range_data_type(field.range_element_type)
 
     data_type_constructor = _pyarrow_helpers.bq_to_arrow_scalars(field_type_upper)
     if data_type_constructor is None:
@@ -220,6 +234,9 @@ def default_types_mapper(
     datetime_dtype: Union[Any, None] = None,
     time_dtype: Union[Any, None] = None,
     timestamp_dtype: Union[Any, None] = None,
+    range_date_dtype: Union[Any, None] = None,
+    range_datetime_dtype: Union[Any, None] = None,
+    range_timestamp_dtype: Union[Any, None] = None,
 ):
     """Create a mapping from pyarrow types to pandas types.
 
@@ -273,6 +290,22 @@ def default_types_mapper(
 
         elif time_dtype is not None and pyarrow.types.is_time(arrow_data_type):
             return time_dtype
+
+        elif pyarrow.types.is_struct(arrow_data_type):
+            if range_datetime_dtype is not None and arrow_data_type.equals(
+                range_datetime_dtype.pyarrow_dtype
+            ):
+                return range_datetime_dtype
+
+            elif range_date_dtype is not None and arrow_data_type.equals(
+                range_date_dtype.pyarrow_dtype
+            ):
+                return range_date_dtype
+
+            elif range_timestamp_dtype is not None and arrow_data_type.equals(
+                range_timestamp_dtype.pyarrow_dtype
+            ):
+                return range_timestamp_dtype
 
     return types_mapper
 
