@@ -42,5 +42,4 @@ def add_dummy_where(sql):
         for token in sqlparse.parse(sql)[0]
     ):
         return sql
-
     return sql + " WHERE 1=1"
