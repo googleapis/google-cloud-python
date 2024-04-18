@@ -177,6 +177,7 @@
     "packages/google-maps-places": "0.1.12",
     "packages/google-maps-routing": "0.6.8",
     "packages/google-shopping-css": "0.1.4",
+    "packages/google-shopping-merchant-conversions": "0.0.0",
     "packages/google-shopping-merchant-inventories": "0.1.6",
     "packages/google-shopping-merchant-lfp": "0.1.0",
     "packages/google-shopping-merchant-notifications": "0.1.0",

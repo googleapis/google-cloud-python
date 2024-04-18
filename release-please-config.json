@@ -3170,6 +3170,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-conversions": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-conversions",
+            "extra-files": [
+                "google/shopping/merchant_conversions/gapic_version.py",
+                "google/shopping/merchant_conversions_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.conversions.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-merchant-inventories": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
