@@ -404,6 +404,20 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.update_membership: gapic_v1.method.wrap_method(
+                self.update_membership,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
             self.delete_membership: gapic_v1.method.wrap_method(
                 self.delete_membership,
                 default_retry=retries.Retry(
@@ -629,6 +643,15 @@ class ChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [gc_membership.CreateMembershipRequest],
+        Union[gc_membership.Membership, Awaitable[gc_membership.Membership]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_membership(
+        self,
+    ) -> Callable[
+        [gc_membership.UpdateMembershipRequest],
         Union[gc_membership.Membership, Awaitable[gc_membership.Membership]],
     ]:
         raise NotImplementedError()

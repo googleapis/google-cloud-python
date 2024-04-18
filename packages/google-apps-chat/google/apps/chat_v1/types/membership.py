@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -27,6 +28,7 @@ __protobuf__ = proto.module(
     manifest={
         "Membership",
         "CreateMembershipRequest",
+        "UpdateMembershipRequest",
         "ListMembershipsRequest",
         "ListMembershipsResponse",
         "GetMembershipRequest",
@@ -58,8 +60,6 @@ class Membership(proto.Message):
             Optional. User's role within a Chat space, which determines
             their permitted actions in the space.
 
-            `Developer
-            Preview <https://developers.google.com/workspace/preview>`__:
             This field can only be used as input in
             ``UpdateMembership``.
         member (google.apps.chat_v1.types.User):
@@ -220,6 +220,34 @@ class CreateMembershipRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Membership",
+    )
+
+
+class UpdateMembershipRequest(proto.Message):
+    r"""Request message for updating a membership.
+
+    Attributes:
+        membership (google.apps.chat_v1.types.Membership):
+            Required. The membership to update. Only fields specified by
+            ``update_mask`` are updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The field paths to update. Separate multiple
+            values with commas or use ``*`` to update all field paths.
+
+            Currently supported field paths:
+
+            -  ``role``
+    """
+
+    membership: "Membership" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Membership",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

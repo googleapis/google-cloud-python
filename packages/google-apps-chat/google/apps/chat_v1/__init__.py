@@ -48,6 +48,7 @@ from .types.membership import (
     ListMembershipsRequest,
     ListMembershipsResponse,
     Membership,
+    UpdateMembershipRequest,
 )
 from .types.message import (
     AccessoryWidget,
@@ -150,6 +151,7 @@ __all__ = (
     "SlashCommandMetadata",
     "Space",
     "Thread",
+    "UpdateMembershipRequest",
     "UpdateMessageRequest",
     "UpdateSpaceRequest",
     "UploadAttachmentRequest",
