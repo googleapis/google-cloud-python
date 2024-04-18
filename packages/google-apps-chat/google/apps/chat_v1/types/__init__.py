@@ -42,6 +42,7 @@ from .membership import (
     ListMembershipsRequest,
     ListMembershipsResponse,
     Membership,
+    UpdateMembershipRequest,
 )
 from .message import (
     AccessoryWidget,
@@ -112,6 +113,7 @@ __all__ = (
     "ListMembershipsRequest",
     "ListMembershipsResponse",
     "Membership",
+    "UpdateMembershipRequest",
     "AccessoryWidget",
     "ActionResponse",
     "AttachedGif",

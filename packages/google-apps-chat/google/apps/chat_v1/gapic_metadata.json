@@ -105,6 +105,11 @@
                 "set_up_space"
               ]
             },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            },
             "UpdateMessage": {
               "methods": [
                 "update_message"
@@ -220,6 +225,11 @@
                 "set_up_space"
               ]
             },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            },
             "UpdateMessage": {
               "methods": [
                 "update_message"
@@ -333,6 +343,11 @@
             "SetUpSpace": {
               "methods": [
                 "set_up_space"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
               ]
             },
             "UpdateMessage": {

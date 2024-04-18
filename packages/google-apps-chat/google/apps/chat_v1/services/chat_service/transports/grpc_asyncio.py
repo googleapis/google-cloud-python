@@ -953,6 +953,35 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["create_membership"]
 
     @property
+    def update_membership(
+        self,
+    ) -> Callable[
+        [gc_membership.UpdateMembershipRequest], Awaitable[gc_membership.Membership]
+    ]:
+        r"""Return a callable for the update membership method over gRPC.
+
+        Updates a membership. Requires `user
+        authentication <https://developers.google.com/chat/api/guides/auth/users>`__.
+
+        Returns:
+            Callable[[~.UpdateMembershipRequest],
+                    Awaitable[~.Membership]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_membership" not in self._stubs:
+            self._stubs["update_membership"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/UpdateMembership",
+                request_serializer=gc_membership.UpdateMembershipRequest.serialize,
+                response_deserializer=gc_membership.Membership.deserialize,
+            )
+        return self._stubs["update_membership"]
+
+    @property
     def delete_membership(
         self,
     ) -> Callable[

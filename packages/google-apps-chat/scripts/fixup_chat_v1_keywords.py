@@ -58,6 +58,7 @@ class chatCallTransformer(cst.CSTTransformer):
         'list_reactions': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_spaces': ('page_size', 'page_token', 'filter', ),
         'set_up_space': ('space', 'request_id', 'memberships', ),
+        'update_membership': ('membership', 'update_mask', ),
         'update_message': ('message', 'update_mask', 'allow_missing', ),
         'update_space': ('space', 'update_mask', ),
         'upload_attachment': ('parent', 'filename', ),
