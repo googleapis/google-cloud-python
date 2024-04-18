@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.3...google-apps-chat-v0.1.4) (2024-04-18)
+
+
+### Features
+
+* [google-apps-chat] add UpdateMembership API ([#12589](https://github.com/googleapis/google-cloud-python/issues/12589)) ([187a036](https://github.com/googleapis/google-cloud-python/commit/187a03605cd5d5d314c47a44dbf5227fb0af204a))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.2...google-apps-chat-v0.1.3) (2024-04-16)
 
 
