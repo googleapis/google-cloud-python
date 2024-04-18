@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.7...google-cloud-cloudquotas-v0.1.8) (2024-04-18)
+
+
+### Documentation
+
+* [google-cloud-cloudquotas] Update contact_email doc to not check permission of the email account ([#12592](https://github.com/googleapis/google-cloud-python/issues/12592)) ([a4c8d03](https://github.com/googleapis/google-cloud-python/commit/a4c8d03a01a102761b6aaf066cc96273fd903c9c))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudquotas-v0.1.6...google-cloud-cloudquotas-v0.1.7) (2024-04-03)
 
 
