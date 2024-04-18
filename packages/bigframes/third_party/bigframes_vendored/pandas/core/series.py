@@ -862,6 +862,7 @@ class Series(NDFrame):  # type: ignore[misc]
         the Series and its shifted self.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
@@ -2812,6 +2813,7 @@ class Series(NDFrame):  # type: ignore[misc]
         of the two indexes.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> import numpy as np
             >>> bpd.options.display.progress_bar = None
@@ -2852,6 +2854,7 @@ class Series(NDFrame):  # type: ignore[misc]
         on index.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> import pandas as pd
             >>> import numpy as np
@@ -3168,6 +3171,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Return value at the given quantile.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
             >>> s = bpd.Series([1, 2, 3, 4])

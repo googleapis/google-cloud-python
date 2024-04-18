@@ -90,6 +90,7 @@ class GroupBy:
         Return group values at the given quantile, a la numpy.percentile.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
             >>> df = bpd.DataFrame([

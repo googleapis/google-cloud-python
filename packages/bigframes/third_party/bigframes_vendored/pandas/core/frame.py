@@ -4523,6 +4523,7 @@ class DataFrame(generic.NDFrame):
         Return values at the given quantile over requested axis.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
             >>> df = bpd.DataFrame(np.array([[1, 1], [2, 10], [3, 100], [4, 100]]),
