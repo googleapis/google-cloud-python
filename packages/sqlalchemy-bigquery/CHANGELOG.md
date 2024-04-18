@@ -14,6 +14,23 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.11.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.10.0...v1.11.0) (2024-04-12)
+
+
+### Features
+
+* Support SQLAlchemy 2.0, raise minimum required version to 1.4.x ([[#920](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/920)](https://github.com/googleapis/python-bigquery-sqlalchemy/pull/920), [[#1053](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1053)](https://github.com/googleapis/python-bigquery-sqlalchemy/pull/1053)) ([7a4c3c2](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/7a4c3c28f586c6bb02349ce8620d515f5b56164e))
+
+
+### Bug Fixes
+
+* Fix grouping sets, rollup and cube rendering issue ([[#1019](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1019)](https://github.com/googleapis/python-bigquery-sqlalchemy/pull/1019), [[#1053](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1053)](https://github.com/googleapis/python-bigquery-sqlalchemy/pull/1053)) ([7a4c3c2](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/7a4c3c28f586c6bb02349ce8620d515f5b56164e))
+
+
+### Documentation
+
+* Fix docs session ([#1060](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1060)) ([7e66cc2](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/7e66cc217722456d5669809d68863549c4f4ea39))
+
 ## [1.10.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.9.0...v1.10.0) (2024-02-27)
 
 
