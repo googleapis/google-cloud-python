@@ -13,10 +13,13 @@
 # limitations under the License.
 
 import re
+import warnings
 
 import pytest
 
+import bigframes
 import bigframes._config.bigquery_options as bigquery_options
+import bigframes.exceptions
 
 
 @pytest.mark.parametrize(
@@ -78,3 +81,51 @@ def test_setter_if_session_started_but_setting_the_same_value(attribute):
     setattr(options, attribute, original_object)
 
     assert getattr(options, attribute) is original_object
+
+
+@pytest.mark.parametrize(
+    [
+        "valid_location",
+    ],
+    [
+        (None,),
+        ("us-central1",),
+    ],
+)
+def test_location_set_to_valid_no_warning(valid_location):
+    options = bigquery_options.BigQueryOptions()
+    # Ensure that no warnings are emitted.
+    # https://docs.pytest.org/en/7.0.x/how-to/capture-warnings.html#additional-use-cases-of-warnings-in-tests
+    with warnings.catch_warnings():
+        # Turn matching UnknownLocationWarning into exceptions.
+        # https://docs.python.org/3/library/warnings.html#warning-filter
+        warnings.simplefilter(
+            "error", category=bigframes.exceptions.UnknownLocationWarning
+        )
+        options.location = valid_location
+
+
+@pytest.mark.parametrize(
+    [
+        "invalid_location",
+    ],
+    [
+        # Test with common mistakes, see article.
+        # https://en.wikipedia.org/wiki/Edit_distance#Formal_definition_and_properties
+        # Substitution
+        ("us-wist-3",),
+        # Insertion
+        ("us-central-1",),
+        # Deletion
+        ("asia-suth2",),
+    ],
+)
+def test_location_set_to_invalid_warning(invalid_location):
+    options = bigquery_options.BigQueryOptions()
+    with pytest.warns(
+        bigframes.exceptions.UnknownLocationWarning,
+        match=re.escape(
+            f"The location '{invalid_location}' is set to an unknown value."
+        ),
+    ):
+        options.location = invalid_location
