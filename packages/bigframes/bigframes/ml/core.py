@@ -321,6 +321,46 @@ class BqmlModelFactory:
 
         return self._create_model_with_sql(session=session, sql=sql)
 
+    def create_llm_remote_model(
+        self,
+        X_train: bpd.DataFrame,
+        y_train: bpd.DataFrame,
+        connection_name: str,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> BqmlModel:
+        """Create a session-temporary BQML model with the CREATE OR REPLACE MODEL statement
+
+        Args:
+            X_train: features columns for training
+            y_train: labels columns for training
+            options: a dict of options to configure the model. Generates a BQML OPTIONS
+                clause
+            connection_name:
+                a BQ connection to talk with Vertex AI, of the format <PROJECT_NUMBER>.<REGION>.<CONNECTION_NAME>. https://cloud.google.com/bigquery/docs/create-cloud-resource-connection
+
+        Returns: a BqmlModel, wrapping a trained model in BigQuery
+        """
+        options = dict(options)
+        # Cache dataframes to make sure base table is not a snapshot
+        # cached dataframe creates a full copy, never uses snapshot
+        input_data = X_train._cached(force=True).join(
+            y_train._cached(force=True), how="outer"
+        )
+        options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
+
+        session = X_train._session
+
+        model_ref = self._create_model_ref(session._anonymous_dataset)
+
+        sql = self._model_creation_sql_generator.create_llm_remote_model(
+            source_df=input_data,
+            model_ref=model_ref,
+            options=options,
+            connection_name=connection_name,
+        )
+
+        return self._create_model_with_sql(session=session, sql=sql)
+
     def create_time_series_model(
         self,
         X_train: bpd.DataFrame,

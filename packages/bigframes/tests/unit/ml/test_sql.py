@@ -181,6 +181,29 @@ AS input_X_y_sql"""
     )
 
 
+def test_create_llm_remote_model_correct(
+    model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
+    mock_df: bpd.DataFrame,
+):
+    sql = model_creation_sql_generator.create_llm_remote_model(
+        source_df=mock_df,
+        connection_name="my_project.us.my_connection",
+        model_ref=bigquery.ModelReference.from_string(
+            "test-proj._anonXYZ.create_remote_model"
+        ),
+        options={"option_key1": "option_value1", "option_key2": 2},
+    )
+    assert (
+        sql
+        == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_remote_model`
+REMOTE WITH CONNECTION `my_project.us.my_connection`
+OPTIONS(
+  option_key1="option_value1",
+  option_key2=2)
+AS input_X_y_sql"""
+    )
+
+
 def test_create_remote_model_correct(
     model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
 ):

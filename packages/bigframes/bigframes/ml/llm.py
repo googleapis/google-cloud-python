@@ -27,6 +27,10 @@ from bigframes.core import blocks, log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
+_BQML_PARAMS_MAPPING = {
+    "max_iterations": "maxIterations",
+}
+
 _TEXT_GENERATOR_BISON_ENDPOINT = "text-bison"
 _TEXT_GENERATOR_BISON_32K_ENDPOINT = "text-bison-32k"
 _TEXT_GENERATOR_ENDPOINTS = (
@@ -62,6 +66,8 @@ class PaLM2TextGenerator(base.BaseEstimator):
             Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
             if None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
             permission if the connection isn't fully setup.
+        max_iterations (Optional[int], Default to 300):
+            The number of steps to run when performing supervised tuning.
     """
 
     def __init__(
@@ -70,9 +76,11 @@ class PaLM2TextGenerator(base.BaseEstimator):
         model_name: Literal["text-bison", "text-bison-32k"] = "text-bison",
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
+        max_iterations: int = 300,
     ):
         self.model_name = model_name
         self.session = session or bpd.get_global_session()
+        self.max_iterations = max_iterations
         self._bq_connection_manager = self.session.bqconnectionmanager
 
         connection_name = connection_name or self.session._bq_connection
@@ -132,11 +140,72 @@ class PaLM2TextGenerator(base.BaseEstimator):
         model_connection = model._properties["remoteModelInfo"]["connection"]
         model_endpoint = bqml_endpoint.split("/")[-1]
 
+        # Get the optional params
+        kwargs: dict = {}
+        last_fitting = model.training_runs[-1]["trainingOptions"]
+
+        dummy_text_generator = cls()
+        for bf_param, _ in dummy_text_generator.__dict__.items():
+            bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
+            if bqml_param in last_fitting:
+                # Convert types
+                if bf_param in ["max_iterations"]:
+                    kwargs[bf_param] = int(last_fitting[bqml_param])
+
         text_generator_model = cls(
-            session=session, model_name=model_endpoint, connection_name=model_connection
+            **kwargs,
+            session=session,
+            model_name=model_endpoint,
+            connection_name=model_connection,
         )
         text_generator_model._bqml_model = core.BqmlModel(session, model)
         return text_generator_model
+
+    @property
+    def _bqml_options(self) -> dict:
+        """The model options as they will be set for BQML"""
+        options = {
+            "max_iterations": self.max_iterations,
+            "data_split_method": "NO_SPLIT",
+        }
+        return options
+
+    def fit(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
+    ) -> PaLM2TextGenerator:
+        """Fine tune PaLM2TextGenerator model.
+
+        .. note::
+
+            This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                DataFrame of shape (n_samples, n_features). Training data.
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series:
+                Training labels.
+
+        Returns:
+            PaLM2TextGenerator: Fitted Estimator.
+        """
+        X, y = utils.convert_to_dataframe(X, y)
+
+        options = self._bqml_options
+        options["endpoint"] = self.model_name + "@001"
+        options["prompt_col"] = X.columns.tolist()[0]
+
+        self._bqml_model = self._bqml_model_factory.create_llm_remote_model(
+            X,
+            y,
+            options=options,
+            connection_name=self.connection_name,
+        )
+        return self
 
     def predict(
         self,
