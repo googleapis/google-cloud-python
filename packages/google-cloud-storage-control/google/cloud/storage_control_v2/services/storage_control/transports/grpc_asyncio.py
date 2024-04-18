@@ -259,7 +259,9 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
     ]:
         r"""Return a callable for the create folder method over gRPC.
 
-        Creates a new folder.
+        Creates a new folder. This operation is only
+        applicable to a hierarchical namespace enabled bucket.
+        Hierarchical namespace buckets are in allowlist preview.
 
         Returns:
             Callable[[~.CreateFolderRequest],
@@ -285,7 +287,10 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
     ) -> Callable[[storage_control.DeleteFolderRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete folder method over gRPC.
 
-        Permanently deletes an empty folder.
+        Permanently deletes an empty folder. This operation
+        is only applicable to a hierarchical namespace enabled
+        bucket. Hierarchical namespace buckets are in allowlist
+        preview.
 
         Returns:
             Callable[[~.DeleteFolderRequest],
@@ -313,7 +318,10 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
     ]:
         r"""Return a callable for the get folder method over gRPC.
 
-        Returns metadata for the specified folder.
+        Returns metadata for the specified folder. This
+        operation is only applicable to a hierarchical namespace
+        enabled bucket. Hierarchical namespace buckets are in
+        allowlist preview.
 
         Returns:
             Callable[[~.GetFolderRequest],
@@ -342,7 +350,9 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
     ]:
         r"""Return a callable for the list folders method over gRPC.
 
-        Retrieves a list of folders for a given bucket.
+        Retrieves a list of folders. This operation is only
+        applicable to a hierarchical namespace enabled bucket.
+        Hierarchical namespace buckets are in allowlist preview.
 
         Returns:
             Callable[[~.ListFoldersRequest],
@@ -370,9 +380,12 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
     ]:
         r"""Return a callable for the rename folder method over gRPC.
 
-        Renames a source folder to a destination folder.
-        During a rename, the source and destination folders are
-        locked until the long running operation completes.
+        Renames a source folder to a destination folder. This
+        operation is only applicable to a hierarchical namespace
+        enabled bucket. During a rename, the source and
+        destination folders are locked until the long running
+        operation completes.
+        Hierarchical namespace buckets are in allowlist preview.
 
         Returns:
             Callable[[~.RenameFolderRequest],

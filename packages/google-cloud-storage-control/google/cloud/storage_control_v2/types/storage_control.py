@@ -61,7 +61,9 @@ class PendingRenameInfo(proto.Message):
 
 
 class Folder(proto.Message):
-    r"""A folder.
+    r"""A folder resource. This resource can only exist in a
+    hierarchical namespace enabled bucket.
+    Hierarchical namespace buckets are in allowlist preview.
 
     Attributes:
         name (str):
@@ -112,7 +114,10 @@ class Folder(proto.Message):
 
 
 class GetFolderRequest(proto.Message):
-    r"""Request message for GetFolder.
+    r"""Request message for GetFolder. This operation is only
+    applicable to a hierarchical namespace enabled bucket.
+    Hierarchical namespace buckets are in allowlist preview.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -159,12 +164,15 @@ class GetFolderRequest(proto.Message):
 
 
 class CreateFolderRequest(proto.Message):
-    r"""Request message for CreateFolder.
+    r"""Request message for CreateFolder. This operation is only
+    applicable to a hierarchical namespace enabled bucket.
+    Hierarchical namespace buckets are in allowlist preview.
 
     Attributes:
         parent (str):
             Required. Name of the bucket in which the
-            folder will reside.
+            folder will reside. The bucket must be a
+            hierarchical namespace enabled bucket.
         folder (google.cloud.storage_control_v2.types.Folder):
             Required. Properties of the new folder being created. The
             bucket and name of the folder are specified in the parent
@@ -181,10 +189,9 @@ class CreateFolderRequest(proto.Message):
             to be present and all missing ancestor folders
             will be created atomically.
         request_id (str):
-            Optional. A unique identifier for this request. UUID is the
-            recommended format, but other formats are still accepted.
-            This request is only idempotent if a ``request_id`` is
-            provided.
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
     """
 
     parent: str = proto.Field(
@@ -211,7 +218,10 @@ class CreateFolderRequest(proto.Message):
 
 
 class DeleteFolderRequest(proto.Message):
-    r"""Request message for DeleteFolder.
+    r"""Request message for DeleteFolder. This operation is only
+    applicable to a hierarchical namespace enabled bucket.
+    Hierarchical namespace buckets are in allowlist preview.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -232,10 +242,9 @@ class DeleteFolderRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
         request_id (str):
-            Optional. A unique identifier for this request. UUID is the
-            recommended format, but other formats are still accepted.
-            This request is only idempotent if a ``request_id`` is
-            provided.
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
     """
 
     name: str = proto.Field(
@@ -259,12 +268,15 @@ class DeleteFolderRequest(proto.Message):
 
 
 class ListFoldersRequest(proto.Message):
-    r"""Request message for ListFolders.
+    r"""Request message for ListFolders. This operation is only
+    applicable to a hierarchical namespace enabled bucket.
+    Hierarchical namespace buckets are in allowlist preview.
 
     Attributes:
         parent (str):
             Required. Name of the bucket in which to look
-            for folders.
+            for folders. The bucket must be a hierarchical
+            namespace enabled bucket.
         page_size (int):
             Optional. Maximum number of folders to return
             in a single response. The service will use this
@@ -365,7 +377,10 @@ class ListFoldersResponse(proto.Message):
 
 
 class RenameFolderRequest(proto.Message):
-    r"""Request message for RenameFolder.
+    r"""Request message for RenameFolder. This operation is only
+    applicable to a hierarchical namespace enabled bucket.
+    Hierarchical namespace buckets are in allowlist preview.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
