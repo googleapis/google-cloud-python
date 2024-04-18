@@ -24,7 +24,7 @@ import freezegun
 
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery import _job_helpers
-from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
+import google.cloud.bigquery.retry
 
 from .helpers import make_connection
 
@@ -126,6 +126,168 @@ def test_retry_failed_jobs(sleep, client, job_retry_on_query):
     assert job.job_id == orig_job_id
 
 
+def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_failed_job(
+    client, monkeypatch
+):
+    """
+    Some errors like 'rateLimitExceeded' can be ambiguous. Make sure we only
+    retry the job when we know for sure that the job has failed for a retriable
+    reason. We can only be sure after a "successful" call to jobs.get to fetch
+    the failed job status.
+    """
+    job_counter = 0
+
+    def make_job_id(*args, **kwargs):
+        nonlocal job_counter
+        job_counter += 1
+        return f"{job_counter}"
+
+    monkeypatch.setattr(_job_helpers, "make_job_id", make_job_id)
+
+    project = client.project
+    job_reference_1 = {"projectId": project, "jobId": "1", "location": "test-loc"}
+    job_reference_2 = {"projectId": project, "jobId": "2", "location": "test-loc"}
+    NUM_API_RETRIES = 2
+
+    # This error is modeled after a real customer exception in
+    # https://github.com/googleapis/python-bigquery/issues/707.
+    internal_error = google.api_core.exceptions.InternalServerError(
+        "Job failed just because...",
+        errors=[
+            {"reason": "internalError"},
+        ],
+    )
+    responses = [
+        # jobs.insert
+        {"jobReference": job_reference_1, "status": {"state": "PENDING"}},
+        # jobs.get
+        {"jobReference": job_reference_1, "status": {"state": "RUNNING"}},
+        # jobs.getQueryResults x2
+        #
+        # Note: internalError is ambiguous in jobs.getQueryResults. The
+        # problem could be at the Google Frontend level or it could be because
+        # the job has failed due to some transient issues and the BigQuery
+        # REST API is translating the job failed status into failure HTTP
+        # codes.
+        #
+        # TODO(GH#1903): We shouldn't retry nearly this many times when we get
+        # ambiguous errors from jobs.getQueryResults.
+        # See: https://github.com/googleapis/python-bigquery/issues/1903
+        internal_error,
+        internal_error,
+        # jobs.get -- the job has failed
+        {
+            "jobReference": job_reference_1,
+            "status": {"state": "DONE", "errorResult": {"reason": "internalError"}},
+        },
+        # jobs.insert
+        {"jobReference": job_reference_2, "status": {"state": "PENDING"}},
+        # jobs.get
+        {"jobReference": job_reference_2, "status": {"state": "RUNNING"}},
+        # jobs.getQueryResults
+        {"jobReference": job_reference_2, "jobComplete": True},
+        # jobs.get
+        {"jobReference": job_reference_2, "status": {"state": "DONE"}},
+    ]
+
+    conn = client._connection = make_connection()
+    conn.api_request.side_effect = responses
+
+    with freezegun.freeze_time(
+        # Note: because of exponential backoff and a bit of jitter,
+        # NUM_API_RETRIES will get less accurate the greater the value.
+        # We add 1 because we know there will be at least some additional
+        # calls to fetch the time / sleep before the retry deadline is hit.
+        auto_tick_seconds=(
+            google.cloud.bigquery.retry._DEFAULT_RETRY_DEADLINE / NUM_API_RETRIES
+        )
+        + 1,
+    ):
+        job = client.query("select 1")
+        job.result()
+
+    conn.api_request.assert_has_calls(
+        [
+            # jobs.insert
+            mock.call(
+                method="POST",
+                path="/projects/PROJECT/jobs",
+                data={
+                    "jobReference": {"jobId": "1", "projectId": "PROJECT"},
+                    "configuration": {
+                        "query": {"useLegacySql": False, "query": "select 1"}
+                    },
+                },
+                timeout=None,
+            ),
+            # jobs.get
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/jobs/1",
+                query_params={"location": "test-loc"},
+                timeout=None,
+            ),
+            # jobs.getQueryResults x2
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/queries/1",
+                query_params={"maxResults": 0, "location": "test-loc"},
+                timeout=None,
+            ),
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/queries/1",
+                query_params={"maxResults": 0, "location": "test-loc"},
+                timeout=None,
+            ),
+            # jobs.get -- verify that the job has failed
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/jobs/1",
+                query_params={"location": "test-loc"},
+                timeout=None,
+            ),
+            # jobs.insert
+            mock.call(
+                method="POST",
+                path="/projects/PROJECT/jobs",
+                data={
+                    "jobReference": {
+                        # Make sure that we generated a new job ID.
+                        "jobId": "2",
+                        "projectId": "PROJECT",
+                    },
+                    "configuration": {
+                        "query": {"useLegacySql": False, "query": "select 1"}
+                    },
+                },
+                timeout=None,
+            ),
+            # jobs.get
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/jobs/2",
+                query_params={"location": "test-loc"},
+                timeout=None,
+            ),
+            # jobs.getQueryResults
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/queries/2",
+                query_params={"maxResults": 0, "location": "test-loc"},
+                timeout=None,
+            ),
+            # jobs.get
+            mock.call(
+                method="GET",
+                path="/projects/PROJECT/jobs/2",
+                query_params={"location": "test-loc"},
+                timeout=None,
+            ),
+        ]
+    )
+
+
 # With job_retry_on_query, we're testing 4 scenarios:
 # - Pass None retry to `query`.
 # - Pass None retry to `result`.
@@ -187,8 +349,8 @@ def test_retry_failed_jobs_after_retry_failed(sleep, client):
         with pytest.raises(google.api_core.exceptions.RetryError):
             job.result()
 
-        # We never got a successful job, so the job id never changed:
-        assert job.job_id == orig_job_id
+        # We retried the job at least once, so we should have generated a new job ID.
+        assert job.job_id != orig_job_id
 
         # We failed because we couldn't succeed after 120 seconds.
         # But we can try again:
@@ -301,8 +463,8 @@ def test_query_and_wait_retries_job_for_DDL_queries():
         job_config=None,
         page_size=None,
         max_results=None,
-        retry=DEFAULT_JOB_RETRY,
-        job_retry=DEFAULT_JOB_RETRY,
+        retry=google.cloud.bigquery.retry.DEFAULT_RETRY,
+        job_retry=google.cloud.bigquery.retry.DEFAULT_JOB_RETRY,
     )
     assert len(list(rows)) == 4
 

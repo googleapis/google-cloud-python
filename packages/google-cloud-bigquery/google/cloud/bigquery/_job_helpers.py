@@ -258,15 +258,16 @@ def _to_query_job(
         errors = query_response["errors"]
         query_job._properties["status"]["errors"] = errors
 
-    # Transform job state so that QueryJob doesn't try to restart the query.
+    # Avoid an extra call to `getQueryResults` if the query has finished.
     job_complete = query_response.get("jobComplete")
     if job_complete:
-        query_job._properties["status"]["state"] = "DONE"
         query_job._query_results = google.cloud.bigquery.query._QueryResults(
             query_response
         )
-    else:
-        query_job._properties["status"]["state"] = "PENDING"
+
+    # We want job.result() to refresh the job state, so the conversion is
+    # always "PENDING", even if the job is finished.
+    query_job._properties["status"]["state"] = "PENDING"
 
     return query_job
 
