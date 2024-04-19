@@ -725,7 +725,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage_control.Folder:
-        r"""Creates a new folder.
+        r"""Creates a new folder. This operation is only
+        applicable to a hierarchical namespace enabled bucket.
+        Hierarchical namespace buckets are in allowlist preview.
 
         .. code-block:: python
 
@@ -757,9 +759,15 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         Args:
             request (Union[google.cloud.storage_control_v2.types.CreateFolderRequest, dict]):
                 The request object. Request message for CreateFolder.
+                This operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                Hierarchical namespace buckets are in
+                allowlist preview.
             parent (str):
                 Required. Name of the bucket in which
-                the folder will reside.
+                the folder will reside. The bucket must
+                be a hierarchical namespace enabled
+                bucket.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -792,7 +800,11 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         Returns:
             google.cloud.storage_control_v2.types.Folder:
-                A folder.
+                A folder resource. This resource can
+                only exist in a hierarchical namespace
+                enabled bucket. Hierarchical namespace
+                buckets are in allowlist preview.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -861,7 +873,10 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Permanently deletes an empty folder.
+        r"""Permanently deletes an empty folder. This operation
+        is only applicable to a hierarchical namespace enabled
+        bucket. Hierarchical namespace buckets are in allowlist
+        preview.
 
         .. code-block:: python
 
@@ -889,6 +904,10 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         Args:
             request (Union[google.cloud.storage_control_v2.types.DeleteFolderRequest, dict]):
                 The request object. Request message for DeleteFolder.
+                This operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                Hierarchical namespace buckets are in
+                allowlist preview.
             name (str):
                 Required. Name of the folder. Format:
                 ``projects/{project}/buckets/{bucket}/folders/{folder}``
@@ -964,7 +983,10 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage_control.Folder:
-        r"""Returns metadata for the specified folder.
+        r"""Returns metadata for the specified folder. This
+        operation is only applicable to a hierarchical namespace
+        enabled bucket. Hierarchical namespace buckets are in
+        allowlist preview.
 
         .. code-block:: python
 
@@ -994,7 +1016,11 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         Args:
             request (Union[google.cloud.storage_control_v2.types.GetFolderRequest, dict]):
-                The request object. Request message for GetFolder.
+                The request object. Request message for GetFolder. This
+                operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                Hierarchical namespace buckets are in
+                allowlist preview.
             name (str):
                 Required. Name of the folder. Format:
                 ``projects/{project}/buckets/{bucket}/folders/{folder}``
@@ -1010,7 +1036,11 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         Returns:
             google.cloud.storage_control_v2.types.Folder:
-                A folder.
+                A folder resource. This resource can
+                only exist in a hierarchical namespace
+                enabled bucket. Hierarchical namespace
+                buckets are in allowlist preview.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1077,7 +1107,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFoldersPager:
-        r"""Retrieves a list of folders for a given bucket.
+        r"""Retrieves a list of folders. This operation is only
+        applicable to a hierarchical namespace enabled bucket.
+        Hierarchical namespace buckets are in allowlist preview.
 
         .. code-block:: python
 
@@ -1108,10 +1140,15 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         Args:
             request (Union[google.cloud.storage_control_v2.types.ListFoldersRequest, dict]):
-                The request object. Request message for ListFolders.
+                The request object. Request message for ListFolders. This
+                operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                Hierarchical namespace buckets are in
+                allowlist preview.
             parent (str):
                 Required. Name of the bucket in which
-                to look for folders.
+                to look for folders. The bucket must be
+                a hierarchical namespace enabled bucket.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1201,9 +1238,12 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Renames a source folder to a destination folder.
-        During a rename, the source and destination folders are
-        locked until the long running operation completes.
+        r"""Renames a source folder to a destination folder. This
+        operation is only applicable to a hierarchical namespace
+        enabled bucket. During a rename, the source and
+        destination folders are locked until the long running
+        operation completes.
+        Hierarchical namespace buckets are in allowlist preview.
 
         .. code-block:: python
 
@@ -1239,6 +1279,10 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         Args:
             request (Union[google.cloud.storage_control_v2.types.RenameFolderRequest, dict]):
                 The request object. Request message for RenameFolder.
+                This operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                Hierarchical namespace buckets are in
+                allowlist preview.
             name (str):
                 Required. Name of the source folder being renamed.
                 Format:
@@ -1262,9 +1306,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.storage_control_v2.types.Folder` A
-                folder.
+                The result type for the operation will be :class:`google.cloud.storage_control_v2.types.Folder` A folder resource. This resource can only exist in a hierarchical namespace
+                   enabled bucket. Hierarchical namespace buckets are in
+                   allowlist preview.
 
         """
         # Create or coerce a protobuf request object.
