@@ -32,7 +32,9 @@ from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import space_setup
+from google.apps.chat_v1.types import space_read_state
+from google.apps.chat_v1.types import space_read_state as gc_space_read_state
+from google.apps.chat_v1.types import space_setup, thread_read_state
 
 from .base import DEFAULT_CLIENT_INFO, ChatServiceTransport
 
@@ -1080,6 +1082,103 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_reaction"]
+
+    @property
+    def get_space_read_state(
+        self,
+    ) -> Callable[
+        [space_read_state.GetSpaceReadStateRequest], space_read_state.SpaceReadState
+    ]:
+        r"""Return a callable for the get space read state method over gRPC.
+
+        Returns details about a user's read state within a space, used
+        to identify read and unread messages.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.GetSpaceReadStateRequest],
+                    ~.SpaceReadState]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_space_read_state" not in self._stubs:
+            self._stubs["get_space_read_state"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetSpaceReadState",
+                request_serializer=space_read_state.GetSpaceReadStateRequest.serialize,
+                response_deserializer=space_read_state.SpaceReadState.deserialize,
+            )
+        return self._stubs["get_space_read_state"]
+
+    @property
+    def update_space_read_state(
+        self,
+    ) -> Callable[
+        [gc_space_read_state.UpdateSpaceReadStateRequest],
+        gc_space_read_state.SpaceReadState,
+    ]:
+        r"""Return a callable for the update space read state method over gRPC.
+
+        Updates a user's read state within a space, used to identify
+        read and unread messages.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.UpdateSpaceReadStateRequest],
+                    ~.SpaceReadState]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_space_read_state" not in self._stubs:
+            self._stubs["update_space_read_state"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/UpdateSpaceReadState",
+                request_serializer=gc_space_read_state.UpdateSpaceReadStateRequest.serialize,
+                response_deserializer=gc_space_read_state.SpaceReadState.deserialize,
+            )
+        return self._stubs["update_space_read_state"]
+
+    @property
+    def get_thread_read_state(
+        self,
+    ) -> Callable[
+        [thread_read_state.GetThreadReadStateRequest], thread_read_state.ThreadReadState
+    ]:
+        r"""Return a callable for the get thread read state method over gRPC.
+
+        Returns details about a user's read state within a thread, used
+        to identify read and unread messages.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.GetThreadReadStateRequest],
+                    ~.ThreadReadState]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_thread_read_state" not in self._stubs:
+            self._stubs["get_thread_read_state"] = self.grpc_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetThreadReadState",
+                request_serializer=thread_read_state.GetThreadReadStateRequest.serialize,
+                response_deserializer=thread_read_state.ThreadReadState.deserialize,
+            )
+        return self._stubs["get_thread_read_state"]
 
     def close(self):
         self.grpc_channel.close()

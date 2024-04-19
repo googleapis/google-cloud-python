@@ -84,7 +84,13 @@ from .space import (
     Space,
     UpdateSpaceRequest,
 )
+from .space_read_state import (
+    GetSpaceReadStateRequest,
+    SpaceReadState,
+    UpdateSpaceReadStateRequest,
+)
 from .space_setup import SetUpSpaceRequest
+from .thread_read_state import GetThreadReadStateRequest, ThreadReadState
 from .user import User
 from .widgets import WidgetMarkup
 
@@ -148,7 +154,12 @@ __all__ = (
     "ListSpacesResponse",
     "Space",
     "UpdateSpaceRequest",
+    "GetSpaceReadStateRequest",
+    "SpaceReadState",
+    "UpdateSpaceReadStateRequest",
     "SetUpSpaceRequest",
+    "GetThreadReadStateRequest",
+    "ThreadReadState",
     "User",
     "WidgetMarkup",
 )
