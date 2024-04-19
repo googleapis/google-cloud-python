@@ -2319,6 +2319,11 @@ class SkaffoldModules(proto.Message):
             Config modules.
 
             This field is a member of `oneof`_ ``source``.
+        google_cloud_build_repo (google.cloud.deploy_v1.types.SkaffoldModules.SkaffoldGCBRepoSource):
+            Cloud Build V2 repository containing the
+            Skaffold Config modules.
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     class SkaffoldGitSource(proto.Message):
@@ -2332,8 +2337,8 @@ class SkaffoldModules(proto.Message):
                 Optional. Relative path from the repository
                 root to the Skaffold file.
             ref (str):
-                Optional. Git ref the package should be
-                cloned from.
+                Optional. Git branch or tag to use when
+                cloning the repository.
         """
 
         repo: str = proto.Field(
@@ -2355,7 +2360,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing "gs://my-bucket/dir/configs/*" will
+                For example, providing `gs://my-bucket/dir/configs/*` will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
@@ -2370,6 +2375,35 @@ class SkaffoldModules(proto.Message):
         path: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+
+    class SkaffoldGCBRepoSource(proto.Message):
+        r"""Cloud Build V2 Repository containing Skaffold Configs.
+
+        Attributes:
+            repository (str):
+                Required. Name of the Cloud Build V2
+                Repository. Format is
+                projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
+            path (str):
+                Optional. Relative path from the repository
+                root to the Skaffold Config file.
+            ref (str):
+                Optional. Branch or tag to use when cloning
+                the repository.
+        """
+
+        repository: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        path: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        ref: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     configs: MutableSequence[str] = proto.RepeatedField(
@@ -2387,6 +2421,12 @@ class SkaffoldModules(proto.Message):
         number=3,
         oneof="source",
         message=SkaffoldGCSSource,
+    )
+    google_cloud_build_repo: SkaffoldGCBRepoSource = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="source",
+        message=SkaffoldGCBRepoSource,
     )
 
 

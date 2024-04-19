@@ -5846,6 +5846,10 @@ class CloudDeployRestTransport(CloudDeployTransport):
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/targets/*}:getIamPolicy",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/customTargetTypes/*}:getIamPolicy",
+                },
             ]
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
@@ -5916,6 +5920,11 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/targets/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/customTargetTypes/*}:setIamPolicy",
                     "body": "*",
                 },
             ]
