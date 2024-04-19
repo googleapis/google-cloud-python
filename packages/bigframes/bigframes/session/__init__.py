@@ -1541,6 +1541,7 @@ class Session(
         cloud_function_service_account: Optional[str] = None,
         cloud_function_kms_key_name: Optional[str] = None,
         cloud_function_docker_repository: Optional[str] = None,
+        max_batching_rows: Optional[int] = 1000,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function. Check out
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
@@ -1635,6 +1636,15 @@ class Session(
                 projects/PROJECT_ID/locations/LOCATION/repositories/REPOSITORY_NAME.
                 For more details see
                 https://cloud.google.com/functions/docs/securing/cmek#before_you_begin.
+            max_batching_rows (int, Optional):
+                The maximum number of rows to be batched for processing in the
+                BQ remote function. Default value is 1000. A lower number can be
+                passed to avoid timeouts in case the user code is too complex to
+                process large number of rows fast enough. A higher number can be
+                used to increase throughput in case the user code is fast enough.
+                `None` can be passed to let BQ remote functions service apply
+                default batching. See for more details
+                https://cloud.google.com/bigquery/docs/remote-functions#limiting_number_of_rows_in_a_batch_request.
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1656,6 +1666,7 @@ class Session(
             cloud_function_service_account=cloud_function_service_account,
             cloud_function_kms_key_name=cloud_function_kms_key_name,
             cloud_function_docker_repository=cloud_function_docker_repository,
+            max_batching_rows=max_batching_rows,
         )
 
     def read_gbq_function(

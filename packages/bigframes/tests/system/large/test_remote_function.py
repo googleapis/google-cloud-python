@@ -1300,3 +1300,39 @@ def test_remote_function_with_gcf_cmek():
         cleanup_remote_function_assets(
             session.bqclient, session.cloudfunctionsclient, square_num
         )
+
+
+@pytest.mark.parametrize(
+    ("max_batching_rows"),
+    [
+        10_000,
+        None,
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_max_batching_rows(session, scalars_dfs, max_batching_rows):
+    try:
+
+        def square(x):
+            return x * x
+
+        square_remote = session.remote_function(
+            [int], int, reuse=False, max_batching_rows=max_batching_rows
+        )(square)
+
+        bq_routine = session.bqclient.get_routine(
+            square_remote.bigframes_remote_function
+        )
+        assert bq_routine.remote_function_options.max_batching_rows == max_batching_rows
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result = scalars_df["int64_too"].apply(square_remote).to_pandas()
+        pd_result = scalars_pandas_df["int64_too"].apply(square)
+
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square_remote
+        )
