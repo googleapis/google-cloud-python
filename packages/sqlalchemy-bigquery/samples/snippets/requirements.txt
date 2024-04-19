@@ -4,7 +4,7 @@ charset-normalizer==3.3.2
 geoalchemy2==0.14.7
 google-api-core[grpc]==2.18.0
 google-auth==2.29.0
-google-cloud-bigquery==3.20.1
+google-cloud-bigquery==3.21.0
 google-cloud-core==2.4.1
 google-crc32c==1.5.0
 google-resumable-media==2.7.0
@@ -26,7 +26,7 @@ python-dateutil==2.9.0.post0
 pytz==2024.1
 requests==2.31.0
 rsa==4.9
-shapely==2.0.3
+shapely==2.0.4
 six==1.16.0
 sqlalchemy===1.4.27
 typing-extensions==4.11.0
