@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.17.0](https://github.com/googleapis/gapic-generator-python/compare/v1.16.1...v1.17.0) (2024-04-18)
+
+
+### Features
+
+* Allow Callables for transport and channel init ([#1699](https://github.com/googleapis/gapic-generator-python/issues/1699)) ([62855c1](https://github.com/googleapis/gapic-generator-python/commit/62855c11570bb3a42cebee43cecd0e59ffb01573))
+
+
+### Bug Fixes
+
+* Set `default` argument of `jinja-filters.map()` when looking up attributes ([#1989](https://github.com/googleapis/gapic-generator-python/issues/1989)) ([3e74a0a](https://github.com/googleapis/gapic-generator-python/commit/3e74a0a3f7f94cf21aaf198ecd55cca419cedbd2))
+* Update the lower bound for `google-apps-card` ([#2012](https://github.com/googleapis/gapic-generator-python/issues/2012)) ([9027a5f](https://github.com/googleapis/gapic-generator-python/commit/9027a5fc83218241981a326984ed1aad3a162a4b))
+
 ## [1.16.1](https://github.com/googleapis/gapic-generator-python/compare/v1.16.0...v1.16.1) (2024-03-22)
 
 
