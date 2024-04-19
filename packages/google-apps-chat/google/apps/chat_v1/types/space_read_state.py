@@ -17,18 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.chat.v1',
+    package="google.chat.v1",
     manifest={
-        'SpaceReadState',
-        'GetSpaceReadStateRequest',
-        'UpdateSpaceReadStateRequest',
+        "SpaceReadState",
+        "GetSpaceReadStateRequest",
+        "UpdateSpaceReadStateRequest",
     },
 )
 
@@ -130,10 +128,10 @@ class UpdateSpaceReadStateRequest(proto.Message):
             read state.
     """
 
-    space_read_state: 'SpaceReadState' = proto.Field(
+    space_read_state: "SpaceReadState" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SpaceReadState',
+        message="SpaceReadState",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,

@@ -80,6 +80,16 @@
                 "get_space"
               ]
             },
+            "GetSpaceReadState": {
+              "methods": [
+                "get_space_read_state"
+              ]
+            },
+            "GetThreadReadState": {
+              "methods": [
+                "get_thread_read_state"
+              ]
+            },
             "ListMemberships": {
               "methods": [
                 "list_memberships"
@@ -118,6 +128,11 @@
             "UpdateSpace": {
               "methods": [
                 "update_space"
+              ]
+            },
+            "UpdateSpaceReadState": {
+              "methods": [
+                "update_space_read_state"
               ]
             },
             "UploadAttachment": {
@@ -200,6 +215,16 @@
                 "get_space"
               ]
             },
+            "GetSpaceReadState": {
+              "methods": [
+                "get_space_read_state"
+              ]
+            },
+            "GetThreadReadState": {
+              "methods": [
+                "get_thread_read_state"
+              ]
+            },
             "ListMemberships": {
               "methods": [
                 "list_memberships"
@@ -238,6 +263,11 @@
             "UpdateSpace": {
               "methods": [
                 "update_space"
+              ]
+            },
+            "UpdateSpaceReadState": {
+              "methods": [
+                "update_space_read_state"
               ]
             },
             "UploadAttachment": {
@@ -320,6 +350,16 @@
                 "get_space"
               ]
             },
+            "GetSpaceReadState": {
+              "methods": [
+                "get_space_read_state"
+              ]
+            },
+            "GetThreadReadState": {
+              "methods": [
+                "get_thread_read_state"
+              ]
+            },
             "ListMemberships": {
               "methods": [
                 "list_memberships"
@@ -358,6 +398,11 @@
             "UpdateSpace": {
               "methods": [
                 "update_space"
+              ]
+            },
+            "UpdateSpaceReadState": {
+              "methods": [
+                "update_space_read_state"
               ]
             },
             "UploadAttachment": {

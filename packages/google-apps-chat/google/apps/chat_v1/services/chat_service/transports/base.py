@@ -35,7 +35,9 @@ from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import space_setup
+from google.apps.chat_v1.types import space_read_state
+from google.apps.chat_v1.types import space_read_state as gc_space_read_state
+from google.apps.chat_v1.types import space_setup, thread_read_state
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -61,6 +63,8 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.spaces",
         "https://www.googleapis.com/auth/chat.spaces.create",
         "https://www.googleapis.com/auth/chat.spaces.readonly",
+        "https://www.googleapis.com/auth/chat.users.readstate",
+        "https://www.googleapis.com/auth/chat.users.readstate.readonly",
     )
 
     DEFAULT_HOST: str = "chat.googleapis.com"
@@ -474,6 +478,48 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.get_space_read_state: gapic_v1.method.wrap_method(
+                self.get_space_read_state,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_space_read_state: gapic_v1.method.wrap_method(
+                self.update_space_read_state,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_thread_read_state: gapic_v1.method.wrap_method(
+                self.get_thread_read_state,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -691,6 +737,41 @@ class ChatServiceTransport(abc.ABC):
     ) -> Callable[
         [reaction.DeleteReactionRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_space_read_state(
+        self,
+    ) -> Callable[
+        [space_read_state.GetSpaceReadStateRequest],
+        Union[
+            space_read_state.SpaceReadState, Awaitable[space_read_state.SpaceReadState]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_space_read_state(
+        self,
+    ) -> Callable[
+        [gc_space_read_state.UpdateSpaceReadStateRequest],
+        Union[
+            gc_space_read_state.SpaceReadState,
+            Awaitable[gc_space_read_state.SpaceReadState],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_thread_read_state(
+        self,
+    ) -> Callable[
+        [thread_read_state.GetThreadReadStateRequest],
+        Union[
+            thread_read_state.ThreadReadState,
+            Awaitable[thread_read_state.ThreadReadState],
+        ],
     ]:
         raise NotImplementedError()
 

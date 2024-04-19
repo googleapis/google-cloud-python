@@ -90,7 +90,13 @@ from .types.space import (
     Space,
     UpdateSpaceRequest,
 )
+from .types.space_read_state import (
+    GetSpaceReadStateRequest,
+    SpaceReadState,
+    UpdateSpaceReadStateRequest,
+)
 from .types.space_setup import SetUpSpaceRequest
+from .types.thread_read_state import GetThreadReadStateRequest, ThreadReadState
 from .types.user import User
 from .types.widgets import WidgetMarkup
 
@@ -129,7 +135,9 @@ __all__ = (
     "GetAttachmentRequest",
     "GetMembershipRequest",
     "GetMessageRequest",
+    "GetSpaceReadStateRequest",
     "GetSpaceRequest",
+    "GetThreadReadStateRequest",
     "Group",
     "HistoryState",
     "ListMembershipsRequest",
@@ -150,9 +158,12 @@ __all__ = (
     "SlashCommand",
     "SlashCommandMetadata",
     "Space",
+    "SpaceReadState",
     "Thread",
+    "ThreadReadState",
     "UpdateMembershipRequest",
     "UpdateMessageRequest",
+    "UpdateSpaceReadStateRequest",
     "UpdateSpaceRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",

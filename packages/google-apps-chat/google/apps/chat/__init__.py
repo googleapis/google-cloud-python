@@ -93,7 +93,16 @@ from google.apps.chat_v1.types.space import (
     Space,
     UpdateSpaceRequest,
 )
+from google.apps.chat_v1.types.space_read_state import (
+    GetSpaceReadStateRequest,
+    SpaceReadState,
+    UpdateSpaceReadStateRequest,
+)
 from google.apps.chat_v1.types.space_setup import SetUpSpaceRequest
+from google.apps.chat_v1.types.thread_read_state import (
+    GetThreadReadStateRequest,
+    ThreadReadState,
+)
 from google.apps.chat_v1.types.user import User
 from google.apps.chat_v1.types.widgets import WidgetMarkup
 
@@ -159,7 +168,12 @@ __all__ = (
     "ListSpacesResponse",
     "Space",
     "UpdateSpaceRequest",
+    "GetSpaceReadStateRequest",
+    "SpaceReadState",
+    "UpdateSpaceReadStateRequest",
     "SetUpSpaceRequest",
+    "GetThreadReadStateRequest",
+    "ThreadReadState",
     "User",
     "WidgetMarkup",
 )

@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.chat.v1',
+    package="google.chat.v1",
     manifest={
-        'ThreadReadState',
-        'GetThreadReadStateRequest',
+        "ThreadReadState",
+        "GetThreadReadStateRequest",
     },
 )
 
