@@ -53,6 +53,8 @@ class chatCallTransformer(cst.CSTTransformer):
         'get_membership': ('name', ),
         'get_message': ('name', ),
         'get_space': ('name', ),
+        'get_space_read_state': ('name', ),
+        'get_thread_read_state': ('name', ),
         'list_memberships': ('parent', 'page_size', 'page_token', 'filter', 'show_groups', 'show_invited', ),
         'list_messages': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'show_deleted', ),
         'list_reactions': ('parent', 'page_size', 'page_token', 'filter', ),
@@ -61,6 +63,7 @@ class chatCallTransformer(cst.CSTTransformer):
         'update_membership': ('membership', 'update_mask', ),
         'update_message': ('message', 'update_mask', 'allow_missing', ),
         'update_space': ('space', 'update_mask', ),
+        'update_space_read_state': ('space_read_state', 'update_mask', ),
         'upload_attachment': ('parent', 'filename', ),
     }
 

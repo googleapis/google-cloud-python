@@ -47,7 +47,9 @@ from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import space
 from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import space_setup
+from google.apps.chat_v1.types import space_read_state
+from google.apps.chat_v1.types import space_read_state as gc_space_read_state
+from google.apps.chat_v1.types import space_setup, thread_read_state
 
 from .base import ChatServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -174,6 +176,22 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_space_read_state(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_space_read_state(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_thread_read_state(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_thread_read_state(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_memberships(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -235,6 +253,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_update_space(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_space_read_state(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_space_read_state(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -521,6 +547,52 @@ class ChatServiceRestInterceptor:
         """
         return response
 
+    def pre_get_space_read_state(
+        self,
+        request: space_read_state.GetSpaceReadStateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[space_read_state.GetSpaceReadStateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_space_read_state
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_get_space_read_state(
+        self, response: space_read_state.SpaceReadState
+    ) -> space_read_state.SpaceReadState:
+        """Post-rpc interceptor for get_space_read_state
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_thread_read_state(
+        self,
+        request: thread_read_state.GetThreadReadStateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[thread_read_state.GetThreadReadStateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_thread_read_state
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_get_thread_read_state(
+        self, response: thread_read_state.ThreadReadState
+    ) -> thread_read_state.ThreadReadState:
+        """Post-rpc interceptor for get_thread_read_state
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_memberships(
         self,
         request: membership.ListMembershipsRequest,
@@ -686,6 +758,31 @@ class ChatServiceRestInterceptor:
 
     def post_update_space(self, response: gc_space.Space) -> gc_space.Space:
         """Post-rpc interceptor for update_space
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_space_read_state(
+        self,
+        request: gc_space_read_state.UpdateSpaceReadStateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        gc_space_read_state.UpdateSpaceReadStateRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_space_read_state
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_update_space_read_state(
+        self, response: gc_space_read_state.SpaceReadState
+    ) -> gc_space_read_state.SpaceReadState:
+        """Post-rpc interceptor for update_space_read_state
 
         Override in a subclass to manipulate the response
         after it is returned by the ChatService server but before
@@ -2044,6 +2141,188 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_space(resp)
             return resp
 
+    class _GetSpaceReadState(ChatServiceRestStub):
+        def __hash__(self):
+            return hash("GetSpaceReadState")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: space_read_state.GetSpaceReadStateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> space_read_state.SpaceReadState:
+            r"""Call the get space read state method over HTTP.
+
+            Args:
+                request (~.space_read_state.GetSpaceReadStateRequest):
+                    The request object. Request message for GetSpaceReadState
+                API.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.space_read_state.SpaceReadState:
+                    A user's read state within a space,
+                used to identify read and unread
+                messages.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=users/*/spaces/*/spaceReadState}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_space_read_state(
+                request, metadata
+            )
+            pb_request = space_read_state.GetSpaceReadStateRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = space_read_state.SpaceReadState()
+            pb_resp = space_read_state.SpaceReadState.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_space_read_state(resp)
+            return resp
+
+    class _GetThreadReadState(ChatServiceRestStub):
+        def __hash__(self):
+            return hash("GetThreadReadState")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: thread_read_state.GetThreadReadStateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> thread_read_state.ThreadReadState:
+            r"""Call the get thread read state method over HTTP.
+
+            Args:
+                request (~.thread_read_state.GetThreadReadStateRequest):
+                    The request object. Request message for
+                GetThreadReadStateRequest API.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.thread_read_state.ThreadReadState:
+                    A user's read state within a thread,
+                used to identify read and unread
+                messages.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=users/*/spaces/*/threads/*/threadReadState}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_thread_read_state(
+                request, metadata
+            )
+            pb_request = thread_read_state.GetThreadReadStateRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = thread_read_state.ThreadReadState()
+            pb_resp = thread_read_state.ThreadReadState.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_thread_read_state(resp)
+            return resp
+
     class _ListMemberships(ChatServiceRestStub):
         def __hash__(self):
             return hash("ListMemberships")
@@ -2775,6 +3054,106 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_update_space(resp)
             return resp
 
+    class _UpdateSpaceReadState(ChatServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateSpaceReadState")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gc_space_read_state.UpdateSpaceReadStateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gc_space_read_state.SpaceReadState:
+            r"""Call the update space read state method over HTTP.
+
+            Args:
+                request (~.gc_space_read_state.UpdateSpaceReadStateRequest):
+                    The request object. Request message for
+                UpdateSpaceReadState API.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gc_space_read_state.SpaceReadState:
+                    A user's read state within a space,
+                used to identify read and unread
+                messages.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{space_read_state.name=users/*/spaces/*/spaceReadState}",
+                    "body": "space_read_state",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_space_read_state(
+                request, metadata
+            )
+            pb_request = gc_space_read_state.UpdateSpaceReadStateRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gc_space_read_state.SpaceReadState()
+            pb_resp = gc_space_read_state.SpaceReadState.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_space_read_state(resp)
+            return resp
+
     class _UploadAttachment(ChatServiceRestStub):
         def __hash__(self):
             return hash("UploadAttachment")
@@ -2976,6 +3355,26 @@ class ChatServiceRestTransport(ChatServiceTransport):
         return self._GetSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_space_read_state(
+        self,
+    ) -> Callable[
+        [space_read_state.GetSpaceReadStateRequest], space_read_state.SpaceReadState
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSpaceReadState(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_thread_read_state(
+        self,
+    ) -> Callable[
+        [thread_read_state.GetThreadReadStateRequest], thread_read_state.ThreadReadState
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetThreadReadState(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_memberships(
         self,
     ) -> Callable[
@@ -3036,6 +3435,17 @@ class ChatServiceRestTransport(ChatServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSpace(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_space_read_state(
+        self,
+    ) -> Callable[
+        [gc_space_read_state.UpdateSpaceReadStateRequest],
+        gc_space_read_state.SpaceReadState,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSpaceReadState(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def upload_attachment(
