@@ -1,0 +1,2 @@
+recursive-include google/cloud/run *.py
+recursive-include google/cloud/run_v2 *.py

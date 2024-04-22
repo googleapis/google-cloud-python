@@ -1,0 +1,73 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.resourcesettings_v1",
+  "protoPackage": "google.cloud.resourcesettings.v1",
+  "schema": "1.0",
+  "services": {
+    "ResourceSettingsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ResourceSettingsServiceClient",
+          "rpcs": {
+            "GetSetting": {
+              "methods": [
+                "get_setting"
+              ]
+            },
+            "ListSettings": {
+              "methods": [
+                "list_settings"
+              ]
+            },
+            "UpdateSetting": {
+              "methods": [
+                "update_setting"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ResourceSettingsServiceAsyncClient",
+          "rpcs": {
+            "GetSetting": {
+              "methods": [
+                "get_setting"
+              ]
+            },
+            "ListSettings": {
+              "methods": [
+                "list_settings"
+              ]
+            },
+            "UpdateSetting": {
+              "methods": [
+                "update_setting"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ResourceSettingsServiceClient",
+          "rpcs": {
+            "GetSetting": {
+              "methods": [
+                "get_setting"
+              ]
+            },
+            "ListSettings": {
+              "methods": [
+                "list_settings"
+              ]
+            },
+            "UpdateSetting": {
+              "methods": [
+                "update_setting"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
