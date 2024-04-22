@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -196,7 +197,9 @@ class FirewallAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, FirewallTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, FirewallTransport, Callable[..., FirewallTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -208,9 +211,11 @@ class FirewallAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.FirewallTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,FirewallTransport,Callable[..., FirewallTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the FirewallTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -308,15 +313,16 @@ class FirewallAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.ListIngressRulesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.ListIngressRulesRequest):
+            request = appengine.ListIngressRulesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_ingress_rules,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_ingress_rules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -403,15 +409,16 @@ class FirewallAsyncClient:
                 Response message for Firewall.UpdateAllIngressRules.
         """
         # Create or coerce a protobuf request object.
-        request = appengine.BatchUpdateIngressRulesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.BatchUpdateIngressRulesRequest):
+            request = appengine.BatchUpdateIngressRulesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_update_ingress_rules,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_update_ingress_rules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -486,15 +493,16 @@ class FirewallAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.CreateIngressRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.CreateIngressRuleRequest):
+            request = appengine.CreateIngressRuleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_ingress_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_ingress_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -569,15 +577,16 @@ class FirewallAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.GetIngressRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.GetIngressRuleRequest):
+            request = appengine.GetIngressRuleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_ingress_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_ingress_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -652,15 +661,16 @@ class FirewallAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.UpdateIngressRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.UpdateIngressRuleRequest):
+            request = appengine.UpdateIngressRuleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_ingress_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_ingress_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -724,15 +734,16 @@ class FirewallAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = appengine.DeleteIngressRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.DeleteIngressRuleRequest):
+            request = appengine.DeleteIngressRuleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_ingress_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_ingress_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

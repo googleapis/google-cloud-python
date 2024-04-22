@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -197,7 +198,9 @@ class DomainMappingsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DomainMappingsTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DomainMappingsTransport, Callable[..., DomainMappingsTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -209,9 +212,11 @@ class DomainMappingsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DomainMappingsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DomainMappingsTransport,Callable[..., DomainMappingsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DomainMappingsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -310,15 +315,16 @@ class DomainMappingsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.ListDomainMappingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.ListDomainMappingsRequest):
+            request = appengine.ListDomainMappingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_domain_mappings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_domain_mappings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -400,15 +406,16 @@ class DomainMappingsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.GetDomainMappingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.GetDomainMappingRequest):
+            request = appengine.GetDomainMappingRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_domain_mapping,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_domain_mapping
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -492,15 +499,16 @@ class DomainMappingsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.CreateDomainMappingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.CreateDomainMappingRequest):
+            request = appengine.CreateDomainMappingRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_domain_mapping,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_domain_mapping
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -593,15 +601,16 @@ class DomainMappingsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.UpdateDomainMappingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.UpdateDomainMappingRequest):
+            request = appengine.UpdateDomainMappingRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_domain_mapping,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_domain_mapping
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -699,15 +708,16 @@ class DomainMappingsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = appengine.DeleteDomainMappingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, appengine.DeleteDomainMappingRequest):
+            request = appengine.DeleteDomainMappingRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_domain_mapping,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_domain_mapping
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

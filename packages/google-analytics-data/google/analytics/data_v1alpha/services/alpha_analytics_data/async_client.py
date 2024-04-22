@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -208,7 +209,13 @@ class AlphaAnalyticsDataAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AlphaAnalyticsDataTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                AlphaAnalyticsDataTransport,
+                Callable[..., AlphaAnalyticsDataTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -220,9 +227,11 @@ class AlphaAnalyticsDataAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AlphaAnalyticsDataTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AlphaAnalyticsDataTransport,Callable[..., AlphaAnalyticsDataTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AlphaAnalyticsDataTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -338,15 +347,16 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunFunnelReportRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.RunFunnelReportRequest):
+            request = analytics_data_api.RunFunnelReportRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_funnel_report,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.run_funnel_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -475,8 +485,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, audience_list])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -484,7 +494,10 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.CreateAudienceListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.CreateAudienceListRequest):
+            request = analytics_data_api.CreateAudienceListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -495,11 +508,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_audience_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_audience_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -609,8 +620,8 @@ class AlphaAnalyticsDataAsyncClient:
                 A list of users in an audience list.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -618,7 +629,10 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.QueryAudienceListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.QueryAudienceListRequest):
+            request = analytics_data_api.QueryAudienceListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -627,11 +641,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_audience_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_audience_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -736,8 +748,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -745,7 +757,10 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.SheetExportAudienceListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.SheetExportAudienceListRequest):
+            request = analytics_data_api.SheetExportAudienceListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -754,11 +769,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.sheet_export_audience_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.sheet_export_audience_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -858,8 +871,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -867,7 +880,10 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.GetAudienceListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.GetAudienceListRequest):
+            request = analytics_data_api.GetAudienceListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -876,11 +892,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_audience_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_audience_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -984,8 +998,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -993,7 +1007,10 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.ListAudienceListsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.ListAudienceListsRequest):
+            request = analytics_data_api.ListAudienceListsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1002,11 +1019,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_audience_lists,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_audience_lists
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1138,8 +1153,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, recurring_audience_list])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1147,7 +1162,12 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.CreateRecurringAudienceListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, analytics_data_api.CreateRecurringAudienceListRequest
+        ):
+            request = analytics_data_api.CreateRecurringAudienceListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1158,11 +1178,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_recurring_audience_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_recurring_audience_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1265,8 +1283,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1274,7 +1292,10 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.GetRecurringAudienceListRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_data_api.GetRecurringAudienceListRequest):
+            request = analytics_data_api.GetRecurringAudienceListRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1283,11 +1304,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_recurring_audience_list,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_recurring_audience_list
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1389,8 +1408,8 @@ class AlphaAnalyticsDataAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1398,7 +1417,12 @@ class AlphaAnalyticsDataAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = analytics_data_api.ListRecurringAudienceListsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, analytics_data_api.ListRecurringAudienceListsRequest
+        ):
+            request = analytics_data_api.ListRecurringAudienceListsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1407,11 +1431,9 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_recurring_audience_lists,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_recurring_audience_lists
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

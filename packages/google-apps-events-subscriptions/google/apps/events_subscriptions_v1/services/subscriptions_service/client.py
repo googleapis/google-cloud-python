@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -567,7 +568,13 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SubscriptionsServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                SubscriptionsServiceTransport,
+                Callable[..., SubscriptionsServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -579,9 +586,11 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SubscriptionsServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SubscriptionsServiceTransport,Callable[..., SubscriptionsServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SubscriptionsServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -690,8 +699,16 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SubscriptionsServiceTransport],
+                Callable[..., SubscriptionsServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SubscriptionsServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -781,8 +798,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -790,10 +807,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a subscriptions_service.CreateSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, subscriptions_service.CreateSubscriptionRequest):
             request = subscriptions_service.CreateSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -907,8 +922,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -916,10 +931,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a subscriptions_service.DeleteSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, subscriptions_service.DeleteSubscriptionRequest):
             request = subscriptions_service.DeleteSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1027,8 +1040,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1036,10 +1049,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a subscriptions_service.GetSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, subscriptions_service.GetSubscriptionRequest):
             request = subscriptions_service.GetSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1168,8 +1179,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1177,10 +1188,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a subscriptions_service.ListSubscriptionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, subscriptions_service.ListSubscriptionsRequest):
             request = subscriptions_service.ListSubscriptionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1311,8 +1320,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1320,10 +1329,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a subscriptions_service.UpdateSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, subscriptions_service.UpdateSubscriptionRequest):
             request = subscriptions_service.UpdateSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1445,8 +1452,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1454,10 +1461,8 @@ class SubscriptionsServiceClient(metaclass=SubscriptionsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a subscriptions_service.ReactivateSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, subscriptions_service.ReactivateSubscriptionRequest):
             request = subscriptions_service.ReactivateSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the

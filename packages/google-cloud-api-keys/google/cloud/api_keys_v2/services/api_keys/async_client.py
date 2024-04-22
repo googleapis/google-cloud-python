@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -193,7 +194,9 @@ class ApiKeysAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ApiKeysTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, ApiKeysTransport, Callable[..., ApiKeysTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -205,9 +208,11 @@ class ApiKeysAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ApiKeysTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ApiKeysTransport,Callable[..., ApiKeysTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ApiKeysTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -346,8 +351,8 @@ class ApiKeysAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, key, key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -355,7 +360,10 @@ class ApiKeysAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apikeys.CreateKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.CreateKeyRequest):
+            request = apikeys.CreateKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -368,11 +376,9 @@ class ApiKeysAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -469,8 +475,8 @@ class ApiKeysAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -478,7 +484,10 @@ class ApiKeysAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apikeys.ListKeysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.ListKeysRequest):
+            request = apikeys.ListKeysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -487,11 +496,9 @@ class ApiKeysAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_keys,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_keys
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -586,8 +593,8 @@ class ApiKeysAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -595,7 +602,10 @@ class ApiKeysAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apikeys.GetKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.GetKeyRequest):
+            request = apikeys.GetKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -604,11 +614,7 @@ class ApiKeysAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_key]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -691,8 +697,8 @@ class ApiKeysAsyncClient:
                 Response message for GetKeyString method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -700,7 +706,10 @@ class ApiKeysAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apikeys.GetKeyStringRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.GetKeyStringRequest):
+            request = apikeys.GetKeyStringRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -709,11 +718,9 @@ class ApiKeysAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_key_string,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_key_string
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -821,8 +828,8 @@ class ApiKeysAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -830,7 +837,10 @@ class ApiKeysAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apikeys.UpdateKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.UpdateKeyRequest):
+            request = apikeys.UpdateKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -841,11 +851,9 @@ class ApiKeysAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -946,8 +954,8 @@ class ApiKeysAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -955,7 +963,10 @@ class ApiKeysAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apikeys.DeleteKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.DeleteKeyRequest):
+            request = apikeys.DeleteKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -964,11 +975,9 @@ class ApiKeysAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1060,15 +1069,16 @@ class ApiKeysAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = apikeys.UndeleteKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.UndeleteKeyRequest):
+            request = apikeys.UndeleteKeyRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.undelete_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undelete_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1152,15 +1162,16 @@ class ApiKeysAsyncClient:
                 Response message for LookupKey method.
         """
         # Create or coerce a protobuf request object.
-        request = apikeys.LookupKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apikeys.LookupKeyRequest):
+            request = apikeys.LookupKeyRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.lookup_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.lookup_key
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

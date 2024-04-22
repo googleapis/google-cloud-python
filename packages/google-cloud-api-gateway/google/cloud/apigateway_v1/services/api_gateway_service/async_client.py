@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -216,7 +217,13 @@ class ApiGatewayServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ApiGatewayServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                ApiGatewayServiceTransport,
+                Callable[..., ApiGatewayServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -228,9 +235,11 @@ class ApiGatewayServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ApiGatewayServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ApiGatewayServiceTransport,Callable[..., ApiGatewayServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ApiGatewayServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -339,8 +348,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -348,7 +357,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.ListGatewaysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.ListGatewaysRequest):
+            request = apigateway.ListGatewaysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -357,11 +369,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_gateways,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_gateways
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -457,8 +467,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -466,7 +476,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.GetGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.GetGatewayRequest):
+            request = apigateway.GetGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -475,11 +488,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_gateway,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -591,8 +602,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, gateway, gateway_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -600,7 +611,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.CreateGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.CreateGatewayRequest):
+            request = apigateway.CreateGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -613,21 +627,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_gateway,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -739,8 +741,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([gateway, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -748,7 +750,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.UpdateGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.UpdateGatewayRequest):
+            request = apigateway.UpdateGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -759,21 +764,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_gateway,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -880,8 +873,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -889,7 +882,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.DeleteGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.DeleteGatewayRequest):
+            request = apigateway.DeleteGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -898,21 +894,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_gateway,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1007,8 +991,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1016,7 +1000,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.ListApisRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.ListApisRequest):
+            request = apigateway.ListApisRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1025,11 +1012,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_apis,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_apis
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1121,8 +1106,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1130,7 +1115,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.GetApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.GetApiRequest):
+            request = apigateway.GetApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1139,11 +1127,7 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_api]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1249,8 +1233,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api, api_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1258,7 +1242,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.CreateApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.CreateApiRequest):
+            request = apigateway.CreateApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1271,21 +1258,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_api,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1392,8 +1367,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1401,7 +1376,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.UpdateApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.UpdateApiRequest):
+            request = apigateway.UpdateApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1412,21 +1390,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_api,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1531,8 +1497,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1540,7 +1506,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.DeleteApiRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.DeleteApiRequest):
+            request = apigateway.DeleteApiRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1549,21 +1518,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1658,8 +1615,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1667,7 +1624,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.ListApiConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.ListApiConfigsRequest):
+            request = apigateway.ListApiConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1676,11 +1636,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_api_configs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_api_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1773,8 +1731,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1782,7 +1740,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.GetApiConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.GetApiConfigRequest):
+            request = apigateway.GetApiConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1791,11 +1752,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_api_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_api_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1901,8 +1860,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_config, api_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1910,7 +1869,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.CreateApiConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.CreateApiConfigRequest):
+            request = apigateway.CreateApiConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1923,21 +1885,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_api_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2043,8 +1993,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2052,7 +2002,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.UpdateApiConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.UpdateApiConfigRequest):
+            request = apigateway.UpdateApiConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2063,21 +2016,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_api_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2184,8 +2125,8 @@ class ApiGatewayServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2193,7 +2134,10 @@ class ApiGatewayServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = apigateway.DeleteApiConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apigateway.DeleteApiConfigRequest):
+            request = apigateway.DeleteApiConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2202,21 +2146,9 @@ class ApiGatewayServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_api_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=2,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
