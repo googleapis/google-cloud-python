@@ -421,14 +421,13 @@ class SearchTextRequest(proto.Message):
 
         Attributes:
             minimum_charging_rate_kw (float):
-                Optional. Filtering places by minimum
-                charging rate. Any places with charging a rate
-                less than the minimum charging rate are filtered
-                out.
+                Optional. Minimum required charging rate in
+                kilowatts. A place with a charging rate less
+                than the specified rate is filtered out.
             connector_types (MutableSequence[google.maps.places_v1.types.EVConnectorType]):
                 Optional. The list of preferred EV connector
                 types. A place that does not support any of the
-                listed connector types are filter out.
+                listed connector types is filtered out.
         """
 
         minimum_charging_rate_kw: float = proto.Field(
