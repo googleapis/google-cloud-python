@@ -723,6 +723,10 @@ def notebook(session: nox.Session):
         # The experimental notebooks imagine features that don't yet
         # exist or only exist as temporary prototypes.
         "notebooks/experimental/longer_ml_demo.ipynb",
+        # The notebooks that are added for more use cases, such as backing a
+        # blog post, which may take longer to execute and need not be
+        # continuously tested.
+        "notebooks/apps/synthetic_data_generation.ipynb",
     ]
 
     # Convert each Path notebook object to a string using a list comprehension.
