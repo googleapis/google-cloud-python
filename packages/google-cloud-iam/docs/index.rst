@@ -19,6 +19,14 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    admin_v1/services_
+    admin_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
     iam_admin_v1/services_
     iam_admin_v1/types_
 
