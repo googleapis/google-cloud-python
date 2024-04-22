@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -634,7 +635,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RegistryTransport]] = None,
+        transport: Optional[
+            Union[str, RegistryTransport, Callable[..., RegistryTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -646,9 +649,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RegistryTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegistryTransport,Callable[..., RegistryTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegistryTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -754,8 +759,15 @@ class RegistryClient(metaclass=RegistryClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RegistryTransport], Callable[..., RegistryTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RegistryTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -831,8 +843,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -840,10 +852,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListApisRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListApisRequest):
             request = registry_service.ListApisRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -945,8 +955,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -954,10 +964,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetApiRequest):
             request = registry_service.GetApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1070,8 +1078,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api, api_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1079,10 +1087,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.CreateApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.CreateApiRequest):
             request = registry_service.CreateApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1191,8 +1197,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1200,10 +1206,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.UpdateApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.UpdateApiRequest):
             request = registry_service.UpdateApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1289,8 +1293,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1298,10 +1302,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteApiRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteApiRequest):
             request = registry_service.DeleteApiRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1394,8 +1396,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1403,10 +1405,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListApiVersionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListApiVersionsRequest):
             request = registry_service.ListApiVersionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1508,8 +1508,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1517,10 +1517,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetApiVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetApiVersionRequest):
             request = registry_service.GetApiVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1634,8 +1632,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_version, api_version_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1643,10 +1641,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.CreateApiVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.CreateApiVersionRequest):
             request = registry_service.CreateApiVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1756,8 +1752,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_version, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1765,10 +1761,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.UpdateApiVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.UpdateApiVersionRequest):
             request = registry_service.UpdateApiVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1856,8 +1850,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1865,10 +1859,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteApiVersionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteApiVersionRequest):
             request = registry_service.DeleteApiVersionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1962,8 +1954,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1971,10 +1963,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListApiSpecsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListApiSpecsRequest):
             request = registry_service.ListApiSpecsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2087,8 +2077,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2096,10 +2086,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetApiSpecRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetApiSpecRequest):
             request = registry_service.GetApiSpecRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2242,8 +2230,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2251,10 +2239,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetApiSpecContentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetApiSpecContentsRequest):
             request = registry_service.GetApiSpecContentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2379,8 +2365,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_spec, api_spec_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2388,10 +2374,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.CreateApiSpecRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.CreateApiSpecRequest):
             request = registry_service.CreateApiSpecRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2512,8 +2496,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_spec, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2521,10 +2505,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.UpdateApiSpecRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.UpdateApiSpecRequest):
             request = registry_service.UpdateApiSpecRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2612,8 +2594,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2621,10 +2603,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteApiSpecRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteApiSpecRequest):
             request = registry_service.DeleteApiSpecRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2721,10 +2701,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.TagApiSpecRevisionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.TagApiSpecRevisionRequest):
             request = registry_service.TagApiSpecRevisionRequest(request)
 
@@ -2813,10 +2791,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListApiSpecRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListApiSpecRevisionsRequest):
             request = registry_service.ListApiSpecRevisionsRequest(request)
 
@@ -2920,10 +2896,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.RollbackApiSpecRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.RollbackApiSpecRequest):
             request = registry_service.RollbackApiSpecRequest(request)
 
@@ -3029,8 +3003,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3038,10 +3012,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteApiSpecRevisionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteApiSpecRevisionRequest):
             request = registry_service.DeleteApiSpecRevisionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3140,8 +3112,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3149,10 +3121,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListApiDeploymentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListApiDeploymentsRequest):
             request = registry_service.ListApiDeploymentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3260,8 +3230,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3269,10 +3239,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetApiDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetApiDeploymentRequest):
             request = registry_service.GetApiDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3395,8 +3363,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_deployment, api_deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3404,10 +3372,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.CreateApiDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.CreateApiDeploymentRequest):
             request = registry_service.CreateApiDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3526,8 +3492,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3535,10 +3501,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.UpdateApiDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.UpdateApiDeploymentRequest):
             request = registry_service.UpdateApiDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3629,8 +3593,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3638,10 +3602,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteApiDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteApiDeploymentRequest):
             request = registry_service.DeleteApiDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3734,10 +3696,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.TagApiDeploymentRevisionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.TagApiDeploymentRevisionRequest):
             request = registry_service.TagApiDeploymentRevisionRequest(request)
 
@@ -3828,10 +3788,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListApiDeploymentRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListApiDeploymentRevisionsRequest):
             request = registry_service.ListApiDeploymentRevisionsRequest(request)
 
@@ -3935,10 +3893,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.RollbackApiDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.RollbackApiDeploymentRequest):
             request = registry_service.RollbackApiDeploymentRequest(request)
 
@@ -4039,8 +3995,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4048,10 +4004,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteApiDeploymentRevisionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteApiDeploymentRevisionRequest):
             request = registry_service.DeleteApiDeploymentRevisionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4149,8 +4103,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4158,10 +4112,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ListArtifactsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ListArtifactsRequest):
             request = registry_service.ListArtifactsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4271,8 +4223,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4280,10 +4232,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetArtifactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetArtifactRequest):
             request = registry_service.GetArtifactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4425,8 +4375,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4434,10 +4384,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.GetArtifactContentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.GetArtifactContentsRequest):
             request = registry_service.GetArtifactContentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4559,8 +4507,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, artifact, artifact_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4568,10 +4516,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.CreateArtifactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.CreateArtifactRequest):
             request = registry_service.CreateArtifactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4677,8 +4623,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([artifact])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4686,10 +4632,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.ReplaceArtifactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.ReplaceArtifactRequest):
             request = registry_service.ReplaceArtifactRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4774,8 +4718,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4783,10 +4727,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a registry_service.DeleteArtifactRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, registry_service.DeleteArtifactRequest):
             request = registry_service.DeleteArtifactRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -1112,7 +1113,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AnalyticsAdminServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                AnalyticsAdminServiceTransport,
+                Callable[..., AnalyticsAdminServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -1124,9 +1131,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AnalyticsAdminServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AnalyticsAdminServiceTransport,Callable[..., AnalyticsAdminServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AnalyticsAdminServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -1235,8 +1244,16 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AnalyticsAdminServiceTransport],
+                Callable[..., AnalyticsAdminServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AnalyticsAdminServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -1283,8 +1300,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1292,10 +1309,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetAccountRequest):
             request = analytics_admin.GetAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1361,10 +1376,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListAccountsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListAccountsRequest):
             request = analytics_admin.ListAccountsRequest(request)
 
@@ -1437,8 +1450,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1446,10 +1459,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteAccountRequest):
             request = analytics_admin.DeleteAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1524,8 +1535,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([account, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1533,10 +1544,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateAccountRequest):
             request = analytics_admin.UpdateAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1601,10 +1610,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ProvisionAccountTicketRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ProvisionAccountTicketRequest):
             request = analytics_admin.ProvisionAccountTicketRequest(request)
 
@@ -1659,10 +1666,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListAccountSummariesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListAccountSummariesRequest):
             request = analytics_admin.ListAccountSummariesRequest(request)
 
@@ -1727,8 +1732,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1736,10 +1741,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetPropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetPropertyRequest):
             request = analytics_admin.GetPropertyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1807,10 +1810,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListPropertiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListPropertiesRequest):
             request = analytics_admin.ListPropertiesRequest(request)
 
@@ -1878,8 +1879,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([property])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1887,10 +1888,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreatePropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreatePropertyRequest):
             request = analytics_admin.CreatePropertyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1965,8 +1964,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1974,10 +1973,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeletePropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeletePropertyRequest):
             request = analytics_admin.DeletePropertyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2056,8 +2053,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([property, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2065,10 +2062,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdatePropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdatePropertyRequest):
             request = analytics_admin.UpdatePropertyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2151,8 +2146,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, firebase_link])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2160,10 +2155,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateFirebaseLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateFirebaseLinkRequest):
             request = analytics_admin.CreateFirebaseLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2229,8 +2222,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2238,10 +2231,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteFirebaseLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteFirebaseLinkRequest):
             request = analytics_admin.DeleteFirebaseLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2309,8 +2300,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2318,10 +2309,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListFirebaseLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListFirebaseLinksRequest):
             request = analytics_admin.ListFirebaseLinksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2403,8 +2392,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2412,10 +2401,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetGlobalSiteTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetGlobalSiteTagRequest):
             request = analytics_admin.GetGlobalSiteTagRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2492,8 +2479,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, google_ads_link])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2501,10 +2488,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateGoogleAdsLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateGoogleAdsLinkRequest):
             request = analytics_admin.CreateGoogleAdsLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2584,8 +2569,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([google_ads_link, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2593,10 +2578,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateGoogleAdsLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateGoogleAdsLinkRequest):
             request = analytics_admin.UpdateGoogleAdsLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2663,8 +2646,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2672,10 +2655,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteGoogleAdsLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteGoogleAdsLinkRequest):
             request = analytics_admin.DeleteGoogleAdsLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2744,8 +2725,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2753,10 +2734,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListGoogleAdsLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListGoogleAdsLinksRequest):
             request = analytics_admin.ListGoogleAdsLinksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2839,8 +2818,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2848,10 +2827,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDataSharingSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetDataSharingSettingsRequest):
             request = analytics_admin.GetDataSharingSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2924,8 +2901,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2933,10 +2910,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetMeasurementProtocolSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetMeasurementProtocolSecretRequest):
             request = analytics_admin.GetMeasurementProtocolSecretRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3013,8 +2988,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3022,10 +2997,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListMeasurementProtocolSecretsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.ListMeasurementProtocolSecretsRequest
         ):
@@ -3118,8 +3091,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, measurement_protocol_secret])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3127,10 +3100,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateMeasurementProtocolSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.CreateMeasurementProtocolSecretRequest
         ):
@@ -3202,8 +3173,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3211,10 +3182,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteMeasurementProtocolSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.DeleteMeasurementProtocolSecretRequest
         ):
@@ -3295,8 +3264,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([measurement_protocol_secret, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3304,10 +3273,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateMeasurementProtocolSecretRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.UpdateMeasurementProtocolSecretRequest
         ):
@@ -3385,10 +3352,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.AcknowledgeUserDataCollectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.AcknowledgeUserDataCollectionRequest
         ):
@@ -3458,8 +3423,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3467,10 +3432,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetSKAdNetworkConversionValueSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.GetSKAdNetworkConversionValueSchemaRequest
         ):
@@ -3557,8 +3520,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, skadnetwork_conversion_value_schema])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3566,10 +3529,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest
         ):
@@ -3644,8 +3605,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3653,10 +3614,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest
         ):
@@ -3740,8 +3699,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([skadnetwork_conversion_value_schema, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3749,10 +3708,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest
         ):
@@ -3846,8 +3803,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3855,10 +3812,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListSKAdNetworkConversionValueSchemasRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.ListSKAdNetworkConversionValueSchemasRequest
         ):
@@ -3938,10 +3893,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.SearchChangeHistoryEventsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.SearchChangeHistoryEventsRequest):
             request = analytics_admin.SearchChangeHistoryEventsRequest(request)
 
@@ -4018,8 +3971,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4027,10 +3980,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetGoogleSignalsSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetGoogleSignalsSettingsRequest):
             request = analytics_admin.GetGoogleSignalsSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4112,8 +4063,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([google_signals_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4121,10 +4072,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateGoogleSignalsSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateGoogleSignalsSettingsRequest):
             request = analytics_admin.UpdateGoogleSignalsSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4215,8 +4164,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversion_event])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4224,10 +4173,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateConversionEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateConversionEventRequest):
             request = analytics_admin.CreateConversionEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4310,8 +4257,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversion_event, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4319,10 +4266,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateConversionEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateConversionEventRequest):
             request = analytics_admin.UpdateConversionEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4397,8 +4342,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4406,10 +4351,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetConversionEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetConversionEventRequest):
             request = analytics_admin.GetConversionEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4474,8 +4417,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4483,10 +4426,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteConversionEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteConversionEventRequest):
             request = analytics_admin.DeleteConversionEventRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4558,8 +4499,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4567,10 +4508,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListConversionEventsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListConversionEventsRequest):
             request = analytics_admin.ListConversionEventsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4650,8 +4589,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4659,10 +4598,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.GetDisplayVideo360AdvertiserLinkRequest
         ):
@@ -4739,8 +4676,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4748,10 +4685,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListDisplayVideo360AdvertiserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.ListDisplayVideo360AdvertiserLinksRequest
         ):
@@ -4848,8 +4783,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, display_video_360_advertiser_link])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4857,10 +4792,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest
         ):
@@ -4936,8 +4869,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4945,10 +4878,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest
         ):
@@ -5033,8 +4964,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([display_video_360_advertiser_link, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5042,10 +4973,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest
         ):
@@ -5143,8 +5072,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5152,10 +5081,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest
         ):
@@ -5237,8 +5164,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5246,10 +5173,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest
         ):
@@ -5355,8 +5280,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, display_video_360_advertiser_link_proposal])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5364,10 +5289,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest
         ):
@@ -5448,8 +5371,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5457,10 +5380,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest
         ):
@@ -5534,10 +5455,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest
         ):
@@ -5620,10 +5539,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest
         ):
@@ -5702,8 +5619,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_dimension])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5711,10 +5628,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateCustomDimensionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateCustomDimensionRequest):
             request = analytics_admin.CreateCustomDimensionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5791,8 +5706,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_dimension, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5800,10 +5715,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateCustomDimensionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateCustomDimensionRequest):
             request = analytics_admin.UpdateCustomDimensionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5879,8 +5792,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5888,10 +5801,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListCustomDimensionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListCustomDimensionsRequest):
             request = analytics_admin.ListCustomDimensionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5965,8 +5876,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5974,10 +5885,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ArchiveCustomDimensionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ArchiveCustomDimensionRequest):
             request = analytics_admin.ArchiveCustomDimensionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6042,8 +5951,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6051,10 +5960,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetCustomDimensionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetCustomDimensionRequest):
             request = analytics_admin.GetCustomDimensionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6127,8 +6034,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_metric])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6136,10 +6043,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateCustomMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateCustomMetricRequest):
             request = analytics_admin.CreateCustomMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6216,8 +6121,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_metric, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6225,10 +6130,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateCustomMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateCustomMetricRequest):
             request = analytics_admin.UpdateCustomMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6302,8 +6205,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6311,10 +6214,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListCustomMetricsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListCustomMetricsRequest):
             request = analytics_admin.ListCustomMetricsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6387,8 +6288,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6396,10 +6297,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ArchiveCustomMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ArchiveCustomMetricRequest):
             request = analytics_admin.ArchiveCustomMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6462,8 +6361,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6471,10 +6370,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetCustomMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetCustomMetricRequest):
             request = analytics_admin.GetCustomMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6548,8 +6445,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6557,10 +6454,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDataRetentionSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetDataRetentionSettingsRequest):
             request = analytics_admin.GetDataRetentionSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6643,8 +6538,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_retention_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6652,10 +6547,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateDataRetentionSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateDataRetentionSettingsRequest):
             request = analytics_admin.UpdateDataRetentionSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6739,8 +6632,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_stream])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6748,10 +6641,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateDataStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateDataStreamRequest):
             request = analytics_admin.CreateDataStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6815,8 +6706,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6824,10 +6715,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteDataStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteDataStreamRequest):
             request = analytics_admin.DeleteDataStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6899,8 +6788,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_stream, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6908,10 +6797,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateDataStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateDataStreamRequest):
             request = analytics_admin.UpdateDataStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6985,8 +6872,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6994,10 +6881,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListDataStreamsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListDataStreamsRequest):
             request = analytics_admin.ListDataStreamsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7074,8 +6959,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7083,10 +6968,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDataStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetDataStreamRequest):
             request = analytics_admin.GetDataStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7155,8 +7038,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7164,10 +7047,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetAudienceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetAudienceRequest):
             request = analytics_admin.GetAudienceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7239,8 +7120,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7248,10 +7129,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListAudiencesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListAudiencesRequest):
             request = analytics_admin.ListAudiencesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7333,8 +7212,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, audience])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7342,10 +7221,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateAudienceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateAudienceRequest):
             request = analytics_admin.CreateAudienceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7426,8 +7303,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([audience, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7435,10 +7312,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateAudienceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateAudienceRequest):
             request = analytics_admin.UpdateAudienceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7495,10 +7370,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ArchiveAudienceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ArchiveAudienceRequest):
             request = analytics_admin.ArchiveAudienceRequest(request)
 
@@ -7561,8 +7434,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7570,10 +7443,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetSearchAds360LinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetSearchAds360LinkRequest):
             request = analytics_admin.GetSearchAds360LinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7645,8 +7516,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7654,10 +7525,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListSearchAds360LinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListSearchAds360LinksRequest):
             request = analytics_admin.ListSearchAds360LinksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7743,8 +7612,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, search_ads_360_link])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7752,10 +7621,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateSearchAds360LinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateSearchAds360LinkRequest):
             request = analytics_admin.CreateSearchAds360LinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7824,8 +7691,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7833,10 +7700,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteSearchAds360LinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteSearchAds360LinkRequest):
             request = analytics_admin.DeleteSearchAds360LinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7912,8 +7777,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([search_ads_360_link, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7921,10 +7786,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateSearchAds360LinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateSearchAds360LinkRequest):
             request = analytics_admin.UpdateSearchAds360LinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8001,8 +7864,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8010,10 +7873,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetAttributionSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetAttributionSettingsRequest):
             request = analytics_admin.GetAttributionSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8095,8 +7956,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([attribution_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8104,10 +7965,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateAttributionSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateAttributionSettingsRequest):
             request = analytics_admin.UpdateAttributionSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8187,10 +8046,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.RunAccessReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.RunAccessReportRequest):
             request = analytics_admin.RunAccessReportRequest(request)
 
@@ -8265,8 +8122,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, access_binding])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8274,10 +8131,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateAccessBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateAccessBindingRequest):
             request = analytics_admin.CreateAccessBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8351,8 +8206,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8360,10 +8215,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetAccessBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetAccessBindingRequest):
             request = analytics_admin.GetAccessBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8432,8 +8285,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([access_binding])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8441,10 +8294,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateAccessBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateAccessBindingRequest):
             request = analytics_admin.UpdateAccessBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8513,8 +8364,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8522,10 +8373,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteAccessBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteAccessBindingRequest):
             request = analytics_admin.DeleteAccessBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8596,8 +8445,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8605,10 +8454,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListAccessBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListAccessBindingsRequest):
             request = analytics_admin.ListAccessBindingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8683,10 +8530,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchCreateAccessBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.BatchCreateAccessBindingsRequest):
             request = analytics_admin.BatchCreateAccessBindingsRequest(request)
 
@@ -8746,10 +8591,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchGetAccessBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.BatchGetAccessBindingsRequest):
             request = analytics_admin.BatchGetAccessBindingsRequest(request)
 
@@ -8809,10 +8652,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchUpdateAccessBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.BatchUpdateAccessBindingsRequest):
             request = analytics_admin.BatchUpdateAccessBindingsRequest(request)
 
@@ -8866,10 +8707,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchDeleteAccessBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.BatchDeleteAccessBindingsRequest):
             request = analytics_admin.BatchDeleteAccessBindingsRequest(request)
 
@@ -8934,8 +8773,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8943,10 +8782,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetExpandedDataSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetExpandedDataSetRequest):
             request = analytics_admin.GetExpandedDataSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9018,8 +8855,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9027,10 +8864,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListExpandedDataSetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListExpandedDataSetsRequest):
             request = analytics_admin.ListExpandedDataSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9116,8 +8951,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, expanded_data_set])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9125,10 +8960,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateExpandedDataSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateExpandedDataSetRequest):
             request = analytics_admin.CreateExpandedDataSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9211,8 +9044,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([expanded_data_set, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9220,10 +9053,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateExpandedDataSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateExpandedDataSetRequest):
             request = analytics_admin.UpdateExpandedDataSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9290,8 +9121,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9299,10 +9130,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteExpandedDataSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteExpandedDataSetRequest):
             request = analytics_admin.DeleteExpandedDataSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9367,8 +9196,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9376,10 +9205,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetChannelGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetChannelGroupRequest):
             request = analytics_admin.GetChannelGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9450,8 +9277,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9459,10 +9286,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListChannelGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListChannelGroupsRequest):
             request = analytics_admin.ListChannelGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9547,8 +9372,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, channel_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9556,10 +9381,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateChannelGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateChannelGroupRequest):
             request = analytics_admin.CreateChannelGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9642,8 +9465,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([channel_group, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9651,10 +9474,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateChannelGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateChannelGroupRequest):
             request = analytics_admin.UpdateChannelGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9722,8 +9543,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9731,10 +9552,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteChannelGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteChannelGroupRequest):
             request = analytics_admin.DeleteChannelGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9796,10 +9615,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest
         ):
@@ -9858,10 +9675,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest
         ):
@@ -9926,8 +9741,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9935,10 +9750,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetBigQueryLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetBigQueryLinkRequest):
             request = analytics_admin.GetBigQueryLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10009,8 +9822,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10018,10 +9831,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListBigQueryLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListBigQueryLinksRequest):
             request = analytics_admin.ListBigQueryLinksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10105,8 +9916,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10114,10 +9925,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetEnhancedMeasurementSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.GetEnhancedMeasurementSettingsRequest
         ):
@@ -10207,8 +10016,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([enhanced_measurement_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10216,10 +10025,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateEnhancedMeasurementSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.UpdateEnhancedMeasurementSettingsRequest
         ):
@@ -10296,10 +10103,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateConnectedSiteTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateConnectedSiteTagRequest):
             request = analytics_admin.CreateConnectedSiteTagRequest(request)
 
@@ -10348,10 +10153,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteConnectedSiteTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteConnectedSiteTagRequest):
             request = analytics_admin.DeleteConnectedSiteTagRequest(request)
 
@@ -10404,10 +10207,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListConnectedSiteTagsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListConnectedSiteTagsRequest):
             request = analytics_admin.ListConnectedSiteTagsRequest(request)
 
@@ -10460,10 +10261,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.FetchConnectedGa4PropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.FetchConnectedGa4PropertyRequest):
             request = analytics_admin.FetchConnectedGa4PropertyRequest(request)
 
@@ -10525,8 +10324,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10534,10 +10333,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetAdSenseLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetAdSenseLinkRequest):
             request = analytics_admin.GetAdSenseLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10612,8 +10409,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, adsense_link])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10621,10 +10418,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateAdSenseLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateAdSenseLinkRequest):
             request = analytics_admin.CreateAdSenseLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10690,8 +10485,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10699,10 +10494,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteAdSenseLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteAdSenseLinkRequest):
             request = analytics_admin.DeleteAdSenseLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10771,8 +10564,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10780,10 +10573,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListAdSenseLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListAdSenseLinksRequest):
             request = analytics_admin.ListAdSenseLinksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10874,8 +10665,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10883,10 +10674,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetEventCreateRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetEventCreateRuleRequest):
             request = analytics_admin.GetEventCreateRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10958,8 +10747,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10967,10 +10756,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListEventCreateRulesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListEventCreateRulesRequest):
             request = analytics_admin.ListEventCreateRulesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11068,8 +10855,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, event_create_rule])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11077,10 +10864,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateEventCreateRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateEventCreateRuleRequest):
             request = analytics_admin.CreateEventCreateRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11175,8 +10960,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([event_create_rule, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11184,10 +10969,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateEventCreateRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateEventCreateRuleRequest):
             request = analytics_admin.UpdateEventCreateRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11255,8 +11038,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11264,10 +11047,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteEventCreateRuleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteEventCreateRuleRequest):
             request = analytics_admin.DeleteEventCreateRuleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11345,8 +11126,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_redaction_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11354,10 +11135,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateDataRedactionSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateDataRedactionSettingsRequest):
             request = analytics_admin.UpdateDataRedactionSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11440,8 +11219,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11449,10 +11228,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDataRedactionSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetDataRedactionSettingsRequest):
             request = analytics_admin.GetDataRedactionSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11523,8 +11300,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a calculated metric.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11532,10 +11309,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetCalculatedMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetCalculatedMetricRequest):
             request = analytics_admin.GetCalculatedMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11627,8 +11402,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a calculated metric.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, calculated_metric, calculated_metric_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11636,10 +11411,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateCalculatedMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateCalculatedMetricRequest):
             request = analytics_admin.CreateCalculatedMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11715,8 +11488,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11724,10 +11497,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListCalculatedMetricsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListCalculatedMetricsRequest):
             request = analytics_admin.ListCalculatedMetricsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11813,8 +11584,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 A definition for a calculated metric.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([calculated_metric, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11822,10 +11593,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateCalculatedMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateCalculatedMetricRequest):
             request = analytics_admin.UpdateCalculatedMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11894,8 +11663,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11903,10 +11672,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteCalculatedMetricRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteCalculatedMetricRequest):
             request = analytics_admin.DeleteCalculatedMetricRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11965,10 +11732,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateRollupPropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateRollupPropertyRequest):
             request = analytics_admin.CreateRollupPropertyRequest(request)
 
@@ -12033,8 +11798,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12042,10 +11807,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetRollupPropertySourceLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetRollupPropertySourceLinkRequest):
             request = analytics_admin.GetRollupPropertySourceLinkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12123,8 +11886,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12132,10 +11895,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListRollupPropertySourceLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.ListRollupPropertySourceLinksRequest
         ):
@@ -12231,8 +11992,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, rollup_property_source_link])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12240,10 +12001,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateRollupPropertySourceLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.CreateRollupPropertySourceLinkRequest
         ):
@@ -12316,8 +12075,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12325,10 +12084,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteRollupPropertySourceLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_admin.DeleteRollupPropertySourceLinkRequest
         ):
@@ -12389,10 +12146,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateSubpropertyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateSubpropertyRequest):
             request = analytics_admin.CreateSubpropertyRequest(request)
 
@@ -12462,8 +12217,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, subproperty_event_filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12471,10 +12226,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateSubpropertyEventFilterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.CreateSubpropertyEventFilterRequest):
             request = analytics_admin.CreateSubpropertyEventFilterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12549,8 +12302,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12558,10 +12311,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetSubpropertyEventFilterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.GetSubpropertyEventFilterRequest):
             request = analytics_admin.GetSubpropertyEventFilterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12635,8 +12386,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12644,10 +12395,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListSubpropertyEventFiltersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.ListSubpropertyEventFiltersRequest):
             request = analytics_admin.ListSubpropertyEventFiltersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12740,8 +12489,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subproperty_event_filter, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12749,10 +12498,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateSubpropertyEventFilterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.UpdateSubpropertyEventFilterRequest):
             request = analytics_admin.UpdateSubpropertyEventFilterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12828,8 +12575,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12837,10 +12584,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteSubpropertyEventFilterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_admin.DeleteSubpropertyEventFilterRequest):
             request = analytics_admin.DeleteSubpropertyEventFilterRequest(request)
             # If we have keyword arguments corresponding to fields on the

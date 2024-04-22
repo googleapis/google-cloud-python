@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -79,7 +81,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -109,7 +110,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -129,15 +130,18 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -147,11 +151,11 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -177,7 +181,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -217,7 +221,9 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -4378,6 +4384,691 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_subproperty_event_filter"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.get_account: gapic_v1.method_async.wrap_method(
+                self.get_account,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_accounts: gapic_v1.method_async.wrap_method(
+                self.list_accounts,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_account: gapic_v1.method_async.wrap_method(
+                self.delete_account,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_account: gapic_v1.method_async.wrap_method(
+                self.update_account,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.provision_account_ticket: gapic_v1.method_async.wrap_method(
+                self.provision_account_ticket,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_account_summaries: gapic_v1.method_async.wrap_method(
+                self.list_account_summaries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_property: gapic_v1.method_async.wrap_method(
+                self.get_property,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_properties: gapic_v1.method_async.wrap_method(
+                self.list_properties,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_property: gapic_v1.method_async.wrap_method(
+                self.create_property,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_property: gapic_v1.method_async.wrap_method(
+                self.delete_property,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_property: gapic_v1.method_async.wrap_method(
+                self.update_property,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_firebase_link: gapic_v1.method_async.wrap_method(
+                self.create_firebase_link,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_firebase_link: gapic_v1.method_async.wrap_method(
+                self.delete_firebase_link,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_firebase_links: gapic_v1.method_async.wrap_method(
+                self.list_firebase_links,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_global_site_tag: gapic_v1.method_async.wrap_method(
+                self.get_global_site_tag,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_google_ads_link: gapic_v1.method_async.wrap_method(
+                self.create_google_ads_link,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_google_ads_link: gapic_v1.method_async.wrap_method(
+                self.update_google_ads_link,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_google_ads_link: gapic_v1.method_async.wrap_method(
+                self.delete_google_ads_link,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_google_ads_links: gapic_v1.method_async.wrap_method(
+                self.list_google_ads_links,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_data_sharing_settings: gapic_v1.method_async.wrap_method(
+                self.get_data_sharing_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_measurement_protocol_secret: gapic_v1.method_async.wrap_method(
+                self.get_measurement_protocol_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_measurement_protocol_secrets: gapic_v1.method_async.wrap_method(
+                self.list_measurement_protocol_secrets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_measurement_protocol_secret: gapic_v1.method_async.wrap_method(
+                self.create_measurement_protocol_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_measurement_protocol_secret: gapic_v1.method_async.wrap_method(
+                self.delete_measurement_protocol_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_measurement_protocol_secret: gapic_v1.method_async.wrap_method(
+                self.update_measurement_protocol_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.acknowledge_user_data_collection: gapic_v1.method_async.wrap_method(
+                self.acknowledge_user_data_collection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_sk_ad_network_conversion_value_schema: gapic_v1.method_async.wrap_method(
+                self.get_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_sk_ad_network_conversion_value_schema: gapic_v1.method_async.wrap_method(
+                self.create_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_sk_ad_network_conversion_value_schema: gapic_v1.method_async.wrap_method(
+                self.delete_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_sk_ad_network_conversion_value_schema: gapic_v1.method_async.wrap_method(
+                self.update_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sk_ad_network_conversion_value_schemas: gapic_v1.method_async.wrap_method(
+                self.list_sk_ad_network_conversion_value_schemas,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search_change_history_events: gapic_v1.method_async.wrap_method(
+                self.search_change_history_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_google_signals_settings: gapic_v1.method_async.wrap_method(
+                self.get_google_signals_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_google_signals_settings: gapic_v1.method_async.wrap_method(
+                self.update_google_signals_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_conversion_event: gapic_v1.method_async.wrap_method(
+                self.create_conversion_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_conversion_event: gapic_v1.method_async.wrap_method(
+                self.update_conversion_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_conversion_event: gapic_v1.method_async.wrap_method(
+                self.get_conversion_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_conversion_event: gapic_v1.method_async.wrap_method(
+                self.delete_conversion_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_conversion_events: gapic_v1.method_async.wrap_method(
+                self.list_conversion_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_display_video360_advertiser_link: gapic_v1.method_async.wrap_method(
+                self.get_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_display_video360_advertiser_links: gapic_v1.method_async.wrap_method(
+                self.list_display_video360_advertiser_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_display_video360_advertiser_link: gapic_v1.method_async.wrap_method(
+                self.create_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_display_video360_advertiser_link: gapic_v1.method_async.wrap_method(
+                self.delete_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_display_video360_advertiser_link: gapic_v1.method_async.wrap_method(
+                self.update_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_display_video360_advertiser_link_proposal: gapic_v1.method_async.wrap_method(
+                self.get_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_display_video360_advertiser_link_proposals: gapic_v1.method_async.wrap_method(
+                self.list_display_video360_advertiser_link_proposals,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_display_video360_advertiser_link_proposal: gapic_v1.method_async.wrap_method(
+                self.create_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_display_video360_advertiser_link_proposal: gapic_v1.method_async.wrap_method(
+                self.delete_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.approve_display_video360_advertiser_link_proposal: gapic_v1.method_async.wrap_method(
+                self.approve_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_display_video360_advertiser_link_proposal: gapic_v1.method_async.wrap_method(
+                self.cancel_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_custom_dimension: gapic_v1.method_async.wrap_method(
+                self.create_custom_dimension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_custom_dimension: gapic_v1.method_async.wrap_method(
+                self.update_custom_dimension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_custom_dimensions: gapic_v1.method_async.wrap_method(
+                self.list_custom_dimensions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.archive_custom_dimension: gapic_v1.method_async.wrap_method(
+                self.archive_custom_dimension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_custom_dimension: gapic_v1.method_async.wrap_method(
+                self.get_custom_dimension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_custom_metric: gapic_v1.method_async.wrap_method(
+                self.create_custom_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_custom_metric: gapic_v1.method_async.wrap_method(
+                self.update_custom_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_custom_metrics: gapic_v1.method_async.wrap_method(
+                self.list_custom_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.archive_custom_metric: gapic_v1.method_async.wrap_method(
+                self.archive_custom_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_custom_metric: gapic_v1.method_async.wrap_method(
+                self.get_custom_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_data_retention_settings: gapic_v1.method_async.wrap_method(
+                self.get_data_retention_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_data_retention_settings: gapic_v1.method_async.wrap_method(
+                self.update_data_retention_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_data_stream: gapic_v1.method_async.wrap_method(
+                self.create_data_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_data_stream: gapic_v1.method_async.wrap_method(
+                self.delete_data_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_data_stream: gapic_v1.method_async.wrap_method(
+                self.update_data_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_data_streams: gapic_v1.method_async.wrap_method(
+                self.list_data_streams,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_data_stream: gapic_v1.method_async.wrap_method(
+                self.get_data_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_audience: gapic_v1.method_async.wrap_method(
+                self.get_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_audiences: gapic_v1.method_async.wrap_method(
+                self.list_audiences,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_audience: gapic_v1.method_async.wrap_method(
+                self.create_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_audience: gapic_v1.method_async.wrap_method(
+                self.update_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.archive_audience: gapic_v1.method_async.wrap_method(
+                self.archive_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_search_ads360_link: gapic_v1.method_async.wrap_method(
+                self.get_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_search_ads360_links: gapic_v1.method_async.wrap_method(
+                self.list_search_ads360_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_search_ads360_link: gapic_v1.method_async.wrap_method(
+                self.create_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_search_ads360_link: gapic_v1.method_async.wrap_method(
+                self.delete_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_search_ads360_link: gapic_v1.method_async.wrap_method(
+                self.update_search_ads360_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_attribution_settings: gapic_v1.method_async.wrap_method(
+                self.get_attribution_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_attribution_settings: gapic_v1.method_async.wrap_method(
+                self.update_attribution_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_access_report: gapic_v1.method_async.wrap_method(
+                self.run_access_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_access_binding: gapic_v1.method_async.wrap_method(
+                self.create_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_access_binding: gapic_v1.method_async.wrap_method(
+                self.get_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_access_binding: gapic_v1.method_async.wrap_method(
+                self.update_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_access_binding: gapic_v1.method_async.wrap_method(
+                self.delete_access_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_access_bindings: gapic_v1.method_async.wrap_method(
+                self.list_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_access_bindings: gapic_v1.method_async.wrap_method(
+                self.batch_create_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_get_access_bindings: gapic_v1.method_async.wrap_method(
+                self.batch_get_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_access_bindings: gapic_v1.method_async.wrap_method(
+                self.batch_update_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_access_bindings: gapic_v1.method_async.wrap_method(
+                self.batch_delete_access_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_expanded_data_set: gapic_v1.method_async.wrap_method(
+                self.get_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_expanded_data_sets: gapic_v1.method_async.wrap_method(
+                self.list_expanded_data_sets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_expanded_data_set: gapic_v1.method_async.wrap_method(
+                self.create_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_expanded_data_set: gapic_v1.method_async.wrap_method(
+                self.update_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_expanded_data_set: gapic_v1.method_async.wrap_method(
+                self.delete_expanded_data_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_channel_group: gapic_v1.method_async.wrap_method(
+                self.get_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channel_groups: gapic_v1.method_async.wrap_method(
+                self.list_channel_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_group: gapic_v1.method_async.wrap_method(
+                self.create_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_channel_group: gapic_v1.method_async.wrap_method(
+                self.update_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel_group: gapic_v1.method_async.wrap_method(
+                self.delete_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_automated_ga4_configuration_opt_out: gapic_v1.method_async.wrap_method(
+                self.set_automated_ga4_configuration_opt_out,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_automated_ga4_configuration_opt_out: gapic_v1.method_async.wrap_method(
+                self.fetch_automated_ga4_configuration_opt_out,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_big_query_link: gapic_v1.method_async.wrap_method(
+                self.get_big_query_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_big_query_links: gapic_v1.method_async.wrap_method(
+                self.list_big_query_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_enhanced_measurement_settings: gapic_v1.method_async.wrap_method(
+                self.get_enhanced_measurement_settings,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_enhanced_measurement_settings: gapic_v1.method_async.wrap_method(
+                self.update_enhanced_measurement_settings,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_connected_site_tag: gapic_v1.method_async.wrap_method(
+                self.create_connected_site_tag,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_connected_site_tag: gapic_v1.method_async.wrap_method(
+                self.delete_connected_site_tag,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_connected_site_tags: gapic_v1.method_async.wrap_method(
+                self.list_connected_site_tags,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_connected_ga4_property: gapic_v1.method_async.wrap_method(
+                self.fetch_connected_ga4_property,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_ad_sense_link: gapic_v1.method_async.wrap_method(
+                self.get_ad_sense_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_ad_sense_link: gapic_v1.method_async.wrap_method(
+                self.create_ad_sense_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_ad_sense_link: gapic_v1.method_async.wrap_method(
+                self.delete_ad_sense_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_ad_sense_links: gapic_v1.method_async.wrap_method(
+                self.list_ad_sense_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_event_create_rule: gapic_v1.method_async.wrap_method(
+                self.get_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_event_create_rules: gapic_v1.method_async.wrap_method(
+                self.list_event_create_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_event_create_rule: gapic_v1.method_async.wrap_method(
+                self.create_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_event_create_rule: gapic_v1.method_async.wrap_method(
+                self.update_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_event_create_rule: gapic_v1.method_async.wrap_method(
+                self.delete_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_data_redaction_settings: gapic_v1.method_async.wrap_method(
+                self.update_data_redaction_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_data_redaction_settings: gapic_v1.method_async.wrap_method(
+                self.get_data_redaction_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_calculated_metric: gapic_v1.method_async.wrap_method(
+                self.get_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_calculated_metric: gapic_v1.method_async.wrap_method(
+                self.create_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_calculated_metrics: gapic_v1.method_async.wrap_method(
+                self.list_calculated_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_calculated_metric: gapic_v1.method_async.wrap_method(
+                self.update_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_calculated_metric: gapic_v1.method_async.wrap_method(
+                self.delete_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_rollup_property: gapic_v1.method_async.wrap_method(
+                self.create_rollup_property,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_rollup_property_source_link: gapic_v1.method_async.wrap_method(
+                self.get_rollup_property_source_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_rollup_property_source_links: gapic_v1.method_async.wrap_method(
+                self.list_rollup_property_source_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_rollup_property_source_link: gapic_v1.method_async.wrap_method(
+                self.create_rollup_property_source_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_rollup_property_source_link: gapic_v1.method_async.wrap_method(
+                self.delete_rollup_property_source_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_subproperty: gapic_v1.method_async.wrap_method(
+                self.create_subproperty,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_subproperty_event_filter: gapic_v1.method_async.wrap_method(
+                self.create_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_subproperty_event_filter: gapic_v1.method_async.wrap_method(
+                self.get_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_subproperty_event_filters: gapic_v1.method_async.wrap_method(
+                self.list_subproperty_event_filters,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_subproperty_event_filter: gapic_v1.method_async.wrap_method(
+                self.update_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_subproperty_event_filter: gapic_v1.method_async.wrap_method(
+                self.delete_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()

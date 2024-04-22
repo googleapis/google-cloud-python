@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -77,7 +79,6 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -107,7 +108,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -127,15 +128,18 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -145,11 +149,11 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -175,7 +179,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -215,7 +219,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -1206,6 +1212,375 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 response_deserializer=thread_read_state.ThreadReadState.deserialize,
             )
         return self._stubs["get_thread_read_state"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.create_message: gapic_v1.method_async.wrap_method(
+                self.create_message,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_messages: gapic_v1.method_async.wrap_method(
+                self.list_messages,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_memberships: gapic_v1.method_async.wrap_method(
+                self.list_memberships,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_membership: gapic_v1.method_async.wrap_method(
+                self.get_membership,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_message: gapic_v1.method_async.wrap_method(
+                self.get_message,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_message: gapic_v1.method_async.wrap_method(
+                self.update_message,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_message: gapic_v1.method_async.wrap_method(
+                self.delete_message,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_attachment: gapic_v1.method_async.wrap_method(
+                self.get_attachment,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.upload_attachment: gapic_v1.method_async.wrap_method(
+                self.upload_attachment,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_spaces: gapic_v1.method_async.wrap_method(
+                self.list_spaces,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_space: gapic_v1.method_async.wrap_method(
+                self.get_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.create_space: gapic_v1.method_async.wrap_method(
+                self.create_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.set_up_space: gapic_v1.method_async.wrap_method(
+                self.set_up_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_space: gapic_v1.method_async.wrap_method(
+                self.update_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_space: gapic_v1.method_async.wrap_method(
+                self.delete_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.complete_import_space: gapic_v1.method_async.wrap_method(
+                self.complete_import_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.find_direct_message: gapic_v1.method_async.wrap_method(
+                self.find_direct_message,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.create_membership: gapic_v1.method_async.wrap_method(
+                self.create_membership,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_membership: gapic_v1.method_async.wrap_method(
+                self.update_membership,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_membership: gapic_v1.method_async.wrap_method(
+                self.delete_membership,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.create_reaction: gapic_v1.method_async.wrap_method(
+                self.create_reaction,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_reactions: gapic_v1.method_async.wrap_method(
+                self.list_reactions,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_reaction: gapic_v1.method_async.wrap_method(
+                self.delete_reaction,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_space_read_state: gapic_v1.method_async.wrap_method(
+                self.get_space_read_state,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_space_read_state: gapic_v1.method_async.wrap_method(
+                self.update_space_read_state,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_thread_read_state: gapic_v1.method_async.wrap_method(
+                self.get_thread_read_state,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()

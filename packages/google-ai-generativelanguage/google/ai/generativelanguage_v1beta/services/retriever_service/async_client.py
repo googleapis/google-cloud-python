@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -204,7 +205,11 @@ class RetrieverServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RetrieverServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, RetrieverServiceTransport, Callable[..., RetrieverServiceTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -216,9 +221,11 @@ class RetrieverServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.RetrieverServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RetrieverServiceTransport,Callable[..., RetrieverServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RetrieverServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -319,8 +326,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([corpus])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -328,7 +335,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.CreateCorpusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.CreateCorpusRequest):
+            request = retriever_service.CreateCorpusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -337,20 +347,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_corpus,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_corpus
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -427,8 +426,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -436,7 +435,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.GetCorpusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.GetCorpusRequest):
+            request = retriever_service.GetCorpusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -445,20 +447,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_corpus,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_corpus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -545,8 +536,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([corpus, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -554,7 +545,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.UpdateCorpusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.UpdateCorpusRequest):
+            request = retriever_service.UpdateCorpusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -565,20 +559,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_corpus,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_corpus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -653,8 +636,8 @@ class RetrieverServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -662,7 +645,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.DeleteCorpusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.DeleteCorpusRequest):
+            request = retriever_service.DeleteCorpusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -671,20 +657,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_corpus,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_corpus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -759,24 +734,16 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = retriever_service.ListCorporaRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.ListCorporaRequest):
+            request = retriever_service.ListCorporaRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_corpora,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_corpora
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -854,24 +821,16 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = retriever_service.QueryCorpusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.QueryCorpusRequest):
+            request = retriever_service.QueryCorpusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_corpus,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_corpus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -960,8 +919,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, document])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -969,7 +928,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.CreateDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.CreateDocumentRequest):
+            request = retriever_service.CreateDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -980,20 +942,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_document,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1076,8 +1027,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1085,7 +1036,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.GetDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.GetDocumentRequest):
+            request = retriever_service.GetDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1094,20 +1048,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_document,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1195,8 +1138,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1204,7 +1147,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.UpdateDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.UpdateDocumentRequest):
+            request = retriever_service.UpdateDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1215,20 +1161,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_document,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1304,8 +1239,8 @@ class RetrieverServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1313,7 +1248,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.DeleteDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.DeleteDocumentRequest):
+            request = retriever_service.DeleteDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1322,20 +1260,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_document,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1419,8 +1346,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1428,7 +1355,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.ListDocumentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.ListDocumentsRequest):
+            request = retriever_service.ListDocumentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1437,20 +1367,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_documents,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_documents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1534,24 +1453,16 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = retriever_service.QueryDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.QueryDocumentRequest):
+            request = retriever_service.QueryDocumentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_document,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1646,8 +1557,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, chunk])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1655,7 +1566,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.CreateChunkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.CreateChunkRequest):
+            request = retriever_service.CreateChunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1666,20 +1580,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_chunk,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_chunk
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1759,15 +1662,16 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = retriever_service.BatchCreateChunksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.BatchCreateChunksRequest):
+            request = retriever_service.BatchCreateChunksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_create_chunks,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_chunks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1853,8 +1757,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1862,7 +1766,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.GetChunkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.GetChunkRequest):
+            request = retriever_service.GetChunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1871,20 +1778,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_chunk,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_chunk
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1977,8 +1873,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([chunk, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1986,7 +1882,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.UpdateChunkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.UpdateChunkRequest):
+            request = retriever_service.UpdateChunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1997,20 +1896,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_chunk,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_chunk
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2091,15 +1979,16 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = retriever_service.BatchUpdateChunksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.BatchUpdateChunksRequest):
+            request = retriever_service.BatchUpdateChunksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_update_chunks,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_update_chunks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2173,8 +2062,8 @@ class RetrieverServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2182,7 +2071,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.DeleteChunkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.DeleteChunkRequest):
+            request = retriever_service.DeleteChunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2191,20 +2083,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_chunk,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_chunk
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2271,15 +2152,16 @@ class RetrieverServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = retriever_service.BatchDeleteChunksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.BatchDeleteChunksRequest):
+            request = retriever_service.BatchDeleteChunksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_delete_chunks,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_delete_chunks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2363,8 +2245,8 @@ class RetrieverServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2372,7 +2254,10 @@ class RetrieverServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = retriever_service.ListChunksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, retriever_service.ListChunksRequest):
+            request = retriever_service.ListChunksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2381,11 +2266,9 @@ class RetrieverServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_chunks,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_chunks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

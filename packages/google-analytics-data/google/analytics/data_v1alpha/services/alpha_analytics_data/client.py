@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -551,7 +552,13 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AlphaAnalyticsDataTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                AlphaAnalyticsDataTransport,
+                Callable[..., AlphaAnalyticsDataTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -563,9 +570,11 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AlphaAnalyticsDataTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AlphaAnalyticsDataTransport,Callable[..., AlphaAnalyticsDataTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AlphaAnalyticsDataTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -674,8 +683,16 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AlphaAnalyticsDataTransport],
+                Callable[..., AlphaAnalyticsDataTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AlphaAnalyticsDataTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -759,10 +776,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.RunFunnelReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.RunFunnelReportRequest):
             request = analytics_data_api.RunFunnelReportRequest(request)
 
@@ -897,8 +912,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, audience_list])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -906,10 +921,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.CreateAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.CreateAudienceListRequest):
             request = analytics_data_api.CreateAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1031,8 +1044,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 A list of users in an audience list.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1040,10 +1053,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.QueryAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.QueryAudienceListRequest):
             request = analytics_data_api.QueryAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1158,8 +1169,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1167,10 +1178,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.SheetExportAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.SheetExportAudienceListRequest):
             request = analytics_data_api.SheetExportAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1282,8 +1291,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1291,10 +1300,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.GetAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.GetAudienceListRequest):
             request = analytics_data_api.GetAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1408,8 +1415,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1417,10 +1424,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.ListAudienceListsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.ListAudienceListsRequest):
             request = analytics_data_api.ListAudienceListsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1562,8 +1567,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, recurring_audience_list])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1571,10 +1576,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.CreateRecurringAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_data_api.CreateRecurringAudienceListRequest
         ):
@@ -1693,8 +1696,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1702,10 +1705,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.GetRecurringAudienceListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analytics_data_api.GetRecurringAudienceListRequest):
             request = analytics_data_api.GetRecurringAudienceListRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1819,8 +1820,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1828,10 +1829,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_data_api.ListRecurringAudienceListsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, analytics_data_api.ListRecurringAudienceListsRequest
         ):
