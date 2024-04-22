@@ -1,2 +1,0 @@
-recursive-include google/cloud/shell *.py
-recursive-include google/cloud/shell_v1 *.py
