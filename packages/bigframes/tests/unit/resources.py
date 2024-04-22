@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 import unittest.mock as mock
 
 import google.auth.credentials
@@ -37,6 +37,7 @@ TEST_SCHEMA = (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
 def create_bigquery_session(
     bqclient: Optional[mock.Mock] = None,
     session_id: str = "abcxyz",
+    table_schema: Sequence[google.cloud.bigquery.SchemaField] = TEST_SCHEMA,
     anonymous_dataset: Optional[google.cloud.bigquery.DatasetReference] = None,
 ) -> bigframes.Session:
     credentials = mock.create_autospec(
@@ -51,7 +52,7 @@ def create_bigquery_session(
         table = mock.create_autospec(google.cloud.bigquery.Table, instance=True)
         table._properties = {}
         type(table).location = mock.PropertyMock(return_value="test-region")
-        type(table).schema = mock.PropertyMock(return_value=TEST_SCHEMA)
+        type(table).schema = mock.PropertyMock(return_value=table_schema)
         bqclient.get_table.return_value = table
 
     if anonymous_dataset is None:
@@ -72,7 +73,7 @@ def create_bigquery_session(
         if query.startswith("SELECT CURRENT_TIMESTAMP()"):
             query_job.result = mock.MagicMock(return_value=[[datetime.datetime.now()]])
         else:
-            type(query_job).schema = mock.PropertyMock(return_value=TEST_SCHEMA)
+            type(query_job).schema = mock.PropertyMock(return_value=table_schema)
 
         return query_job
 

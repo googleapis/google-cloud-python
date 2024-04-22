@@ -708,13 +708,15 @@ class Session(
                 f"Current session is in {self._location} but dataset '{table.project}.{table.dataset_id}' is located in {table.location}"
             )
 
-        # TODO(b/305264153): Use public properties to fetch primary keys once
-        # added to google-cloud-bigquery.
-        primary_keys = (
-            table._properties.get("tableConstraints", {})
-            .get("primaryKey", {})
-            .get("columns")
-        )
+        primary_keys = None
+        if (
+            (table_constraints := getattr(table, "table_constraints", None)) is not None
+            and (primary_key := table_constraints.primary_key) is not None
+            # This will be False for either None or empty list.
+            # We want primary_keys = None if no primary keys are set.
+            and (columns := primary_key.columns)
+        ):
+            primary_keys = columns
 
         job_config = bigquery.QueryJobConfig()
         job_config.labels["bigframes-api"] = api_name
@@ -777,12 +779,13 @@ class Session(
             query, default_project=self.bqclient.project
         )
 
-        (
-            table_expression,
-            total_ordering_cols,
-        ) = self._get_snapshot_sql_and_primary_key(
+        (table_expression, primary_keys,) = self._get_snapshot_sql_and_primary_key(
             table_ref, api_name=api_name, use_cache=use_cache
         )
+        total_ordering_cols = primary_keys
+
+        if not index_col and primary_keys is not None:
+            index_col = primary_keys
 
         for key in columns:
             if key not in table_expression.columns:

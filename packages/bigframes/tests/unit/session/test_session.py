@@ -19,9 +19,11 @@ from unittest import mock
 
 import google.api_core.exceptions
 import google.cloud.bigquery
+import google.cloud.bigquery.table
 import pytest
 
 import bigframes
+import bigframes.exceptions
 
 from .. import resources
 
@@ -48,6 +50,43 @@ def test_read_gbq_cached_table():
         df = session.read_gbq("my-project.my_dataset.my_table")
 
     assert "1999-01-02T03:04:05.678901" in df.sql
+
+
+def test_read_gbq_clustered_table_ok_default_index_with_primary_key():
+    """If a primary key is set on the table, we use that as the index column
+    by default, no error should be raised in this case.
+
+    See internal issue 335727141.
+    """
+    table = google.cloud.bigquery.Table("my-project.my_dataset.my_table")
+    table.clustering_fields = ["col1", "col2"]
+    table.schema = (
+        google.cloud.bigquery.SchemaField("pk_1", "INT64"),
+        google.cloud.bigquery.SchemaField("pk_2", "INT64"),
+        google.cloud.bigquery.SchemaField("col_1", "INT64"),
+        google.cloud.bigquery.SchemaField("col_2", "INT64"),
+    )
+
+    # TODO(b/305264153): use setter for table_constraints in client library
+    # when available.
+    table._properties["tableConstraints"] = {
+        "primaryKey": {
+            "columns": ["pk_1", "pk_2"],
+        },
+    }
+    bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
+    bqclient.project = "test-project"
+    bqclient.get_table.return_value = table
+    session = resources.create_bigquery_session(
+        bqclient=bqclient, table_schema=table.schema
+    )
+    table._properties["location"] = session._location
+
+    df = session.read_gbq("my-project.my_dataset.my_table")
+
+    # There should be no analytic operators to prevent row filtering pushdown.
+    assert "OVER" not in df.sql
+    assert tuple(df.index.names) == ("pk_1", "pk_2")
 
 
 @pytest.mark.parametrize(
