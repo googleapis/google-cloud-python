@@ -1,0 +1,2 @@
+recursive-include google/cloud/metastore *.py
+recursive-include google/cloud/metastore_v1beta *.py
