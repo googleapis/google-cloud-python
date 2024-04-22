@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Iterable,
     Iterator,
@@ -641,7 +642,9 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ParticipantsTransport]] = None,
+        transport: Optional[
+            Union[str, ParticipantsTransport, Callable[..., ParticipantsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -653,9 +656,11 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ParticipantsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ParticipantsTransport,Callable[..., ParticipantsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ParticipantsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -761,8 +766,15 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ParticipantsTransport], Callable[..., ParticipantsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ParticipantsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -842,8 +854,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, participant])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -851,10 +863,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcd_participant.CreateParticipantRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcd_participant.CreateParticipantRequest):
             request = gcd_participant.CreateParticipantRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -949,8 +959,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -958,10 +968,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a participant.GetParticipantRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, participant.GetParticipantRequest):
             request = participant.GetParticipantRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1060,8 +1068,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1069,10 +1077,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a participant.ListParticipantsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, participant.ListParticipantsRequest):
             request = participant.ListParticipantsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1179,8 +1185,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([participant, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1188,10 +1194,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcd_participant.UpdateParticipantRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcd_participant.UpdateParticipantRequest):
             request = gcd_participant.UpdateParticipantRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1313,8 +1317,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([participant, text_input, event_input])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1322,10 +1326,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcd_participant.AnalyzeContentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcd_participant.AnalyzeContentRequest):
             request = gcd_participant.AnalyzeContentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1594,8 +1596,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1603,10 +1605,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a participant.SuggestArticlesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, participant.SuggestArticlesRequest):
             request = participant.SuggestArticlesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1701,8 +1701,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1710,10 +1710,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a participant.SuggestFaqAnswersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, participant.SuggestFaqAnswersRequest):
             request = participant.SuggestFaqAnswersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1808,8 +1806,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1817,10 +1815,8 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a participant.SuggestSmartRepliesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, participant.SuggestSmartRepliesRequest):
             request = participant.SuggestSmartRepliesRequest(request)
             # If we have keyword arguments corresponding to fields on the

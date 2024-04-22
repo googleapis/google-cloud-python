@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -585,7 +586,13 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ClusterControllerTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                ClusterControllerTransport,
+                Callable[..., ClusterControllerTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -597,9 +604,11 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ClusterControllerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ClusterControllerTransport,Callable[..., ClusterControllerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ClusterControllerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -708,8 +717,16 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ClusterControllerTransport],
+                Callable[..., ClusterControllerTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ClusterControllerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -811,8 +828,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, cluster])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -820,10 +837,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.CreateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.CreateClusterRequest):
             request = clusters.CreateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1039,8 +1054,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project_id, region, cluster_name, cluster, update_mask]
         )
@@ -1050,10 +1065,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.UpdateClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.UpdateClusterRequest):
             request = clusters.UpdateClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1167,10 +1180,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.StopClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.StopClusterRequest):
             request = clusters.StopClusterRequest(request)
 
@@ -1272,10 +1283,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.StartClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.StartClusterRequest):
             request = clusters.StartClusterRequest(request)
 
@@ -1411,8 +1420,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, cluster_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1420,10 +1429,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.DeleteClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.DeleteClusterRequest):
             request = clusters.DeleteClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1554,8 +1561,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, cluster_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1563,10 +1570,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.GetClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.GetClusterRequest):
             request = clusters.GetClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1713,8 +1718,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1722,10 +1727,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.ListClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.ListClustersRequest):
             request = clusters.ListClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1867,8 +1870,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, cluster_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1876,10 +1879,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a clusters.DiagnoseClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, clusters.DiagnoseClusterRequest):
             request = clusters.DiagnoseClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the

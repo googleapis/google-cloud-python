@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -237,7 +238,13 @@ class DataMigrationServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataMigrationServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                DataMigrationServiceTransport,
+                Callable[..., DataMigrationServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -249,9 +256,11 @@ class DataMigrationServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataMigrationServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataMigrationServiceTransport,Callable[..., DataMigrationServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataMigrationServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -360,8 +369,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -369,7 +378,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.ListMigrationJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ListMigrationJobsRequest):
+            request = clouddms.ListMigrationJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -378,11 +390,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_migration_jobs,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_migration_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -474,8 +484,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -483,7 +493,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.GetMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GetMigrationJobRequest):
+            request = clouddms.GetMigrationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -492,11 +505,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -615,8 +626,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, migration_job, migration_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -624,7 +635,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.CreateMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.CreateMigrationJobRequest):
+            request = clouddms.CreateMigrationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -637,11 +651,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -757,8 +769,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([migration_job, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -766,7 +778,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.UpdateMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.UpdateMigrationJobRequest):
+            request = clouddms.UpdateMigrationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -777,11 +792,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -888,8 +901,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -897,7 +910,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.DeleteMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.DeleteMigrationJobRequest):
+            request = clouddms.DeleteMigrationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -906,11 +922,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1000,15 +1014,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.StartMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.StartMigrationJobRequest):
+            request = clouddms.StartMigrationJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1098,15 +1113,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.StopMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.StopMigrationJobRequest):
+            request = clouddms.StopMigrationJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.stop_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1197,15 +1213,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.ResumeMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ResumeMigrationJobRequest):
+            request = clouddms.ResumeMigrationJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1297,15 +1314,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.PromoteMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.PromoteMigrationJobRequest):
+            request = clouddms.PromoteMigrationJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.promote_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.promote_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1397,15 +1415,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.VerifyMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.VerifyMigrationJobRequest):
+            request = clouddms.VerifyMigrationJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.verify_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.verify_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1497,15 +1516,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.RestartMigrationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.RestartMigrationJobRequest):
+            request = clouddms.RestartMigrationJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restart_migration_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restart_migration_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1593,15 +1613,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.GenerateSshScriptRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GenerateSshScriptRequest):
+            request = clouddms.GenerateSshScriptRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_ssh_script,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_ssh_script
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1681,15 +1702,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.GenerateTcpProxyScriptRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GenerateTcpProxyScriptRequest):
+            request = clouddms.GenerateTcpProxyScriptRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_tcp_proxy_script,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_tcp_proxy_script
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1779,8 +1801,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1788,7 +1810,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.ListConnectionProfilesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ListConnectionProfilesRequest):
+            request = clouddms.ListConnectionProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1797,11 +1822,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_connection_profiles,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_connection_profiles
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1891,8 +1914,8 @@ class DataMigrationServiceAsyncClient:
                 A connection profile definition.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1900,7 +1923,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.GetConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GetConnectionProfileRequest):
+            request = clouddms.GetConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1909,11 +1935,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2028,8 +2052,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, connection_profile, connection_profile_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2037,7 +2061,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.CreateConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.CreateConnectionProfileRequest):
+            request = clouddms.CreateConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2050,11 +2077,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2169,8 +2194,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([connection_profile, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2178,7 +2203,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.UpdateConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.UpdateConnectionProfileRequest):
+            request = clouddms.UpdateConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2189,11 +2217,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2303,8 +2329,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2312,7 +2338,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.DeleteConnectionProfileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.DeleteConnectionProfileRequest):
+            request = clouddms.DeleteConnectionProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2321,11 +2350,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_connection_profile,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_connection_profile
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2446,8 +2473,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, private_connection, private_connection_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2455,7 +2482,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.CreatePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.CreatePrivateConnectionRequest):
+            request = clouddms.CreatePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2468,11 +2498,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_private_connection,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2564,8 +2592,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2573,7 +2601,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.GetPrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GetPrivateConnectionRequest):
+            request = clouddms.GetPrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2582,11 +2613,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_private_connection,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2675,8 +2704,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2684,7 +2713,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.ListPrivateConnectionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ListPrivateConnectionsRequest):
+            request = clouddms.ListPrivateConnectionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2693,11 +2725,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_private_connections,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_private_connections
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2804,8 +2834,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2813,7 +2843,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.DeletePrivateConnectionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.DeletePrivateConnectionRequest):
+            request = clouddms.DeletePrivateConnectionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2822,11 +2855,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_private_connection,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_private_connection
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2917,8 +2948,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2926,7 +2957,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.GetConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GetConversionWorkspaceRequest):
+            request = clouddms.GetConversionWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2935,11 +2969,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3028,8 +3060,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3037,7 +3069,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.ListConversionWorkspacesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ListConversionWorkspacesRequest):
+            request = clouddms.ListConversionWorkspacesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3046,11 +3081,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_conversion_workspaces,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_conversion_workspaces
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3179,8 +3212,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, conversion_workspace, conversion_workspace_id]
         )
@@ -3190,7 +3223,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.CreateConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.CreateConversionWorkspaceRequest):
+            request = clouddms.CreateConversionWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3203,11 +3239,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3326,8 +3360,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversion_workspace, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3335,7 +3369,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.UpdateConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.UpdateConversionWorkspaceRequest):
+            request = clouddms.UpdateConversionWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3346,11 +3383,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3459,8 +3494,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3468,7 +3503,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.DeleteConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.DeleteConversionWorkspaceRequest):
+            request = clouddms.DeleteConversionWorkspaceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3477,11 +3515,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3602,8 +3638,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, mapping_rule, mapping_rule_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3611,7 +3647,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.CreateMappingRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.CreateMappingRuleRequest):
+            request = clouddms.CreateMappingRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3624,11 +3663,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_mapping_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_mapping_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3702,8 +3739,8 @@ class DataMigrationServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3711,7 +3748,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.DeleteMappingRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.DeleteMappingRuleRequest):
+            request = clouddms.DeleteMappingRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3720,11 +3760,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_mapping_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_mapping_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3810,8 +3848,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3819,7 +3857,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.ListMappingRulesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ListMappingRulesRequest):
+            request = clouddms.ListMappingRulesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3828,11 +3869,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_mapping_rules,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_mapping_rules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3937,8 +3976,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3946,7 +3985,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.GetMappingRuleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.GetMappingRuleRequest):
+            request = clouddms.GetMappingRuleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3955,11 +3997,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_mapping_rule,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_mapping_rule
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4042,15 +4082,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.SeedConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.SeedConversionWorkspaceRequest):
+            request = clouddms.SeedConversionWorkspaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.seed_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.seed_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4149,15 +4190,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.ImportMappingRulesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ImportMappingRulesRequest):
+            request = clouddms.ImportMappingRulesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_mapping_rules,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_mapping_rules
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4249,15 +4291,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.ConvertConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ConvertConversionWorkspaceRequest):
+            request = clouddms.ConvertConversionWorkspaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.convert_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.convert_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4350,15 +4393,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.CommitConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.CommitConversionWorkspaceRequest):
+            request = clouddms.CommitConversionWorkspaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.commit_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.commit_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4451,15 +4495,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.RollbackConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.RollbackConversionWorkspaceRequest):
+            request = clouddms.RollbackConversionWorkspaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4551,15 +4596,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.ApplyConversionWorkspaceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.ApplyConversionWorkspaceRequest):
+            request = clouddms.ApplyConversionWorkspaceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.apply_conversion_workspace,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.apply_conversion_workspace
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4653,15 +4699,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.DescribeDatabaseEntitiesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.DescribeDatabaseEntitiesRequest):
+            request = clouddms.DescribeDatabaseEntitiesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.describe_database_entities,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.describe_database_entities
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4753,15 +4800,16 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.SearchBackgroundJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.SearchBackgroundJobsRequest):
+            request = clouddms.SearchBackgroundJobsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_background_jobs,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_background_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4843,15 +4891,18 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = clouddms.DescribeConversionWorkspaceRevisionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, clouddms.DescribeConversionWorkspaceRevisionsRequest
+        ):
+            request = clouddms.DescribeConversionWorkspaceRevisionsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.describe_conversion_workspace_revisions,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.describe_conversion_workspace_revisions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4943,8 +4994,8 @@ class DataMigrationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4952,7 +5003,10 @@ class DataMigrationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = clouddms.FetchStaticIpsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, clouddms.FetchStaticIpsRequest):
+            request = clouddms.FetchStaticIpsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4961,11 +5015,9 @@ class DataMigrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_static_ips,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_static_ips
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

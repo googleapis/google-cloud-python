@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -535,7 +536,9 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, EntityTypesTransport]] = None,
+        transport: Optional[
+            Union[str, EntityTypesTransport, Callable[..., EntityTypesTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -547,9 +550,11 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, EntityTypesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,EntityTypesTransport,Callable[..., EntityTypesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the EntityTypesTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -655,8 +660,15 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[EntityTypesTransport], Callable[..., EntityTypesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., EntityTypesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -748,8 +760,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -757,10 +769,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.ListEntityTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.ListEntityTypesRequest):
             request = entity_type.ListEntityTypesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -891,8 +901,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -900,10 +910,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.GetEntityTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.GetEntityTypeRequest):
             request = entity_type.GetEntityTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1040,8 +1048,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_type, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1049,10 +1057,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcd_entity_type.CreateEntityTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcd_entity_type.CreateEntityTypeRequest):
             request = gcd_entity_type.CreateEntityTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1187,8 +1193,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([entity_type, language_code, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1196,10 +1202,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcd_entity_type.UpdateEntityTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcd_entity_type.UpdateEntityTypeRequest):
             request = gcd_entity_type.UpdateEntityTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1296,8 +1300,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1305,10 +1309,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.DeleteEntityTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.DeleteEntityTypeRequest):
             request = entity_type.DeleteEntityTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1413,10 +1415,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.BatchUpdateEntityTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.BatchUpdateEntityTypesRequest):
             request = entity_type.BatchUpdateEntityTypesRequest(request)
 
@@ -1557,8 +1557,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_type_names])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1566,10 +1566,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.BatchDeleteEntityTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.BatchDeleteEntityTypesRequest):
             request = entity_type.BatchDeleteEntityTypesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1726,8 +1724,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entities, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1735,10 +1733,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.BatchCreateEntitiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.BatchCreateEntitiesRequest):
             request = entity_type.BatchCreateEntitiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1899,8 +1895,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entities, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1908,10 +1904,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.BatchUpdateEntitiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.BatchUpdateEntitiesRequest):
             request = entity_type.BatchUpdateEntitiesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2068,8 +2062,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_values, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2077,10 +2071,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a entity_type.BatchDeleteEntitiesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, entity_type.BatchDeleteEntitiesRequest):
             request = entity_type.BatchDeleteEntitiesRequest(request)
             # If we have keyword arguments corresponding to fields on the

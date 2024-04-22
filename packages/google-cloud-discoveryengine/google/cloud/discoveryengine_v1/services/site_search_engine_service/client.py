@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -565,7 +566,13 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SiteSearchEngineServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                SiteSearchEngineServiceTransport,
+                Callable[..., SiteSearchEngineServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -577,9 +584,11 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SiteSearchEngineServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SiteSearchEngineServiceTransport,Callable[..., SiteSearchEngineServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SiteSearchEngineServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -690,8 +699,16 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SiteSearchEngineServiceTransport],
+                Callable[..., SiteSearchEngineServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SiteSearchEngineServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -776,8 +793,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -785,10 +802,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.GetSiteSearchEngineRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, site_search_engine_service.GetSiteSearchEngineRequest
         ):
@@ -909,8 +924,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target_site])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -918,10 +933,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.CreateTargetSiteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, site_search_engine_service.CreateTargetSiteRequest):
             request = site_search_engine_service.CreateTargetSiteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1032,10 +1045,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.BatchCreateTargetSitesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, site_search_engine_service.BatchCreateTargetSitesRequest
         ):
@@ -1150,8 +1161,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1159,10 +1170,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.GetTargetSiteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, site_search_engine_service.GetTargetSiteRequest):
             request = site_search_engine_service.GetTargetSiteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1276,8 +1285,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([target_site])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1285,10 +1294,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.UpdateTargetSiteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, site_search_engine_service.UpdateTargetSiteRequest):
             request = site_search_engine_service.UpdateTargetSiteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1420,8 +1427,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1429,10 +1436,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.DeleteTargetSiteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, site_search_engine_service.DeleteTargetSiteRequest):
             request = site_search_engine_service.DeleteTargetSiteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1549,8 +1554,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1558,10 +1563,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.ListTargetSitesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, site_search_engine_service.ListTargetSitesRequest):
             request = site_search_engine_service.ListTargetSitesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1666,10 +1669,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.EnableAdvancedSiteSearchRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, site_search_engine_service.EnableAdvancedSiteSearchRequest
         ):
@@ -1777,10 +1778,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.DisableAdvancedSiteSearchRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, site_search_engine_service.DisableAdvancedSiteSearchRequest
         ):
@@ -1888,10 +1887,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.RecrawlUrisRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, site_search_engine_service.RecrawlUrisRequest):
             request = site_search_engine_service.RecrawlUrisRequest(request)
 
@@ -1994,10 +1991,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.BatchVerifyTargetSitesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, site_search_engine_service.BatchVerifyTargetSitesRequest
         ):
@@ -2100,10 +2095,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a site_search_engine_service.FetchDomainVerificationStatusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, site_search_engine_service.FetchDomainVerificationStatusRequest
         ):

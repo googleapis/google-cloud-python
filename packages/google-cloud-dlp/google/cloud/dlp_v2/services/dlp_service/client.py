@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -743,7 +744,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DlpServiceTransport]] = None,
+        transport: Optional[
+            Union[str, DlpServiceTransport, Callable[..., DlpServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -755,9 +758,11 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DlpServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DlpServiceTransport,Callable[..., DlpServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DlpServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -863,8 +868,15 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DlpServiceTransport], Callable[..., DlpServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DlpServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -938,10 +950,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 Results of inspecting an item.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.InspectContentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.InspectContentRequest):
             request = dlp.InspectContentRequest(request)
 
@@ -1029,10 +1039,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 Results of redacting an image.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.RedactImageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.RedactImageRequest):
             request = dlp.RedactImageRequest(request)
 
@@ -1120,10 +1128,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeidentifyContentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeidentifyContentRequest):
             request = dlp.DeidentifyContentRequest(request)
 
@@ -1203,10 +1209,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 Results of re-identifying an item.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ReidentifyContentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ReidentifyContentRequest):
             request = dlp.ReidentifyContentRequest(request)
 
@@ -1301,8 +1305,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1310,10 +1314,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListInfoTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListInfoTypesRequest):
             request = dlp.ListInfoTypesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1439,8 +1441,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, inspect_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1448,10 +1450,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CreateInspectTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CreateInspectTemplateRequest):
             request = dlp.CreateInspectTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1570,8 +1570,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, inspect_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1579,10 +1579,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.UpdateInspectTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.UpdateInspectTemplateRequest):
             request = dlp.UpdateInspectTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1689,8 +1687,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1698,10 +1696,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetInspectTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetInspectTemplateRequest):
             request = dlp.GetInspectTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1823,8 +1819,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1832,10 +1828,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListInspectTemplatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListInspectTemplatesRequest):
             request = dlp.ListInspectTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1933,8 +1927,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1942,10 +1936,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeleteInspectTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeleteInspectTemplateRequest):
             request = dlp.DeleteInspectTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2072,8 +2064,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deidentify_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2081,10 +2073,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CreateDeidentifyTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CreateDeidentifyTemplateRequest):
             request = dlp.CreateDeidentifyTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2203,8 +2193,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, deidentify_template, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2212,10 +2202,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.UpdateDeidentifyTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.UpdateDeidentifyTemplateRequest):
             request = dlp.UpdateDeidentifyTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2322,8 +2310,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2331,10 +2319,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetDeidentifyTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetDeidentifyTemplateRequest):
             request = dlp.GetDeidentifyTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2456,8 +2442,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2465,10 +2451,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListDeidentifyTemplatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListDeidentifyTemplatesRequest):
             request = dlp.ListDeidentifyTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2568,8 +2552,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2577,10 +2561,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeleteDeidentifyTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeleteDeidentifyTemplateRequest):
             request = dlp.DeleteDeidentifyTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2704,8 +2686,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job_trigger])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2713,10 +2695,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CreateJobTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CreateJobTriggerRequest):
             request = dlp.CreateJobTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2830,8 +2810,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, job_trigger, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2839,10 +2819,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.UpdateJobTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.UpdateJobTriggerRequest):
             request = dlp.UpdateJobTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2943,8 +2921,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2952,10 +2930,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.HybridInspectJobTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.HybridInspectJobTriggerRequest):
             request = dlp.HybridInspectJobTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3055,8 +3031,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3064,10 +3040,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetJobTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetJobTriggerRequest):
             request = dlp.GetJobTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3183,8 +3157,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3192,10 +3166,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListJobTriggersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListJobTriggersRequest):
             request = dlp.ListJobTriggersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3291,8 +3263,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3300,10 +3272,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeleteJobTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeleteJobTriggerRequest):
             request = dlp.DeleteJobTriggerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3387,10 +3357,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ActivateJobTriggerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ActivateJobTriggerRequest):
             request = dlp.ActivateJobTriggerRequest(request)
 
@@ -3508,8 +3476,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, discovery_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3517,10 +3485,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CreateDiscoveryConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CreateDiscoveryConfigRequest):
             request = dlp.CreateDiscoveryConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3639,8 +3605,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, discovery_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3648,10 +3614,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.UpdateDiscoveryConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.UpdateDiscoveryConfigRequest):
             request = dlp.UpdateDiscoveryConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3754,8 +3718,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3763,10 +3727,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetDiscoveryConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetDiscoveryConfigRequest):
             request = dlp.GetDiscoveryConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3874,8 +3836,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3883,10 +3845,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListDiscoveryConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListDiscoveryConfigsRequest):
             request = dlp.ListDiscoveryConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3980,8 +3940,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3989,10 +3949,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeleteDiscoveryConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeleteDiscoveryConfigRequest):
             request = dlp.DeleteDiscoveryConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4129,8 +4087,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, inspect_job, risk_job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4138,10 +4096,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CreateDlpJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CreateDlpJobRequest):
             request = dlp.CreateDlpJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4264,8 +4220,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4273,10 +4229,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListDlpJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListDlpJobsRequest):
             request = dlp.ListDlpJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4382,8 +4336,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4391,10 +4345,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetDlpJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetDlpJobRequest):
             request = dlp.GetDlpJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4485,8 +4437,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4494,10 +4446,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeleteDlpJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeleteDlpJobRequest):
             request = dlp.DeleteDlpJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4577,10 +4527,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CancelDlpJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CancelDlpJobRequest):
             request = dlp.CancelDlpJobRequest(request)
 
@@ -4700,8 +4648,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4709,10 +4657,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.CreateStoredInfoTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.CreateStoredInfoTypeRequest):
             request = dlp.CreateStoredInfoTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4832,8 +4778,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4841,10 +4787,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.UpdateStoredInfoTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.UpdateStoredInfoTypeRequest):
             request = dlp.UpdateStoredInfoTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4947,8 +4891,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4956,10 +4900,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetStoredInfoTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetStoredInfoTypeRequest):
             request = dlp.GetStoredInfoTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5077,8 +5019,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5086,10 +5028,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListStoredInfoTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListStoredInfoTypesRequest):
             request = dlp.ListStoredInfoTypesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5187,8 +5127,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5196,10 +5136,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.DeleteStoredInfoTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.DeleteStoredInfoTypeRequest):
             request = dlp.DeleteStoredInfoTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5292,8 +5230,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5301,10 +5239,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListProjectDataProfilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListProjectDataProfilesRequest):
             request = dlp.ListProjectDataProfilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5414,8 +5350,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5423,10 +5359,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListTableDataProfilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListTableDataProfilesRequest):
             request = dlp.ListTableDataProfilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5534,8 +5468,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5543,10 +5477,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.ListColumnDataProfilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.ListColumnDataProfilesRequest):
             request = dlp.ListColumnDataProfilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5651,8 +5583,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5660,10 +5592,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetProjectDataProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetProjectDataProfileRequest):
             request = dlp.GetProjectDataProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5753,8 +5683,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 The profile for a scanned table.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5762,10 +5692,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetTableDataProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetTableDataProfileRequest):
             request = dlp.GetTableDataProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5857,8 +5785,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5866,10 +5794,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.GetColumnDataProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.GetColumnDataProfileRequest):
             request = dlp.GetColumnDataProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5965,8 +5891,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5974,10 +5900,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.HybridInspectDlpJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.HybridInspectDlpJobRequest):
             request = dlp.HybridInspectDlpJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6055,10 +5979,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dlp.FinishDlpJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, dlp.FinishDlpJobRequest):
             request = dlp.FinishDlpJobRequest(request)
 

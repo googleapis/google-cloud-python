@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -228,7 +229,9 @@ class AgentsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AgentsTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, AgentsTransport, Callable[..., AgentsTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -240,9 +243,11 @@ class AgentsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AgentsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AgentsTransport,Callable[..., AgentsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AgentsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -352,8 +357,8 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -361,7 +366,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = agent.ListAgentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.ListAgentsRequest):
+            request = agent.ListAgentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -370,11 +378,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_agents,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_agents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -479,8 +485,8 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -488,7 +494,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = agent.GetAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.GetAgentRequest):
+            request = agent.GetAgentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -497,11 +506,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_agent,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -613,8 +620,8 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, agent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -622,7 +629,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcdc_agent.CreateAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcdc_agent.CreateAgentRequest):
+            request = gcdc_agent.CreateAgentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -633,20 +643,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_agent,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=180.0,
-            ),
-            default_timeout=180.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -758,8 +757,8 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([agent, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -767,7 +766,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcdc_agent.UpdateAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcdc_agent.UpdateAgentRequest):
+            request = gcdc_agent.UpdateAgentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -778,11 +780,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_agent,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -858,8 +858,8 @@ class AgentsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -867,7 +867,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = agent.DeleteAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.DeleteAgentRequest):
+            request = agent.DeleteAgentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -876,11 +879,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_agent,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -968,15 +969,16 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = agent.ExportAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.ExportAgentRequest):
+            request = agent.ExportAgentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_agent,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1092,15 +1094,16 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = agent.RestoreAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.RestoreAgentRequest):
+            request = agent.RestoreAgentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restore_agent,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restore_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1186,15 +1189,16 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = agent.ValidateAgentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.ValidateAgentRequest):
+            request = agent.ValidateAgentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.validate_agent,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.validate_agent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1278,8 +1282,8 @@ class AgentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1287,7 +1291,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = agent.GetAgentValidationResultRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.GetAgentValidationResultRequest):
+            request = agent.GetAgentValidationResultRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1296,11 +1303,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_agent_validation_result,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_agent_validation_result
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1391,8 +1396,8 @@ class AgentsAsyncClient:
                 Settings for Generative AI.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1400,7 +1405,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = agent.GetGenerativeSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.GetGenerativeSettingsRequest):
+            request = agent.GetGenerativeSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1411,11 +1419,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_generative_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_generative_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1507,8 +1513,8 @@ class AgentsAsyncClient:
                 Settings for Generative AI.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([generative_settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1516,7 +1522,10 @@ class AgentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = agent.UpdateGenerativeSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent.UpdateGenerativeSettingsRequest):
+            request = agent.UpdateGenerativeSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1527,11 +1536,9 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_generative_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_generative_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
