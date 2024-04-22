@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -285,7 +286,13 @@ class BareMetalSolutionAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BareMetalSolutionTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                BareMetalSolutionTransport,
+                Callable[..., BareMetalSolutionTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -297,9 +304,11 @@ class BareMetalSolutionAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BareMetalSolutionTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BareMetalSolutionTransport,Callable[..., BareMetalSolutionTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BareMetalSolutionTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -408,8 +417,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -417,7 +426,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.ListInstancesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.ListInstancesRequest):
+            request = instance.ListInstancesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -426,11 +438,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instances,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -518,8 +528,8 @@ class BareMetalSolutionAsyncClient:
                 A server.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -527,7 +537,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.GetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.GetInstanceRequest):
+            request = instance.GetInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -536,11 +549,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -641,8 +652,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -650,7 +661,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_instance.UpdateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_instance.UpdateInstanceRequest):
+            request = gcb_instance.UpdateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -661,11 +675,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -766,8 +778,8 @@ class BareMetalSolutionAsyncClient:
                 A server.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_instance_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -775,7 +787,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.RenameInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.RenameInstanceRequest):
+            request = instance.RenameInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -786,11 +801,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -879,8 +892,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -888,7 +901,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.ResetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.ResetInstanceRequest):
+            request = instance.ResetInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -897,11 +913,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -996,8 +1010,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1005,7 +1019,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.StartInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.StartInstanceRequest):
+            request = instance.StartInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1014,11 +1031,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1113,8 +1128,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1122,7 +1137,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.StopInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.StopInstanceRequest):
+            request = instance.StopInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1131,11 +1149,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.stop_instance,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1234,8 +1250,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1243,7 +1259,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.EnableInteractiveSerialConsoleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.EnableInteractiveSerialConsoleRequest):
+            request = instance.EnableInteractiveSerialConsoleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1252,11 +1271,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.enable_interactive_serial_console,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.enable_interactive_serial_console
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1355,8 +1372,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1364,7 +1381,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance.DisableInteractiveSerialConsoleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, instance.DisableInteractiveSerialConsoleRequest):
+            request = instance.DisableInteractiveSerialConsoleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1373,11 +1393,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.disable_interactive_serial_console,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.disable_interactive_serial_console
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1480,8 +1498,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, lun])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1489,7 +1507,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_instance.DetachLunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_instance.DetachLunRequest):
+            request = gcb_instance.DetachLunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1500,11 +1521,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.detach_lun,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.detach_lun
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1602,8 +1621,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1611,7 +1630,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = ssh_key.ListSSHKeysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ssh_key.ListSSHKeysRequest):
+            request = ssh_key.ListSSHKeysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1620,11 +1642,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_ssh_keys,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_ssh_keys
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1734,8 +1754,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ssh_key, ssh_key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1743,7 +1763,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_ssh_key.CreateSSHKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_ssh_key.CreateSSHKeyRequest):
+            request = gcb_ssh_key.CreateSSHKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1756,11 +1779,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_ssh_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_ssh_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1836,8 +1857,8 @@ class BareMetalSolutionAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1845,7 +1866,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = ssh_key.DeleteSSHKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ssh_key.DeleteSSHKeyRequest):
+            request = ssh_key.DeleteSSHKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1854,11 +1878,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_ssh_key,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_ssh_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1942,8 +1964,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1951,7 +1973,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.ListVolumesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.ListVolumesRequest):
+            request = volume.ListVolumesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1960,11 +1985,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_volumes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_volumes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2052,8 +2075,8 @@ class BareMetalSolutionAsyncClient:
                 A storage volume.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2061,7 +2084,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.GetVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.GetVolumeRequest):
+            request = volume.GetVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2070,11 +2096,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_volume,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2175,8 +2199,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2184,7 +2208,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_volume.UpdateVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_volume.UpdateVolumeRequest):
+            request = gcb_volume.UpdateVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2195,11 +2222,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_volume,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2300,8 +2325,8 @@ class BareMetalSolutionAsyncClient:
                 A storage volume.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_volume_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2309,7 +2334,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.RenameVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.RenameVolumeRequest):
+            request = volume.RenameVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2320,11 +2348,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_volume,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2420,8 +2446,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2429,7 +2455,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume.EvictVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.EvictVolumeRequest):
+            request = volume.EvictVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2438,11 +2467,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.evict_volume,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.evict_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2543,8 +2570,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume, size_gib])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2552,7 +2579,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_volume.ResizeVolumeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_volume.ResizeVolumeRequest):
+            request = gcb_volume.ResizeVolumeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2563,11 +2593,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resize_volume,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resize_volume
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2662,8 +2690,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2671,7 +2699,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = network.ListNetworksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, network.ListNetworksRequest):
+            request = network.ListNetworksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2680,11 +2711,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_networks,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_networks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2775,8 +2804,8 @@ class BareMetalSolutionAsyncClient:
                 Response with Networks with IPs
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2784,7 +2813,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = network.ListNetworkUsageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, network.ListNetworkUsageRequest):
+            request = network.ListNetworkUsageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2793,11 +2825,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_network_usage,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_network_usage
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2876,8 +2906,8 @@ class BareMetalSolutionAsyncClient:
                 A Network.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2885,7 +2915,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = network.GetNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, network.GetNetworkRequest):
+            request = network.GetNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2894,11 +2927,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_network,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2999,8 +3030,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3008,7 +3039,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_network.UpdateNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_network.UpdateNetworkRequest):
+            request = gcb_network.UpdateNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3019,11 +3053,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_network,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3123,8 +3155,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, volume_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3132,7 +3164,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_volume_snapshot.CreateVolumeSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_volume_snapshot.CreateVolumeSnapshotRequest):
+            request = gcb_volume_snapshot.CreateVolumeSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3143,11 +3178,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_volume_snapshot,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_volume_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3242,8 +3275,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3251,7 +3284,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_volume_snapshot.RestoreVolumeSnapshotRequest):
+            request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3260,11 +3296,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restore_volume_snapshot,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restore_volume_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3351,8 +3385,8 @@ class BareMetalSolutionAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3360,7 +3394,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume_snapshot.DeleteVolumeSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume_snapshot.DeleteVolumeSnapshotRequest):
+            request = volume_snapshot.DeleteVolumeSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3369,11 +3406,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_volume_snapshot,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_volume_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3452,8 +3487,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3461,7 +3496,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume_snapshot.GetVolumeSnapshotRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume_snapshot.GetVolumeSnapshotRequest):
+            request = volume_snapshot.GetVolumeSnapshotRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3470,11 +3508,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_volume_snapshot,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_volume_snapshot
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3565,8 +3601,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3574,7 +3610,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = volume_snapshot.ListVolumeSnapshotsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume_snapshot.ListVolumeSnapshotsRequest):
+            request = volume_snapshot.ListVolumeSnapshotsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3583,11 +3622,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_volume_snapshots,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_volume_snapshots
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3678,8 +3715,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3687,7 +3724,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lun.GetLunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lun.GetLunRequest):
+            request = lun.GetLunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3696,11 +3736,7 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_lun,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_lun]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3787,8 +3823,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3796,7 +3832,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lun.ListLunsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lun.ListLunsRequest):
+            request = lun.ListLunsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3805,11 +3844,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_luns,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_luns
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3914,8 +3951,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3923,7 +3960,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = lun.EvictLunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lun.EvictLunRequest):
+            request = lun.EvictLunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3932,11 +3972,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.evict_lun,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.evict_lun
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4023,8 +4061,8 @@ class BareMetalSolutionAsyncClient:
                 An NFS share.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4032,7 +4070,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = nfs_share.GetNfsShareRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, nfs_share.GetNfsShareRequest):
+            request = nfs_share.GetNfsShareRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4041,11 +4082,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_nfs_share,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_nfs_share
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4132,8 +4171,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4141,7 +4180,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = nfs_share.ListNfsSharesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, nfs_share.ListNfsSharesRequest):
+            request = nfs_share.ListNfsSharesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4150,11 +4192,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_nfs_shares,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_nfs_shares
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4263,8 +4303,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([nfs_share, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4272,7 +4312,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_nfs_share.UpdateNfsShareRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_nfs_share.UpdateNfsShareRequest):
+            request = gcb_nfs_share.UpdateNfsShareRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4283,11 +4326,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_nfs_share,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_nfs_share
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4392,8 +4433,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, nfs_share])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4401,7 +4442,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcb_nfs_share.CreateNfsShareRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcb_nfs_share.CreateNfsShareRequest):
+            request = gcb_nfs_share.CreateNfsShareRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4412,11 +4456,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_nfs_share,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_nfs_share
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4515,8 +4557,8 @@ class BareMetalSolutionAsyncClient:
                 An NFS share.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_nfsshare_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4524,7 +4566,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = nfs_share.RenameNfsShareRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, nfs_share.RenameNfsShareRequest):
+            request = nfs_share.RenameNfsShareRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4535,11 +4580,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_nfs_share,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_nfs_share
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4636,8 +4679,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4645,7 +4688,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = nfs_share.DeleteNfsShareRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, nfs_share.DeleteNfsShareRequest):
+            request = nfs_share.DeleteNfsShareRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4654,11 +4700,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_nfs_share,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_nfs_share
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4756,8 +4800,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4765,7 +4809,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = provisioning.ListProvisioningQuotasRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, provisioning.ListProvisioningQuotasRequest):
+            request = provisioning.ListProvisioningQuotasRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4774,11 +4821,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_provisioning_quotas,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_provisioning_quotas
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4881,8 +4926,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, provisioning_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4890,7 +4935,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = provisioning.SubmitProvisioningConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, provisioning.SubmitProvisioningConfigRequest):
+            request = provisioning.SubmitProvisioningConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4901,11 +4949,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.submit_provisioning_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.submit_provisioning_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4987,8 +5033,8 @@ class BareMetalSolutionAsyncClient:
                 A provisioning configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4996,7 +5042,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = provisioning.GetProvisioningConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, provisioning.GetProvisioningConfigRequest):
+            request = provisioning.GetProvisioningConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5005,11 +5054,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_provisioning_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_provisioning_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5100,8 +5147,8 @@ class BareMetalSolutionAsyncClient:
                 A provisioning configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, provisioning_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5109,7 +5156,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = provisioning.CreateProvisioningConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, provisioning.CreateProvisioningConfigRequest):
+            request = provisioning.CreateProvisioningConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5120,11 +5170,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_provisioning_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_provisioning_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5214,8 +5262,8 @@ class BareMetalSolutionAsyncClient:
                 A provisioning configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([provisioning_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5223,7 +5271,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = provisioning.UpdateProvisioningConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, provisioning.UpdateProvisioningConfigRequest):
+            request = provisioning.UpdateProvisioningConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5234,11 +5285,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_provisioning_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_provisioning_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5331,8 +5380,8 @@ class BareMetalSolutionAsyncClient:
                 A Network.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_network_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5340,7 +5389,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = network.RenameNetworkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, network.RenameNetworkRequest):
+            request = network.RenameNetworkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5351,11 +5403,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rename_network,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rename_network
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5443,8 +5493,8 @@ class BareMetalSolutionAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5452,7 +5502,10 @@ class BareMetalSolutionAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = osimage.ListOSImagesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, osimage.ListOSImagesRequest):
+            request = osimage.ListOSImagesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5461,11 +5514,9 @@ class BareMetalSolutionAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_os_images,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_os_images
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

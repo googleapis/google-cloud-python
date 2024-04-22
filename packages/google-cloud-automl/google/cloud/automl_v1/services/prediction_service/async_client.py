@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -206,7 +207,13 @@ class PredictionServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PredictionServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                PredictionServiceTransport,
+                Callable[..., PredictionServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -218,9 +225,11 @@ class PredictionServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PredictionServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,PredictionServiceTransport,Callable[..., PredictionServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the PredictionServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -410,8 +419,8 @@ class PredictionServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, payload, params])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -419,7 +428,10 @@ class PredictionServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = prediction_service.PredictRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, prediction_service.PredictRequest):
+            request = prediction_service.PredictRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -433,11 +445,7 @@ class PredictionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.predict,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.predict]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -662,8 +670,8 @@ class PredictionServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, input_config, output_config, params])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -671,7 +679,10 @@ class PredictionServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = prediction_service.BatchPredictRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, prediction_service.BatchPredictRequest):
+            request = prediction_service.BatchPredictRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -687,11 +698,9 @@ class PredictionServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_predict,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_predict
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

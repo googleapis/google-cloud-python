@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -231,7 +232,13 @@ class ReservationServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ReservationServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                ReservationServiceTransport,
+                Callable[..., ReservationServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -243,9 +250,11 @@ class ReservationServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ReservationServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ReservationServiceTransport,Callable[..., ReservationServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ReservationServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -371,8 +380,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, reservation, reservation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -380,7 +389,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcbr_reservation.CreateReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcbr_reservation.CreateReservationRequest):
+            request = gcbr_reservation.CreateReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -393,11 +405,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_reservation,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -485,8 +495,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -494,7 +504,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.ListReservationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.ListReservationsRequest):
+            request = reservation.ListReservationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -503,21 +516,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_reservations,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_reservations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -610,8 +611,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -619,7 +620,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.GetReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.GetReservationRequest):
+            request = reservation.GetReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -628,21 +632,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_reservation,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -719,8 +711,8 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -728,7 +720,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.DeleteReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.DeleteReservationRequest):
+            request = reservation.DeleteReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -737,21 +732,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_reservation,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -838,8 +821,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([reservation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -847,7 +830,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcbr_reservation.UpdateReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcbr_reservation.UpdateReservationRequest):
+            request = gcbr_reservation.UpdateReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -858,11 +844,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_reservation,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -969,8 +953,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, capacity_commitment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -978,7 +962,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.CreateCapacityCommitmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.CreateCapacityCommitmentRequest):
+            request = reservation.CreateCapacityCommitmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -989,11 +976,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_capacity_commitment,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1083,8 +1068,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1092,7 +1077,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.ListCapacityCommitmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.ListCapacityCommitmentsRequest):
+            request = reservation.ListCapacityCommitmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1101,21 +1089,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_capacity_commitments,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_capacity_commitments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1220,8 +1196,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1229,7 +1205,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.GetCapacityCommitmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.GetCapacityCommitmentRequest):
+            request = reservation.GetCapacityCommitmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1238,21 +1217,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_capacity_commitment,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1331,8 +1298,8 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1340,7 +1307,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.DeleteCapacityCommitmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.DeleteCapacityCommitmentRequest):
+            request = reservation.DeleteCapacityCommitmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1349,21 +1319,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_capacity_commitment,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1471,8 +1429,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([capacity_commitment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1480,7 +1438,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.UpdateCapacityCommitmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.UpdateCapacityCommitmentRequest):
+            request = reservation.UpdateCapacityCommitmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1491,11 +1452,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_capacity_commitment,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1598,8 +1557,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, slot_count])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1607,7 +1566,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.SplitCapacityCommitmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.SplitCapacityCommitmentRequest):
+            request = reservation.SplitCapacityCommitmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1618,11 +1580,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.split_capacity_commitment,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.split_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1740,8 +1700,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, capacity_commitment_ids])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1749,7 +1709,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.MergeCapacityCommitmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.MergeCapacityCommitmentsRequest):
+            request = reservation.MergeCapacityCommitmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1760,11 +1723,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.merge_capacity_commitments,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.merge_capacity_commitments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1894,8 +1855,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, assignment])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1903,7 +1864,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.CreateAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.CreateAssignmentRequest):
+            request = reservation.CreateAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1914,11 +1878,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_assignment,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2031,8 +1993,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2040,7 +2002,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.ListAssignmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.ListAssignmentsRequest):
+            request = reservation.ListAssignmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2049,21 +2014,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_assignments,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_assignments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2163,8 +2116,8 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2172,7 +2125,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.DeleteAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.DeleteAssignmentRequest):
+            request = reservation.DeleteAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2181,21 +2137,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_assignment,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2324,8 +2268,8 @@ class ReservationServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2333,7 +2277,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.SearchAssignmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.SearchAssignmentsRequest):
+            request = reservation.SearchAssignmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2344,21 +2291,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_assignments,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_assignments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2492,8 +2427,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2501,7 +2436,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.SearchAllAssignmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.SearchAllAssignmentsRequest):
+            request = reservation.SearchAllAssignmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2512,11 +2450,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_all_assignments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_all_assignments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2629,8 +2565,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, destination_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2638,7 +2574,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.MoveAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.MoveAssignmentRequest):
+            request = reservation.MoveAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2649,11 +2588,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.move_assignment,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.move_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2744,8 +2681,8 @@ class ReservationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([assignment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2753,7 +2690,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.UpdateAssignmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.UpdateAssignmentRequest):
+            request = reservation.UpdateAssignmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2764,11 +2704,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_assignment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2852,8 +2790,8 @@ class ReservationServiceAsyncClient:
                 Represents a BI Reservation.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2861,7 +2799,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.GetBiReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.GetBiReservationRequest):
+            request = reservation.GetBiReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2870,21 +2811,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_bi_reservation,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_bi_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2976,8 +2905,8 @@ class ReservationServiceAsyncClient:
                 Represents a BI Reservation.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([bi_reservation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2985,7 +2914,10 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.UpdateBiReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.UpdateBiReservationRequest):
+            request = reservation.UpdateBiReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2996,11 +2928,9 @@ class ReservationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_bi_reservation,
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_bi_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

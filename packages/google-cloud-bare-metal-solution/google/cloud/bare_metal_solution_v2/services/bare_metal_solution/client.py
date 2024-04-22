@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -898,7 +899,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, BareMetalSolutionTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                BareMetalSolutionTransport,
+                Callable[..., BareMetalSolutionTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -910,9 +917,11 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, BareMetalSolutionTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BareMetalSolutionTransport,Callable[..., BareMetalSolutionTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BareMetalSolutionTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -1021,8 +1030,16 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[BareMetalSolutionTransport],
+                Callable[..., BareMetalSolutionTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., BareMetalSolutionTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -1099,8 +1116,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1108,10 +1125,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.ListInstancesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.ListInstancesRequest):
             request = instance.ListInstancesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1209,8 +1224,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A server.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1218,10 +1233,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.GetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.GetInstanceRequest):
             request = instance.GetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1332,8 +1345,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1341,10 +1354,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_instance.UpdateInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_instance.UpdateInstanceRequest):
             request = gcb_instance.UpdateInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1457,8 +1468,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A server.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_instance_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1466,10 +1477,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.RenameInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.RenameInstanceRequest):
             request = instance.RenameInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1570,8 +1579,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1579,10 +1588,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.ResetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.ResetInstanceRequest):
             request = instance.ResetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1687,8 +1694,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1696,10 +1703,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.StartInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.StartInstanceRequest):
             request = instance.StartInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1804,8 +1809,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1813,10 +1818,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.StopInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.StopInstanceRequest):
             request = instance.StopInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1925,8 +1928,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1934,10 +1937,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.EnableInteractiveSerialConsoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.EnableInteractiveSerialConsoleRequest):
             request = instance.EnableInteractiveSerialConsoleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2048,8 +2049,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2057,10 +2058,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a instance.DisableInteractiveSerialConsoleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, instance.DisableInteractiveSerialConsoleRequest):
             request = instance.DisableInteractiveSerialConsoleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2175,8 +2174,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, lun])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2184,10 +2183,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_instance.DetachLunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_instance.DetachLunRequest):
             request = gcb_instance.DetachLunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2297,8 +2294,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2306,10 +2303,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a ssh_key.ListSSHKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, ssh_key.ListSSHKeysRequest):
             request = ssh_key.ListSSHKeysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2429,8 +2424,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ssh_key, ssh_key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2438,10 +2433,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_ssh_key.CreateSSHKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_ssh_key.CreateSSHKeyRequest):
             request = gcb_ssh_key.CreateSSHKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2531,8 +2524,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2540,10 +2533,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a ssh_key.DeleteSSHKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, ssh_key.DeleteSSHKeyRequest):
             request = ssh_key.DeleteSSHKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2637,8 +2628,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2646,10 +2637,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.ListVolumesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.ListVolumesRequest):
             request = volume.ListVolumesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2747,8 +2736,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A storage volume.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2756,10 +2745,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.GetVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.GetVolumeRequest):
             request = volume.GetVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2870,8 +2857,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2879,10 +2866,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_volume.UpdateVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_volume.UpdateVolumeRequest):
             request = gcb_volume.UpdateVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2995,8 +2980,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A storage volume.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_volume_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3004,10 +2989,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.RenameVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.RenameVolumeRequest):
             request = volume.RenameVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3115,8 +3098,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3124,10 +3107,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume.EvictVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume.EvictVolumeRequest):
             request = volume.EvictVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3238,8 +3219,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume, size_gib])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3247,10 +3228,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_volume.ResizeVolumeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_volume.ResizeVolumeRequest):
             request = gcb_volume.ResizeVolumeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3357,8 +3336,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3366,10 +3345,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a network.ListNetworksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, network.ListNetworksRequest):
             request = network.ListNetworksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3470,8 +3447,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 Response with Networks with IPs
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3479,10 +3456,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a network.ListNetworkUsageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, network.ListNetworkUsageRequest):
             request = network.ListNetworkUsageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3571,8 +3546,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A Network.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3580,10 +3555,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a network.GetNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, network.GetNetworkRequest):
             request = network.GetNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3694,8 +3667,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([network, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3703,10 +3676,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_network.UpdateNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_network.UpdateNetworkRequest):
             request = gcb_network.UpdateNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3818,8 +3789,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, volume_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3827,10 +3798,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_volume_snapshot.CreateVolumeSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_volume_snapshot.CreateVolumeSnapshotRequest):
             request = gcb_volume_snapshot.CreateVolumeSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3937,8 +3906,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([volume_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3946,10 +3915,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_volume_snapshot.RestoreVolumeSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_volume_snapshot.RestoreVolumeSnapshotRequest):
             request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4046,8 +4013,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4055,10 +4022,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume_snapshot.DeleteVolumeSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume_snapshot.DeleteVolumeSnapshotRequest):
             request = volume_snapshot.DeleteVolumeSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4147,8 +4112,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4156,10 +4121,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume_snapshot.GetVolumeSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume_snapshot.GetVolumeSnapshotRequest):
             request = volume_snapshot.GetVolumeSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4260,8 +4223,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4269,10 +4232,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a volume_snapshot.ListVolumeSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, volume_snapshot.ListVolumeSnapshotsRequest):
             request = volume_snapshot.ListVolumeSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4373,8 +4334,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4382,10 +4343,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lun.GetLunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lun.GetLunRequest):
             request = lun.GetLunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4482,8 +4441,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4491,10 +4450,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lun.ListLunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lun.ListLunsRequest):
             request = lun.ListLunsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4609,8 +4566,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4618,10 +4575,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a lun.EvictLunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, lun.EvictLunRequest):
             request = lun.EvictLunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4718,8 +4673,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 An NFS share.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4727,10 +4682,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a nfs_share.GetNfsShareRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, nfs_share.GetNfsShareRequest):
             request = nfs_share.GetNfsShareRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4827,8 +4780,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4836,10 +4789,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a nfs_share.ListNfsSharesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, nfs_share.ListNfsSharesRequest):
             request = nfs_share.ListNfsSharesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4958,8 +4909,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([nfs_share, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4967,10 +4918,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_nfs_share.UpdateNfsShareRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_nfs_share.UpdateNfsShareRequest):
             request = gcb_nfs_share.UpdateNfsShareRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5087,8 +5036,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, nfs_share])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5096,10 +5045,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcb_nfs_share.CreateNfsShareRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcb_nfs_share.CreateNfsShareRequest):
             request = gcb_nfs_share.CreateNfsShareRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5210,8 +5157,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 An NFS share.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_nfsshare_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5219,10 +5166,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a nfs_share.RenameNfsShareRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, nfs_share.RenameNfsShareRequest):
             request = nfs_share.RenameNfsShareRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5331,8 +5276,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5340,10 +5285,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a nfs_share.DeleteNfsShareRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, nfs_share.DeleteNfsShareRequest):
             request = nfs_share.DeleteNfsShareRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5451,8 +5394,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5460,10 +5403,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a provisioning.ListProvisioningQuotasRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, provisioning.ListProvisioningQuotasRequest):
             request = provisioning.ListProvisioningQuotasRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5576,8 +5517,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, provisioning_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5585,10 +5526,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a provisioning.SubmitProvisioningConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, provisioning.SubmitProvisioningConfigRequest):
             request = provisioning.SubmitProvisioningConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5684,8 +5623,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A provisioning configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5693,10 +5632,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a provisioning.GetProvisioningConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, provisioning.GetProvisioningConfigRequest):
             request = provisioning.GetProvisioningConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5797,8 +5734,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A provisioning configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, provisioning_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5806,10 +5743,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a provisioning.CreateProvisioningConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, provisioning.CreateProvisioningConfigRequest):
             request = provisioning.CreateProvisioningConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5913,8 +5848,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A provisioning configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([provisioning_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5922,10 +5857,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a provisioning.UpdateProvisioningConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, provisioning.UpdateProvisioningConfigRequest):
             request = provisioning.UpdateProvisioningConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6032,8 +5965,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 A Network.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, new_network_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6041,10 +5974,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a network.RenameNetworkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, network.RenameNetworkRequest):
             request = network.RenameNetworkRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6144,8 +6075,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6153,10 +6084,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a osimage.ListOSImagesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, osimage.ListOSImagesRequest):
             request = osimage.ListOSImagesRequest(request)
             # If we have keyword arguments corresponding to fields on the
