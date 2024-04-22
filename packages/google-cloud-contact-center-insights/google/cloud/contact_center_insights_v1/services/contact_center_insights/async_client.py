@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -244,7 +245,13 @@ class ContactCenterInsightsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ContactCenterInsightsTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                ContactCenterInsightsTransport,
+                Callable[..., ContactCenterInsightsTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -256,9 +263,11 @@ class ContactCenterInsightsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ContactCenterInsightsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ContactCenterInsightsTransport,Callable[..., ContactCenterInsightsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ContactCenterInsightsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -384,8 +393,8 @@ class ContactCenterInsightsAsyncClient:
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversation, conversation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -393,7 +402,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CreateConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateConversationRequest):
+            request = contact_center_insights.CreateConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -406,11 +418,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -495,15 +505,16 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = contact_center_insights.UploadConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UploadConversationRequest):
+            request = contact_center_insights.UploadConversationRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.upload_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.upload_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -598,8 +609,8 @@ class ContactCenterInsightsAsyncClient:
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -607,7 +618,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UpdateConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateConversationRequest):
+            request = contact_center_insights.UpdateConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -618,11 +632,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -706,8 +718,8 @@ class ContactCenterInsightsAsyncClient:
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -715,7 +727,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetConversationRequest):
+            request = contact_center_insights.GetConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -724,11 +739,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -816,8 +829,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -825,7 +838,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ListConversationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListConversationsRequest):
+            request = contact_center_insights.ListConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -834,11 +850,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_conversations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_conversations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -922,8 +936,8 @@ class ContactCenterInsightsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -931,7 +945,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeleteConversationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteConversationRequest):
+            request = contact_center_insights.DeleteConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -940,11 +957,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_conversation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_conversation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1039,8 +1054,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, analysis])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1048,7 +1063,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CreateAnalysisRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateAnalysisRequest):
+            request = contact_center_insights.CreateAnalysisRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1059,11 +1077,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_analysis,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_analysis
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1153,8 +1169,8 @@ class ContactCenterInsightsAsyncClient:
                 The analysis resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1162,7 +1178,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetAnalysisRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetAnalysisRequest):
+            request = contact_center_insights.GetAnalysisRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1171,11 +1190,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_analysis,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_analysis
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1263,8 +1280,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1272,7 +1289,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ListAnalysesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListAnalysesRequest):
+            request = contact_center_insights.ListAnalysesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1281,11 +1301,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_analyses,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_analyses
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1369,8 +1387,8 @@ class ContactCenterInsightsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1378,7 +1396,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeleteAnalysisRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteAnalysisRequest):
+            request = contact_center_insights.DeleteAnalysisRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1387,11 +1408,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_analysis,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_analysis
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1498,8 +1517,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter, analysis_percentage])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1507,7 +1526,12 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.BulkAnalyzeConversationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.BulkAnalyzeConversationsRequest
+        ):
+            request = contact_center_insights.BulkAnalyzeConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1520,11 +1544,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.bulk_analyze_conversations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.bulk_analyze_conversations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1634,8 +1656,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1643,7 +1665,12 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.BulkDeleteConversationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.BulkDeleteConversationsRequest
+        ):
+            request = contact_center_insights.BulkDeleteConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1654,11 +1681,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.bulk_delete_conversations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.bulk_delete_conversations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1766,8 +1791,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1775,7 +1800,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.IngestConversationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.IngestConversationsRequest):
+            request = contact_center_insights.IngestConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1784,11 +1812,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.ingest_conversations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.ingest_conversations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1892,8 +1918,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1901,7 +1927,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ExportInsightsDataRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ExportInsightsDataRequest):
+            request = contact_center_insights.ExportInsightsDataRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1910,11 +1939,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_insights_data,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_insights_data
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2019,8 +2046,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, issue_model])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2028,7 +2055,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CreateIssueModelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateIssueModelRequest):
+            request = contact_center_insights.CreateIssueModelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2039,11 +2069,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_issue_model,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_issue_model
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2138,8 +2166,8 @@ class ContactCenterInsightsAsyncClient:
                 The issue model resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue_model, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2147,7 +2175,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UpdateIssueModelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateIssueModelRequest):
+            request = contact_center_insights.UpdateIssueModelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2158,11 +2189,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_issue_model,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_issue_model
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2246,8 +2275,8 @@ class ContactCenterInsightsAsyncClient:
                 The issue model resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2255,7 +2284,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetIssueModelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetIssueModelRequest):
+            request = contact_center_insights.GetIssueModelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2264,11 +2296,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_issue_model,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_issue_model
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2350,8 +2380,8 @@ class ContactCenterInsightsAsyncClient:
                 The response of listing issue models.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2359,7 +2389,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ListIssueModelsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListIssueModelsRequest):
+            request = contact_center_insights.ListIssueModelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2368,11 +2401,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_issue_models,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_issue_models
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2470,8 +2501,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2479,7 +2510,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeleteIssueModelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteIssueModelRequest):
+            request = contact_center_insights.DeleteIssueModelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2488,11 +2522,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_issue_model,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_issue_model
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2591,8 +2623,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2600,7 +2632,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeployIssueModelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeployIssueModelRequest):
+            request = contact_center_insights.DeployIssueModelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2609,11 +2644,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.deploy_issue_model,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.deploy_issue_model
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2715,8 +2748,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2724,7 +2757,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UndeployIssueModelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UndeployIssueModelRequest):
+            request = contact_center_insights.UndeployIssueModelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2733,11 +2769,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.undeploy_issue_model,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undeploy_issue_model
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2825,8 +2859,8 @@ class ContactCenterInsightsAsyncClient:
                 The issue resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2834,7 +2868,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetIssueRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetIssueRequest):
+            request = contact_center_insights.GetIssueRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2843,11 +2880,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_issue,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_issue
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2929,8 +2964,8 @@ class ContactCenterInsightsAsyncClient:
                 The response of listing issues.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2938,7 +2973,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ListIssuesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListIssuesRequest):
+            request = contact_center_insights.ListIssuesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2947,11 +2985,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_issues,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_issues
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3038,8 +3074,8 @@ class ContactCenterInsightsAsyncClient:
                 The issue resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3047,7 +3083,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UpdateIssueRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateIssueRequest):
+            request = contact_center_insights.UpdateIssueRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3058,11 +3097,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_issue,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_issue
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3139,8 +3176,8 @@ class ContactCenterInsightsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3148,7 +3185,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeleteIssueRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteIssueRequest):
+            request = contact_center_insights.DeleteIssueRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3157,11 +3197,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_issue,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_issue
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3243,8 +3281,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue_model])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3252,7 +3290,12 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CalculateIssueModelStatsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.CalculateIssueModelStatsRequest
+        ):
+            request = contact_center_insights.CalculateIssueModelStatsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3261,11 +3304,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.calculate_issue_model_stats,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.calculate_issue_model_stats
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3364,8 +3405,8 @@ class ContactCenterInsightsAsyncClient:
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, phrase_matcher])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3373,7 +3414,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CreatePhraseMatcherRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreatePhraseMatcherRequest):
+            request = contact_center_insights.CreatePhraseMatcherRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3384,11 +3428,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_phrase_matcher,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_phrase_matcher
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3471,8 +3513,8 @@ class ContactCenterInsightsAsyncClient:
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3480,7 +3522,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetPhraseMatcherRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetPhraseMatcherRequest):
+            request = contact_center_insights.GetPhraseMatcherRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3489,11 +3534,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_phrase_matcher,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_phrase_matcher
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3581,8 +3624,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3590,7 +3633,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ListPhraseMatchersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListPhraseMatchersRequest):
+            request = contact_center_insights.ListPhraseMatchersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3599,11 +3645,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_phrase_matchers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_phrase_matchers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3688,8 +3732,8 @@ class ContactCenterInsightsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3697,7 +3741,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeletePhraseMatcherRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeletePhraseMatcherRequest):
+            request = contact_center_insights.DeletePhraseMatcherRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3706,11 +3753,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_phrase_matcher,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_phrase_matcher
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3799,8 +3844,8 @@ class ContactCenterInsightsAsyncClient:
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([phrase_matcher, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3808,7 +3853,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UpdatePhraseMatcherRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdatePhraseMatcherRequest):
+            request = contact_center_insights.UpdatePhraseMatcherRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3819,11 +3867,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_phrase_matcher,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_phrase_matcher
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3910,8 +3956,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3919,7 +3965,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CalculateStatsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CalculateStatsRequest):
+            request = contact_center_insights.CalculateStatsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3928,11 +3977,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.calculate_stats,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.calculate_stats
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4015,8 +4062,8 @@ class ContactCenterInsightsAsyncClient:
                 The settings resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4024,7 +4071,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetSettingsRequest):
+            request = contact_center_insights.GetSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4033,11 +4083,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4125,8 +4173,8 @@ class ContactCenterInsightsAsyncClient:
                 The settings resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4134,7 +4182,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UpdateSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateSettingsRequest):
+            request = contact_center_insights.UpdateSettingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4145,11 +4196,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_settings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4243,8 +4292,8 @@ class ContactCenterInsightsAsyncClient:
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, view])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4252,7 +4301,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.CreateViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateViewRequest):
+            request = contact_center_insights.CreateViewRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4263,11 +4315,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_view
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4347,8 +4397,8 @@ class ContactCenterInsightsAsyncClient:
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4356,7 +4406,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.GetViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetViewRequest):
+            request = contact_center_insights.GetViewRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4365,11 +4418,7 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4455,8 +4504,8 @@ class ContactCenterInsightsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4464,7 +4513,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.ListViewsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListViewsRequest):
+            request = contact_center_insights.ListViewsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4473,11 +4525,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_views,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_views
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4571,8 +4621,8 @@ class ContactCenterInsightsAsyncClient:
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([view, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4580,7 +4630,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.UpdateViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateViewRequest):
+            request = contact_center_insights.UpdateViewRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4591,11 +4644,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_view
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4672,8 +4723,8 @@ class ContactCenterInsightsAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4681,7 +4732,10 @@ class ContactCenterInsightsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = contact_center_insights.DeleteViewRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteViewRequest):
+            request = contact_center_insights.DeleteViewRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4690,11 +4744,9 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_view,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_view
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

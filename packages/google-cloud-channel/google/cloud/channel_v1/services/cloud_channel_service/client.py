@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -737,7 +738,13 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CloudChannelServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                CloudChannelServiceTransport,
+                Callable[..., CloudChannelServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -749,9 +756,11 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudChannelServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudChannelServiceTransport,Callable[..., CloudChannelServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudChannelServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -860,8 +869,16 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CloudChannelServiceTransport],
+                Callable[..., CloudChannelServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CloudChannelServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -941,10 +958,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCustomersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCustomersRequest):
             request = service.ListCustomersRequest(request)
 
@@ -1056,8 +1071,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1065,10 +1080,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCustomerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCustomerRequest):
             request = service.GetCustomerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1175,10 +1188,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CheckCloudIdentityAccountsExistRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CheckCloudIdentityAccountsExistRequest):
             request = service.CheckCloudIdentityAccountsExistRequest(request)
 
@@ -1284,10 +1295,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCustomerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateCustomerRequest):
             request = service.CreateCustomerRequest(request)
 
@@ -1385,10 +1394,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCustomerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCustomerRequest):
             request = service.UpdateCustomerRequest(request)
 
@@ -1481,8 +1488,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1490,10 +1497,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteCustomerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteCustomerRequest):
             request = service.DeleteCustomerRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1598,10 +1603,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ImportCustomerRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ImportCustomerRequest):
             request = service.ImportCustomerRequest(request)
 
@@ -1715,10 +1718,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ProvisionCloudIdentityRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ProvisionCloudIdentityRequest):
             request = service.ProvisionCloudIdentityRequest(request)
 
@@ -1822,10 +1823,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListEntitlementsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListEntitlementsRequest):
             request = service.ListEntitlementsRequest(request)
 
@@ -1942,10 +1941,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListTransferableSkusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListTransferableSkusRequest):
             request = service.ListTransferableSkusRequest(request)
 
@@ -2069,10 +2066,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListTransferableOffersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListTransferableOffersRequest):
             request = service.ListTransferableOffersRequest(request)
 
@@ -2174,10 +2169,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetEntitlementRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetEntitlementRequest):
             request = service.GetEntitlementRequest(request)
 
@@ -2319,10 +2312,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateEntitlementRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateEntitlementRequest):
             request = service.CreateEntitlementRequest(request)
 
@@ -2443,10 +2434,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ChangeParametersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ChangeParametersRequest):
             request = service.ChangeParametersRequest(request)
 
@@ -2569,10 +2558,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ChangeRenewalSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ChangeRenewalSettingsRequest):
             request = service.ChangeRenewalSettingsRequest(request)
 
@@ -2692,10 +2679,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ChangeOfferRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ChangeOfferRequest):
             request = service.ChangeOfferRequest(request)
 
@@ -2817,10 +2802,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.StartPaidServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.StartPaidServiceRequest):
             request = service.StartPaidServiceRequest(request)
 
@@ -2939,10 +2922,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.SuspendEntitlementRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.SuspendEntitlementRequest):
             request = service.SuspendEntitlementRequest(request)
 
@@ -3072,10 +3053,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CancelEntitlementRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CancelEntitlementRequest):
             request = service.CancelEntitlementRequest(request)
 
@@ -3201,10 +3180,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ActivateEntitlementRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ActivateEntitlementRequest):
             request = service.ActivateEntitlementRequest(request)
 
@@ -3345,10 +3322,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.TransferEntitlementsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.TransferEntitlementsRequest):
             request = service.TransferEntitlementsRequest(request)
 
@@ -3492,10 +3467,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.TransferEntitlementsToGoogleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.TransferEntitlementsToGoogleRequest):
             request = service.TransferEntitlementsToGoogleRequest(request)
 
@@ -3604,10 +3577,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListChannelPartnerLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListChannelPartnerLinksRequest):
             request = service.ListChannelPartnerLinksRequest(request)
 
@@ -3715,10 +3686,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetChannelPartnerLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetChannelPartnerLinkRequest):
             request = service.GetChannelPartnerLinkRequest(request)
 
@@ -3829,10 +3798,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateChannelPartnerLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateChannelPartnerLinkRequest):
             request = service.CreateChannelPartnerLinkRequest(request)
 
@@ -3945,10 +3912,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateChannelPartnerLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateChannelPartnerLinkRequest):
             request = service.UpdateChannelPartnerLinkRequest(request)
 
@@ -4057,8 +4022,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4066,10 +4031,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetCustomerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetCustomerRepricingConfigRequest):
             request = service.GetCustomerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4197,8 +4160,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4206,10 +4169,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListCustomerRepricingConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListCustomerRepricingConfigsRequest):
             request = service.ListCustomerRepricingConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4374,8 +4335,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, customer_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4383,10 +4344,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCustomerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateCustomerRepricingConfigRequest):
             request = service.CreateCustomerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4520,8 +4479,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([customer_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4529,10 +4488,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateCustomerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateCustomerRepricingConfigRequest):
             request = service.UpdateCustomerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4645,8 +4602,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4654,10 +4611,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteCustomerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteCustomerRepricingConfigRequest):
             request = service.DeleteCustomerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4769,8 +4724,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4778,10 +4733,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.GetChannelPartnerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.GetChannelPartnerRepricingConfigRequest):
             request = service.GetChannelPartnerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4909,8 +4862,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4918,10 +4871,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListChannelPartnerRepricingConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListChannelPartnerRepricingConfigsRequest):
             request = service.ListChannelPartnerRepricingConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5091,8 +5042,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, channel_partner_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5100,10 +5051,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateChannelPartnerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.CreateChannelPartnerRepricingConfigRequest):
             request = service.CreateChannelPartnerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5244,8 +5193,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([channel_partner_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5253,10 +5202,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateChannelPartnerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UpdateChannelPartnerRepricingConfigRequest):
             request = service.UpdateChannelPartnerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5371,8 +5318,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5380,10 +5327,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteChannelPartnerRepricingConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.DeleteChannelPartnerRepricingConfigRequest):
             request = service.DeleteChannelPartnerRepricingConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5499,8 +5444,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5508,10 +5453,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSkuGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSkuGroupsRequest):
             request = service.ListSkuGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5634,8 +5577,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5643,10 +5586,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSkuGroupBillableSkusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSkuGroupBillableSkusRequest):
             request = service.ListSkuGroupBillableSkusRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5756,10 +5697,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.LookupOfferRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.LookupOfferRequest):
             request = service.LookupOfferRequest(request)
 
@@ -5850,10 +5789,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListProductsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListProductsRequest):
             request = service.ListProductsRequest(request)
 
@@ -5946,10 +5883,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSkusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSkusRequest):
             request = service.ListSkusRequest(request)
 
@@ -6047,10 +5982,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListOffersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListOffersRequest):
             request = service.ListOffersRequest(request)
 
@@ -6158,10 +6091,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListPurchasableSkusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListPurchasableSkusRequest):
             request = service.ListPurchasableSkusRequest(request)
 
@@ -6274,10 +6205,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListPurchasableOffersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListPurchasableOffersRequest):
             request = service.ListPurchasableOffersRequest(request)
 
@@ -6383,10 +6312,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.QueryEligibleBillingAccountsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.QueryEligibleBillingAccountsRequest):
             request = service.QueryEligibleBillingAccountsRequest(request)
 
@@ -6488,10 +6415,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.RegisterSubscriberRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.RegisterSubscriberRequest):
             request = service.RegisterSubscriberRequest(request)
 
@@ -6594,10 +6519,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UnregisterSubscriberRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.UnregisterSubscriberRequest):
             request = service.UnregisterSubscriberRequest(request)
 
@@ -6697,10 +6620,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListSubscribersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListSubscribersRequest):
             request = service.ListSubscribersRequest(request)
 
@@ -6822,8 +6743,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6831,10 +6752,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.ListEntitlementChangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service.ListEntitlementChangesRequest):
             request = service.ListEntitlementChangesRequest(request)
             # If we have keyword arguments corresponding to fields on the

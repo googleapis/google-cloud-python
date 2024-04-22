@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,13 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TargetVpnGatewaysTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                TargetVpnGatewaysTransport,
+                Callable[..., TargetVpnGatewaysTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +525,11 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TargetVpnGatewaysTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TargetVpnGatewaysTransport,Callable[..., TargetVpnGatewaysTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TargetVpnGatewaysTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +641,16 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[TargetVpnGatewaysTransport],
+                Callable[..., TargetVpnGatewaysTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., TargetVpnGatewaysTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -711,8 +728,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -720,10 +737,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListTargetVpnGatewaysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListTargetVpnGatewaysRequest):
             request = compute.AggregatedListTargetVpnGatewaysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -840,8 +855,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_vpn_gateway])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -849,10 +864,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteTargetVpnGatewayRequest):
             request = compute.DeleteTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -970,8 +983,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_vpn_gateway])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -979,10 +992,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteTargetVpnGatewayRequest):
             request = compute.DeleteTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1128,8 +1139,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_vpn_gateway])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1137,10 +1148,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetTargetVpnGatewayRequest):
             request = compute.GetTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1256,8 +1265,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_vpn_gateway_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1265,10 +1274,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertTargetVpnGatewayRequest):
             request = compute.InsertTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1383,8 +1390,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_vpn_gateway_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1392,10 +1399,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertTargetVpnGatewayRequest):
             request = compute.InsertTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1533,8 +1538,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1542,10 +1547,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListTargetVpnGatewaysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListTargetVpnGatewaysRequest):
             request = compute.ListTargetVpnGatewaysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1678,8 +1681,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_labels_request_resource]
         )
@@ -1689,10 +1692,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsTargetVpnGatewayRequest):
             request = compute.SetLabelsTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1823,8 +1824,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_labels_request_resource]
         )
@@ -1834,10 +1835,8 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsTargetVpnGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsTargetVpnGatewayRequest):
             request = compute.SetLabelsTargetVpnGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the

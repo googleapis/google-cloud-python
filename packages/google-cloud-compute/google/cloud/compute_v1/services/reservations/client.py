@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ReservationsTransport]] = None,
+        transport: Optional[
+            Union[str, ReservationsTransport, Callable[..., ReservationsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ReservationsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ReservationsTransport,Callable[..., ReservationsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ReservationsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ReservationsTransport], Callable[..., ReservationsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ReservationsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -708,8 +720,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -717,10 +729,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListReservationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListReservationsRequest):
             request = compute.AggregatedListReservationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -835,8 +845,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -844,10 +854,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteReservationRequest):
             request = compute.DeleteReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -963,8 +971,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -972,10 +980,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteReservationRequest):
             request = compute.DeleteReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1121,8 +1127,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1130,10 +1136,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetReservationRequest):
             request = compute.GetReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1274,8 +1278,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1283,10 +1287,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyReservationRequest):
             request = compute.GetIamPolicyReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1402,8 +1404,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1411,10 +1413,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertReservationRequest):
             request = compute.InsertReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1529,8 +1529,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1538,10 +1538,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertReservationRequest):
             request = compute.InsertReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1677,8 +1675,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1686,10 +1684,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListReservationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListReservationsRequest):
             request = compute.ListReservationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1821,8 +1817,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, reservation, reservations_resize_request_resource]
         )
@@ -1832,10 +1828,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResizeReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResizeReservationRequest):
             request = compute.ResizeReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1965,8 +1959,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, reservation, reservations_resize_request_resource]
         )
@@ -1976,10 +1970,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResizeReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResizeReservationRequest):
             request = compute.ResizeReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2155,8 +2147,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_policy_request_resource]
         )
@@ -2166,10 +2158,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyReservationRequest):
             request = compute.SetIamPolicyReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2302,8 +2292,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, test_permissions_request_resource]
         )
@@ -2313,10 +2303,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsReservationRequest):
             request = compute.TestIamPermissionsReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2442,8 +2430,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation, reservation_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2451,10 +2439,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateReservationRequest):
             request = compute.UpdateReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2578,8 +2564,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, reservation, reservation_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2587,10 +2573,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateReservationRequest):
             request = compute.UpdateReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the

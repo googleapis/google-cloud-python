@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RegionDisksTransport]] = None,
+        transport: Optional[
+            Union[str, RegionDisksTransport, Callable[..., RegionDisksTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RegionDisksTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegionDisksTransport,Callable[..., RegionDisksTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegionDisksTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RegionDisksTransport], Callable[..., RegionDisksTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RegionDisksTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -728,8 +740,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, disk, region_disks_add_resource_policies_request_resource]
         )
@@ -739,10 +751,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddResourcePoliciesRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddResourcePoliciesRegionDiskRequest):
             request = compute.AddResourcePoliciesRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -876,8 +886,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, disk, region_disks_add_resource_policies_request_resource]
         )
@@ -887,10 +897,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddResourcePoliciesRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddResourcePoliciesRegionDiskRequest):
             request = compute.AddResourcePoliciesRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1038,8 +1046,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, bulk_insert_disk_resource_resource]
         )
@@ -1049,10 +1057,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.BulkInsertRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.BulkInsertRegionDiskRequest):
             request = compute.BulkInsertRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1172,8 +1178,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, bulk_insert_disk_resource_resource]
         )
@@ -1183,10 +1189,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.BulkInsertRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.BulkInsertRegionDiskRequest):
             request = compute.BulkInsertRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1340,8 +1344,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk, snapshot_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1349,10 +1353,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.CreateSnapshotRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.CreateSnapshotRegionDiskRequest):
             request = compute.CreateSnapshotRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1482,8 +1484,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk, snapshot_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1491,10 +1493,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.CreateSnapshotRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.CreateSnapshotRegionDiskRequest):
             request = compute.CreateSnapshotRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1643,8 +1643,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1652,10 +1652,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionDiskRequest):
             request = compute.DeleteRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1777,8 +1775,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1786,10 +1784,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionDiskRequest):
             request = compute.DeleteRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1942,8 +1938,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1951,10 +1947,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRegionDiskRequest):
             request = compute.GetRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2095,8 +2089,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2104,10 +2098,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyRegionDiskRequest):
             request = compute.GetIamPolicyRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2223,8 +2215,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2232,10 +2224,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionDiskRequest):
             request = compute.InsertRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2350,8 +2340,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2359,10 +2349,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionDiskRequest):
             request = compute.InsertRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2500,8 +2488,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2509,10 +2497,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListRegionDisksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListRegionDisksRequest):
             request = compute.ListRegionDisksRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2646,8 +2632,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2662,10 +2648,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveResourcePoliciesRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveResourcePoliciesRegionDiskRequest):
             request = compute.RemoveResourcePoliciesRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2797,8 +2781,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -2813,10 +2797,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveResourcePoliciesRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveResourcePoliciesRegionDiskRequest):
             request = compute.RemoveResourcePoliciesRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2969,8 +2951,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, disk, region_disks_resize_request_resource]
         )
@@ -2980,10 +2962,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResizeRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResizeRegionDiskRequest):
             request = compute.ResizeRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3111,8 +3091,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, disk, region_disks_resize_request_resource]
         )
@@ -3122,10 +3102,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResizeRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResizeRegionDiskRequest):
             request = compute.ResizeRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3303,8 +3281,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_policy_request_resource]
         )
@@ -3314,10 +3292,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyRegionDiskRequest):
             request = compute.SetIamPolicyRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3447,8 +3423,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_labels_request_resource]
         )
@@ -3458,10 +3434,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsRegionDiskRequest):
             request = compute.SetLabelsRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3591,8 +3565,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_labels_request_resource]
         )
@@ -3602,10 +3576,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsRegionDiskRequest):
             request = compute.SetLabelsRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3763,8 +3735,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -3779,10 +3751,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StartAsyncReplicationRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StartAsyncReplicationRegionDiskRequest):
             request = compute.StartAsyncReplicationRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3915,8 +3885,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -3931,10 +3901,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StartAsyncReplicationRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StartAsyncReplicationRegionDiskRequest):
             request = compute.StartAsyncReplicationRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4084,8 +4052,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4093,10 +4061,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StopAsyncReplicationRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StopAsyncReplicationRegionDiskRequest):
             request = compute.StopAsyncReplicationRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4217,8 +4183,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4226,10 +4192,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StopAsyncReplicationRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StopAsyncReplicationRegionDiskRequest):
             request = compute.StopAsyncReplicationRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4379,8 +4343,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, disks_stop_group_async_replication_resource_resource]
         )
@@ -4390,10 +4354,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StopGroupAsyncReplicationRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StopGroupAsyncReplicationRegionDiskRequest):
             request = compute.StopGroupAsyncReplicationRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4521,8 +4483,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, disks_stop_group_async_replication_resource_resource]
         )
@@ -4532,10 +4494,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StopGroupAsyncReplicationRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StopGroupAsyncReplicationRegionDiskRequest):
             request = compute.StopGroupAsyncReplicationRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4692,8 +4652,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, test_permissions_request_resource]
         )
@@ -4703,10 +4663,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsRegionDiskRequest):
             request = compute.TestIamPermissionsRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4837,8 +4795,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk, disk_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4846,10 +4804,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateRegionDiskRequest):
             request = compute.UpdateRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4978,8 +4934,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, disk, disk_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4987,10 +4943,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateRegionDiskRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateRegionDiskRequest):
             request = compute.UpdateRegionDiskRequest(request)
             # If we have keyword arguments corresponding to fields on the

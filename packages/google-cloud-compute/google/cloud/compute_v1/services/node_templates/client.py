@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, NodeTemplatesTransport]] = None,
+        transport: Optional[
+            Union[str, NodeTemplatesTransport, Callable[..., NodeTemplatesTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, NodeTemplatesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NodeTemplatesTransport,Callable[..., NodeTemplatesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NodeTemplatesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -630,8 +635,15 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[NodeTemplatesTransport], Callable[..., NodeTemplatesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., NodeTemplatesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -709,8 +721,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -718,10 +730,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListNodeTemplatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListNodeTemplatesRequest):
             request = compute.AggregatedListNodeTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -840,8 +850,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -849,10 +859,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNodeTemplateRequest):
             request = compute.DeleteNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -972,8 +980,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -981,10 +989,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNodeTemplateRequest):
             request = compute.DeleteNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1130,8 +1136,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1139,10 +1145,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetNodeTemplateRequest):
             request = compute.GetNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1283,8 +1287,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1292,10 +1296,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyNodeTemplateRequest):
             request = compute.GetIamPolicyNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1413,8 +1415,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1422,10 +1424,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertNodeTemplateRequest):
             request = compute.InsertNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1542,8 +1542,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1551,10 +1551,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertNodeTemplateRequest):
             request = compute.InsertNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1694,8 +1692,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1703,10 +1701,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListNodeTemplatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListNodeTemplatesRequest):
             request = compute.ListNodeTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1861,8 +1857,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_policy_request_resource]
         )
@@ -1872,10 +1868,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyNodeTemplateRequest):
             request = compute.SetIamPolicyNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2008,8 +2002,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, test_permissions_request_resource]
         )
@@ -2019,10 +2013,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsNodeTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsNodeTemplateRequest):
             request = compute.TestIamPermissionsNodeTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the

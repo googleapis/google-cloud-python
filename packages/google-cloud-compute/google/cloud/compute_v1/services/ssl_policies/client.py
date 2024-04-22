@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SslPoliciesTransport]] = None,
+        transport: Optional[
+            Union[str, SslPoliciesTransport, Callable[..., SslPoliciesTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SslPoliciesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SslPoliciesTransport,Callable[..., SslPoliciesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SslPoliciesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SslPoliciesTransport], Callable[..., SslPoliciesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SslPoliciesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -707,8 +719,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -716,10 +728,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListSslPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListSslPoliciesRequest):
             request = compute.AggregatedListSslPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -832,8 +842,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -841,10 +851,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteSslPolicyRequest):
             request = compute.DeleteSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -955,8 +963,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -964,10 +972,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteSslPolicyRequest):
             request = compute.DeleteSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1106,8 +1112,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1115,10 +1121,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetSslPolicyRequest):
             request = compute.GetSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1223,8 +1227,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1232,10 +1236,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertSslPolicyRequest):
             request = compute.InsertSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1335,8 +1337,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1344,10 +1346,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertSslPolicyRequest):
             request = compute.InsertSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1468,8 +1468,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1477,10 +1477,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListSslPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListSslPoliciesRequest):
             request = compute.ListSslPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1582,8 +1580,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1591,10 +1589,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListAvailableFeaturesSslPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListAvailableFeaturesSslPoliciesRequest):
             request = compute.ListAvailableFeaturesSslPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1703,8 +1699,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1712,10 +1708,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchSslPolicyRequest):
             request = compute.PatchSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1833,8 +1827,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, ssl_policy, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1842,10 +1836,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchSslPolicyRequest):
             request = compute.PatchSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the

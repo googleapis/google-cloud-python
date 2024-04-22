@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,13 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, RegionSslPoliciesTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                RegionSslPoliciesTransport,
+                Callable[..., RegionSslPoliciesTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +525,11 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, RegionSslPoliciesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RegionSslPoliciesTransport,Callable[..., RegionSslPoliciesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RegionSslPoliciesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +641,16 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[RegionSslPoliciesTransport],
+                Callable[..., RegionSslPoliciesTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., RegionSslPoliciesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -726,8 +743,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -735,10 +752,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionSslPolicyRequest):
             request = compute.DeleteRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -861,8 +876,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -870,10 +885,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteRegionSslPolicyRequest):
             request = compute.DeleteRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1025,8 +1038,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1034,10 +1047,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetRegionSslPolicyRequest):
             request = compute.GetRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1155,8 +1166,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1164,10 +1175,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionSslPolicyRequest):
             request = compute.InsertRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1284,8 +1293,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1293,10 +1302,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertRegionSslPolicyRequest):
             request = compute.InsertRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1434,8 +1441,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1443,10 +1450,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListRegionSslPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListRegionSslPoliciesRequest):
             request = compute.ListRegionSslPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1564,8 +1569,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1573,10 +1578,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListAvailableFeaturesRegionSslPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.ListAvailableFeaturesRegionSslPoliciesRequest
         ):
@@ -1703,8 +1706,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1712,10 +1715,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRegionSslPolicyRequest):
             request = compute.PatchRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1845,8 +1846,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, ssl_policy, ssl_policy_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1854,10 +1855,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchRegionSslPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchRegionSslPolicyRequest):
             request = compute.PatchRegionSslPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the

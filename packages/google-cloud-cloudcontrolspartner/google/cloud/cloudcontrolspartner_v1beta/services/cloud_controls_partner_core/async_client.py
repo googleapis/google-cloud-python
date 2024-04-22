@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -238,7 +239,13 @@ class CloudControlsPartnerCoreAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudControlsPartnerCoreTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                CloudControlsPartnerCoreTransport,
+                Callable[..., CloudControlsPartnerCoreTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -250,9 +257,11 @@ class CloudControlsPartnerCoreAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudControlsPartnerCoreTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudControlsPartnerCoreTransport,Callable[..., CloudControlsPartnerCoreTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudControlsPartnerCoreTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -359,8 +368,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -368,7 +377,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = customer_workloads.GetWorkloadRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, customer_workloads.GetWorkloadRequest):
+            request = customer_workloads.GetWorkloadRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -377,20 +389,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_workload,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_workload
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -478,8 +479,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -487,7 +488,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = customer_workloads.ListWorkloadsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, customer_workloads.ListWorkloadsRequest):
+            request = customer_workloads.ListWorkloadsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -496,20 +500,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_workloads,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_workloads
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -601,8 +594,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -610,7 +603,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = customers.GetCustomerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, customers.GetCustomerRequest):
+            request = customers.GetCustomerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -619,20 +615,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_customer,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_customer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -720,8 +705,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -729,7 +714,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = customers.ListCustomersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, customers.ListCustomersRequest):
+            request = customers.ListCustomersRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -738,20 +726,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_customers,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_customers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -844,8 +821,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -853,7 +830,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = ekm_connections.GetEkmConnectionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ekm_connections.GetEkmConnectionsRequest):
+            request = ekm_connections.GetEkmConnectionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -862,20 +842,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_ekm_connections,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_ekm_connections
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -961,8 +930,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -970,7 +939,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = partner_permissions.GetPartnerPermissionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, partner_permissions.GetPartnerPermissionsRequest):
+            request = partner_permissions.GetPartnerPermissionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -979,20 +951,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_partner_permissions,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_partner_permissions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1083,8 +1044,8 @@ class CloudControlsPartnerCoreAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1092,7 +1053,14 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = access_approval_requests.ListAccessApprovalRequestsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, access_approval_requests.ListAccessApprovalRequestsRequest
+        ):
+            request = access_approval_requests.ListAccessApprovalRequestsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1101,20 +1069,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_access_approval_requests,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_access_approval_requests
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1203,8 +1160,8 @@ class CloudControlsPartnerCoreAsyncClient:
                 Message describing Partner resource
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1212,7 +1169,10 @@ class CloudControlsPartnerCoreAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = partners.GetPartnerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, partners.GetPartnerRequest):
+            request = partners.GetPartnerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1221,11 +1181,9 @@ class CloudControlsPartnerCoreAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_partner,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_partner
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
