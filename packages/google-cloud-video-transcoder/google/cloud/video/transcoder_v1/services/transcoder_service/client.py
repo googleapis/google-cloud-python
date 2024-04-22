@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -561,7 +562,13 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TranscoderServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                TranscoderServiceTransport,
+                Callable[..., TranscoderServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -573,9 +580,11 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TranscoderServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TranscoderServiceTransport,Callable[..., TranscoderServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TranscoderServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -684,8 +693,16 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[TranscoderServiceTransport],
+                Callable[..., TranscoderServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., TranscoderServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -767,8 +784,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 Transcoding job resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -776,10 +793,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.CreateJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.CreateJobRequest):
             request = services.CreateJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -878,8 +893,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -887,10 +902,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.ListJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.ListJobsRequest):
             request = services.ListJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -989,8 +1002,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 Transcoding job resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -998,10 +1011,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.GetJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.GetJobRequest):
             request = services.GetJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1084,8 +1095,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1093,10 +1104,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.DeleteJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.DeleteJobRequest):
             request = services.DeleteJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1207,8 +1216,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 Transcoding job template resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job_template, job_template_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1216,10 +1225,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.CreateJobTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.CreateJobTemplateRequest):
             request = services.CreateJobTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1320,8 +1327,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1329,10 +1336,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.ListJobTemplatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.ListJobTemplatesRequest):
             request = services.ListJobTemplatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1433,8 +1438,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 Transcoding job template resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1442,10 +1447,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.GetJobTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.GetJobTemplateRequest):
             request = services.GetJobTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1529,8 +1532,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1538,10 +1541,8 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a services.DeleteJobTemplateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, services.DeleteJobTemplateRequest):
             request = services.DeleteJobTemplateRequest(request)
             # If we have keyword arguments corresponding to fields on the

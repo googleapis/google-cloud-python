@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -215,7 +216,13 @@ class TranslationServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TranslationServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                TranslationServiceTransport,
+                Callable[..., TranslationServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -227,9 +234,11 @@ class TranslationServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TranslationServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TranslationServiceTransport,Callable[..., TranslationServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TranslationServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -416,8 +425,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 parent,
@@ -434,7 +443,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.TranslateTextRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.TranslateTextRequest):
+            request = translation_service.TranslateTextRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -453,11 +465,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.translate_text,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.translate_text
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -589,8 +599,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, model, mime_type, content])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -598,7 +608,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.DetectLanguageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.DetectLanguageRequest):
+            request = translation_service.DetectLanguageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -613,11 +626,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.detect_language,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.detect_language
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -746,8 +757,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, model, display_language_code])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -755,7 +766,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.GetSupportedLanguagesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.GetSupportedLanguagesRequest):
+            request = translation_service.GetSupportedLanguagesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -768,21 +782,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_supported_languages,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_supported_languages
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -863,15 +865,16 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = translation_service.TranslateDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.TranslateDocumentRequest):
+            request = translation_service.TranslateDocumentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.translate_document,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.translate_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -974,15 +977,16 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = translation_service.BatchTranslateTextRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.BatchTranslateTextRequest):
+            request = translation_service.BatchTranslateTextRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_translate_text,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_translate_text
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1155,8 +1159,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 parent,
@@ -1172,7 +1176,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.BatchTranslateDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.BatchTranslateDocumentRequest):
+            request = translation_service.BatchTranslateDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1189,11 +1196,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_translate_document,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_translate_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1301,8 +1306,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, glossary])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1310,7 +1315,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.CreateGlossaryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.CreateGlossaryRequest):
+            request = translation_service.CreateGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1321,11 +1329,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_glossary,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_glossary
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1423,8 +1429,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1432,7 +1438,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.ListGlossariesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.ListGlossariesRequest):
+            request = translation_service.ListGlossariesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1441,21 +1450,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_glossaries,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_glossaries
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1547,8 +1544,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1556,7 +1553,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.GetGlossaryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.GetGlossaryRequest):
+            request = translation_service.GetGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1565,21 +1565,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_glossary,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_glossary
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1672,8 +1660,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1681,7 +1669,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = translation_service.DeleteGlossaryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, translation_service.DeleteGlossaryRequest):
+            request = translation_service.DeleteGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1690,21 +1681,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_glossary,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_glossary
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1807,8 +1786,8 @@ class TranslationServiceAsyncClient:
                 An Adaptive MT Dataset.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, adaptive_mt_dataset])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1816,7 +1795,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.CreateAdaptiveMtDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.CreateAdaptiveMtDatasetRequest):
+            request = adaptive_mt.CreateAdaptiveMtDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1827,11 +1809,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_adaptive_mt_dataset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_adaptive_mt_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1908,8 +1888,8 @@ class TranslationServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1917,7 +1897,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.DeleteAdaptiveMtDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.DeleteAdaptiveMtDatasetRequest):
+            request = adaptive_mt.DeleteAdaptiveMtDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1926,11 +1909,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_adaptive_mt_dataset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_adaptive_mt_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2008,8 +1989,8 @@ class TranslationServiceAsyncClient:
                 An Adaptive MT Dataset.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2017,7 +1998,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.GetAdaptiveMtDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.GetAdaptiveMtDatasetRequest):
+            request = adaptive_mt.GetAdaptiveMtDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2026,11 +2010,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_adaptive_mt_dataset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_adaptive_mt_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2122,8 +2104,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2131,7 +2113,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.ListAdaptiveMtDatasetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.ListAdaptiveMtDatasetsRequest):
+            request = adaptive_mt.ListAdaptiveMtDatasetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2140,11 +2125,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_adaptive_mt_datasets,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_adaptive_mt_datasets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2247,8 +2230,8 @@ class TranslationServiceAsyncClient:
                 An AdaptiveMtTranslate response.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, content])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2256,7 +2239,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.AdaptiveMtTranslateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.AdaptiveMtTranslateRequest):
+            request = adaptive_mt.AdaptiveMtTranslateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2267,11 +2253,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.adaptive_mt_translate,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.adaptive_mt_translate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2352,8 +2336,8 @@ class TranslationServiceAsyncClient:
                 An AdaptiveMtFile.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2361,7 +2345,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.GetAdaptiveMtFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.GetAdaptiveMtFileRequest):
+            request = adaptive_mt.GetAdaptiveMtFileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2370,11 +2357,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_adaptive_mt_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_adaptive_mt_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2449,8 +2434,8 @@ class TranslationServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2458,7 +2443,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.DeleteAdaptiveMtFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.DeleteAdaptiveMtFileRequest):
+            request = adaptive_mt.DeleteAdaptiveMtFileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2467,11 +2455,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_adaptive_mt_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_adaptive_mt_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2559,8 +2545,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2568,7 +2554,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.ImportAdaptiveMtFileRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.ImportAdaptiveMtFileRequest):
+            request = adaptive_mt.ImportAdaptiveMtFileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2577,11 +2566,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_adaptive_mt_file,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_adaptive_mt_file
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2670,8 +2657,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2679,7 +2666,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.ListAdaptiveMtFilesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.ListAdaptiveMtFilesRequest):
+            request = adaptive_mt.ListAdaptiveMtFilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2688,11 +2678,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_adaptive_mt_files,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_adaptive_mt_files
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2796,8 +2784,8 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2805,7 +2793,10 @@ class TranslationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = adaptive_mt.ListAdaptiveMtSentencesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, adaptive_mt.ListAdaptiveMtSentencesRequest):
+            request = adaptive_mt.ListAdaptiveMtSentencesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2814,11 +2805,9 @@ class TranslationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_adaptive_mt_sentences,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_adaptive_mt_sentences
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

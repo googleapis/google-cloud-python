@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -660,7 +661,11 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, TelcoAutomationTransport]] = None,
+        transport: Optional[
+            Union[
+                str, TelcoAutomationTransport, Callable[..., TelcoAutomationTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -672,9 +677,11 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, TelcoAutomationTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TelcoAutomationTransport,Callable[..., TelcoAutomationTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TelcoAutomationTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -783,8 +790,15 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[TelcoAutomationTransport], Callable[..., TelcoAutomationTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., TelcoAutomationTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -864,8 +878,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -873,10 +887,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListOrchestrationClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListOrchestrationClustersRequest):
             request = telcoautomation.ListOrchestrationClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -981,8 +993,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -990,10 +1002,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.GetOrchestrationClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.GetOrchestrationClusterRequest):
             request = telcoautomation.GetOrchestrationClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1112,8 +1122,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, orchestration_cluster, orchestration_cluster_id]
         )
@@ -1123,10 +1133,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.CreateOrchestrationClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.CreateOrchestrationClusterRequest):
             request = telcoautomation.CreateOrchestrationClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1247,8 +1255,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1256,10 +1264,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.DeleteOrchestrationClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.DeleteOrchestrationClusterRequest):
             request = telcoautomation.DeleteOrchestrationClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1366,8 +1372,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1375,10 +1381,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListEdgeSlmsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListEdgeSlmsRequest):
             request = telcoautomation.ListEdgeSlmsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1480,8 +1484,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1489,10 +1493,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.GetEdgeSlmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.GetEdgeSlmRequest):
             request = telcoautomation.GetEdgeSlmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1606,8 +1608,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, edge_slm, edge_slm_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1615,10 +1617,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.CreateEdgeSlmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.CreateEdgeSlmRequest):
             request = telcoautomation.CreateEdgeSlmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1734,8 +1734,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1743,10 +1743,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.DeleteEdgeSlmRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.DeleteEdgeSlmRequest):
             request = telcoautomation.DeleteEdgeSlmRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1873,8 +1871,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, blueprint, blueprint_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1882,10 +1880,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.CreateBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.CreateBlueprintRequest):
             request = telcoautomation.CreateBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2001,8 +1997,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([blueprint, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2010,10 +2006,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.UpdateBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.UpdateBlueprintRequest):
             request = telcoautomation.UpdateBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2123,8 +2117,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2132,10 +2126,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.GetBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.GetBlueprintRequest):
             request = telcoautomation.GetBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2220,8 +2212,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2229,10 +2221,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.DeleteBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.DeleteBlueprintRequest):
             request = telcoautomation.DeleteBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2325,8 +2315,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2334,10 +2324,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListBlueprintsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListBlueprintsRequest):
             request = telcoautomation.ListBlueprintsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2450,8 +2438,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2459,10 +2447,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ApproveBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ApproveBlueprintRequest):
             request = telcoautomation.ApproveBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2564,8 +2550,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2573,10 +2559,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ProposeBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ProposeBlueprintRequest):
             request = telcoautomation.ProposeBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2679,8 +2663,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2688,10 +2672,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.RejectBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.RejectBlueprintRequest):
             request = telcoautomation.RejectBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2788,8 +2770,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2797,10 +2779,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListBlueprintRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListBlueprintRevisionsRequest):
             request = telcoautomation.ListBlueprintRevisionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2927,8 +2907,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2936,10 +2916,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.SearchBlueprintRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.SearchBlueprintRevisionsRequest):
             request = telcoautomation.SearchBlueprintRevisionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3070,8 +3048,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, query])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3079,10 +3057,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.SearchDeploymentRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.SearchDeploymentRevisionsRequest):
             request = telcoautomation.SearchDeploymentRevisionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3190,8 +3166,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 Response object for DiscardBlueprintChanges.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3199,10 +3175,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.DiscardBlueprintChangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.DiscardBlueprintChangesRequest):
             request = telcoautomation.DiscardBlueprintChangesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3303,8 +3277,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3312,10 +3286,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListPublicBlueprintsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListPublicBlueprintsRequest):
             request = telcoautomation.ListPublicBlueprintsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3425,8 +3397,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3434,10 +3406,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.GetPublicBlueprintRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.GetPublicBlueprintRequest):
             request = telcoautomation.GetPublicBlueprintRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3549,8 +3519,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deployment, deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3558,10 +3528,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.CreateDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.CreateDeploymentRequest):
             request = telcoautomation.CreateDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3670,8 +3638,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3679,10 +3647,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.UpdateDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.UpdateDeploymentRequest):
             request = telcoautomation.UpdateDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3785,8 +3751,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3794,10 +3760,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.GetDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.GetDeploymentRequest):
             request = telcoautomation.GetDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3881,8 +3845,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3890,10 +3854,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.RemoveDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.RemoveDeploymentRequest):
             request = telcoautomation.RemoveDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3986,8 +3948,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3995,10 +3957,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListDeploymentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListDeploymentsRequest):
             request = telcoautomation.ListDeploymentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4106,8 +4066,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4115,10 +4075,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListDeploymentRevisionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListDeploymentRevisionsRequest):
             request = telcoautomation.ListDeploymentRevisionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4224,8 +4182,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 Response object for DiscardDeploymentChanges.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4233,10 +4191,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.DiscardDeploymentChangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.DiscardDeploymentChangesRequest):
             request = telcoautomation.DiscardDeploymentChangesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4336,8 +4292,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4345,10 +4301,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ApplyDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ApplyDeploymentRequest):
             request = telcoautomation.ApplyDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4440,8 +4394,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 Response object for ComputeDeploymentStatus.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4449,10 +4403,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ComputeDeploymentStatusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ComputeDeploymentStatusRequest):
             request = telcoautomation.ComputeDeploymentStatusRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4559,8 +4511,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, revision_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4568,10 +4520,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.RollbackDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.RollbackDeploymentRequest):
             request = telcoautomation.RollbackDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4669,8 +4619,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4678,10 +4628,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.GetHydratedDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.GetHydratedDeploymentRequest):
             request = telcoautomation.GetHydratedDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4779,8 +4727,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4788,10 +4736,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ListHydratedDeploymentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ListHydratedDeploymentsRequest):
             request = telcoautomation.ListHydratedDeploymentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4906,8 +4852,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([hydrated_deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4915,10 +4861,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.UpdateHydratedDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.UpdateHydratedDeploymentRequest):
             request = telcoautomation.UpdateHydratedDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5021,8 +4965,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5030,10 +4974,8 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a telcoautomation.ApplyHydratedDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, telcoautomation.ApplyHydratedDeploymentRequest):
             request = telcoautomation.ApplyHydratedDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
