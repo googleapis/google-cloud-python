@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -73,7 +75,6 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -103,7 +104,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -123,15 +124,18 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -141,11 +145,11 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -171,7 +175,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -211,7 +215,9 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -990,6 +996,196 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
                 response_deserializer=task.Task.deserialize,
             )
         return self._stubs["run_task"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_queues: gapic_v1.method_async.wrap_method(
+                self.list_queues,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.get_queue: gapic_v1.method_async.wrap_method(
+                self.get_queue,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.create_queue: gapic_v1.method_async.wrap_method(
+                self.create_queue,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.update_queue: gapic_v1.method_async.wrap_method(
+                self.update_queue,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.delete_queue: gapic_v1.method_async.wrap_method(
+                self.delete_queue,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.purge_queue: gapic_v1.method_async.wrap_method(
+                self.purge_queue,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.pause_queue: gapic_v1.method_async.wrap_method(
+                self.pause_queue,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.resume_queue: gapic_v1.method_async.wrap_method(
+                self.resume_queue,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.upload_queue_yaml: gapic_v1.method_async.wrap_method(
+                self.upload_queue_yaml,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+                self.get_iam_policy,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+                self.set_iam_policy,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+                self.test_iam_permissions,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.list_tasks: gapic_v1.method_async.wrap_method(
+                self.list_tasks,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.get_task: gapic_v1.method_async.wrap_method(
+                self.get_task,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.create_task: gapic_v1.method_async.wrap_method(
+                self.create_task,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.delete_task: gapic_v1.method_async.wrap_method(
+                self.delete_task,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=20.0,
+                ),
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.lease_tasks: gapic_v1.method_async.wrap_method(
+                self.lease_tasks,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.acknowledge_task: gapic_v1.method_async.wrap_method(
+                self.acknowledge_task,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.renew_lease: gapic_v1.method_async.wrap_method(
+                self.renew_lease,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.cancel_lease: gapic_v1.method_async.wrap_method(
+                self.cancel_lease,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.run_task: gapic_v1.method_async.wrap_method(
+                self.run_task,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()
