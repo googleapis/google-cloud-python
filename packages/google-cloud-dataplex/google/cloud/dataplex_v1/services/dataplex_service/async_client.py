@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -224,7 +225,11 @@ class DataplexServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataplexServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, DataplexServiceTransport, Callable[..., DataplexServiceTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -236,9 +241,11 @@ class DataplexServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataplexServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataplexServiceTransport,Callable[..., DataplexServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataplexServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -383,8 +390,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, lake, lake_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -392,7 +399,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateLakeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateLakeRequest):
+            request = service.CreateLakeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -405,11 +415,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_lake,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_lake
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -520,8 +528,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([lake, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -529,7 +537,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateLakeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateLakeRequest):
+            request = service.UpdateLakeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -540,11 +551,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_lake,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_lake
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -651,8 +660,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -660,7 +669,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteLakeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteLakeRequest):
+            request = service.DeleteLakeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -669,11 +681,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_lake,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_lake
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -769,8 +779,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -778,7 +788,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListLakesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListLakesRequest):
+            request = service.ListLakesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -787,20 +800,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_lakes,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_lakes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -905,8 +907,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -914,7 +916,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetLakeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetLakeRequest):
+            request = service.GetLakeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -923,20 +928,7 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_lake,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_lake]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1022,8 +1014,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1031,7 +1023,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListLakeActionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListLakeActionsRequest):
+            request = service.ListLakeActionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1040,20 +1035,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_lake_actions,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_lake_actions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1184,8 +1168,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, zone, zone_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1193,7 +1177,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateZoneRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateZoneRequest):
+            request = service.CreateZoneRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1206,11 +1193,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_zone,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_zone
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1319,8 +1304,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([zone, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1328,7 +1313,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateZoneRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateZoneRequest):
+            request = service.UpdateZoneRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1339,11 +1327,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_zone,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_zone
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1450,8 +1436,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1459,7 +1445,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteZoneRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteZoneRequest):
+            request = service.DeleteZoneRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1468,11 +1457,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_zone,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_zone
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1566,8 +1553,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1575,7 +1562,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListZonesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListZonesRequest):
+            request = service.ListZonesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1584,20 +1574,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_zones,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_zones
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1694,8 +1673,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1703,7 +1682,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetZoneRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetZoneRequest):
+            request = service.GetZoneRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1712,20 +1694,7 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_zone,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_zone]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1811,8 +1780,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1820,7 +1789,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListZoneActionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListZoneActionsRequest):
+            request = service.ListZoneActionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1829,20 +1801,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_zone_actions,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_zone_actions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1966,8 +1927,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, asset, asset_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1975,7 +1936,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateAssetRequest):
+            request = service.CreateAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1988,11 +1952,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_asset,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2097,8 +2059,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([asset, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2106,7 +2068,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateAssetRequest):
+            request = service.UpdateAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2117,11 +2082,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_asset,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2229,8 +2192,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2238,7 +2201,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteAssetRequest):
+            request = service.DeleteAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2247,11 +2213,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_asset,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2345,8 +2309,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2354,7 +2318,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListAssetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListAssetsRequest):
+            request = service.ListAssetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2363,20 +2330,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_assets,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_assets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2468,8 +2424,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2477,7 +2433,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetAssetRequest):
+            request = service.GetAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2486,20 +2445,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_asset,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2585,8 +2533,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2594,7 +2542,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListAssetActionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListAssetActionsRequest):
+            request = service.ListAssetActionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2603,20 +2554,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_asset_actions,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_asset_actions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2734,8 +2674,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, task, task_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2743,7 +2683,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateTaskRequest):
+            request = service.CreateTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2756,11 +2699,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_task,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_task
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2869,8 +2810,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([task, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2878,7 +2819,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateTaskRequest):
+            request = service.UpdateTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2889,11 +2833,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_task,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_task
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2999,8 +2941,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3008,7 +2950,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteTaskRequest):
+            request = service.DeleteTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3017,11 +2962,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_task,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_task
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3115,8 +3058,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3124,7 +3067,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListTasksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListTasksRequest):
+            request = service.ListTasksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3133,20 +3079,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_tasks,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_tasks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3235,8 +3170,8 @@ class DataplexServiceAsyncClient:
                 A task represents a user-visible job.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3244,7 +3179,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetTaskRequest):
+            request = service.GetTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3253,20 +3191,7 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_task,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_task]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3352,8 +3277,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3361,7 +3286,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListJobsRequest):
+            request = service.ListJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3370,20 +3298,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_jobs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3472,8 +3389,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3481,7 +3398,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.RunTaskRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.RunTaskRequest):
+            request = service.RunTaskRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3490,11 +3410,7 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_task,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.run_task]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3576,8 +3492,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3585,7 +3501,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetJobRequest):
+            request = service.GetJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3594,20 +3513,7 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_job,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3680,8 +3586,8 @@ class DataplexServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3689,7 +3595,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CancelJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CancelJobRequest):
+            request = service.CancelJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3698,11 +3607,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3812,8 +3719,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, environment, environment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3821,7 +3728,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateEnvironmentRequest):
+            request = service.CreateEnvironmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3834,11 +3744,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_environment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3943,8 +3851,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([environment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3952,7 +3860,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateEnvironmentRequest):
+            request = service.UpdateEnvironmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3963,11 +3874,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_environment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4075,8 +3984,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4084,7 +3993,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteEnvironmentRequest):
+            request = service.DeleteEnvironmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4093,11 +4005,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_environment,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4191,8 +4101,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4200,7 +4110,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListEnvironmentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListEnvironmentsRequest):
+            request = service.ListEnvironmentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4209,20 +4122,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_environments,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_environments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4314,8 +4216,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4323,7 +4225,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetEnvironmentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetEnvironmentRequest):
+            request = service.GetEnvironmentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4332,20 +4237,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_environment,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_environment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4431,8 +4325,8 @@ class DataplexServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4440,7 +4334,10 @@ class DataplexServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListSessionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSessionsRequest):
+            request = service.ListSessionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4449,11 +4346,9 @@ class DataplexServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_sessions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sessions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

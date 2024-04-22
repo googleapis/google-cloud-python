@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -219,7 +220,13 @@ class SiteSearchEngineServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SiteSearchEngineServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                SiteSearchEngineServiceTransport,
+                Callable[..., SiteSearchEngineServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -231,9 +238,11 @@ class SiteSearchEngineServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SiteSearchEngineServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SiteSearchEngineServiceTransport,Callable[..., SiteSearchEngineServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SiteSearchEngineServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -350,8 +359,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -359,7 +368,12 @@ class SiteSearchEngineServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = site_search_engine_service.GetSiteSearchEngineRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.GetSiteSearchEngineRequest
+        ):
+            request = site_search_engine_service.GetSiteSearchEngineRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -368,11 +382,9 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_site_search_engine,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_site_search_engine
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -481,8 +493,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target_site])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -490,7 +502,10 @@ class SiteSearchEngineServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = site_search_engine_service.CreateTargetSiteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, site_search_engine_service.CreateTargetSiteRequest):
+            request = site_search_engine_service.CreateTargetSiteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -501,11 +516,9 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_target_site,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_target_site
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -604,15 +617,18 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = site_search_engine_service.BatchCreateTargetSitesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.BatchCreateTargetSitesRequest
+        ):
+            request = site_search_engine_service.BatchCreateTargetSitesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_create_target_sites,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_target_sites
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -717,8 +733,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -726,7 +742,10 @@ class SiteSearchEngineServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = site_search_engine_service.GetTargetSiteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, site_search_engine_service.GetTargetSiteRequest):
+            request = site_search_engine_service.GetTargetSiteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -735,11 +754,9 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_target_site,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_target_site
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -843,8 +860,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([target_site])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -852,7 +869,10 @@ class SiteSearchEngineServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = site_search_engine_service.UpdateTargetSiteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, site_search_engine_service.UpdateTargetSiteRequest):
+            request = site_search_engine_service.UpdateTargetSiteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -861,11 +881,9 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_target_site,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_target_site
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -987,8 +1005,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -996,7 +1014,10 @@ class SiteSearchEngineServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = site_search_engine_service.DeleteTargetSiteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, site_search_engine_service.DeleteTargetSiteRequest):
+            request = site_search_engine_service.DeleteTargetSiteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1005,11 +1026,9 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_target_site,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_target_site
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1116,8 +1135,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1125,7 +1144,10 @@ class SiteSearchEngineServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = site_search_engine_service.ListTargetSitesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, site_search_engine_service.ListTargetSitesRequest):
+            request = site_search_engine_service.ListTargetSitesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1134,11 +1156,9 @@ class SiteSearchEngineServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_target_sites,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_target_sites
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1233,15 +1253,20 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = site_search_engine_service.EnableAdvancedSiteSearchRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.EnableAdvancedSiteSearchRequest
+        ):
+            request = site_search_engine_service.EnableAdvancedSiteSearchRequest(
+                request
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.enable_advanced_site_search,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.enable_advanced_site_search
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1337,15 +1362,20 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = site_search_engine_service.DisableAdvancedSiteSearchRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.DisableAdvancedSiteSearchRequest
+        ):
+            request = site_search_engine_service.DisableAdvancedSiteSearchRequest(
+                request
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.disable_advanced_site_search,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.disable_advanced_site_search
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1441,15 +1471,16 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = site_search_engine_service.RecrawlUrisRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, site_search_engine_service.RecrawlUrisRequest):
+            request = site_search_engine_service.RecrawlUrisRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.recrawl_uris,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.recrawl_uris
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1546,15 +1577,18 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = site_search_engine_service.BatchVerifyTargetSitesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.BatchVerifyTargetSitesRequest
+        ):
+            request = site_search_engine_service.BatchVerifyTargetSitesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_verify_target_sites,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_verify_target_sites
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1647,17 +1681,20 @@ class SiteSearchEngineServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = site_search_engine_service.FetchDomainVerificationStatusRequest(
-            request
-        )
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, site_search_engine_service.FetchDomainVerificationStatusRequest
+        ):
+            request = site_search_engine_service.FetchDomainVerificationStatusRequest(
+                request
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.fetch_domain_verification_status,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_domain_verification_status
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

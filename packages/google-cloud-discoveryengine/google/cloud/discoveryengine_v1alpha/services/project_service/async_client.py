@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -203,7 +204,9 @@ class ProjectServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ProjectServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, ProjectServiceTransport, Callable[..., ProjectServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -215,9 +218,11 @@ class ProjectServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ProjectServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ProjectServiceTransport,Callable[..., ProjectServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ProjectServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -325,8 +330,8 @@ class ProjectServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -334,7 +339,10 @@ class ProjectServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = project_service.GetProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, project_service.GetProjectRequest):
+            request = project_service.GetProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -343,11 +351,9 @@ class ProjectServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -448,8 +454,8 @@ class ProjectServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -457,7 +463,10 @@ class ProjectServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = project_service.ProvisionProjectRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, project_service.ProvisionProjectRequest):
+            request = project_service.ProvisionProjectRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -466,11 +475,9 @@ class ProjectServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.provision_project,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.provision_project
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -609,8 +616,8 @@ class ProjectServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [consent_change_action, project, service_term_id, service_term_version]
         )
@@ -620,7 +627,10 @@ class ProjectServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = project_service.ReportConsentChangeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, project_service.ReportConsentChangeRequest):
+            request = project_service.ReportConsentChangeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -635,11 +645,9 @@ class ProjectServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.report_consent_change,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.report_consent_change
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

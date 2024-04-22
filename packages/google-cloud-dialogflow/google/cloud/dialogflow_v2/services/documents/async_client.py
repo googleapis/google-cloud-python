@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -198,7 +199,9 @@ class DocumentsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentsTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, DocumentsTransport, Callable[..., DocumentsTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -210,9 +213,11 @@ class DocumentsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DocumentsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DocumentsTransport,Callable[..., DocumentsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DocumentsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -323,8 +328,8 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -332,7 +337,10 @@ class DocumentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = document.ListDocumentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document.ListDocumentsRequest):
+            request = document.ListDocumentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -341,11 +349,9 @@ class DocumentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_documents,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_documents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -444,8 +450,8 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -453,7 +459,10 @@ class DocumentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = document.GetDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document.GetDocumentRequest):
+            request = document.GetDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -462,11 +471,9 @@ class DocumentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -585,8 +592,8 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, document])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -594,7 +601,10 @@ class DocumentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcd_document.CreateDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_document.CreateDocumentRequest):
+            request = gcd_document.CreateDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -605,11 +615,9 @@ class DocumentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -719,15 +727,16 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = document.ImportDocumentsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document.ImportDocumentsRequest):
+            request = document.ImportDocumentsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_documents,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_documents
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -842,8 +851,8 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -851,7 +860,10 @@ class DocumentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = document.DeleteDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document.DeleteDocumentRequest):
+            request = document.DeleteDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -860,11 +872,9 @@ class DocumentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -990,8 +1000,8 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -999,7 +1009,10 @@ class DocumentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcd_document.UpdateDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_document.UpdateDocumentRequest):
+            request = gcd_document.UpdateDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1010,11 +1023,9 @@ class DocumentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1148,8 +1159,8 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, content_uri])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1157,7 +1168,10 @@ class DocumentsAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = document.ReloadDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document.ReloadDocumentRequest):
+            request = document.ReloadDocumentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1168,11 +1182,9 @@ class DocumentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reload_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reload_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1278,15 +1290,16 @@ class DocumentsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = document.ExportDocumentRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, document.ExportDocumentRequest):
+            request = document.ExportDocumentRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_document
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

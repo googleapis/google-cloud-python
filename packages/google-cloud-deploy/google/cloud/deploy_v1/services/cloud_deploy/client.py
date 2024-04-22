@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -889,7 +890,9 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CloudDeployTransport]] = None,
+        transport: Optional[
+            Union[str, CloudDeployTransport, Callable[..., CloudDeployTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -901,9 +904,11 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudDeployTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudDeployTransport,Callable[..., CloudDeployTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudDeployTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -1009,8 +1014,15 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CloudDeployTransport], Callable[..., CloudDeployTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CloudDeployTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -1089,8 +1101,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1098,10 +1110,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListDeliveryPipelinesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListDeliveryPipelinesRequest):
             request = cloud_deploy.ListDeliveryPipelinesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1205,8 +1215,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1214,10 +1224,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetDeliveryPipelineRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetDeliveryPipelineRequest):
             request = cloud_deploy.GetDeliveryPipelineRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1336,8 +1344,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, delivery_pipeline, delivery_pipeline_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1345,10 +1353,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CreateDeliveryPipelineRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CreateDeliveryPipelineRequest):
             request = cloud_deploy.CreateDeliveryPipelineRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1473,8 +1479,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([delivery_pipeline, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1482,10 +1488,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.UpdateDeliveryPipelineRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.UpdateDeliveryPipelineRequest):
             request = cloud_deploy.UpdateDeliveryPipelineRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1606,8 +1610,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1615,10 +1619,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.DeleteDeliveryPipelineRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.DeleteDeliveryPipelineRequest):
             request = cloud_deploy.DeleteDeliveryPipelineRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1722,8 +1724,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1731,10 +1733,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListTargetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListTargetsRequest):
             request = cloud_deploy.ListTargetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1850,8 +1850,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from RollbackTarget.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, target_id, rollout_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1859,10 +1859,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.RollbackTargetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.RollbackTargetRequest):
             request = cloud_deploy.RollbackTargetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1960,8 +1958,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1969,10 +1967,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetTargetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetTargetRequest):
             request = cloud_deploy.GetTargetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2088,8 +2084,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target, target_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2097,10 +2093,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CreateTargetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CreateTargetRequest):
             request = cloud_deploy.CreateTargetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2223,8 +2217,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([target, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2232,10 +2226,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.UpdateTargetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.UpdateTargetRequest):
             request = cloud_deploy.UpdateTargetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2354,8 +2346,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2363,10 +2355,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.DeleteTargetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.DeleteTargetRequest):
             request = cloud_deploy.DeleteTargetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2473,8 +2463,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2482,10 +2472,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListCustomTargetTypesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListCustomTargetTypesRequest):
             request = cloud_deploy.ListCustomTargetTypesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2591,8 +2579,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2600,10 +2588,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetCustomTargetTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetCustomTargetTypeRequest):
             request = cloud_deploy.GetCustomTargetTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2728,8 +2714,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_target_type, custom_target_type_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2737,10 +2723,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CreateCustomTargetTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CreateCustomTargetTypeRequest):
             request = cloud_deploy.CreateCustomTargetTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2873,8 +2857,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_target_type, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2882,10 +2866,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.UpdateCustomTargetTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.UpdateCustomTargetTypeRequest):
             request = cloud_deploy.UpdateCustomTargetTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3008,8 +2990,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3017,10 +2999,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.DeleteCustomTargetTypeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.DeleteCustomTargetTypeRequest):
             request = cloud_deploy.DeleteCustomTargetTypeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3125,8 +3105,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3134,10 +3114,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListReleasesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListReleasesRequest):
             request = cloud_deploy.ListReleasesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3240,8 +3218,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3249,10 +3227,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetReleaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetReleaseRequest):
             request = cloud_deploy.GetReleaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3369,8 +3345,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, release, release_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3378,10 +3354,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CreateReleaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CreateReleaseRequest):
             request = cloud_deploy.CreateReleaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3483,8 +3457,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object for AbandonRelease.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3492,10 +3466,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.AbandonReleaseRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.AbandonReleaseRequest):
             request = cloud_deploy.AbandonReleaseRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3586,8 +3558,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from ApproveRollout.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3595,10 +3567,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ApproveRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ApproveRolloutRequest):
             request = cloud_deploy.ApproveRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3695,8 +3665,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from AdvanceRollout.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, phase_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3704,10 +3674,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.AdvanceRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.AdvanceRolloutRequest):
             request = cloud_deploy.AdvanceRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3799,8 +3767,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from CancelRollout.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3808,10 +3776,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CancelRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CancelRolloutRequest):
             request = cloud_deploy.CancelRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3908,8 +3874,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3917,10 +3883,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListRolloutsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListRolloutsRequest):
             request = cloud_deploy.ListRolloutsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4024,8 +3988,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4033,10 +3997,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetRolloutRequest):
             request = cloud_deploy.GetRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4158,8 +4120,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, rollout, rollout_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4167,10 +4129,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CreateRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CreateRolloutRequest):
             request = cloud_deploy.CreateRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4290,8 +4250,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from IgnoreJob.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([rollout, phase_id, job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4299,10 +4259,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.IgnoreJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.IgnoreJobRequest):
             request = cloud_deploy.IgnoreJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4415,8 +4373,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from 'RetryJob'.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([rollout, phase_id, job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4424,10 +4382,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.RetryJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.RetryJobRequest):
             request = cloud_deploy.RetryJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4528,8 +4484,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4537,10 +4493,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListJobRunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListJobRunsRequest):
             request = cloud_deploy.ListJobRunsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4644,8 +4598,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4653,10 +4607,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetJobRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetJobRunRequest):
             request = cloud_deploy.GetJobRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4746,8 +4698,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from TerminateJobRun.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4755,10 +4707,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.TerminateJobRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.TerminateJobRunRequest):
             request = cloud_deploy.TerminateJobRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4848,8 +4798,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 Service-wide configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4857,10 +4807,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetConfigRequest):
             request = cloud_deploy.GetConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4986,8 +4934,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, automation, automation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4995,10 +4943,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CreateAutomationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CreateAutomationRequest):
             request = cloud_deploy.CreateAutomationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5131,8 +5077,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([automation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5140,10 +5086,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.UpdateAutomationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.UpdateAutomationRequest):
             request = cloud_deploy.UpdateAutomationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5262,8 +5206,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5271,10 +5215,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.DeleteAutomationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.DeleteAutomationRequest):
             request = cloud_deploy.DeleteAutomationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5380,8 +5322,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5389,10 +5331,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetAutomationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetAutomationRequest):
             request = cloud_deploy.GetAutomationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5488,8 +5428,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5497,10 +5437,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListAutomationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListAutomationsRequest):
             request = cloud_deploy.ListAutomationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5603,8 +5541,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5612,10 +5550,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.GetAutomationRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.GetAutomationRunRequest):
             request = cloud_deploy.GetAutomationRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5711,8 +5647,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5720,10 +5656,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.ListAutomationRunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.ListAutomationRunsRequest):
             request = cloud_deploy.ListAutomationRunsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5826,8 +5760,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 The response object from CancelAutomationRun.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5835,10 +5769,8 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_deploy.CancelAutomationRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_deploy.CancelAutomationRunRequest):
             request = cloud_deploy.CancelAutomationRunRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -222,7 +223,13 @@ class DataTaxonomyServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataTaxonomyServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                DataTaxonomyServiceTransport,
+                Callable[..., DataTaxonomyServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -234,9 +241,11 @@ class DataTaxonomyServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataTaxonomyServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataTaxonomyServiceTransport,Callable[..., DataTaxonomyServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataTaxonomyServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -373,8 +382,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_taxonomy, data_taxonomy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -382,7 +391,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcd_data_taxonomy.CreateDataTaxonomyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_data_taxonomy.CreateDataTaxonomyRequest):
+            request = gcd_data_taxonomy.CreateDataTaxonomyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -395,11 +407,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_data_taxonomy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_data_taxonomy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -504,8 +514,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_taxonomy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -513,7 +523,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcd_data_taxonomy.UpdateDataTaxonomyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_data_taxonomy.UpdateDataTaxonomyRequest):
+            request = gcd_data_taxonomy.UpdateDataTaxonomyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -524,11 +537,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_data_taxonomy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_data_taxonomy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -636,8 +647,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -645,7 +656,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.DeleteDataTaxonomyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.DeleteDataTaxonomyRequest):
+            request = data_taxonomy.DeleteDataTaxonomyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -654,11 +668,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_data_taxonomy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_data_taxonomy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -755,8 +767,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -764,7 +776,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.ListDataTaxonomiesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.ListDataTaxonomiesRequest):
+            request = data_taxonomy.ListDataTaxonomiesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -773,11 +788,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_taxonomies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_taxonomies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -872,8 +885,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -881,7 +894,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.GetDataTaxonomyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.GetDataTaxonomyRequest):
+            request = data_taxonomy.GetDataTaxonomyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -890,11 +906,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_taxonomy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_taxonomy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1011,8 +1025,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, data_attribute_binding, data_attribute_binding_id]
         )
@@ -1022,7 +1036,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.CreateDataAttributeBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.CreateDataAttributeBindingRequest):
+            request = data_taxonomy.CreateDataAttributeBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1035,11 +1052,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_data_attribute_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_data_attribute_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1146,8 +1161,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_attribute_binding, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1155,7 +1170,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.UpdateDataAttributeBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.UpdateDataAttributeBindingRequest):
+            request = data_taxonomy.UpdateDataAttributeBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1166,11 +1184,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_data_attribute_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_data_attribute_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1281,8 +1297,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1290,7 +1306,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.DeleteDataAttributeBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.DeleteDataAttributeBindingRequest):
+            request = data_taxonomy.DeleteDataAttributeBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1299,11 +1318,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_data_attribute_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_data_attribute_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1400,8 +1417,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1409,7 +1426,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.ListDataAttributeBindingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.ListDataAttributeBindingsRequest):
+            request = data_taxonomy.ListDataAttributeBindingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1418,11 +1438,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_attribute_bindings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_attribute_bindings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1517,8 +1535,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1526,7 +1544,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.GetDataAttributeBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.GetDataAttributeBindingRequest):
+            request = data_taxonomy.GetDataAttributeBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1535,11 +1556,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_attribute_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_attribute_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1652,8 +1671,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_attribute, data_attribute_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1661,7 +1680,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.CreateDataAttributeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.CreateDataAttributeRequest):
+            request = data_taxonomy.CreateDataAttributeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1674,11 +1696,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_data_attribute,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_data_attribute
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1783,8 +1803,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_attribute, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1792,7 +1812,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.UpdateDataAttributeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.UpdateDataAttributeRequest):
+            request = data_taxonomy.UpdateDataAttributeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1803,11 +1826,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_data_attribute,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_data_attribute
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1913,8 +1934,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1922,7 +1943,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.DeleteDataAttributeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.DeleteDataAttributeRequest):
+            request = data_taxonomy.DeleteDataAttributeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1931,11 +1955,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_data_attribute,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_data_attribute
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2029,8 +2051,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2038,7 +2060,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.ListDataAttributesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.ListDataAttributesRequest):
+            request = data_taxonomy.ListDataAttributesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2047,11 +2072,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_attributes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_attributes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2146,8 +2169,8 @@ class DataTaxonomyServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2155,7 +2178,10 @@ class DataTaxonomyServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_taxonomy.GetDataAttributeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_taxonomy.GetDataAttributeRequest):
+            request = data_taxonomy.GetDataAttributeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2164,11 +2190,9 @@ class DataTaxonomyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_attribute,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_attribute
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
