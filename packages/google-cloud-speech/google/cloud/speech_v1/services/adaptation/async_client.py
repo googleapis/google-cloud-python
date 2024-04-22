@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -193,7 +194,9 @@ class AdaptationAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AdaptationTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, AdaptationTransport, Callable[..., AdaptationTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -205,9 +208,11 @@ class AdaptationAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AdaptationTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AdaptationTransport,Callable[..., AdaptationTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AdaptationTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -350,8 +355,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, phrase_set, phrase_set_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -359,7 +364,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.CreatePhraseSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.CreatePhraseSetRequest):
+            request = cloud_speech_adaptation.CreatePhraseSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -372,11 +380,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_phrase_set,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_phrase_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -472,8 +478,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -481,7 +487,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.GetPhraseSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.GetPhraseSetRequest):
+            request = cloud_speech_adaptation.GetPhraseSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -490,11 +499,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_phrase_set,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_phrase_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -593,8 +600,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -602,7 +609,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.ListPhraseSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.ListPhraseSetRequest):
+            request = cloud_speech_adaptation.ListPhraseSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -611,11 +621,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_phrase_set,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_phrase_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -727,8 +735,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([phrase_set, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -736,7 +744,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.UpdatePhraseSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.UpdatePhraseSetRequest):
+            request = cloud_speech_adaptation.UpdatePhraseSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -747,11 +758,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_phrase_set,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_phrase_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -830,8 +839,8 @@ class AdaptationAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -839,7 +848,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.DeletePhraseSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.DeletePhraseSetRequest):
+            request = cloud_speech_adaptation.DeletePhraseSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -848,11 +860,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_phrase_set,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_phrase_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -971,8 +981,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_class, custom_class_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -980,7 +990,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.CreateCustomClassRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.CreateCustomClassRequest):
+            request = cloud_speech_adaptation.CreateCustomClassRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -993,11 +1006,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_custom_class,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_custom_class
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1089,8 +1100,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1098,7 +1109,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.GetCustomClassRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.GetCustomClassRequest):
+            request = cloud_speech_adaptation.GetCustomClassRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1107,11 +1121,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_custom_class,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_custom_class
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1210,8 +1222,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1219,7 +1231,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.ListCustomClassesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.ListCustomClassesRequest):
+            request = cloud_speech_adaptation.ListCustomClassesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1228,11 +1243,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_custom_classes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_custom_classes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1348,8 +1361,8 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_class, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1357,7 +1370,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.UpdateCustomClassRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.UpdateCustomClassRequest):
+            request = cloud_speech_adaptation.UpdateCustomClassRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1368,11 +1384,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_custom_class,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_custom_class
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1460,8 +1474,8 @@ class AdaptationAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1469,7 +1483,10 @@ class AdaptationAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_speech_adaptation.DeleteCustomClassRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_speech_adaptation.DeleteCustomClassRequest):
+            request = cloud_speech_adaptation.DeleteCustomClassRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1478,11 +1495,9 @@ class AdaptationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_custom_class,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_custom_class
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

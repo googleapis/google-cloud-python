@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -540,7 +541,9 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ServiceManagerTransport]] = None,
+        transport: Optional[
+            Union[str, ServiceManagerTransport, Callable[..., ServiceManagerTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -552,9 +555,11 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ServiceManagerTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ServiceManagerTransport,Callable[..., ServiceManagerTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ServiceManagerTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -663,8 +668,15 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ServiceManagerTransport], Callable[..., ServiceManagerTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ServiceManagerTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -754,8 +766,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([producer_project_id, consumer_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -763,10 +775,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.ListServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.ListServicesRequest):
             request = servicemanager.ListServicesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -866,8 +876,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -875,10 +885,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.GetServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.GetServiceRequest):
             request = servicemanager.GetServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -989,8 +997,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -998,10 +1006,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.CreateServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.CreateServiceRequest):
             request = servicemanager.CreateServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1119,8 +1125,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1128,10 +1134,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.DeleteServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.DeleteServiceRequest):
             request = servicemanager.DeleteServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1249,8 +1253,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1258,10 +1262,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.UndeleteServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.UndeleteServiceRequest):
             request = servicemanager.UndeleteServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1371,8 +1373,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1380,10 +1382,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.ListServiceConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.ListServiceConfigsRequest):
             request = servicemanager.ListServiceConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1537,8 +1537,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, config_id, view])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1546,10 +1546,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.GetServiceConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.GetServiceConfigRequest):
             request = servicemanager.GetServiceConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1698,8 +1696,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, service_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1707,10 +1705,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.CreateServiceConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.CreateServiceConfigRequest):
             request = servicemanager.CreateServiceConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1846,8 +1842,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, config_source, validate_only])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1855,10 +1851,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.SubmitConfigSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.SubmitConfigSourceRequest):
             request = servicemanager.SubmitConfigSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1992,8 +1986,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2001,10 +1995,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.ListServiceRolloutsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.ListServiceRolloutsRequest):
             request = servicemanager.ListServiceRolloutsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2126,8 +2118,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, rollout_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2135,10 +2127,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.GetServiceRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.GetServiceRolloutRequest):
             request = servicemanager.GetServiceRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2274,8 +2264,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, rollout])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2283,10 +2273,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.CreateServiceRolloutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.CreateServiceRolloutRequest):
             request = servicemanager.CreateServiceRolloutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2419,8 +2407,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([new_config, old_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2428,10 +2416,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.GenerateConfigReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, servicemanager.GenerateConfigReportRequest):
             request = servicemanager.GenerateConfigReportRequest(request)
             # If we have keyword arguments corresponding to fields on the

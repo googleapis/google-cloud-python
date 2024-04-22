@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -226,7 +227,9 @@ class RecommenderAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, RecommenderTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, RecommenderTransport, Callable[..., RecommenderTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -238,9 +241,11 @@ class RecommenderAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.RecommenderTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,RecommenderTransport,Callable[..., RecommenderTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the RecommenderTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -364,8 +369,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -373,7 +378,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.ListInsightsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.ListInsightsRequest):
+            request = recommender_service.ListInsightsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -382,21 +390,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_insights,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_insights
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -488,8 +484,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -497,7 +493,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.GetInsightRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.GetInsightRequest):
+            request = recommender_service.GetInsightRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -506,21 +505,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_insight,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_insight
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -628,8 +615,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -637,7 +624,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.MarkInsightAcceptedRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.MarkInsightAcceptedRequest):
+            request = recommender_service.MarkInsightAcceptedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -651,11 +641,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.mark_insight_accepted,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_insight_accepted
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -792,8 +780,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -801,7 +789,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.ListRecommendationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.ListRecommendationsRequest):
+            request = recommender_service.ListRecommendationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -812,21 +803,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_recommendations,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_recommendations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -920,8 +899,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -929,7 +908,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.GetRecommendationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.GetRecommendationRequest):
+            request = recommender_service.GetRecommendationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -938,21 +920,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_recommendation,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_recommendation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1038,15 +1008,18 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = recommender_service.MarkRecommendationDismissedRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, recommender_service.MarkRecommendationDismissedRequest
+        ):
+            request = recommender_service.MarkRecommendationDismissedRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.mark_recommendation_dismissed,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_recommendation_dismissed
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1160,8 +1133,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1169,7 +1142,12 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.MarkRecommendationClaimedRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, recommender_service.MarkRecommendationClaimedRequest
+        ):
+            request = recommender_service.MarkRecommendationClaimedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1183,11 +1161,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.mark_recommendation_claimed,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_recommendation_claimed
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1301,8 +1277,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1310,7 +1286,12 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.MarkRecommendationSucceededRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, recommender_service.MarkRecommendationSucceededRequest
+        ):
+            request = recommender_service.MarkRecommendationSucceededRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1324,11 +1305,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.mark_recommendation_succeeded,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_recommendation_succeeded
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1442,8 +1421,8 @@ class RecommenderAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1451,7 +1430,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.MarkRecommendationFailedRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.MarkRecommendationFailedRequest):
+            request = recommender_service.MarkRecommendationFailedRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1465,11 +1447,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.mark_recommendation_failed,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_recommendation_failed
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1561,8 +1541,8 @@ class RecommenderAsyncClient:
                 Configuration for a Recommender.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1570,7 +1550,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.GetRecommenderConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.GetRecommenderConfigRequest):
+            request = recommender_service.GetRecommenderConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1579,11 +1562,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_recommender_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_recommender_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1671,8 +1652,8 @@ class RecommenderAsyncClient:
                 Configuration for a Recommender.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([recommender_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1680,7 +1661,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.UpdateRecommenderConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.UpdateRecommenderConfigRequest):
+            request = recommender_service.UpdateRecommenderConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1691,11 +1675,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_recommender_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_recommender_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1789,8 +1771,8 @@ class RecommenderAsyncClient:
                 Configuration for an InsightType.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1798,7 +1780,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.GetInsightTypeConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.GetInsightTypeConfigRequest):
+            request = recommender_service.GetInsightTypeConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1807,11 +1792,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_insight_type_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_insight_type_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1899,8 +1882,8 @@ class RecommenderAsyncClient:
                 Configuration for an InsightType.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([insight_type_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1908,7 +1891,10 @@ class RecommenderAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = recommender_service.UpdateInsightTypeConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recommender_service.UpdateInsightTypeConfigRequest):
+            request = recommender_service.UpdateInsightTypeConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1919,11 +1905,9 @@ class RecommenderAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_insight_type_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_insight_type_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
