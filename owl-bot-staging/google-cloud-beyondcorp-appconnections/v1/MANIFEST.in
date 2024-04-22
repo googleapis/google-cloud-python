@@ -1,0 +1,2 @@
+recursive-include google/cloud/beyondcorp_appconnections *.py
+recursive-include google/cloud/beyondcorp_appconnections_v1 *.py
