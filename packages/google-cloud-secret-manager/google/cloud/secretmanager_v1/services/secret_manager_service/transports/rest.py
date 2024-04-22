@@ -26,6 +26,7 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -503,6 +504,52 @@ class SecretManagerServiceRestInterceptor:
         """
         return response
 
+    def pre_get_location(
+        self,
+        request: locations_pb2.GetLocationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecretManagerService server.
+        """
+        return request, metadata
+
+    def post_get_location(
+        self, response: locations_pb2.Location
+    ) -> locations_pb2.Location:
+        """Post-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecretManagerService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_locations(
+        self,
+        request: locations_pb2.ListLocationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecretManagerService server.
+        """
+        return request, metadata
+
+    def post_list_locations(
+        self, response: locations_pb2.ListLocationsResponse
+    ) -> locations_pb2.ListLocationsResponse:
+        """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecretManagerService server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class SecretManagerServiceRestStub:
@@ -652,6 +699,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/secrets/*/versions/*}:access",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*/versions/*}:access",
+                },
             ]
             request, metadata = self._interceptor.pre_access_secret_version(
                 request, metadata
@@ -741,6 +792,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{parent=projects/*/secrets/*}:addVersion",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/secrets/*}:addVersion",
                     "body": "*",
                 },
             ]
@@ -847,6 +903,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "uri": "/v1/{parent=projects/*}/secrets",
                     "body": "secret",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/secrets",
+                    "body": "secret",
+                },
             ]
             request, metadata = self._interceptor.pre_create_secret(request, metadata)
             pb_request = service.CreateSecretRequest.pb(request)
@@ -935,6 +996,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/secrets/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_secret(request, metadata)
             pb_request = service.DeleteSecretRequest.pb(request)
@@ -1014,6 +1079,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{name=projects/*/secrets/*/versions/*}:destroy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*/versions/*}:destroy",
                     "body": "*",
                 },
             ]
@@ -1113,6 +1183,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "uri": "/v1/{name=projects/*/secrets/*/versions/*}:disable",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*/versions/*}:disable",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_disable_secret_version(
                 request, metadata
@@ -1208,6 +1283,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{name=projects/*/secrets/*/versions/*}:enable",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*/versions/*}:enable",
                     "body": "*",
                 },
             ]
@@ -1378,6 +1458,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/secrets/*}:getIamPolicy",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/secrets/*}:getIamPolicy",
+                },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             pb_request = request
@@ -1471,6 +1555,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/secrets/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_get_secret(request, metadata)
             pb_request = service.GetSecretRequest.pb(request)
@@ -1558,6 +1646,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/secrets/*/versions/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/secrets/*/versions/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_secret_version(
@@ -1649,6 +1741,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "method": "get",
                     "uri": "/v1/{parent=projects/*}/secrets",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/secrets",
+                },
             ]
             request, metadata = self._interceptor.pre_list_secrets(request, metadata)
             pb_request = service.ListSecretsRequest.pb(request)
@@ -1736,6 +1832,10 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{parent=projects/*/secrets/*}/versions",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/secrets/*}/versions",
                 },
             ]
             request, metadata = self._interceptor.pre_list_secret_versions(
@@ -1900,6 +2000,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                     "uri": "/v1/{resource=projects/*/secrets/*}:setIamPolicy",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/secrets/*}:setIamPolicy",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             pb_request = request
@@ -1990,6 +2095,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/secrets/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/secrets/*}:testIamPermissions",
                     "body": "*",
                 },
             ]
@@ -2094,6 +2204,11 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 {
                     "method": "patch",
                     "uri": "/v1/{secret.name=projects/*/secrets/*}",
+                    "body": "secret",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{secret.name=projects/*/locations/*/secrets/*}",
                     "body": "secret",
                 },
             ]
@@ -2266,6 +2381,138 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSecret(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_location(self):
+        return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetLocation(SecretManagerServiceRestStub):
+        def __call__(
+            self,
+            request: locations_pb2.GetLocationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> locations_pb2.Location:
+            r"""Call the get location method over HTTP.
+
+            Args:
+                request (locations_pb2.GetLocationRequest):
+                    The request object for GetLocation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.Location: Response from GetLocation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_location(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.Location()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_location(resp)
+            return resp
+
+    @property
+    def list_locations(self):
+        return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListLocations(SecretManagerServiceRestStub):
+        def __call__(
+            self,
+            request: locations_pb2.ListLocationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> locations_pb2.ListLocationsResponse:
+            r"""Call the list locations method over HTTP.
+
+            Args:
+                request (locations_pb2.ListLocationsRequest):
+                    The request object for ListLocations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.ListLocationsResponse: Response from ListLocations method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*}/locations",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_list_locations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.ListLocationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_locations(resp)
+            return resp
 
     @property
     def kind(self) -> str:

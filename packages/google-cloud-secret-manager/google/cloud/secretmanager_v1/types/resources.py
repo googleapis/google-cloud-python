@@ -59,7 +59,7 @@ class Secret(proto.Message):
             [Secret][google.cloud.secretmanager.v1.Secret] in the format
             ``projects/*/secrets/*``.
         replication (google.cloud.secretmanager_v1.types.Replication):
-            Required. Immutable. The replication policy of the secret
+            Optional. Immutable. The replication policy of the secret
             data attached to the
             [Secret][google.cloud.secretmanager.v1.Secret].
 
@@ -117,9 +117,8 @@ class Secret(proto.Message):
             aliases can be assigned to a given secret.
 
             Version-Alias pairs will be viewable via GetSecret and
-            modifiable via UpdateSecret. At launch access by alias will
-            only be supported on GetSecretVersion and
-            AccessSecretVersion.
+            modifiable via UpdateSecret. Access by alias is only be
+            supported on GetSecretVersion and AccessSecretVersion.
         annotations (MutableMapping[str, str]):
             Optional. Custom metadata about the secret.
 
@@ -135,6 +134,27 @@ class Secret(proto.Message):
 
             The total size of annotation keys and values must be less
             than 16KiB.
+        version_destroy_ttl (google.protobuf.duration_pb2.Duration):
+            Optional. Secret Version TTL after
+            destruction request
+            This is a part of the Delayed secret version
+            destroy feature. For secret with TTL>0, version
+            destruction doesn't happen immediately on
+            calling destroy instead the version goes to a
+            disabled state and destruction happens after the
+            TTL expires.
+        customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryption):
+            Optional. The customer-managed encryption configuration of
+            the Regionalised Secrets. If no configuration is provided,
+            Google-managed default encryption is used.
+
+            Updates to the
+            [Secret][google.cloud.secretmanager.v1.Secret] encryption
+            configuration only apply to
+            [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
+            added afterwards. They do not apply retroactively to
+            existing
+            [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
     """
 
     name: str = proto.Field(
@@ -192,6 +212,16 @@ class Secret(proto.Message):
         proto.STRING,
         number=13,
     )
+    version_destroy_ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=duration_pb2.Duration,
+    )
+    customer_managed_encryption: "CustomerManagedEncryption" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="CustomerManagedEncryption",
+    )
 
 
 class SecretVersion(proto.Message):
@@ -234,6 +264,20 @@ class SecretVersion(proto.Message):
             [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService]
             on
             [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
+        scheduled_destroy_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Output only. Scheduled destroy time for secret
+            version. This is a part of the Delayed secret version
+            destroy feature. For a Secret with a valid version destroy
+            TTL, when a secert version is destroyed, the version is
+            moved to disabled state and it is scheduled for destruction.
+            The version is destroyed only after the
+            ``scheduled_destroy_time``.
+        customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryptionStatus):
+            Output only. The customer-managed encryption status of the
+            [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+            Only populated if customer-managed encryption is used and
+            [Secret][google.cloud.secretmanager.v1.Secret] is a
+            Regionalised Secret.
     """
 
     class State(proto.Enum):
@@ -298,6 +342,16 @@ class SecretVersion(proto.Message):
     client_specified_payload_checksum: bool = proto.Field(
         proto.BOOL,
         number=7,
+    )
+    scheduled_destroy_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    customer_managed_encryption: "CustomerManagedEncryptionStatus" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="CustomerManagedEncryptionStatus",
     )
 
 
@@ -595,8 +649,10 @@ class Topic(proto.Message):
             Required. The resource name of the Pub/Sub topic that will
             be published to, in the following format:
             ``projects/*/topics/*``. For publication to succeed, the
-            Secret Manager P4SA must have ``pubsub.publisher``
-            permissions on the topic.
+            Secret Manager service agent must have the
+            ``pubsub.topic.publish`` permission on the topic. The
+            Pub/Sub Publisher role (``roles/pubsub.publisher``) includes
+            this permission.
     """
 
     name: str = proto.Field(

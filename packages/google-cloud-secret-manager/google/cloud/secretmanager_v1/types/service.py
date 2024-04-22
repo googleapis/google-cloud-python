@@ -52,7 +52,7 @@ class ListSecretsRequest(proto.Message):
         parent (str):
             Required. The resource name of the project associated with
             the [Secrets][google.cloud.secretmanager.v1.Secret], in the
-            format ``projects/*``.
+            format ``projects/*`` or ``projects/*/locations/*``
         page_size (int):
             Optional. The maximum number of results to be
             returned in a single page. If set to 0, the
@@ -103,7 +103,10 @@ class ListSecretsResponse(proto.Message):
             to retrieve the next page.
         total_size (int):
             The total number of
-            [Secrets][google.cloud.secretmanager.v1.Secret].
+            [Secrets][google.cloud.secretmanager.v1.Secret] but 0 when
+            the
+            [ListSecretsRequest.filter][google.cloud.secretmanager.v1.ListSecretsRequest.filter]
+            field is set.
     """
 
     @property
@@ -133,7 +136,7 @@ class CreateSecretRequest(proto.Message):
         parent (str):
             Required. The resource name of the project to associate with
             the [Secret][google.cloud.secretmanager.v1.Secret], in the
-            format ``projects/*``.
+            format ``projects/*`` or ``projects/*/locations/*``.
         secret_id (str):
             Required. This must be unique within the project.
 
@@ -171,7 +174,8 @@ class AddSecretVersionRequest(proto.Message):
             [Secret][google.cloud.secretmanager.v1.Secret] to associate
             with the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            in the format ``projects/*/secrets/*``.
+            in the format ``projects/*/secrets/*`` or
+            ``projects/*/locations/*/secrets/*``.
         payload (google.cloud.secretmanager_v1.types.SecretPayload):
             Required. The secret payload of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
@@ -196,7 +200,8 @@ class GetSecretRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [Secret][google.cloud.secretmanager.v1.Secret], in the
-            format ``projects/*/secrets/*``.
+            format ``projects/*/secrets/*`` or
+            ``projects/*/locations/*/secrets/*``.
     """
 
     name: str = proto.Field(
@@ -215,7 +220,8 @@ class ListSecretVersionsRequest(proto.Message):
             [Secret][google.cloud.secretmanager.v1.Secret] associated
             with the
             [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
-            to list, in the format ``projects/*/secrets/*``.
+            to list, in the format ``projects/*/secrets/*`` or
+            ``projects/*/locations/*/secrets/*``.
         page_size (int):
             Optional. The maximum number of results to be
             returned in a single page. If set to 0, the
@@ -267,7 +273,10 @@ class ListSecretVersionsResponse(proto.Message):
             to retrieve the next page.
         total_size (int):
             The total number of
-            [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+            [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
+            but 0 when the
+            [ListSecretsRequest.filter][google.cloud.secretmanager.v1.ListSecretsRequest.filter]
+            field is set.
     """
 
     @property
@@ -297,10 +306,12 @@ class GetSecretVersionRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            in the format ``projects/*/secrets/*/versions/*``.
+            in the format ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*``.
 
-            ``projects/*/secrets/*/versions/latest`` is an alias to the
-            most recently created
+            ``projects/*/secrets/*/versions/latest`` or
+            ``projects/*/locations/*/secrets/*/versions/latest`` is an
+            alias to the most recently created
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
@@ -342,10 +353,12 @@ class AccessSecretVersionRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            in the format ``projects/*/secrets/*/versions/*``.
+            in the format ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*``.
 
-            ``projects/*/secrets/*/versions/latest`` is an alias to the
-            most recently created
+            ``projects/*/secrets/*/versions/latest`` or
+            ``projects/*/locations/*/secrets/*/versions/latest`` is an
+            alias to the most recently created
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
@@ -363,7 +376,8 @@ class AccessSecretVersionResponse(proto.Message):
         name (str):
             The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            in the format ``projects/*/secrets/*/versions/*``.
+            in the format ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*``.
         payload (google.cloud.secretmanager_v1.types.SecretPayload):
             Secret payload
     """
@@ -413,8 +427,8 @@ class DisableSecretVersionRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            to disable in the format
-            ``projects/*/secrets/*/versions/*``.
+            to disable in the format ``projects/*/secrets/*/versions/*``
+            or ``projects/*/locations/*/secrets/*/versions/*``.
         etag (str):
             Optional. Etag of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
@@ -441,7 +455,8 @@ class EnableSecretVersionRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            to enable in the format ``projects/*/secrets/*/versions/*``.
+            to enable in the format ``projects/*/secrets/*/versions/*``
+            or ``projects/*/locations/*/secrets/*/versions/*``.
         etag (str):
             Optional. Etag of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
@@ -468,8 +483,8 @@ class DestroySecretVersionRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
-            to destroy in the format
-            ``projects/*/secrets/*/versions/*``.
+            to destroy in the format ``projects/*/secrets/*/versions/*``
+            or ``projects/*/locations/*/secrets/*/versions/*``.
         etag (str):
             Optional. Etag of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
