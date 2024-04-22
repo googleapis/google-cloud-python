@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, InstancesTransport]] = None,
+        transport: Optional[
+            Union[str, InstancesTransport, Callable[..., InstancesTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, InstancesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,InstancesTransport,Callable[..., InstancesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the InstancesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[InstancesTransport], Callable[..., InstancesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., InstancesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -732,8 +744,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, access_config_resource]
         )
@@ -743,10 +755,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddAccessConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddAccessConfigInstanceRequest):
             request = compute.AddAccessConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -884,8 +894,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, access_config_resource]
         )
@@ -895,10 +905,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddAccessConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddAccessConfigInstanceRequest):
             request = compute.AddAccessConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1057,8 +1065,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_add_resource_policies_request_resource]
         )
@@ -1068,10 +1076,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddResourcePoliciesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddResourcePoliciesInstanceRequest):
             request = compute.AddResourcePoliciesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1205,8 +1211,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_add_resource_policies_request_resource]
         )
@@ -1216,10 +1222,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddResourcePoliciesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddResourcePoliciesInstanceRequest):
             request = compute.AddResourcePoliciesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1357,8 +1361,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1366,10 +1370,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListInstancesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListInstancesRequest):
             request = compute.AggregatedListInstancesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1496,8 +1498,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, attached_disk_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1505,10 +1507,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AttachDiskInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AttachDiskInstanceRequest):
             request = compute.AttachDiskInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1638,8 +1638,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, attached_disk_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1647,10 +1647,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AttachDiskInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AttachDiskInstanceRequest):
             request = compute.AttachDiskInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1798,8 +1796,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, bulk_insert_instance_resource_resource]
         )
@@ -1809,10 +1807,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.BulkInsertInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.BulkInsertInstanceRequest):
             request = compute.BulkInsertInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1934,8 +1930,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, bulk_insert_instance_resource_resource]
         )
@@ -1945,10 +1941,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.BulkInsertInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.BulkInsertInstanceRequest):
             request = compute.BulkInsertInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2095,8 +2089,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2104,10 +2098,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstanceRequest):
             request = compute.DeleteInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2228,8 +2220,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2237,10 +2229,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstanceRequest):
             request = compute.DeleteInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2402,8 +2392,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, access_config, network_interface]
         )
@@ -2413,10 +2403,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteAccessConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteAccessConfigInstanceRequest):
             request = compute.DeleteAccessConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2557,8 +2545,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, access_config, network_interface]
         )
@@ -2568,10 +2556,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteAccessConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteAccessConfigInstanceRequest):
             request = compute.DeleteAccessConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2729,8 +2715,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, device_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2738,10 +2724,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DetachDiskInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DetachDiskInstanceRequest):
             request = compute.DetachDiskInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2872,8 +2856,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, device_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2881,10 +2865,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DetachDiskInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DetachDiskInstanceRequest):
             request = compute.DetachDiskInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3033,8 +3015,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3042,10 +3024,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetInstanceRequest):
             request = compute.GetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3175,8 +3155,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, network_interface])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3184,10 +3164,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetEffectiveFirewallsInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetEffectiveFirewallsInstanceRequest):
             request = compute.GetEffectiveFirewallsInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3309,8 +3287,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 A guest attributes entry.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3318,10 +3296,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetGuestAttributesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetGuestAttributesInstanceRequest):
             request = compute.GetGuestAttributesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3462,8 +3438,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3471,10 +3447,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyInstanceRequest):
             request = compute.GetIamPolicyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3592,8 +3566,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 An instance's screenshot.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3601,10 +3575,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetScreenshotInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetScreenshotInstanceRequest):
             request = compute.GetScreenshotInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3725,8 +3697,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 An instance serial console output.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3734,10 +3706,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetSerialPortOutputInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetSerialPortOutputInstanceRequest):
             request = compute.GetSerialPortOutputInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3857,8 +3827,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 A Shielded Instance Identity.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3866,10 +3836,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetShieldedInstanceIdentityInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetShieldedInstanceIdentityInstanceRequest):
             request = compute.GetShieldedInstanceIdentityInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3989,8 +3957,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3998,10 +3966,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInstanceRequest):
             request = compute.InsertInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4118,8 +4084,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4127,10 +4093,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInstanceRequest):
             request = compute.InsertInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4269,8 +4233,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4278,10 +4242,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListInstancesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListInstancesRequest):
             request = compute.ListInstancesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4418,8 +4380,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4427,10 +4389,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListReferrersInstancesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListReferrersInstancesRequest):
             request = compute.ListReferrersInstancesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4561,8 +4521,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4570,10 +4530,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PerformMaintenanceInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PerformMaintenanceInstanceRequest):
             request = compute.PerformMaintenanceInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4695,8 +4653,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4704,10 +4662,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PerformMaintenanceInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PerformMaintenanceInstanceRequest):
             request = compute.PerformMaintenanceInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4860,8 +4816,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -4876,10 +4832,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveResourcePoliciesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveResourcePoliciesInstanceRequest):
             request = compute.RemoveResourcePoliciesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5011,8 +4965,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -5027,10 +4981,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.RemoveResourcePoliciesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.RemoveResourcePoliciesInstanceRequest):
             request = compute.RemoveResourcePoliciesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5181,8 +5133,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5190,10 +5142,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResetInstanceRequest):
             request = compute.ResetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5315,8 +5265,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5324,10 +5274,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResetInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResetInstanceRequest):
             request = compute.ResetInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5473,8 +5421,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5482,10 +5430,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResumeInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResumeInstanceRequest):
             request = compute.ResumeInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5606,8 +5552,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5615,10 +5561,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ResumeInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ResumeInstanceRequest):
             request = compute.ResumeInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5766,8 +5710,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5775,10 +5719,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SendDiagnosticInterruptInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SendDiagnosticInterruptInstanceRequest):
             request = compute.SendDiagnosticInterruptInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5902,8 +5844,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5911,10 +5853,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetDeletionProtectionInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetDeletionProtectionInstanceRequest):
             request = compute.SetDeletionProtectionInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6036,8 +5976,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6045,10 +5985,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetDeletionProtectionInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetDeletionProtectionInstanceRequest):
             request = compute.SetDeletionProtectionInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6212,8 +6150,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, auto_delete, device_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6221,10 +6159,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetDiskAutoDeleteInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetDiskAutoDeleteInstanceRequest):
             request = compute.SetDiskAutoDeleteInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6367,8 +6303,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, auto_delete, device_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6376,10 +6312,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetDiskAutoDeleteInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetDiskAutoDeleteInstanceRequest):
             request = compute.SetDiskAutoDeleteInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6555,8 +6489,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_policy_request_resource]
         )
@@ -6566,10 +6500,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyInstanceRequest):
             request = compute.SetIamPolicyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6702,8 +6634,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_labels_request_resource]
         )
@@ -6713,10 +6645,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsInstanceRequest):
             request = compute.SetLabelsInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6849,8 +6779,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_labels_request_resource]
         )
@@ -6860,10 +6790,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsInstanceRequest):
             request = compute.SetLabelsInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7023,8 +6951,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_machine_resources_request_resource]
         )
@@ -7034,10 +6962,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMachineResourcesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMachineResourcesInstanceRequest):
             request = compute.SetMachineResourcesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7172,8 +7098,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_machine_resources_request_resource]
         )
@@ -7183,10 +7109,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMachineResourcesInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMachineResourcesInstanceRequest):
             request = compute.SetMachineResourcesInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7344,8 +7268,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_machine_type_request_resource]
         )
@@ -7355,10 +7279,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMachineTypeInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMachineTypeInstanceRequest):
             request = compute.SetMachineTypeInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7491,8 +7413,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_machine_type_request_resource]
         )
@@ -7502,10 +7424,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMachineTypeInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMachineTypeInstanceRequest):
             request = compute.SetMachineTypeInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7661,8 +7581,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, metadata_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7670,10 +7590,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMetadataInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMetadataInstanceRequest):
             request = compute.SetMetadataInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7802,8 +7720,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, metadata_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -7811,10 +7729,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMetadataInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMetadataInstanceRequest):
             request = compute.SetMetadataInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -7972,8 +7888,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_min_cpu_platform_request_resource]
         )
@@ -7983,10 +7899,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMinCpuPlatformInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMinCpuPlatformInstanceRequest):
             request = compute.SetMinCpuPlatformInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8121,8 +8035,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_min_cpu_platform_request_resource]
         )
@@ -8132,10 +8046,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetMinCpuPlatformInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetMinCpuPlatformInstanceRequest):
             request = compute.SetMinCpuPlatformInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8290,8 +8202,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_name_request_resource]
         )
@@ -8301,10 +8213,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetNameInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetNameInstanceRequest):
             request = compute.SetNameInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8434,8 +8344,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_name_request_resource]
         )
@@ -8445,10 +8355,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetNameInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetNameInstanceRequest):
             request = compute.SetNameInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8606,8 +8514,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, scheduling_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8615,10 +8523,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSchedulingInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSchedulingInstanceRequest):
             request = compute.SetSchedulingInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8749,8 +8655,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, scheduling_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -8758,10 +8664,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSchedulingInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSchedulingInstanceRequest):
             request = compute.SetSchedulingInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -8919,8 +8823,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_security_policy_request_resource]
         )
@@ -8930,10 +8834,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSecurityPolicyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSecurityPolicyInstanceRequest):
             request = compute.SetSecurityPolicyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9068,8 +8970,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_security_policy_request_resource]
         )
@@ -9079,10 +8981,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSecurityPolicyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSecurityPolicyInstanceRequest):
             request = compute.SetSecurityPolicyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9241,8 +9141,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_service_account_request_resource]
         )
@@ -9252,10 +9152,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetServiceAccountInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetServiceAccountInstanceRequest):
             request = compute.SetServiceAccountInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9389,8 +9287,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_service_account_request_resource]
         )
@@ -9400,10 +9298,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetServiceAccountInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetServiceAccountInstanceRequest):
             request = compute.SetServiceAccountInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -9565,8 +9461,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, shielded_instance_integrity_policy_resource]
         )
@@ -9576,10 +9472,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.SetShieldedInstanceIntegrityPolicyInstanceRequest
         ):
@@ -9720,8 +9614,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, shielded_instance_integrity_policy_resource]
         )
@@ -9731,10 +9625,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, compute.SetShieldedInstanceIntegrityPolicyInstanceRequest
         ):
@@ -9894,8 +9786,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, tags_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -9903,10 +9795,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetTagsInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetTagsInstanceRequest):
             request = compute.SetTagsInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10035,8 +9925,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, tags_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10044,10 +9934,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetTagsInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetTagsInstanceRequest):
             request = compute.SetTagsInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10197,8 +10085,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10206,10 +10094,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SimulateMaintenanceEventInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SimulateMaintenanceEventInstanceRequest):
             request = compute.SimulateMaintenanceEventInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10334,8 +10220,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10343,10 +10229,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SimulateMaintenanceEventInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SimulateMaintenanceEventInstanceRequest):
             request = compute.SimulateMaintenanceEventInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10495,8 +10379,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10504,10 +10388,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StartInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StartInstanceRequest):
             request = compute.StartInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10629,8 +10511,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -10638,10 +10520,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StartInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StartInstanceRequest):
             request = compute.StartInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10798,8 +10678,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -10814,10 +10694,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StartWithEncryptionKeyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StartWithEncryptionKeyInstanceRequest):
             request = compute.StartWithEncryptionKeyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -10955,8 +10833,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -10971,10 +10849,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StartWithEncryptionKeyInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StartWithEncryptionKeyInstanceRequest):
             request = compute.StartWithEncryptionKeyInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11130,8 +11006,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11139,10 +11015,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StopInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StopInstanceRequest):
             request = compute.StopInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11267,8 +11141,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11276,10 +11150,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.StopInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.StopInstanceRequest):
             request = compute.StopInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11432,8 +11304,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11441,10 +11313,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SuspendInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SuspendInstanceRequest):
             request = compute.SuspendInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11572,8 +11442,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11581,10 +11451,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SuspendInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SuspendInstanceRequest):
             request = compute.SuspendInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11738,8 +11606,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, test_permissions_request_resource]
         )
@@ -11749,10 +11617,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsInstanceRequest):
             request = compute.TestIamPermissionsInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -11885,8 +11751,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, instance_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -11894,10 +11760,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateInstanceRequest):
             request = compute.UpdateInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12028,8 +11892,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, instance_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12037,10 +11901,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateInstanceRequest):
             request = compute.UpdateInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12205,8 +12067,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, access_config_resource]
         )
@@ -12216,10 +12078,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateAccessConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateAccessConfigInstanceRequest):
             request = compute.UpdateAccessConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12361,8 +12221,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, access_config_resource]
         )
@@ -12372,10 +12232,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateAccessConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateAccessConfigInstanceRequest):
             request = compute.UpdateAccessConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12535,8 +12393,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, display_device_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12544,10 +12402,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateDisplayDeviceInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateDisplayDeviceInstanceRequest):
             request = compute.UpdateDisplayDeviceInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12680,8 +12536,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, display_device_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -12689,10 +12545,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateDisplayDeviceInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateDisplayDeviceInstanceRequest):
             request = compute.UpdateDisplayDeviceInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -12860,8 +12714,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, network_interface_resource]
         )
@@ -12871,10 +12725,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateNetworkInterfaceInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateNetworkInterfaceInstanceRequest):
             request = compute.UpdateNetworkInterfaceInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -13019,8 +12871,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, network_interface_resource]
         )
@@ -13030,10 +12882,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateNetworkInterfaceInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateNetworkInterfaceInstanceRequest):
             request = compute.UpdateNetworkInterfaceInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -13195,8 +13045,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, shielded_instance_config_resource]
         )
@@ -13206,10 +13056,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateShieldedInstanceConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateShieldedInstanceConfigInstanceRequest):
             request = compute.UpdateShieldedInstanceConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -13348,8 +13196,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, shielded_instance_config_resource]
         )
@@ -13359,10 +13207,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateShieldedInstanceConfigInstanceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateShieldedInstanceConfigInstanceRequest):
             request = compute.UpdateShieldedInstanceConfigInstanceRequest(request)
             # If we have keyword arguments corresponding to fields on the

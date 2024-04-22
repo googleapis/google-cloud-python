@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -749,7 +750,13 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, ContactCenterInsightsTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                ContactCenterInsightsTransport,
+                Callable[..., ContactCenterInsightsTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -761,9 +768,11 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ContactCenterInsightsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ContactCenterInsightsTransport,Callable[..., ContactCenterInsightsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ContactCenterInsightsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -872,8 +881,16 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[ContactCenterInsightsTransport],
+                Callable[..., ContactCenterInsightsTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ContactCenterInsightsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -967,8 +984,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversation, conversation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -976,10 +993,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CreateConversationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.CreateConversationRequest):
             request = contact_center_insights.CreateConversationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1078,10 +1093,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UploadConversationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UploadConversationRequest):
             request = contact_center_insights.UploadConversationRequest(request)
 
@@ -1182,8 +1195,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1191,10 +1204,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UpdateConversationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UpdateConversationRequest):
             request = contact_center_insights.UpdateConversationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1290,8 +1301,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1299,10 +1310,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetConversationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetConversationRequest):
             request = contact_center_insights.GetConversationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1400,8 +1409,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1409,10 +1418,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ListConversationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ListConversationsRequest):
             request = contact_center_insights.ListConversationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1506,8 +1513,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1515,10 +1522,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeleteConversationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeleteConversationRequest):
             request = contact_center_insights.DeleteConversationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1623,8 +1628,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, analysis])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1632,10 +1637,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CreateAnalysisRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.CreateAnalysisRequest):
             request = contact_center_insights.CreateAnalysisRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1737,8 +1740,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The analysis resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1746,10 +1749,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetAnalysisRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetAnalysisRequest):
             request = contact_center_insights.GetAnalysisRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1847,8 +1848,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1856,10 +1857,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ListAnalysesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ListAnalysesRequest):
             request = contact_center_insights.ListAnalysesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1953,8 +1952,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1962,10 +1961,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeleteAnalysisRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeleteAnalysisRequest):
             request = contact_center_insights.DeleteAnalysisRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2082,8 +2079,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter, analysis_percentage])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2091,10 +2088,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.BulkAnalyzeConversationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, contact_center_insights.BulkAnalyzeConversationsRequest
         ):
@@ -2222,8 +2217,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2231,10 +2226,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.BulkDeleteConversationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, contact_center_insights.BulkDeleteConversationsRequest
         ):
@@ -2358,8 +2351,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2367,10 +2360,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.IngestConversationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.IngestConversationsRequest):
             request = contact_center_insights.IngestConversationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2484,8 +2475,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2493,10 +2484,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ExportInsightsDataRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ExportInsightsDataRequest):
             request = contact_center_insights.ExportInsightsDataRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2611,8 +2600,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, issue_model])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2620,10 +2609,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CreateIssueModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.CreateIssueModelRequest):
             request = contact_center_insights.CreateIssueModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2730,8 +2717,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue model resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue_model, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2739,10 +2726,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UpdateIssueModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UpdateIssueModelRequest):
             request = contact_center_insights.UpdateIssueModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2838,8 +2823,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue model resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2847,10 +2832,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetIssueModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetIssueModelRequest):
             request = contact_center_insights.GetIssueModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2942,8 +2925,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The response of listing issue models.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2951,10 +2934,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ListIssueModelsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ListIssueModelsRequest):
             request = contact_center_insights.ListIssueModelsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3062,8 +3043,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3071,10 +3052,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeleteIssueModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeleteIssueModelRequest):
             request = contact_center_insights.DeleteIssueModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3183,8 +3162,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3192,10 +3171,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeployIssueModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeployIssueModelRequest):
             request = contact_center_insights.DeployIssueModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3307,8 +3284,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3316,10 +3293,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UndeployIssueModelRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UndeployIssueModelRequest):
             request = contact_center_insights.UndeployIssueModelRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3417,8 +3392,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3426,10 +3401,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetIssueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetIssueRequest):
             request = contact_center_insights.GetIssueRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3521,8 +3494,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The response of listing issues.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3530,10 +3503,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ListIssuesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ListIssuesRequest):
             request = contact_center_insights.ListIssuesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3630,8 +3601,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3639,10 +3610,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UpdateIssueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UpdateIssueRequest):
             request = contact_center_insights.UpdateIssueRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3731,8 +3700,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3740,10 +3709,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeleteIssueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeleteIssueRequest):
             request = contact_center_insights.DeleteIssueRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3835,8 +3802,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue_model])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3844,10 +3811,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CalculateIssueModelStatsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, contact_center_insights.CalculateIssueModelStatsRequest
         ):
@@ -3960,8 +3925,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, phrase_matcher])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3969,10 +3934,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CreatePhraseMatcherRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.CreatePhraseMatcherRequest):
             request = contact_center_insights.CreatePhraseMatcherRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4067,8 +4030,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4076,10 +4039,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetPhraseMatcherRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetPhraseMatcherRequest):
             request = contact_center_insights.GetPhraseMatcherRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4177,8 +4138,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4186,10 +4147,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ListPhraseMatchersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ListPhraseMatchersRequest):
             request = contact_center_insights.ListPhraseMatchersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4284,8 +4243,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4293,10 +4252,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeletePhraseMatcherRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeletePhraseMatcherRequest):
             request = contact_center_insights.DeletePhraseMatcherRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4395,8 +4352,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([phrase_matcher, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4404,10 +4361,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UpdatePhraseMatcherRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UpdatePhraseMatcherRequest):
             request = contact_center_insights.UpdatePhraseMatcherRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4506,8 +4461,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([location])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4515,10 +4470,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CalculateStatsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.CalculateStatsRequest):
             request = contact_center_insights.CalculateStatsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4611,8 +4564,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The settings resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4620,10 +4573,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetSettingsRequest):
             request = contact_center_insights.GetSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4721,8 +4672,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The settings resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4730,10 +4681,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UpdateSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UpdateSettingsRequest):
             request = contact_center_insights.UpdateSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4839,8 +4788,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, view])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4848,10 +4797,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.CreateViewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.CreateViewRequest):
             request = contact_center_insights.CreateViewRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4943,8 +4890,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4952,10 +4899,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.GetViewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.GetViewRequest):
             request = contact_center_insights.GetViewRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5051,8 +4996,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5060,10 +5005,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.ListViewsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.ListViewsRequest):
             request = contact_center_insights.ListViewsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5167,8 +5110,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([view, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5176,10 +5119,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.UpdateViewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.UpdateViewRequest):
             request = contact_center_insights.UpdateViewRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5268,8 +5209,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5277,10 +5218,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a contact_center_insights.DeleteViewRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, contact_center_insights.DeleteViewRequest):
             request = contact_center_insights.DeleteViewRequest(request)
             # If we have keyword arguments corresponding to fields on the

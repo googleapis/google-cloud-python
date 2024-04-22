@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,11 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, InstantSnapshotsTransport]] = None,
+        transport: Optional[
+            Union[
+                str, InstantSnapshotsTransport, Callable[..., InstantSnapshotsTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +523,11 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, InstantSnapshotsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,InstantSnapshotsTransport,Callable[..., InstantSnapshotsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the InstantSnapshotsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +639,16 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[InstantSnapshotsTransport],
+                Callable[..., InstantSnapshotsTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., InstantSnapshotsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -711,8 +726,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -720,10 +735,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListInstantSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListInstantSnapshotsRequest):
             request = compute.AggregatedListInstantSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -849,8 +862,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instant_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -858,10 +871,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstantSnapshotRequest):
             request = compute.DeleteInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -988,8 +999,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instant_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -997,10 +1008,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInstantSnapshotRequest):
             request = compute.DeleteInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1147,8 +1156,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instant_snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1156,10 +1165,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetInstantSnapshotRequest):
             request = compute.GetInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1302,8 +1309,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1311,10 +1318,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyInstantSnapshotRequest):
             request = compute.GetIamPolicyInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1429,8 +1434,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instant_snapshot_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1438,10 +1443,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInstantSnapshotRequest):
             request = compute.InsertInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1555,8 +1558,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instant_snapshot_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1564,10 +1567,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInstantSnapshotRequest):
             request = compute.InsertInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1707,8 +1708,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1716,10 +1717,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListInstantSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListInstantSnapshotsRequest):
             request = compute.ListInstantSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1874,8 +1873,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_policy_request_resource]
         )
@@ -1885,10 +1884,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyInstantSnapshotRequest):
             request = compute.SetIamPolicyInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2020,8 +2017,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_labels_request_resource]
         )
@@ -2031,10 +2028,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsInstantSnapshotRequest):
             request = compute.SetLabelsInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2166,8 +2161,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_labels_request_resource]
         )
@@ -2177,10 +2172,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsInstantSnapshotRequest):
             request = compute.SetLabelsInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2338,8 +2331,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, test_permissions_request_resource]
         )
@@ -2349,10 +2342,8 @@ class InstantSnapshotsClient(metaclass=InstantSnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsInstantSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsInstantSnapshotRequest):
             request = compute.TestIamPermissionsInstantSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the

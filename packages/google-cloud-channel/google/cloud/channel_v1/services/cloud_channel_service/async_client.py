@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -270,7 +271,13 @@ class CloudChannelServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudChannelServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                CloudChannelServiceTransport,
+                Callable[..., CloudChannelServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -282,9 +289,11 @@ class CloudChannelServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudChannelServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudChannelServiceTransport,Callable[..., CloudChannelServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudChannelServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -396,15 +405,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListCustomersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCustomersRequest):
+            request = service.ListCustomersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_customers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_customers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -510,8 +520,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -519,7 +529,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCustomerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCustomerRequest):
+            request = service.GetCustomerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -528,11 +541,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_customer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_customer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -629,15 +640,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CheckCloudIdentityAccountsExistRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CheckCloudIdentityAccountsExistRequest):
+            request = service.CheckCloudIdentityAccountsExistRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.check_cloud_identity_accounts_exist,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.check_cloud_identity_accounts_exist
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -735,15 +747,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateCustomerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateCustomerRequest):
+            request = service.CreateCustomerRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_customer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_customer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -835,15 +848,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.UpdateCustomerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCustomerRequest):
+            request = service.UpdateCustomerRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_customer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_customer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -930,8 +944,8 @@ class CloudChannelServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -939,7 +953,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteCustomerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteCustomerRequest):
+            request = service.DeleteCustomerRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -948,11 +965,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_customer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_customer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1047,15 +1062,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ImportCustomerRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ImportCustomerRequest):
+            request = service.ImportCustomerRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_customer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_customer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1163,15 +1179,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ProvisionCloudIdentityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ProvisionCloudIdentityRequest):
+            request = service.ProvisionCloudIdentityRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.provision_cloud_identity,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.provision_cloud_identity
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1269,15 +1286,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListEntitlementsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListEntitlementsRequest):
+            request = service.ListEntitlementsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_entitlements,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_entitlements
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1388,15 +1406,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListTransferableSkusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListTransferableSkusRequest):
+            request = service.ListTransferableSkusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_transferable_skus,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_transferable_skus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1514,15 +1533,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListTransferableOffersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListTransferableOffersRequest):
+            request = service.ListTransferableOffersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_transferable_offers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_transferable_offers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1618,15 +1638,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GetEntitlementRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetEntitlementRequest):
+            request = service.GetEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_entitlement,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_entitlement
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1762,15 +1783,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateEntitlementRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateEntitlementRequest):
+            request = service.CreateEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_entitlement,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_entitlement
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1885,15 +1907,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ChangeParametersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ChangeParametersRequest):
+            request = service.ChangeParametersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.change_parameters,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.change_parameters
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2010,15 +2033,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ChangeRenewalSettingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ChangeRenewalSettingsRequest):
+            request = service.ChangeRenewalSettingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.change_renewal_settings,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.change_renewal_settings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2132,15 +2156,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ChangeOfferRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ChangeOfferRequest):
+            request = service.ChangeOfferRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.change_offer,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.change_offer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2256,15 +2281,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.StartPaidServiceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StartPaidServiceRequest):
+            request = service.StartPaidServiceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_paid_service,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_paid_service
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2377,15 +2403,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.SuspendEntitlementRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SuspendEntitlementRequest):
+            request = service.SuspendEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.suspend_entitlement,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.suspend_entitlement
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2509,15 +2536,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CancelEntitlementRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CancelEntitlementRequest):
+            request = service.CancelEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_entitlement,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_entitlement
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2637,15 +2665,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ActivateEntitlementRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ActivateEntitlementRequest):
+            request = service.ActivateEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.activate_entitlement,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.activate_entitlement
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2780,15 +2809,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.TransferEntitlementsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.TransferEntitlementsRequest):
+            request = service.TransferEntitlementsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.transfer_entitlements,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.transfer_entitlements
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2926,15 +2956,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.TransferEntitlementsToGoogleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.TransferEntitlementsToGoogleRequest):
+            request = service.TransferEntitlementsToGoogleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.transfer_entitlements_to_google,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.transfer_entitlements_to_google
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3035,15 +3066,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListChannelPartnerLinksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListChannelPartnerLinksRequest):
+            request = service.ListChannelPartnerLinksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_channel_partner_links,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_channel_partner_links
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3143,15 +3175,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.GetChannelPartnerLinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetChannelPartnerLinkRequest):
+            request = service.GetChannelPartnerLinkRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_channel_partner_link,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_channel_partner_link
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3256,15 +3289,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.CreateChannelPartnerLinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateChannelPartnerLinkRequest):
+            request = service.CreateChannelPartnerLinkRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_channel_partner_link,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_channel_partner_link
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3369,15 +3403,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.UpdateChannelPartnerLinkRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateChannelPartnerLinkRequest):
+            request = service.UpdateChannelPartnerLinkRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_channel_partner_link,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_channel_partner_link
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3478,8 +3513,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3487,7 +3522,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCustomerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetCustomerRepricingConfigRequest):
+            request = service.GetCustomerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3496,11 +3534,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_customer_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_customer_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3616,8 +3652,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3625,7 +3661,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCustomerRepricingConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListCustomerRepricingConfigsRequest):
+            request = service.ListCustomerRepricingConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3634,11 +3673,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_customer_repricing_configs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_customer_repricing_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3791,8 +3828,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, customer_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3800,7 +3837,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCustomerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateCustomerRepricingConfigRequest):
+            request = service.CreateCustomerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3811,11 +3851,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_customer_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_customer_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3935,8 +3973,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([customer_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3944,7 +3982,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCustomerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateCustomerRepricingConfigRequest):
+            request = service.UpdateCustomerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3953,11 +3994,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_customer_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_customer_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4058,8 +4097,8 @@ class CloudChannelServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4067,7 +4106,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteCustomerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteCustomerRepricingConfigRequest):
+            request = service.DeleteCustomerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4076,11 +4118,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_customer_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_customer_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4180,8 +4220,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4189,7 +4229,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetChannelPartnerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetChannelPartnerRepricingConfigRequest):
+            request = service.GetChannelPartnerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4198,11 +4241,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_channel_partner_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_channel_partner_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4318,8 +4359,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4327,7 +4368,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListChannelPartnerRepricingConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListChannelPartnerRepricingConfigsRequest):
+            request = service.ListChannelPartnerRepricingConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4336,11 +4380,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_channel_partner_repricing_configs,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_channel_partner_repricing_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4498,8 +4540,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, channel_partner_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4507,7 +4549,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateChannelPartnerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateChannelPartnerRepricingConfigRequest):
+            request = service.CreateChannelPartnerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4518,11 +4563,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_channel_partner_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_channel_partner_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4647,8 +4690,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([channel_partner_repricing_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4656,7 +4699,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateChannelPartnerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateChannelPartnerRepricingConfigRequest):
+            request = service.UpdateChannelPartnerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4665,11 +4711,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_channel_partner_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_channel_partner_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4770,8 +4814,8 @@ class CloudChannelServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4779,7 +4823,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteChannelPartnerRepricingConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteChannelPartnerRepricingConfigRequest):
+            request = service.DeleteChannelPartnerRepricingConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4788,11 +4835,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_channel_partner_repricing_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_channel_partner_repricing_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4896,8 +4941,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4905,7 +4950,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListSkuGroupsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSkuGroupsRequest):
+            request = service.ListSkuGroupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4914,11 +4962,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_sku_groups,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sku_groups
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5031,8 +5077,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5040,7 +5086,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListSkuGroupBillableSkusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSkuGroupBillableSkusRequest):
+            request = service.ListSkuGroupBillableSkusRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5049,11 +5098,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_sku_group_billable_skus,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sku_group_billable_skus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5151,15 +5198,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.LookupOfferRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.LookupOfferRequest):
+            request = service.LookupOfferRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.lookup_offer,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.lookup_offer
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5244,15 +5292,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListProductsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListProductsRequest):
+            request = service.ListProductsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_products,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_products
+        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5339,15 +5388,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListSkusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSkusRequest):
+            request = service.ListSkusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_skus,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_skus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5439,15 +5489,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListOffersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListOffersRequest):
+            request = service.ListOffersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_offers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_offers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5549,15 +5600,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListPurchasableSkusRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListPurchasableSkusRequest):
+            request = service.ListPurchasableSkusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_purchasable_skus,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_purchasable_skus
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5664,15 +5716,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListPurchasableOffersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListPurchasableOffersRequest):
+            request = service.ListPurchasableOffersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_purchasable_offers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_purchasable_offers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5772,15 +5825,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.QueryEligibleBillingAccountsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.QueryEligibleBillingAccountsRequest):
+            request = service.QueryEligibleBillingAccountsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.query_eligible_billing_accounts,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_eligible_billing_accounts
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5874,15 +5928,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.RegisterSubscriberRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.RegisterSubscriberRequest):
+            request = service.RegisterSubscriberRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.register_subscriber,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.register_subscriber
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5979,15 +6034,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.UnregisterSubscriberRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UnregisterSubscriberRequest):
+            request = service.UnregisterSubscriberRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.unregister_subscriber,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.unregister_subscriber
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6081,15 +6137,16 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = service.ListSubscribersRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListSubscribersRequest):
+            request = service.ListSubscribersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_subscribers,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_subscribers
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -6205,8 +6262,8 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6214,7 +6271,10 @@ class CloudChannelServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListEntitlementChangesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListEntitlementChangesRequest):
+            request = service.ListEntitlementChangesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6223,11 +6283,9 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_entitlement_changes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_entitlement_changes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

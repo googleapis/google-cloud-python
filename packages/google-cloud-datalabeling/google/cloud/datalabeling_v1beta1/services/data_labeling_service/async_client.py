@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -242,7 +243,13 @@ class DataLabelingServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DataLabelingServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                DataLabelingServiceTransport,
+                Callable[..., DataLabelingServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -254,9 +261,11 @@ class DataLabelingServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DataLabelingServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataLabelingServiceTransport,Callable[..., DataLabelingServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataLabelingServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -371,8 +380,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, dataset])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -380,7 +389,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.CreateDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.CreateDatasetRequest):
+            request = data_labeling_service.CreateDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -391,11 +403,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_dataset,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -479,8 +489,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -488,7 +498,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetDatasetRequest):
+            request = data_labeling_service.GetDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -497,21 +510,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_dataset,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -608,8 +609,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -617,7 +618,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListDatasetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListDatasetsRequest):
+            request = data_labeling_service.ListDatasetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -628,21 +632,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_datasets,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_datasets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -726,8 +718,8 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -735,7 +727,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.DeleteDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.DeleteDatasetRequest):
+            request = data_labeling_service.DeleteDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -744,21 +739,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_dataset,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -857,8 +840,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, input_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -866,7 +849,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ImportDataRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ImportDataRequest):
+            request = data_labeling_service.ImportDataRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -877,11 +863,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_data,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_data
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1006,8 +990,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, annotated_dataset, filter, output_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1015,7 +999,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ExportDataRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ExportDataRequest):
+            request = data_labeling_service.ExportDataRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1030,21 +1017,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.export_data,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_data
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1135,8 +1110,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1144,7 +1119,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetDataItemRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetDataItemRequest):
+            request = data_labeling_service.GetDataItemRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1153,21 +1131,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_data_item,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_data_item
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1265,8 +1231,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1274,7 +1240,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListDataItemsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListDataItemsRequest):
+            request = data_labeling_service.ListDataItemsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1285,21 +1254,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_data_items,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_data_items
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1397,8 +1354,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1406,7 +1363,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetAnnotatedDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetAnnotatedDatasetRequest):
+            request = data_labeling_service.GetAnnotatedDatasetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1415,21 +1375,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_annotated_dataset,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_annotated_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1528,8 +1476,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1537,7 +1485,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListAnnotatedDatasetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListAnnotatedDatasetsRequest):
+            request = data_labeling_service.ListAnnotatedDatasetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1548,21 +1499,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_annotated_datasets,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_annotated_datasets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1639,15 +1578,16 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        request = data_labeling_service.DeleteAnnotatedDatasetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.DeleteAnnotatedDatasetRequest):
+            request = data_labeling_service.DeleteAnnotatedDatasetRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_annotated_dataset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_annotated_dataset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1761,8 +1701,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, basic_config, feature])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1770,7 +1710,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.LabelImageRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.LabelImageRequest):
+            request = data_labeling_service.LabelImageRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1783,11 +1726,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.label_image,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.label_image
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1911,8 +1852,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, basic_config, feature])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1920,7 +1861,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.LabelVideoRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.LabelVideoRequest):
+            request = data_labeling_service.LabelVideoRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1933,11 +1877,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.label_video,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.label_video
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2061,8 +2003,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, basic_config, feature])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2070,7 +2012,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.LabelTextRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.LabelTextRequest):
+            request = data_labeling_service.LabelTextRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2083,11 +2028,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.label_text,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.label_text
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2189,8 +2132,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2198,7 +2141,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetExampleRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetExampleRequest):
+            request = data_labeling_service.GetExampleRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2209,21 +2155,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_example,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_example
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2320,8 +2254,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2329,7 +2263,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListExamplesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListExamplesRequest):
+            request = data_labeling_service.ListExamplesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2340,21 +2277,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_examples,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_examples
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2462,8 +2387,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, annotation_spec_set])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2471,7 +2396,12 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.CreateAnnotationSpecSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, data_labeling_service.CreateAnnotationSpecSetRequest
+        ):
+            request = data_labeling_service.CreateAnnotationSpecSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2482,11 +2412,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_annotation_spec_set,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_annotation_spec_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2575,8 +2503,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2584,7 +2512,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetAnnotationSpecSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetAnnotationSpecSetRequest):
+            request = data_labeling_service.GetAnnotationSpecSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2593,21 +2524,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_annotation_spec_set,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_annotation_spec_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2705,8 +2624,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2714,7 +2633,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListAnnotationSpecSetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListAnnotationSpecSetsRequest):
+            request = data_labeling_service.ListAnnotationSpecSetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2725,21 +2647,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_annotation_spec_sets,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_annotation_spec_sets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2824,8 +2734,8 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2833,7 +2743,12 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.DeleteAnnotationSpecSetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, data_labeling_service.DeleteAnnotationSpecSetRequest
+        ):
+            request = data_labeling_service.DeleteAnnotationSpecSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2842,21 +2757,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_annotation_spec_set,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_annotation_spec_set
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2953,8 +2856,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instruction])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2962,7 +2865,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.CreateInstructionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.CreateInstructionRequest):
+            request = data_labeling_service.CreateInstructionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2973,11 +2879,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instruction,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instruction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3071,8 +2975,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3080,7 +2984,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetInstructionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetInstructionRequest):
+            request = data_labeling_service.GetInstructionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3089,21 +2996,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instruction,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instruction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3200,8 +3095,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3209,7 +3104,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListInstructionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListInstructionsRequest):
+            request = data_labeling_service.ListInstructionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3220,21 +3118,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instructions,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instructions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3319,8 +3205,8 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3328,7 +3214,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.DeleteInstructionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.DeleteInstructionRequest):
+            request = data_labeling_service.DeleteInstructionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3337,21 +3226,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instruction,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instruction
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3436,8 +3313,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3445,7 +3322,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetEvaluationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetEvaluationRequest):
+            request = data_labeling_service.GetEvaluationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3454,21 +3334,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_evaluation,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_evaluation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3597,8 +3465,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3606,7 +3474,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.SearchEvaluationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.SearchEvaluationsRequest):
+            request = data_labeling_service.SearchEvaluationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3617,21 +3488,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_evaluations,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_evaluations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3735,8 +3594,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3744,7 +3603,12 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.SearchExampleComparisonsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, data_labeling_service.SearchExampleComparisonsRequest
+        ):
+            request = data_labeling_service.SearchExampleComparisonsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3753,11 +3617,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_example_comparisons,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_example_comparisons
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3863,8 +3725,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3872,7 +3734,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.CreateEvaluationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.CreateEvaluationJobRequest):
+            request = data_labeling_service.CreateEvaluationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3883,11 +3748,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_evaluation_job,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_evaluation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3997,8 +3860,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([evaluation_job, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4006,7 +3869,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.UpdateEvaluationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.UpdateEvaluationJobRequest):
+            request = data_labeling_service.UpdateEvaluationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4017,11 +3883,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_evaluation_job,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_evaluation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4112,8 +3976,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4121,7 +3985,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.GetEvaluationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.GetEvaluationJobRequest):
+            request = data_labeling_service.GetEvaluationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4130,21 +3997,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_evaluation_job,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_evaluation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4223,8 +4078,8 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4232,7 +4087,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.PauseEvaluationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.PauseEvaluationJobRequest):
+            request = data_labeling_service.PauseEvaluationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4241,11 +4099,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.pause_evaluation_job,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.pause_evaluation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4321,8 +4177,8 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4330,7 +4186,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ResumeEvaluationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ResumeEvaluationJobRequest):
+            request = data_labeling_service.ResumeEvaluationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4339,11 +4198,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.resume_evaluation_job,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resume_evaluation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4417,8 +4274,8 @@ class DataLabelingServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4426,7 +4283,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.DeleteEvaluationJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.DeleteEvaluationJobRequest):
+            request = data_labeling_service.DeleteEvaluationJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4435,21 +4295,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_evaluation_job,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_evaluation_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4552,8 +4400,8 @@ class DataLabelingServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4561,7 +4409,10 @@ class DataLabelingServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = data_labeling_service.ListEvaluationJobsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_labeling_service.ListEvaluationJobsRequest):
+            request = data_labeling_service.ListEvaluationJobsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4572,21 +4423,9 @@ class DataLabelingServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_evaluation_jobs,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_evaluation_jobs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

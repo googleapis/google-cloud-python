@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, NodeGroupsTransport]] = None,
+        transport: Optional[
+            Union[str, NodeGroupsTransport, Callable[..., NodeGroupsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, NodeGroupsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NodeGroupsTransport,Callable[..., NodeGroupsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NodeGroupsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[NodeGroupsTransport], Callable[..., NodeGroupsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., NodeGroupsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -724,8 +736,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, node_group, node_groups_add_nodes_request_resource]
         )
@@ -735,10 +747,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddNodesNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddNodesNodeGroupRequest):
             request = compute.AddNodesNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -868,8 +878,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, node_group, node_groups_add_nodes_request_resource]
         )
@@ -879,10 +889,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddNodesNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddNodesNodeGroupRequest):
             request = compute.AddNodesNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1018,8 +1026,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1027,10 +1035,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListNodeGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListNodeGroupsRequest):
             request = compute.AggregatedListNodeGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1149,8 +1155,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, node_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1158,10 +1164,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNodeGroupRequest):
             request = compute.DeleteNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1281,8 +1285,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, node_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1290,10 +1294,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNodeGroupRequest):
             request = compute.DeleteNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1446,8 +1448,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, node_group, node_groups_delete_nodes_request_resource]
         )
@@ -1457,10 +1459,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNodesNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNodesNodeGroupRequest):
             request = compute.DeleteNodesNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1592,8 +1592,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, node_group, node_groups_delete_nodes_request_resource]
         )
@@ -1603,10 +1603,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteNodesNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteNodesNodeGroupRequest):
             request = compute.DeleteNodesNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1764,8 +1762,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, node_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1773,10 +1771,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetNodeGroupRequest):
             request = compute.GetNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1917,8 +1913,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1926,10 +1922,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyNodeGroupRequest):
             request = compute.GetIamPolicyNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2056,8 +2050,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, initial_node_count, node_group_resource]
         )
@@ -2067,10 +2061,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertNodeGroupRequest):
             request = compute.InsertNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2198,8 +2190,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, initial_node_count, node_group_resource]
         )
@@ -2209,10 +2201,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertNodeGroupRequest):
             request = compute.InsertNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2355,8 +2345,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2364,10 +2354,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListNodeGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListNodeGroupsRequest):
             request = compute.ListNodeGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2495,8 +2483,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, node_group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2504,10 +2492,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListNodesNodeGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListNodesNodeGroupsRequest):
             request = compute.ListNodesNodeGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2642,8 +2628,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, node_group, node_group_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2651,10 +2637,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchNodeGroupRequest):
             request = compute.PatchNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2782,8 +2766,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, node_group, node_group_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2791,10 +2775,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchNodeGroupRequest):
             request = compute.PatchNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2968,8 +2950,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_policy_request_resource]
         )
@@ -2979,10 +2961,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyNodeGroupRequest):
             request = compute.SetIamPolicyNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3114,8 +3094,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, node_group, node_groups_set_node_template_request_resource]
         )
@@ -3125,10 +3105,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetNodeTemplateNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetNodeTemplateNodeGroupRequest):
             request = compute.SetNodeTemplateNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3260,8 +3238,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, node_group, node_groups_set_node_template_request_resource]
         )
@@ -3271,10 +3249,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetNodeTemplateNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetNodeTemplateNodeGroupRequest):
             request = compute.SetNodeTemplateNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3435,8 +3411,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -3451,10 +3427,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SimulateMaintenanceEventNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SimulateMaintenanceEventNodeGroupRequest):
             request = compute.SimulateMaintenanceEventNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3592,8 +3566,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
                 project,
@@ -3608,10 +3582,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SimulateMaintenanceEventNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SimulateMaintenanceEventNodeGroupRequest):
             request = compute.SimulateMaintenanceEventNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3771,8 +3743,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, test_permissions_request_resource]
         )
@@ -3782,10 +3754,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsNodeGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsNodeGroupRequest):
             request = compute.TestIamPermissionsNodeGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
