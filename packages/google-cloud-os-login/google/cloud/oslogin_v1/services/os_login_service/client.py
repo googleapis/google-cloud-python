@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -548,7 +549,9 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, OsLoginServiceTransport]] = None,
+        transport: Optional[
+            Union[str, OsLoginServiceTransport, Callable[..., OsLoginServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -560,9 +563,11 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, OsLoginServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,OsLoginServiceTransport,Callable[..., OsLoginServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the OsLoginServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -671,8 +676,15 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[OsLoginServiceTransport], Callable[..., OsLoginServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., OsLoginServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -753,8 +765,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ssh_public_key])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -762,10 +774,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.CreateSshPublicKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.CreateSshPublicKeyRequest):
             request = oslogin.CreateSshPublicKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -853,8 +863,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -862,10 +872,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.DeletePosixAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.DeletePosixAccountRequest):
             request = oslogin.DeletePosixAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -948,8 +956,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -957,10 +965,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.DeleteSshPublicKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.DeleteSshPublicKeyRequest):
             request = oslogin.DeleteSshPublicKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1052,8 +1058,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1061,10 +1067,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.GetLoginProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.GetLoginProfileRequest):
             request = oslogin.GetLoginProfileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1159,8 +1163,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1168,10 +1172,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.GetSshPublicKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.GetSshPublicKeyRequest):
             request = oslogin.GetSshPublicKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1283,8 +1285,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, ssh_public_key, project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1292,10 +1294,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.ImportSshPublicKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.ImportSshPublicKeyRequest):
             request = oslogin.ImportSshPublicKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1411,8 +1411,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, ssh_public_key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1420,10 +1420,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a oslogin.UpdateSshPublicKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, oslogin.UpdateSshPublicKeyRequest):
             request = oslogin.UpdateSshPublicKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -801,7 +802,11 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, NetworkServicesTransport]] = None,
+        transport: Optional[
+            Union[
+                str, NetworkServicesTransport, Callable[..., NetworkServicesTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -813,9 +818,11 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, NetworkServicesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetworkServicesTransport,Callable[..., NetworkServicesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetworkServicesTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -924,8 +931,15 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[NetworkServicesTransport], Callable[..., NetworkServicesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., NetworkServicesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -1006,8 +1020,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1015,10 +1029,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a endpoint_policy.ListEndpointPoliciesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, endpoint_policy.ListEndpointPoliciesRequest):
             request = endpoint_policy.ListEndpointPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1125,8 +1137,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1134,10 +1146,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a endpoint_policy.GetEndpointPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, endpoint_policy.GetEndpointPolicyRequest):
             request = endpoint_policy.GetEndpointPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1265,8 +1275,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, endpoint_policy, endpoint_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1274,10 +1284,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_endpoint_policy.CreateEndpointPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_endpoint_policy.CreateEndpointPolicyRequest):
             request = gcn_endpoint_policy.CreateEndpointPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1410,8 +1418,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([endpoint_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1419,10 +1427,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_endpoint_policy.UpdateEndpointPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_endpoint_policy.UpdateEndpointPolicyRequest):
             request = gcn_endpoint_policy.UpdateEndpointPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1544,8 +1550,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1553,10 +1559,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a endpoint_policy.DeleteEndpointPolicyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, endpoint_policy.DeleteEndpointPolicyRequest):
             request = endpoint_policy.DeleteEndpointPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1662,8 +1666,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1671,10 +1675,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gateway.ListGatewaysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gateway.ListGatewaysRequest):
             request = gateway.ListGatewaysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1782,8 +1784,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1791,10 +1793,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gateway.GetGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gateway.GetGatewayRequest):
             request = gateway.GetGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1921,8 +1921,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, gateway, gateway_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1930,10 +1930,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_gateway.CreateGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_gateway.CreateGatewayRequest):
             request = gcn_gateway.CreateGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2063,8 +2061,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([gateway, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2072,10 +2070,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_gateway.UpdateGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_gateway.UpdateGatewayRequest):
             request = gcn_gateway.UpdateGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2194,8 +2190,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2203,10 +2199,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gateway.DeleteGatewayRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gateway.DeleteGatewayRequest):
             request = gateway.DeleteGatewayRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2312,8 +2306,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2321,10 +2315,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grpc_route.ListGrpcRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grpc_route.ListGrpcRoutesRequest):
             request = grpc_route.ListGrpcRoutesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2427,8 +2419,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2436,10 +2428,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grpc_route.GetGrpcRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grpc_route.GetGrpcRouteRequest):
             request = grpc_route.GetGrpcRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2561,8 +2551,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, grpc_route, grpc_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2570,10 +2560,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_grpc_route.CreateGrpcRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_grpc_route.CreateGrpcRouteRequest):
             request = gcn_grpc_route.CreateGrpcRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2698,8 +2686,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([grpc_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2707,10 +2695,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_grpc_route.UpdateGrpcRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_grpc_route.UpdateGrpcRouteRequest):
             request = gcn_grpc_route.UpdateGrpcRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2829,8 +2815,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2838,10 +2824,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a grpc_route.DeleteGrpcRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, grpc_route.DeleteGrpcRouteRequest):
             request = grpc_route.DeleteGrpcRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2947,8 +2931,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2956,10 +2940,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a http_route.ListHttpRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, http_route.ListHttpRoutesRequest):
             request = http_route.ListHttpRoutesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3062,8 +3044,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3071,10 +3053,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a http_route.GetHttpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, http_route.GetHttpRouteRequest):
             request = http_route.GetHttpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3195,8 +3175,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, http_route, http_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3204,10 +3184,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_http_route.CreateHttpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_http_route.CreateHttpRouteRequest):
             request = gcn_http_route.CreateHttpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3332,8 +3310,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([http_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3341,10 +3319,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_http_route.UpdateHttpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_http_route.UpdateHttpRouteRequest):
             request = gcn_http_route.UpdateHttpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3463,8 +3439,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3472,10 +3448,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a http_route.DeleteHttpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, http_route.DeleteHttpRouteRequest):
             request = http_route.DeleteHttpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3581,8 +3555,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3590,10 +3564,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tcp_route.ListTcpRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tcp_route.ListTcpRoutesRequest):
             request = tcp_route.ListTcpRoutesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3696,8 +3668,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3705,10 +3677,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tcp_route.GetTcpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tcp_route.GetTcpRouteRequest):
             request = tcp_route.GetTcpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3828,8 +3798,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tcp_route, tcp_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3837,10 +3807,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_tcp_route.CreateTcpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_tcp_route.CreateTcpRouteRequest):
             request = gcn_tcp_route.CreateTcpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3964,8 +3932,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tcp_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3973,10 +3941,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_tcp_route.UpdateTcpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_tcp_route.UpdateTcpRouteRequest):
             request = gcn_tcp_route.UpdateTcpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4095,8 +4061,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4104,10 +4070,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tcp_route.DeleteTcpRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tcp_route.DeleteTcpRouteRequest):
             request = tcp_route.DeleteTcpRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4213,8 +4177,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4222,10 +4186,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tls_route.ListTlsRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tls_route.ListTlsRoutesRequest):
             request = tls_route.ListTlsRoutesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4328,8 +4290,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4337,10 +4299,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tls_route.GetTlsRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tls_route.GetTlsRouteRequest):
             request = tls_route.GetTlsRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4461,8 +4421,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tls_route, tls_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4470,10 +4430,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_tls_route.CreateTlsRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_tls_route.CreateTlsRouteRequest):
             request = gcn_tls_route.CreateTlsRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4598,8 +4556,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tls_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4607,10 +4565,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_tls_route.UpdateTlsRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_tls_route.UpdateTlsRouteRequest):
             request = gcn_tls_route.UpdateTlsRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4729,8 +4685,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4738,10 +4694,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a tls_route.DeleteTlsRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, tls_route.DeleteTlsRouteRequest):
             request = tls_route.DeleteTlsRouteRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4849,8 +4803,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4858,10 +4812,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service_binding.ListServiceBindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service_binding.ListServiceBindingsRequest):
             request = service_binding.ListServiceBindingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4965,8 +4917,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4974,10 +4926,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service_binding.GetServiceBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service_binding.GetServiceBindingRequest):
             request = service_binding.GetServiceBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5101,8 +5051,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, service_binding, service_binding_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5110,10 +5060,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_service_binding.CreateServiceBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_service_binding.CreateServiceBindingRequest):
             request = gcn_service_binding.CreateServiceBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5235,8 +5183,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5244,10 +5192,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service_binding.DeleteServiceBindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, service_binding.DeleteServiceBindingRequest):
             request = service_binding.DeleteServiceBindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5353,8 +5299,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5362,10 +5308,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a mesh.ListMeshesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, mesh.ListMeshesRequest):
             request = mesh.ListMeshesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5470,8 +5414,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5479,10 +5423,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a mesh.GetMeshRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, mesh.GetMeshRequest):
             request = mesh.GetMeshRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5604,8 +5546,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, mesh, mesh_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5613,10 +5555,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_mesh.CreateMeshRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_mesh.CreateMeshRequest):
             request = gcn_mesh.CreateMeshRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5742,8 +5682,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([mesh, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5751,10 +5691,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcn_mesh.UpdateMeshRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcn_mesh.UpdateMeshRequest):
             request = gcn_mesh.UpdateMeshRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5873,8 +5811,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5882,10 +5820,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a mesh.DeleteMeshRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, mesh.DeleteMeshRequest):
             request = mesh.DeleteMeshRequest(request)
             # If we have keyword arguments corresponding to fields on the

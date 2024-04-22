@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -575,7 +576,11 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, OsConfigServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str, OsConfigServiceTransport, Callable[..., OsConfigServiceTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -587,9 +592,11 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, OsConfigServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,OsConfigServiceTransport,Callable[..., OsConfigServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the OsConfigServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -698,8 +705,15 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[OsConfigServiceTransport], Callable[..., OsConfigServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., OsConfigServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -774,10 +788,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_jobs.ExecutePatchJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_jobs.ExecutePatchJobRequest):
             request = patch_jobs.ExecutePatchJobRequest(request)
 
@@ -876,8 +888,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -885,10 +897,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_jobs.GetPatchJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_jobs.GetPatchJobRequest):
             request = patch_jobs.GetPatchJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -981,10 +991,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_jobs.CancelPatchJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_jobs.CancelPatchJobRequest):
             request = patch_jobs.CancelPatchJobRequest(request)
 
@@ -1075,8 +1083,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1084,10 +1092,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_jobs.ListPatchJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_jobs.ListPatchJobsRequest):
             request = patch_jobs.ListPatchJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1195,8 +1201,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1204,10 +1210,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_jobs.ListPatchJobInstanceDetailsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_jobs.ListPatchJobInstanceDetailsRequest):
             request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1341,8 +1345,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, patch_deployment, patch_deployment_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1350,10 +1354,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.CreatePatchDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.CreatePatchDeploymentRequest):
             request = patch_deployments.CreatePatchDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1456,8 +1458,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1465,10 +1467,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.GetPatchDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.GetPatchDeploymentRequest):
             request = patch_deployments.GetPatchDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1567,8 +1567,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1576,10 +1576,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.ListPatchDeploymentsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.ListPatchDeploymentsRequest):
             request = patch_deployments.ListPatchDeploymentsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1674,8 +1672,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1683,10 +1681,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.DeletePatchDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.DeletePatchDeploymentRequest):
             request = patch_deployments.DeletePatchDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1790,8 +1786,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([patch_deployment, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1799,10 +1795,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.UpdatePatchDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.UpdatePatchDeploymentRequest):
             request = patch_deployments.UpdatePatchDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1907,8 +1901,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1916,10 +1910,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.PausePatchDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.PausePatchDeploymentRequest):
             request = patch_deployments.PausePatchDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2020,8 +2012,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2029,10 +2021,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a patch_deployments.ResumePatchDeploymentRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, patch_deployments.ResumePatchDeploymentRequest):
             request = patch_deployments.ResumePatchDeploymentRequest(request)
             # If we have keyword arguments corresponding to fields on the

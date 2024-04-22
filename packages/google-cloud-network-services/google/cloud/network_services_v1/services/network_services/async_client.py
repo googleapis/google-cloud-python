@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -260,7 +261,11 @@ class NetworkServicesAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, NetworkServicesTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str, NetworkServicesTransport, Callable[..., NetworkServicesTransport]
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -272,9 +277,11 @@ class NetworkServicesAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.NetworkServicesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,NetworkServicesTransport,Callable[..., NetworkServicesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the NetworkServicesTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -387,8 +394,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -396,7 +403,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = endpoint_policy.ListEndpointPoliciesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, endpoint_policy.ListEndpointPoliciesRequest):
+            request = endpoint_policy.ListEndpointPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -405,11 +415,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_endpoint_policies,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_endpoint_policies
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -506,8 +514,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -515,7 +523,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = endpoint_policy.GetEndpointPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, endpoint_policy.GetEndpointPolicyRequest):
+            request = endpoint_policy.GetEndpointPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -524,11 +535,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_endpoint_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_endpoint_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -646,8 +655,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, endpoint_policy, endpoint_policy_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -655,7 +664,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_endpoint_policy.CreateEndpointPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_endpoint_policy.CreateEndpointPolicyRequest):
+            request = gcn_endpoint_policy.CreateEndpointPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -668,11 +680,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_endpoint_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_endpoint_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -791,8 +801,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([endpoint_policy, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -800,7 +810,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_endpoint_policy.UpdateEndpointPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_endpoint_policy.UpdateEndpointPolicyRequest):
+            request = gcn_endpoint_policy.UpdateEndpointPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -811,11 +824,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_endpoint_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_endpoint_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -925,8 +936,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -934,7 +945,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = endpoint_policy.DeleteEndpointPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, endpoint_policy.DeleteEndpointPolicyRequest):
+            request = endpoint_policy.DeleteEndpointPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -943,11 +957,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_endpoint_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_endpoint_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1043,8 +1055,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1052,7 +1064,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gateway.ListGatewaysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gateway.ListGatewaysRequest):
+            request = gateway.ListGatewaysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1061,11 +1076,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_gateways,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_gateways
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1163,8 +1176,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1172,7 +1185,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gateway.GetGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gateway.GetGatewayRequest):
+            request = gateway.GetGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1181,11 +1197,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_gateway,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1302,8 +1316,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, gateway, gateway_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1311,7 +1325,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_gateway.CreateGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_gateway.CreateGatewayRequest):
+            request = gcn_gateway.CreateGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1324,11 +1341,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_gateway,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1444,8 +1459,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([gateway, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1453,7 +1468,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_gateway.UpdateGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_gateway.UpdateGatewayRequest):
+            request = gcn_gateway.UpdateGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1464,11 +1482,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_gateway,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1575,8 +1591,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1584,7 +1600,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gateway.DeleteGatewayRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gateway.DeleteGatewayRequest):
+            request = gateway.DeleteGatewayRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1593,11 +1612,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_gateway,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_gateway
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1693,8 +1710,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1702,7 +1719,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grpc_route.ListGrpcRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grpc_route.ListGrpcRoutesRequest):
+            request = grpc_route.ListGrpcRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1711,11 +1731,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_grpc_routes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_grpc_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1808,8 +1826,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1817,7 +1835,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grpc_route.GetGrpcRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grpc_route.GetGrpcRouteRequest):
+            request = grpc_route.GetGrpcRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1826,11 +1847,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_grpc_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_grpc_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1942,8 +1961,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, grpc_route, grpc_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1951,7 +1970,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_grpc_route.CreateGrpcRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_grpc_route.CreateGrpcRouteRequest):
+            request = gcn_grpc_route.CreateGrpcRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1964,11 +1986,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_grpc_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_grpc_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2079,8 +2099,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([grpc_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2088,7 +2108,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_grpc_route.UpdateGrpcRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_grpc_route.UpdateGrpcRouteRequest):
+            request = gcn_grpc_route.UpdateGrpcRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2099,11 +2122,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_grpc_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_grpc_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2210,8 +2231,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2219,7 +2240,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = grpc_route.DeleteGrpcRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, grpc_route.DeleteGrpcRouteRequest):
+            request = grpc_route.DeleteGrpcRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2228,11 +2252,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_grpc_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_grpc_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2328,8 +2350,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2337,7 +2359,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = http_route.ListHttpRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, http_route.ListHttpRoutesRequest):
+            request = http_route.ListHttpRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2346,11 +2371,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_http_routes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_http_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2443,8 +2466,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2452,7 +2475,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = http_route.GetHttpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, http_route.GetHttpRouteRequest):
+            request = http_route.GetHttpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2461,11 +2487,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_http_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_http_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2576,8 +2600,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, http_route, http_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2585,7 +2609,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_http_route.CreateHttpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_http_route.CreateHttpRouteRequest):
+            request = gcn_http_route.CreateHttpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2598,11 +2625,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_http_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_http_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2713,8 +2738,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([http_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2722,7 +2747,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_http_route.UpdateHttpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_http_route.UpdateHttpRouteRequest):
+            request = gcn_http_route.UpdateHttpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2733,11 +2761,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_http_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_http_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2844,8 +2870,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2853,7 +2879,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = http_route.DeleteHttpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, http_route.DeleteHttpRouteRequest):
+            request = http_route.DeleteHttpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2862,11 +2891,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_http_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_http_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2962,8 +2989,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2971,7 +2998,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = tcp_route.ListTcpRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tcp_route.ListTcpRoutesRequest):
+            request = tcp_route.ListTcpRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2980,11 +3010,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_tcp_routes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_tcp_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3077,8 +3105,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3086,7 +3114,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = tcp_route.GetTcpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tcp_route.GetTcpRouteRequest):
+            request = tcp_route.GetTcpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3095,11 +3126,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_tcp_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_tcp_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3209,8 +3238,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tcp_route, tcp_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3218,7 +3247,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_tcp_route.CreateTcpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_tcp_route.CreateTcpRouteRequest):
+            request = gcn_tcp_route.CreateTcpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3231,11 +3263,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_tcp_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_tcp_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3345,8 +3375,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tcp_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3354,7 +3384,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_tcp_route.UpdateTcpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_tcp_route.UpdateTcpRouteRequest):
+            request = gcn_tcp_route.UpdateTcpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3365,11 +3398,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_tcp_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_tcp_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3476,8 +3507,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3485,7 +3516,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = tcp_route.DeleteTcpRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tcp_route.DeleteTcpRouteRequest):
+            request = tcp_route.DeleteTcpRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3494,11 +3528,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_tcp_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_tcp_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3594,8 +3626,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3603,7 +3635,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = tls_route.ListTlsRoutesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tls_route.ListTlsRoutesRequest):
+            request = tls_route.ListTlsRoutesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3612,11 +3647,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_tls_routes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_tls_routes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3709,8 +3742,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3718,7 +3751,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = tls_route.GetTlsRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tls_route.GetTlsRouteRequest):
+            request = tls_route.GetTlsRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3727,11 +3763,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_tls_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_tls_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3842,8 +3876,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, tls_route, tls_route_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3851,7 +3885,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_tls_route.CreateTlsRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_tls_route.CreateTlsRouteRequest):
+            request = gcn_tls_route.CreateTlsRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3864,11 +3901,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_tls_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_tls_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3979,8 +4014,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([tls_route, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3988,7 +4023,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_tls_route.UpdateTlsRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_tls_route.UpdateTlsRouteRequest):
+            request = gcn_tls_route.UpdateTlsRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3999,11 +4037,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_tls_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_tls_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4110,8 +4146,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4119,7 +4155,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = tls_route.DeleteTlsRouteRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, tls_route.DeleteTlsRouteRequest):
+            request = tls_route.DeleteTlsRouteRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4128,11 +4167,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_tls_route,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_tls_route
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4230,8 +4267,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4239,7 +4276,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service_binding.ListServiceBindingsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service_binding.ListServiceBindingsRequest):
+            request = service_binding.ListServiceBindingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4248,11 +4288,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_service_bindings,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_service_bindings
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4346,8 +4384,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4355,7 +4393,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service_binding.GetServiceBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service_binding.GetServiceBindingRequest):
+            request = service_binding.GetServiceBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4364,11 +4405,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_service_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_service_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4482,8 +4521,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, service_binding, service_binding_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4491,7 +4530,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_service_binding.CreateServiceBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_service_binding.CreateServiceBindingRequest):
+            request = gcn_service_binding.CreateServiceBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4504,11 +4546,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_service_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_service_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4616,8 +4656,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4625,7 +4665,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service_binding.DeleteServiceBindingRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service_binding.DeleteServiceBindingRequest):
+            request = service_binding.DeleteServiceBindingRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4634,11 +4677,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_service_binding,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_service_binding
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4734,8 +4775,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4743,7 +4784,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = mesh.ListMeshesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, mesh.ListMeshesRequest):
+            request = mesh.ListMeshesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4752,11 +4796,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_meshes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_meshes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4851,8 +4893,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4860,7 +4902,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = mesh.GetMeshRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, mesh.GetMeshRequest):
+            request = mesh.GetMeshRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4869,11 +4914,7 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_mesh,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_mesh]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4985,8 +5026,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, mesh, mesh_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4994,7 +5035,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_mesh.CreateMeshRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_mesh.CreateMeshRequest):
+            request = gcn_mesh.CreateMeshRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5007,11 +5051,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_mesh,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_mesh
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5123,8 +5165,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([mesh, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5132,7 +5174,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcn_mesh.UpdateMeshRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_mesh.UpdateMeshRequest):
+            request = gcn_mesh.UpdateMeshRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5143,11 +5188,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_mesh,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_mesh
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5254,8 +5297,8 @@ class NetworkServicesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5263,7 +5306,10 @@ class NetworkServicesAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = mesh.DeleteMeshRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, mesh.DeleteMeshRequest):
+            request = mesh.DeleteMeshRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5272,11 +5318,9 @@ class NetworkServicesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_mesh,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_mesh
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
