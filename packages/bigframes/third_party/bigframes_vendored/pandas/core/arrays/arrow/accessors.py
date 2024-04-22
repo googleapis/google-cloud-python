@@ -92,3 +92,32 @@ class StructAccessor:
                 The data corresponding to all child fields.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def dtypes(self):
+        """
+        Return the dtype object of each child field of the struct.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import pyarrow as pa
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series(
+            ...     [
+            ...         {"version": 1, "project": "pandas"},
+            ...         {"version": 2, "project": "pandas"},
+            ...         {"version": 1, "project": "numpy"},
+            ...     ],
+            ...     dtype=bpd.ArrowDtype(pa.struct(
+            ...         [("version", pa.int64()), ("project", pa.string())]
+            ...     ))
+            ... )
+            >>> s.struct.dtypes()
+            version              Int64
+            project    string[pyarrow]
+            dtype: object
+
+        Returns:
+            A *pandas* Series with the data type of all child fields.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
