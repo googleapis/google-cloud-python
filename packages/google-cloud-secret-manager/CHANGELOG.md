@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.19.0...google-cloud-secret-manager-v2.20.0) (2024-04-22)
+
+
+### Features
+
+* Add Secret Version Delayed Destroy changes for client libraries  ([bfb8a34](https://github.com/googleapis/google-cloud-python/commit/bfb8a34a15687c9b4496b1da9dc69d6e3d7fc267))
+
+
+### Documentation
+
+* Users can now enable secret version delayed destruction ([bfb8a34](https://github.com/googleapis/google-cloud-python/commit/bfb8a34a15687c9b4496b1da9dc69d6e3d7fc267))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.18.3...google-cloud-secret-manager-v2.19.0) (2024-03-22)
 
 

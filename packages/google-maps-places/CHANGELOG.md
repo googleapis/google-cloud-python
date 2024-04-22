@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.12...google-maps-places-v0.1.13) (2024-04-22)
+
+
+### Documentation
+
+* [google-maps-places] slightly improved documentation for EVOptions in SearchTextRequest ([#12599](https://github.com/googleapis/google-cloud-python/issues/12599)) ([3ef0fe0](https://github.com/googleapis/google-cloud-python/commit/3ef0fe07dc2c1b719a8a1ae6302f35bc910e6097))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.11...google-maps-places-v0.1.12) (2024-04-15)
 
 

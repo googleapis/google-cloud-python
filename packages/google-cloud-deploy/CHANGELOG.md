@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.17.3...google-cloud-deploy-v1.18.0) (2024-04-22)
+
+
+### Features
+
+* add Skaffold remote config support for GCB repos ([bd918e6](https://github.com/googleapis/google-cloud-python/commit/bd918e6e8dbb39c648e7ad6b309e3be4145515a4))
+
+
+### Documentation
+
+* clarified related comments ([bd918e6](https://github.com/googleapis/google-cloud-python/commit/bd918e6e8dbb39c648e7ad6b309e3be4145515a4))
+
 ## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.17.2...google-cloud-deploy-v1.17.3) (2024-03-05)
 
 
