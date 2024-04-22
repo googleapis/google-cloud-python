@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.3.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.2.0...v1.3.0) (2024-04-22)
+
+
+### Features
+
+* Add `Series.struct.dtypes` property ([#599](https://github.com/googleapis/python-bigquery-dataframes/issues/599)) ([d924ec2](https://github.com/googleapis/python-bigquery-dataframes/commit/d924ec2937c158644b5d1bbae4f82476de2c1655))
+* Add fine tuning `fit()` for Palm2TextGenerator ([#616](https://github.com/googleapis/python-bigquery-dataframes/issues/616)) ([9c106bd](https://github.com/googleapis/python-bigquery-dataframes/commit/9c106bd24482620ef5ff3c85f94be9da76c49716))
+* Add quantile statistic ([#613](https://github.com/googleapis/python-bigquery-dataframes/issues/613)) ([bc82804](https://github.com/googleapis/python-bigquery-dataframes/commit/bc82804da43c03c2311cd56f47a2316d3aae93d2))
+* Expose `max_batching_rows` in `remote_function` ([#622](https://github.com/googleapis/python-bigquery-dataframes/issues/622)) ([240a1ac](https://github.com/googleapis/python-bigquery-dataframes/commit/240a1ac6fa914550bb6216cd5d179a36009f2657))
+* Support primary key(s) in `read_gbq` by using as the `index_col` by default ([#625](https://github.com/googleapis/python-bigquery-dataframes/issues/625)) ([75bb240](https://github.com/googleapis/python-bigquery-dataframes/commit/75bb2409532e80de742030d05ffcbacacf5ffba2))
+* Warn if location is set to unknown location ([#609](https://github.com/googleapis/python-bigquery-dataframes/issues/609)) ([3706b4f](https://github.com/googleapis/python-bigquery-dataframes/commit/3706b4f9dde65788b5e6343a6428fb1866499461))
+
+
+### Bug Fixes
+
+* Address technical writers fb ([#611](https://github.com/googleapis/python-bigquery-dataframes/issues/611)) ([9f8f181](https://github.com/googleapis/python-bigquery-dataframes/commit/9f8f181279133abdb7da3aa045df6fa278587013))
+* Infer narrowest numeric type when combining numeric columns ([#602](https://github.com/googleapis/python-bigquery-dataframes/issues/602)) ([8f9ece6](https://github.com/googleapis/python-bigquery-dataframes/commit/8f9ece6d13f57f02d677bf0e3fea97dea94ae240))
+* Use exact median implementation by default ([#619](https://github.com/googleapis/python-bigquery-dataframes/issues/619)) ([9d205ae](https://github.com/googleapis/python-bigquery-dataframes/commit/9d205aecb77f35baeec82a8f6e1b72c2d852ca46))
+
+
+### Documentation
+
+* Fix rendering of examples for multiple apis ([#620](https://github.com/googleapis/python-bigquery-dataframes/issues/620)) ([9665e39](https://github.com/googleapis/python-bigquery-dataframes/commit/9665e39ef288841f03a9d823bd2210ef58394ad3))
+* Set `index_cols` in `read_gbq` as a best practice ([#624](https://github.com/googleapis/python-bigquery-dataframes/issues/624)) ([70015b7](https://github.com/googleapis/python-bigquery-dataframes/commit/70015b79e8cff16ff1b36c5e3f019fe099750a9d))
+
 ## [1.2.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.1.0...v1.2.0) (2024-04-15)
 
 
