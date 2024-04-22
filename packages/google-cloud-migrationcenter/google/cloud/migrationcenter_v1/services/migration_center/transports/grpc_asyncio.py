@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -67,7 +69,6 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -97,7 +98,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -117,15 +118,18 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -135,11 +139,11 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -166,7 +170,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -206,7 +210,9 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -1614,6 +1620,251 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_report"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_assets: gapic_v1.method_async.wrap_method(
+                self.list_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_asset: gapic_v1.method_async.wrap_method(
+                self.get_asset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_asset: gapic_v1.method_async.wrap_method(
+                self.update_asset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_assets: gapic_v1.method_async.wrap_method(
+                self.batch_update_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_asset: gapic_v1.method_async.wrap_method(
+                self.delete_asset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_assets: gapic_v1.method_async.wrap_method(
+                self.batch_delete_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.report_asset_frames: gapic_v1.method_async.wrap_method(
+                self.report_asset_frames,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.aggregate_assets_values: gapic_v1.method_async.wrap_method(
+                self.aggregate_assets_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_import_job: gapic_v1.method_async.wrap_method(
+                self.create_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_import_jobs: gapic_v1.method_async.wrap_method(
+                self.list_import_jobs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_import_job: gapic_v1.method_async.wrap_method(
+                self.get_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_import_job: gapic_v1.method_async.wrap_method(
+                self.delete_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_import_job: gapic_v1.method_async.wrap_method(
+                self.update_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.validate_import_job: gapic_v1.method_async.wrap_method(
+                self.validate_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_import_job: gapic_v1.method_async.wrap_method(
+                self.run_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_import_data_file: gapic_v1.method_async.wrap_method(
+                self.get_import_data_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_import_data_files: gapic_v1.method_async.wrap_method(
+                self.list_import_data_files,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_import_data_file: gapic_v1.method_async.wrap_method(
+                self.create_import_data_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_import_data_file: gapic_v1.method_async.wrap_method(
+                self.delete_import_data_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_groups: gapic_v1.method_async.wrap_method(
+                self.list_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_group: gapic_v1.method_async.wrap_method(
+                self.get_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_group: gapic_v1.method_async.wrap_method(
+                self.create_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_group: gapic_v1.method_async.wrap_method(
+                self.update_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_group: gapic_v1.method_async.wrap_method(
+                self.delete_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_assets_to_group: gapic_v1.method_async.wrap_method(
+                self.add_assets_to_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_assets_from_group: gapic_v1.method_async.wrap_method(
+                self.remove_assets_from_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_error_frames: gapic_v1.method_async.wrap_method(
+                self.list_error_frames,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_error_frame: gapic_v1.method_async.wrap_method(
+                self.get_error_frame,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sources: gapic_v1.method_async.wrap_method(
+                self.list_sources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_source: gapic_v1.method_async.wrap_method(
+                self.get_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_source: gapic_v1.method_async.wrap_method(
+                self.create_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_source: gapic_v1.method_async.wrap_method(
+                self.update_source,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_source: gapic_v1.method_async.wrap_method(
+                self.delete_source,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.list_preference_sets: gapic_v1.method_async.wrap_method(
+                self.list_preference_sets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_preference_set: gapic_v1.method_async.wrap_method(
+                self.get_preference_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_preference_set: gapic_v1.method_async.wrap_method(
+                self.create_preference_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_preference_set: gapic_v1.method_async.wrap_method(
+                self.update_preference_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_preference_set: gapic_v1.method_async.wrap_method(
+                self.delete_preference_set,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_settings: gapic_v1.method_async.wrap_method(
+                self.get_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_settings: gapic_v1.method_async.wrap_method(
+                self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_report_config: gapic_v1.method_async.wrap_method(
+                self.create_report_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_report_config: gapic_v1.method_async.wrap_method(
+                self.get_report_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_report_configs: gapic_v1.method_async.wrap_method(
+                self.list_report_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_report_config: gapic_v1.method_async.wrap_method(
+                self.delete_report_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_report: gapic_v1.method_async.wrap_method(
+                self.create_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_report: gapic_v1.method_async.wrap_method(
+                self.get_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_reports: gapic_v1.method_async.wrap_method(
+                self.list_reports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_report: gapic_v1.method_async.wrap_method(
+                self.delete_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()

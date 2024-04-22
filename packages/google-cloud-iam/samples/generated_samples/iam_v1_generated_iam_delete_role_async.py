@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-iam
+#   python3 -m pip install google-iam-admin
 
 
 # [START iam_v1_generated_IAM_DeleteRole_async]
@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import iam_admin_v1
+from google.iam import admin_v1
 
 
 async def sample_delete_role():
     # Create a client
-    client = iam_admin_v1.IAMAsyncClient()
+    client = admin_v1.IAMAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.DeleteRoleRequest(
+    request = admin_v1.DeleteRoleRequest(
     )
 
     # Make the request

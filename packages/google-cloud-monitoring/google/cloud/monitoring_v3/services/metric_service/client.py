@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -572,7 +573,9 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, MetricServiceTransport]] = None,
+        transport: Optional[
+            Union[str, MetricServiceTransport, Callable[..., MetricServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -584,9 +587,11 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, MetricServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MetricServiceTransport,Callable[..., MetricServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MetricServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -695,8 +700,15 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[MetricServiceTransport], Callable[..., MetricServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., MetricServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -779,8 +791,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -788,10 +800,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.ListMonitoredResourceDescriptorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, metric_service.ListMonitoredResourceDescriptorsRequest
         ):
@@ -916,8 +926,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -925,10 +935,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.GetMonitoredResourceDescriptorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, metric_service.GetMonitoredResourceDescriptorRequest
         ):
@@ -1034,8 +1042,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1043,10 +1051,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.ListMetricDescriptorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.ListMetricDescriptorsRequest):
             request = metric_service.ListMetricDescriptorsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1159,8 +1165,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1168,10 +1174,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.GetMetricDescriptorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.GetMetricDescriptorRequest):
             request = metric_service.GetMetricDescriptorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1283,8 +1287,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, metric_descriptor])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1292,10 +1296,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.CreateMetricDescriptorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.CreateMetricDescriptorRequest):
             request = metric_service.CreateMetricDescriptorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1391,8 +1393,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1400,10 +1402,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.DeleteMetricDescriptorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.DeleteMetricDescriptorRequest):
             request = metric_service.DeleteMetricDescriptorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1541,8 +1541,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, filter, interval, view])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1550,10 +1550,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.ListTimeSeriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.ListTimeSeriesRequest):
             request = metric_service.ListTimeSeriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1677,8 +1675,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, time_series])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1686,10 +1684,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.CreateTimeSeriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.CreateTimeSeriesRequest):
             request = metric_service.CreateTimeSeriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1800,8 +1796,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, time_series])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1809,10 +1805,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a metric_service.CreateTimeSeriesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, metric_service.CreateTimeSeriesRequest):
             request = metric_service.CreateTimeSeriesRequest(request)
             # If we have keyword arguments corresponding to fields on the

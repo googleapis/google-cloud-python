@@ -1,2 +1,0 @@
-recursive-include google/cloud/gke_multicloud *.py
-recursive-include google/cloud/gke_multicloud_v1 *.py

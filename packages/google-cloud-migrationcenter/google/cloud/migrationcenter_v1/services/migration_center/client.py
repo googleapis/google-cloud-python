@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -738,7 +739,11 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, MigrationCenterTransport]] = None,
+        transport: Optional[
+            Union[
+                str, MigrationCenterTransport, Callable[..., MigrationCenterTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -750,9 +755,11 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, MigrationCenterTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,MigrationCenterTransport,Callable[..., MigrationCenterTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the MigrationCenterTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -861,8 +868,15 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[MigrationCenterTransport], Callable[..., MigrationCenterTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., MigrationCenterTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -937,8 +951,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -946,10 +960,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListAssetsRequest):
             request = migrationcenter.ListAssetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1049,8 +1061,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1058,10 +1070,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetAssetRequest):
             request = migrationcenter.GetAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1163,8 +1173,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([asset, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1172,10 +1182,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.UpdateAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.UpdateAssetRequest):
             request = migrationcenter.UpdateAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1281,8 +1289,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, requests])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1290,10 +1298,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.BatchUpdateAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.BatchUpdateAssetsRequest):
             request = migrationcenter.BatchUpdateAssetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1376,8 +1382,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1385,10 +1391,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteAssetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteAssetRequest):
             request = migrationcenter.DeleteAssetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1479,8 +1483,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, names])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1488,10 +1492,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.BatchDeleteAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.BatchDeleteAssetsRequest):
             request = migrationcenter.BatchDeleteAssetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1574,10 +1576,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 A response to a call to ReportAssetFrame.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ReportAssetFramesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ReportAssetFramesRequest):
             request = migrationcenter.ReportAssetFramesRequest(request)
 
@@ -1661,10 +1661,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.AggregateAssetsValuesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.AggregateAssetsValuesRequest):
             request = migrationcenter.AggregateAssetsValuesRequest(request)
 
@@ -1775,8 +1773,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, import_job, import_job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1784,10 +1782,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreateImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreateImportJobRequest):
             request = migrationcenter.CreateImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1893,8 +1889,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1902,10 +1898,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListImportJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListImportJobsRequest):
             request = migrationcenter.ListImportJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2005,8 +1999,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2014,10 +2008,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetImportJobRequest):
             request = migrationcenter.GetImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2121,8 +2113,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2130,10 +2122,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteImportJobRequest):
             request = migrationcenter.DeleteImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2254,8 +2244,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([import_job, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2263,10 +2253,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.UpdateImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.UpdateImportJobRequest):
             request = migrationcenter.UpdateImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2384,8 +2372,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2393,10 +2381,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ValidateImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ValidateImportJobRequest):
             request = migrationcenter.ValidateImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2510,8 +2496,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2519,10 +2505,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.RunImportJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.RunImportJobRequest):
             request = migrationcenter.RunImportJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2620,8 +2604,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2629,10 +2613,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetImportDataFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetImportDataFileRequest):
             request = migrationcenter.GetImportDataFileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2731,8 +2713,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2740,10 +2722,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListImportDataFilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListImportDataFilesRequest):
             request = migrationcenter.ListImportDataFilesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2873,8 +2853,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, import_data_file, import_data_file_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2882,10 +2862,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreateImportDataFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreateImportDataFileRequest):
             request = migrationcenter.CreateImportDataFileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3005,8 +2983,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3014,10 +2992,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteImportDataFileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteImportDataFileRequest):
             request = migrationcenter.DeleteImportDataFileRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3119,8 +3095,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3128,10 +3104,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListGroupsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListGroupsRequest):
             request = migrationcenter.ListGroupsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3234,8 +3208,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3243,10 +3217,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetGroupRequest):
             request = migrationcenter.GetGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3366,8 +3338,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, group, group_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3375,10 +3347,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreateGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreateGroupRequest):
             request = migrationcenter.CreateGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3502,8 +3472,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3511,10 +3481,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.UpdateGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.UpdateGroupRequest):
             request = migrationcenter.UpdateGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3630,8 +3598,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3639,10 +3607,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteGroupRequest):
             request = migrationcenter.DeleteGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3753,8 +3719,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3762,10 +3728,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.AddAssetsToGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.AddAssetsToGroupRequest):
             request = migrationcenter.AddAssetsToGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3879,8 +3843,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3888,10 +3852,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.RemoveAssetsFromGroupRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.RemoveAssetsFromGroupRequest):
             request = migrationcenter.RemoveAssetsFromGroupRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3997,8 +3959,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4006,10 +3968,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListErrorFramesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListErrorFramesRequest):
             request = migrationcenter.ListErrorFramesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4110,8 +4070,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4119,10 +4079,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetErrorFrameRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetErrorFrameRequest):
             request = migrationcenter.GetErrorFrameRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4217,8 +4175,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4226,10 +4184,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListSourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListSourcesRequest):
             request = migrationcenter.ListSourcesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4329,8 +4285,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4338,10 +4294,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetSourceRequest):
             request = migrationcenter.GetSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4456,8 +4410,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, source, source_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4465,10 +4419,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreateSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreateSourceRequest):
             request = migrationcenter.CreateSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4587,8 +4539,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([source, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4596,10 +4548,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.UpdateSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.UpdateSourceRequest):
             request = migrationcenter.UpdateSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4715,8 +4665,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4724,10 +4674,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteSourceRequest):
             request = migrationcenter.DeleteSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4834,8 +4782,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4843,10 +4791,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListPreferenceSetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListPreferenceSetsRequest):
             request = migrationcenter.ListPreferenceSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4945,8 +4891,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4954,10 +4900,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetPreferenceSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetPreferenceSetRequest):
             request = migrationcenter.GetPreferenceSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5080,8 +5024,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, preference_set, preference_set_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5089,10 +5033,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreatePreferenceSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreatePreferenceSetRequest):
             request = migrationcenter.CreatePreferenceSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5218,8 +5160,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([preference_set, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5227,10 +5169,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.UpdatePreferenceSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.UpdatePreferenceSetRequest):
             request = migrationcenter.UpdatePreferenceSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5348,8 +5288,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5357,10 +5297,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeletePreferenceSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeletePreferenceSetRequest):
             request = migrationcenter.DeletePreferenceSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5458,8 +5396,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5467,10 +5405,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetSettingsRequest):
             request = migrationcenter.GetSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5581,8 +5517,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([settings, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5590,10 +5526,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.UpdateSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.UpdateSettingsRequest):
             request = migrationcenter.UpdateSettingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5730,8 +5664,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, report_config, report_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5739,10 +5673,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreateReportConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreateReportConfigRequest):
             request = migrationcenter.CreateReportConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5844,8 +5776,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5853,10 +5785,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetReportConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetReportConfigRequest):
             request = migrationcenter.GetReportConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -5950,8 +5880,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5959,10 +5889,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListReportConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListReportConfigsRequest):
             request = migrationcenter.ListReportConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6077,8 +6005,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6086,10 +6014,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteReportConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteReportConfigRequest):
             request = migrationcenter.DeleteReportConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6216,8 +6142,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, report, report_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6225,10 +6151,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.CreateReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.CreateReportRequest):
             request = migrationcenter.CreateReportRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6330,8 +6254,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6339,10 +6263,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.GetReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.GetReportRequest):
             request = migrationcenter.GetReportRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6436,8 +6358,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6445,10 +6367,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.ListReportsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.ListReportsRequest):
             request = migrationcenter.ListReportsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -6561,8 +6481,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -6570,10 +6490,8 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a migrationcenter.DeleteReportRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, migrationcenter.DeleteReportRequest):
             request = migrationcenter.DeleteReportRequest(request)
             # If we have keyword arguments corresponding to fields on the

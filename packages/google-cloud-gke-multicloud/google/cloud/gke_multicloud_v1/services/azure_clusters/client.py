@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -607,7 +608,9 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AzureClustersTransport]] = None,
+        transport: Optional[
+            Union[str, AzureClustersTransport, Callable[..., AzureClustersTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -619,9 +622,11 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AzureClustersTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AzureClustersTransport,Callable[..., AzureClustersTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AzureClustersTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -733,8 +738,15 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AzureClustersTransport], Callable[..., AzureClustersTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AzureClustersTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -876,8 +888,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, azure_client, azure_client_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -885,10 +897,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.CreateAzureClientRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.CreateAzureClientRequest):
             request = azure_service.CreateAzureClientRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1018,8 +1028,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1027,10 +1037,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GetAzureClientRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GetAzureClientRequest):
             request = azure_service.GetAzureClientRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1139,8 +1147,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1148,10 +1156,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.ListAzureClientsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.ListAzureClientsRequest):
             request = azure_service.ListAzureClientsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1285,8 +1291,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1294,10 +1300,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.DeleteAzureClientRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.DeleteAzureClientRequest):
             request = azure_service.DeleteAzureClientRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1456,8 +1460,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, azure_cluster, azure_cluster_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1465,10 +1469,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.CreateAzureClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.CreateAzureClusterRequest):
             request = azure_service.CreateAzureClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1620,8 +1622,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([azure_cluster, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1629,10 +1631,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.UpdateAzureClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.UpdateAzureClusterRequest):
             request = azure_service.UpdateAzureClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1746,8 +1746,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 An Anthos cluster running on Azure.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1755,10 +1755,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GetAzureClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GetAzureClusterRequest):
             request = azure_service.GetAzureClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1867,8 +1865,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1876,10 +1874,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.ListAzureClustersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.ListAzureClustersRequest):
             request = azure_service.ListAzureClustersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2014,8 +2010,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2023,10 +2019,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.DeleteAzureClusterRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.DeleteAzureClusterRequest):
             request = azure_service.DeleteAzureClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2121,10 +2115,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GenerateAzureClusterAgentTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GenerateAzureClusterAgentTokenRequest):
             request = azure_service.GenerateAzureClusterAgentTokenRequest(request)
 
@@ -2213,10 +2205,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GenerateAzureAccessTokenRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GenerateAzureAccessTokenRequest):
             request = azure_service.GenerateAzureAccessTokenRequest(request)
 
@@ -2366,8 +2356,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, azure_node_pool, azure_node_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2375,10 +2365,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.CreateAzureNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.CreateAzureNodePoolRequest):
             request = azure_service.CreateAzureNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2519,8 +2507,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([azure_node_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2528,10 +2516,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.UpdateAzureNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.UpdateAzureNodePoolRequest):
             request = azure_service.UpdateAzureNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2644,8 +2630,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 An Anthos node pool running on Azure.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2653,10 +2639,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GetAzureNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GetAzureNodePoolRequest):
             request = azure_service.GetAzureNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2765,8 +2749,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2774,10 +2758,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.ListAzureNodePoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.ListAzureNodePoolsRequest):
             request = azure_service.ListAzureNodePoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2907,8 +2889,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2916,10 +2898,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.DeleteAzureNodePoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.DeleteAzureNodePoolRequest):
             request = azure_service.DeleteAzureNodePoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3032,8 +3012,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([azure_cluster])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3041,10 +3021,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GetAzureOpenIdConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GetAzureOpenIdConfigRequest):
             request = azure_service.GetAzureOpenIdConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3145,8 +3123,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([azure_cluster])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3154,10 +3132,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GetAzureJsonWebKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GetAzureJsonWebKeysRequest):
             request = azure_service.GetAzureJsonWebKeysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3266,8 +3242,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3275,10 +3251,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a azure_service.GetAzureServerConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, azure_service.GetAzureServerConfigRequest):
             request = azure_service.GetAzureServerConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
