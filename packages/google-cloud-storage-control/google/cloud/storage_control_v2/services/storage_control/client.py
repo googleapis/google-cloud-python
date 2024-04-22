@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -578,7 +579,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, StorageControlTransport]] = None,
+        transport: Optional[
+            Union[str, StorageControlTransport, Callable[..., StorageControlTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -590,9 +593,11 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, StorageControlTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,StorageControlTransport,Callable[..., StorageControlTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the StorageControlTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -701,8 +706,15 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[StorageControlTransport], Callable[..., StorageControlTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., StorageControlTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -807,8 +819,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, folder, folder_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -816,10 +828,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.CreateFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.CreateFolderRequest):
             request = storage_control.CreateFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -922,8 +932,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -931,10 +941,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.DeleteFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.DeleteFolderRequest):
             request = storage_control.DeleteFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1043,8 +1051,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1052,10 +1060,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.GetFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.GetFolderRequest):
             request = storage_control.GetFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1169,8 +1175,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1178,10 +1184,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.ListFoldersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.ListFoldersRequest):
             request = storage_control.ListFoldersRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1312,8 +1316,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, destination_folder_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1321,10 +1325,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.RenameFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.RenameFolderRequest):
             request = storage_control.RenameFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1439,8 +1441,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1448,10 +1450,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.GetStorageLayoutRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.GetStorageLayoutRequest):
             request = storage_control.GetStorageLayoutRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1576,8 +1576,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 A managed folder.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, managed_folder, managed_folder_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1585,10 +1585,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.CreateManagedFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.CreateManagedFolderRequest):
             request = storage_control.CreateManagedFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1687,8 +1685,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1696,10 +1694,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.DeleteManagedFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.DeleteManagedFolderRequest):
             request = storage_control.DeleteManagedFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1797,8 +1793,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 A managed folder.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1806,10 +1802,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.GetManagedFolderRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.GetManagedFolderRequest):
             request = storage_control.GetManagedFolderRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1920,8 +1914,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1929,10 +1923,8 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage_control.ListManagedFoldersRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, storage_control.ListManagedFoldersRequest):
             request = storage_control.ListManagedFoldersRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -1301,6 +1301,44 @@ def test_list_effective_security_health_analytics_custom_modules_non_empty_reque
         )
 
 
+def test_list_effective_security_health_analytics_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_effective_security_health_analytics_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_effective_security_health_analytics_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_list_effective_security_health_analytics_custom_modules_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1330,6 +1368,52 @@ async def test_list_effective_security_health_analytics_custom_modules_empty_cal
             args[0]
             == security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_effective_security_health_analytics_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_effective_security_health_analytics_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1879,6 +1963,44 @@ def test_get_effective_security_health_analytics_custom_module_non_empty_request
         )
 
 
+def test_get_effective_security_health_analytics_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_effective_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_get_effective_security_health_analytics_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -1908,6 +2030,52 @@ async def test_get_effective_security_health_analytics_custom_module_empty_call_
             args[0]
             == security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_effective_security_health_analytics_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_effective_security_health_analytics_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2232,6 +2400,44 @@ def test_list_security_health_analytics_custom_modules_non_empty_request_with_au
         )
 
 
+def test_list_security_health_analytics_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_security_health_analytics_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_security_health_analytics_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_list_security_health_analytics_custom_modules_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2258,6 +2464,52 @@ async def test_list_security_health_analytics_custom_modules_empty_call_async():
             args[0]
             == security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_security_health_analytics_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_security_health_analytics_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2782,6 +3034,44 @@ def test_list_descendant_security_health_analytics_custom_modules_non_empty_requ
         )
 
 
+def test_list_descendant_security_health_analytics_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_descendant_security_health_analytics_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_descendant_security_health_analytics_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_list_descendant_security_health_analytics_custom_modules_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -2811,6 +3101,52 @@ async def test_list_descendant_security_health_analytics_custom_modules_empty_ca
             args[0]
             == security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_descendant_security_health_analytics_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_descendant_security_health_analytics_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -3362,6 +3698,44 @@ def test_get_security_health_analytics_custom_module_non_empty_request_with_auto
         )
 
 
+def test_get_security_health_analytics_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_get_security_health_analytics_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3392,6 +3766,52 @@ async def test_get_security_health_analytics_custom_module_empty_call_async():
             args[0]
             == security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_security_health_analytics_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_security_health_analytics_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -3718,6 +4138,44 @@ def test_create_security_health_analytics_custom_module_non_empty_request_with_a
         )
 
 
+def test_create_security_health_analytics_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.create_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_create_security_health_analytics_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -3749,6 +4207,52 @@ async def test_create_security_health_analytics_custom_module_empty_call_async()
             args[0]
             == security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_security_health_analytics_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_security_health_analytics_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.create_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4103,6 +4607,44 @@ def test_update_security_health_analytics_custom_module_non_empty_request_with_a
         )
 
 
+def test_update_security_health_analytics_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.update_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_update_security_health_analytics_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4134,6 +4676,52 @@ async def test_update_security_health_analytics_custom_module_empty_call_async()
             args[0]
             == security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_security_health_analytics_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_security_health_analytics_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4475,6 +5063,44 @@ def test_delete_security_health_analytics_custom_module_non_empty_request_with_a
         )
 
 
+def test_delete_security_health_analytics_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.delete_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_delete_security_health_analytics_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4498,6 +5124,52 @@ async def test_delete_security_health_analytics_custom_module_empty_call_async()
             args[0]
             == security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_security_health_analytics_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_security_health_analytics_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4794,6 +5466,44 @@ def test_simulate_security_health_analytics_custom_module_non_empty_request_with
         )
 
 
+def test_simulate_security_health_analytics_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.simulate_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.simulate_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_simulate_security_health_analytics_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -4819,6 +5529,52 @@ async def test_simulate_security_health_analytics_custom_module_empty_call_async
             args[0]
             == security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.simulate_security_health_analytics_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.simulate_security_health_analytics_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -5176,6 +5932,44 @@ def test_list_effective_event_threat_detection_custom_modules_non_empty_request_
         )
 
 
+def test_list_effective_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_effective_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_effective_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_list_effective_event_threat_detection_custom_modules_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5203,6 +5997,52 @@ async def test_list_effective_event_threat_detection_custom_modules_empty_call_a
             args[0]
             == security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_event_threat_detection_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_effective_event_threat_detection_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_effective_event_threat_detection_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -5751,6 +6591,44 @@ def test_get_effective_event_threat_detection_custom_module_non_empty_request_wi
         )
 
 
+def test_get_effective_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_effective_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_get_effective_event_threat_detection_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -5782,6 +6660,52 @@ async def test_get_effective_event_threat_detection_custom_module_empty_call_asy
             args[0]
             == security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_effective_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_effective_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -6107,6 +7031,44 @@ def test_list_event_threat_detection_custom_modules_non_empty_request_with_auto_
         )
 
 
+def test_list_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_list_event_threat_detection_custom_modules_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6133,6 +7095,52 @@ async def test_list_event_threat_detection_custom_modules_empty_call_async():
             args[0]
             == security_center_management.ListEventThreatDetectionCustomModulesRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_list_event_threat_detection_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_event_threat_detection_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_event_threat_detection_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -6641,6 +7649,44 @@ def test_list_descendant_event_threat_detection_custom_modules_non_empty_request
         )
 
 
+def test_list_descendant_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_descendant_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_descendant_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_list_descendant_event_threat_detection_custom_modules_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -6668,6 +7714,52 @@ async def test_list_descendant_event_threat_detection_custom_modules_empty_call_
             args[0]
             == security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_event_threat_detection_custom_modules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_descendant_event_threat_detection_custom_modules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_descendant_event_threat_detection_custom_modules
+        ] = mock_object
+
+        request = {}
+        await client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -7213,6 +8305,44 @@ def test_get_event_threat_detection_custom_module_non_empty_request_with_auto_po
         )
 
 
+def test_get_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_get_event_threat_detection_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7245,6 +8375,52 @@ async def test_get_event_threat_detection_custom_module_empty_call_async():
             args[0]
             == security_center_management.GetEventThreatDetectionCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_get_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.get_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -7574,6 +8750,44 @@ def test_create_event_threat_detection_custom_module_non_empty_request_with_auto
         )
 
 
+def test_create_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.create_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_create_event_threat_detection_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7606,6 +8820,52 @@ async def test_create_event_threat_detection_custom_module_empty_call_async():
             args[0]
             == security_center_management.CreateEventThreatDetectionCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_create_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.create_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -7954,6 +9214,44 @@ def test_update_event_threat_detection_custom_module_non_empty_request_with_auto
         )
 
 
+def test_update_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.update_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_update_event_threat_detection_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -7986,6 +9284,52 @@ async def test_update_event_threat_detection_custom_module_empty_call_async():
             args[0]
             == security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_update_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.update_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -8317,6 +9661,44 @@ def test_delete_event_threat_detection_custom_module_non_empty_request_with_auto
         )
 
 
+def test_delete_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.delete_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_delete_event_threat_detection_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -8339,6 +9721,52 @@ async def test_delete_event_threat_detection_custom_module_empty_call_async():
             args[0]
             == security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_delete_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -8627,6 +10055,44 @@ def test_validate_event_threat_detection_custom_module_non_empty_request_with_au
         )
 
 
+def test_validate_event_threat_detection_custom_module_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.validate_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.validate_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
 async def test_validate_event_threat_detection_custom_module_empty_call_async():
     # This test is a coverage failsafe to make sure that totally empty calls,
@@ -8651,6 +10117,52 @@ async def test_validate_event_threat_detection_custom_module_empty_call_async():
             args[0]
             == security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
         )
+
+
+@pytest.mark.asyncio
+async def test_validate_event_threat_detection_custom_module_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementAsyncClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.validate_event_threat_detection_custom_module
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.validate_event_threat_detection_custom_module
+        ] = mock_object
+
+        request = {}
+        await client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_object.call_count == 1
+
+        await client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -8812,6 +10324,44 @@ def test_list_effective_security_health_analytics_custom_modules_rest(request_ty
         response, pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesPager
     )
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_effective_security_health_analytics_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_effective_security_health_analytics_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_effective_security_health_analytics_custom_modules_rest_required_fields(
@@ -9213,6 +10763,44 @@ def test_get_effective_security_health_analytics_custom_module_rest(request_type
     assert response.display_name == "display_name_value"
 
 
+def test_get_effective_security_health_analytics_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_effective_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_get_effective_security_health_analytics_custom_module_rest_required_fields(
     request_type=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
 ):
@@ -9515,6 +11103,44 @@ def test_list_security_health_analytics_custom_modules_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecurityHealthAnalyticsCustomModulesPager)
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_security_health_analytics_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_security_health_analytics_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_security_health_analytics_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_security_health_analytics_custom_modules_rest_required_fields(
@@ -9901,6 +11527,44 @@ def test_list_descendant_security_health_analytics_custom_modules_rest(request_t
         response, pagers.ListDescendantSecurityHealthAnalyticsCustomModulesPager
     )
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_descendant_security_health_analytics_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_descendant_security_health_analytics_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_descendant_security_health_analytics_custom_modules_rest_required_fields(
@@ -10302,6 +11966,44 @@ def test_get_security_health_analytics_custom_module_rest(request_type):
     )
     assert response.last_editor == "last_editor_value"
     assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_get_security_health_analytics_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_get_security_health_analytics_custom_module_rest_required_fields(
@@ -10720,6 +12422,44 @@ def test_create_security_health_analytics_custom_module_rest(request_type):
     )
     assert response.last_editor == "last_editor_value"
     assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_create_security_health_analytics_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.create_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_create_security_health_analytics_custom_module_rest_required_fields(
@@ -11157,6 +12897,44 @@ def test_update_security_health_analytics_custom_module_rest(request_type):
     assert response.ancestor_module == "ancestor_module_value"
 
 
+def test_update_security_health_analytics_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.update_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_update_security_health_analytics_custom_module_rest_required_fields(
     request_type=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
 ):
@@ -11478,6 +13256,44 @@ def test_delete_security_health_analytics_custom_module_rest(request_type):
     assert response is None
 
 
+def test_delete_security_health_analytics_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.delete_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_delete_security_health_analytics_custom_module_rest_required_fields(
     request_type=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
 ):
@@ -11754,6 +13570,44 @@ def test_simulate_security_health_analytics_custom_module_rest(request_type):
         response,
         security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
     )
+
+
+def test_simulate_security_health_analytics_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.simulate_security_health_analytics_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.simulate_security_health_analytics_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_simulate_security_health_analytics_custom_module_rest_required_fields(
@@ -12072,6 +13926,44 @@ def test_list_effective_event_threat_detection_custom_modules_rest(request_type)
         response, pagers.ListEffectiveEventThreatDetectionCustomModulesPager
     )
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_event_threat_detection_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_effective_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_effective_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_effective_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_effective_event_threat_detection_custom_modules_rest_required_fields(
@@ -12475,6 +14367,44 @@ def test_get_effective_event_threat_detection_custom_module_rest(request_type):
     assert response.description == "description_value"
 
 
+def test_get_effective_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_effective_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_get_effective_event_threat_detection_custom_module_rest_required_fields(
     request_type=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
 ):
@@ -12781,6 +14711,44 @@ def test_list_event_threat_detection_custom_modules_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesPager)
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_event_threat_detection_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_event_threat_detection_custom_modules_rest_required_fields(
@@ -13163,6 +15131,44 @@ def test_list_descendant_event_threat_detection_custom_modules_rest(request_type
         response, pagers.ListDescendantEventThreatDetectionCustomModulesPager
     )
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_descendant_event_threat_detection_custom_modules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_descendant_event_threat_detection_custom_modules
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.list_descendant_event_threat_detection_custom_modules
+        ] = mock_rpc
+
+        request = {}
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_descendant_event_threat_detection_custom_modules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_list_descendant_event_threat_detection_custom_modules_rest_required_fields(
@@ -13564,6 +15570,44 @@ def test_get_event_threat_detection_custom_module_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.last_editor == "last_editor_value"
+
+
+def test_get_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.get_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_get_event_threat_detection_custom_module_rest_required_fields(
@@ -13969,6 +16013,44 @@ def test_create_event_threat_detection_custom_module_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.last_editor == "last_editor_value"
+
+
+def test_create_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.create_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_create_event_threat_detection_custom_module_rest_required_fields(
@@ -14391,6 +16473,44 @@ def test_update_event_threat_detection_custom_module_rest(request_type):
     assert response.last_editor == "last_editor_value"
 
 
+def test_update_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.update_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_update_event_threat_detection_custom_module_rest_required_fields(
     request_type=security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
 ):
@@ -14710,6 +16830,44 @@ def test_delete_event_threat_detection_custom_module_rest(request_type):
     assert response is None
 
 
+def test_delete_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.delete_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 def test_delete_event_threat_detection_custom_module_rest_required_fields(
     request_type=security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
 ):
@@ -14986,6 +17144,44 @@ def test_validate_event_threat_detection_custom_module_rest(request_type):
         response,
         security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
     )
+
+
+def test_validate_event_threat_detection_custom_module_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecurityCenterManagementClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.validate_event_threat_detection_custom_module
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        client._transport._wrapped_methods[
+            client._transport.validate_event_threat_detection_custom_module
+        ] = mock_rpc
+
+        request = {}
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate_event_threat_detection_custom_module(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
 
 
 def test_validate_event_threat_detection_custom_module_rest_required_fields(

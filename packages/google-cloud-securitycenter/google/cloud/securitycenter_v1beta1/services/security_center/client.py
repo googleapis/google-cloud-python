@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -625,7 +626,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SecurityCenterTransport]] = None,
+        transport: Optional[
+            Union[str, SecurityCenterTransport, Callable[..., SecurityCenterTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -637,9 +640,11 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SecurityCenterTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SecurityCenterTransport,Callable[..., SecurityCenterTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SecurityCenterTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -748,8 +753,15 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SecurityCenterTransport], Callable[..., SecurityCenterTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SecurityCenterTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -837,8 +849,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, source])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -846,10 +858,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.CreateSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.CreateSourceRequest):
             request = securitycenter_service.CreateSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -977,8 +987,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, finding_id, finding])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -986,10 +996,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.CreateFindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.CreateFindingRequest):
             request = securitycenter_service.CreateFindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1117,8 +1125,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1127,8 +1135,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -1225,8 +1233,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1234,10 +1242,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.GetOrganizationSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, securitycenter_service.GetOrganizationSettingsRequest
         ):
@@ -1338,8 +1344,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1347,10 +1353,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.GetSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.GetSourceRequest):
             request = securitycenter_service.GetSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1443,10 +1447,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.GroupAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.GroupAssetsRequest):
             request = securitycenter_service.GroupAssetsRequest(request)
 
@@ -1576,8 +1578,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, group_by])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1585,10 +1587,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.GroupFindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.GroupFindingsRequest):
             request = securitycenter_service.GroupFindingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1687,10 +1687,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.ListAssetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.ListAssetsRequest):
             request = securitycenter_service.ListAssetsRequest(request)
 
@@ -1789,10 +1787,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.ListFindingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.ListFindingsRequest):
             request = securitycenter_service.ListFindingsRequest(request)
 
@@ -1896,8 +1892,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1905,10 +1901,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.ListSourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.ListSourcesRequest):
             request = securitycenter_service.ListSourcesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2032,8 +2026,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2041,10 +2035,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.RunAssetDiscoveryRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.RunAssetDiscoveryRequest):
             request = securitycenter_service.RunAssetDiscoveryRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2175,8 +2167,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state, start_time])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2184,10 +2176,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.SetFindingStateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.SetFindingStateRequest):
             request = securitycenter_service.SetFindingStateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2315,8 +2305,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2325,8 +2315,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2431,8 +2421,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2441,8 +2431,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2552,8 +2542,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([finding])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2561,10 +2551,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.UpdateFindingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.UpdateFindingRequest):
             request = securitycenter_service.UpdateFindingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2663,8 +2651,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([organization_settings])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2672,10 +2660,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.UpdateOrganizationSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, securitycenter_service.UpdateOrganizationSettingsRequest
         ):
@@ -2779,8 +2765,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([source])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2788,10 +2774,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.UpdateSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.UpdateSourceRequest):
             request = securitycenter_service.UpdateSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2893,8 +2877,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([security_marks])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2902,10 +2886,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a securitycenter_service.UpdateSecurityMarksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, securitycenter_service.UpdateSecurityMarksRequest):
             request = securitycenter_service.UpdateSecurityMarksRequest(request)
             # If we have keyword arguments corresponding to fields on the

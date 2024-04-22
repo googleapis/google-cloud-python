@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -210,7 +211,9 @@ class ProductServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, ProductServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, ProductServiceTransport, Callable[..., ProductServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -222,9 +225,11 @@ class ProductServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ProductServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,ProductServiceTransport,Callable[..., ProductServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the ProductServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -370,8 +375,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, product, product_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -379,7 +384,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.CreateProductRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.CreateProductRequest):
+            request = product_service.CreateProductRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -392,11 +400,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_product,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_product
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -491,8 +497,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -500,7 +506,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.GetProductRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.GetProductRequest):
+            request = product_service.GetProductRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -509,11 +518,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_product,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_product
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -609,8 +616,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -618,7 +625,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.ListProductsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.ListProductsRequest):
+            request = product_service.ListProductsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -627,11 +637,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_products,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_products
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -756,8 +764,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -765,7 +773,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.UpdateProductRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.UpdateProductRequest):
+            request = product_service.UpdateProductRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -776,11 +787,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_product,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_product
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -881,8 +890,8 @@ class ProductServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -890,7 +899,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.DeleteProductRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.DeleteProductRequest):
+            request = product_service.DeleteProductRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -899,11 +911,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_product,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_product
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1002,15 +1012,16 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = purge_config.PurgeProductsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, purge_config.PurgeProductsRequest):
+            request = purge_config.PurgeProductsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.purge_products,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.purge_products
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1114,25 +1125,16 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = import_config.ImportProductsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, import_config.ImportProductsRequest):
+            request = import_config.ImportProductsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_products,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=300.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_products
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1365,8 +1367,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([inventory, set_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1374,7 +1376,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.SetInventoryRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.SetInventoryRequest):
+            request = product_service.SetInventoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1385,11 +1390,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_inventory,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_inventory
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1531,8 +1534,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1540,7 +1543,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.AddFulfillmentPlacesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.AddFulfillmentPlacesRequest):
+            request = product_service.AddFulfillmentPlacesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1549,11 +1555,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.add_fulfillment_places,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.add_fulfillment_places
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1693,8 +1697,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1702,7 +1706,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.RemoveFulfillmentPlacesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.RemoveFulfillmentPlacesRequest):
+            request = product_service.RemoveFulfillmentPlacesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1711,11 +1718,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_fulfillment_places,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_fulfillment_places
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1856,8 +1861,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1865,7 +1870,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.AddLocalInventoriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.AddLocalInventoriesRequest):
+            request = product_service.AddLocalInventoriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1874,11 +1882,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.add_local_inventories,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.add_local_inventories
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2017,8 +2023,8 @@ class ProductServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([product])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2026,7 +2032,10 @@ class ProductServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = product_service.RemoveLocalInventoriesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, product_service.RemoveLocalInventoriesRequest):
+            request = product_service.RemoveLocalInventoriesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2035,11 +2044,9 @@ class ProductServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.remove_local_inventories,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_local_inventories
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
