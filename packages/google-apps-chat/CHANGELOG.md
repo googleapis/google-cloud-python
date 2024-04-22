@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.4...google-apps-chat-v0.1.5) (2024-04-22)
+
+
+### Features
+
+* [google-apps-chat] Add Chat read state APIs ([#12597](https://github.com/googleapis/google-cloud-python/issues/12597)) ([741695a](https://github.com/googleapis/google-cloud-python/commit/741695ae4df223c4f6794adbc7ed437da2cdbedd))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.3...google-apps-chat-v0.1.4) (2024-04-18)
 
 
