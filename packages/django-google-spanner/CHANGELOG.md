@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.1.0](https://github.com/googleapis/python-spanner-django/compare/v3.0.2...v3.1.0) (2024-04-23)
+
+
+### Features
+
+* Add support for named schema ([#858](https://github.com/googleapis/python-spanner-django/issues/858))
+
+
+### Bug Fixes
+
+* Fixing test_clearsessions_unsupported test ([#863](https://github.com/googleapis/python-spanner-django/issues/863))
+
 ## [3.0.2](https://github.com/googleapis/python-spanner-django/compare/v3.0.1...v3.0.2) (2022-08-08)
 
 
