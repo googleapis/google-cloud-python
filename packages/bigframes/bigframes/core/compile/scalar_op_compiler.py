@@ -1366,7 +1366,7 @@ def clip_op(
 
 
 @scalar_op_compiler.register_nary_op(ops.case_when_op)
-def switch_op(*cases_and_outputs: ibis_types.Value) -> ibis_types.Value:
+def case_when_op(*cases_and_outputs: ibis_types.Value) -> ibis_types.Value:
     # ibis can handle most type coercions, but we need to force bool -> int
     # TODO: dispatch coercion depending on bigframes dtype schema
     result_values = cases_and_outputs[1::2]

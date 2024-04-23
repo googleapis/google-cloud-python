@@ -17,10 +17,12 @@ from __future__ import annotations
 import typing
 
 import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
+import numpy
 import pandas as pd
 
 import bigframes.constants as constants
 import bigframes.core.blocks as blocks
+import bigframes.core.convert
 import bigframes.core.expression as ex
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar as scalars
@@ -44,7 +46,19 @@ class SeriesMethods:
         *,
         session: typing.Optional[bigframes.session.Session] = None,
     ):
-        block = None
+        import bigframes.pandas
+
+        # just ignore object dtype if provided
+        if dtype in {numpy.dtypes.ObjectDType, "object"}:
+            dtype = None
+
+        read_pandas_func = (
+            session.read_pandas
+            if (session is not None)
+            else (lambda x: bigframes.pandas.read_pandas(x))
+        )
+
+        block: typing.Optional[blocks.Block] = None
         if copy is not None and not copy:
             raise ValueError(
                 f"Series constructor only supports copy=True. {constants.FEEDBACK_LINK}"
@@ -55,58 +69,75 @@ class SeriesMethods:
             assert index is None
             block = data
 
-        elif isinstance(data, SeriesMethods):
-            block = data._block
+        # interpret these cases as both index and data
+        elif (
+            isinstance(data, SeriesMethods)
+            or isinstance(data, pd.Series)
+            or pd.api.types.is_dict_like(data)
+        ):
+            if isinstance(data, pd.Series):
+                data = read_pandas_func(data)
+            elif pd.api.types.is_dict_like(data):
+                data = read_pandas_func(pd.Series(data, dtype=dtype))  # type: ignore
+                dtype = None
+            data_block = data._block
             if index is not None:
                 # reindex
-                bf_index = indexes.Index(index)
+                bf_index = indexes.Index(index, session=session)
                 idx_block = bf_index._block
                 idx_cols = idx_block.value_columns
-                block_idx, _ = idx_block.join(block, how="left")
-                block = block_idx.with_index_labels(bf_index.names)
+                block_idx, _ = idx_block.join(data_block, how="left")
+                data_block = block_idx.with_index_labels(bf_index.names)
+            block = data_block
 
-        elif isinstance(data, indexes.Index):
+        # list-like data that will get default index
+        elif isinstance(data, indexes.Index) or pd.api.types.is_list_like(data):
+            data = indexes.Index(data, dtype=dtype, session=session)
+            dtype = (
+                None  # set to none as it has already been applied, avoid re-cast later
+            )
             if data.nlevels != 1:
                 raise NotImplementedError("Cannot interpret multi-index as Series.")
             # Reset index to promote index columns to value columns, set default index
-            block = data._block.reset_index(drop=False)
+            data_block = data._block.reset_index(drop=False).with_column_labels(
+                data.names
+            )
             if index is not None:
                 # Align by offset
-                bf_index = indexes.Index(index)
-                idx_block = bf_index._block.reset_index(drop=False)
+                bf_index = indexes.Index(index, session=session)
+                idx_block = bf_index._block.reset_index(
+                    drop=False
+                )  # reset to align by offsets, and then reset back
                 idx_cols = idx_block.value_columns
-                block, (l_mapping, _) = idx_block.join(block, how="left")
-                block = block.set_index([l_mapping[col] for col in idx_cols])
-                block = block.with_index_labels(bf_index.names)
+                data_block, (l_mapping, _) = idx_block.join(data_block, how="left")
+                data_block = data_block.set_index([l_mapping[col] for col in idx_cols])
+                data_block = data_block.with_index_labels(bf_index.names)
+            block = data_block
 
-        if block:
-            if name:
-                if not isinstance(name, typing.Hashable):
-                    raise ValueError(
-                        f"BigQuery DataFrames only supports hashable series names. {constants.FEEDBACK_LINK}"
-                    )
-                block = block.with_column_labels([name])
-            if dtype:
-                block = block.multi_apply_unary_op(
-                    block.value_columns, ops.AsTypeOp(to_type=dtype)
-                )
-        else:
-            import bigframes.pandas
-
-            pd_series = pd.Series(
-                data=data, index=index, dtype=dtype, name=name  # type:ignore
-            )
-            pd_dataframe = pd_series.to_frame()
-            if pd_series.name is None:
-                # to_frame will set default numeric column label if unnamed, but we do not support int column label, so must rename
-                pd_dataframe = pd_dataframe.set_axis(["unnamed_col"], axis=1)
-            if session:
-                block = session.read_pandas(pd_dataframe)._get_block()
+        else:  # Scalar case
+            if index is not None:
+                bf_index = indexes.Index(index, session=session)
             else:
-                # Uses default global session
-                block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()
-            if pd_series.name is None:
-                block = block.with_column_labels([None])
+                bf_index = indexes.Index(
+                    [] if (data is None) else [0],
+                    session=session,
+                    dtype=bigframes.dtypes.INT_DTYPE,
+                )
+            block, _ = bf_index._block.create_constant(data, dtype)
+            dtype = None
+            block = block.with_column_labels([name])
+
+        assert block is not None
+        if name:
+            if not isinstance(name, typing.Hashable):
+                raise ValueError(
+                    f"BigQuery DataFrames only supports hashable series names. {constants.FEEDBACK_LINK}"
+                )
+            block = block.with_column_labels([name])
+        if dtype:
+            block = block.multi_apply_unary_op(
+                block.value_columns, ops.AsTypeOp(to_type=dtype)
+            )
         self._block: blocks.Block = block
 
     @property
@@ -145,17 +176,16 @@ class SeriesMethods:
         reverse: bool = False,
     ) -> series.Series:
         """Applies a binary operator to the series and other."""
-        if isinstance(other, pd.Series):
-            # TODO: Convert to BigQuery DataFrames series
-            raise NotImplementedError(
-                f"Pandas series not supported as operand. {constants.FEEDBACK_LINK}"
+        if bigframes.core.convert.is_series_convertible(other):
+            self_index = indexes.Index(self._block)
+            other_series = bigframes.core.convert.to_bf_series(
+                other, self_index, self._block.session
             )
-        if isinstance(other, series.Series):
-            (self_col, other_col, block) = self._align(other, how=alignment)
+            (self_col, other_col, block) = self._align(other_series, how=alignment)
 
             name = self._name
             if (
-                isinstance(other, series.Series)
+                hasattr(other, "name")
                 and other.name != self._name
                 and alignment == "outer"
             ):
@@ -166,7 +196,7 @@ class SeriesMethods:
             block, result_id = block.project_expr(expr, name)
             return series.Series(block.select_column(result_id))
 
-        else:
+        else:  # Scalar binop
             name = self._name
             expr = op.as_expr(
                 ex.const(other) if reverse else self._value_column,

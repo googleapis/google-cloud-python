@@ -20,7 +20,6 @@ import functools
 import inspect
 import itertools
 import numbers
-import os
 import textwrap
 import typing
 from typing import Any, cast, Literal, Mapping, Optional, Sequence, Tuple, Union
@@ -72,11 +71,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def __init__(self, *args, **kwargs):
         self._query_job: Optional[bigquery.QueryJob] = None
         super().__init__(*args, **kwargs)
-
-        # Runs strict validations to ensure internal type predictions and ibis are completely in sync
-        # Do not execute these validations outside of testing suite.
-        if "PYTEST_CURRENT_TEST" in os.environ:
-            self._block.expr.validate_schema()
 
     @property
     def dt(self) -> dt.DatetimeMethods:
@@ -812,9 +806,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return result
 
     def update(self, other: Union[Series, Sequence, Mapping]) -> None:
-        import bigframes.core.convert
-
-        other = bigframes.core.convert.to_bf_series(other, default_index=None)
         result = self._apply_binary_op(
             other, ops.coalesce_op, reverse=True, alignment="left"
         )

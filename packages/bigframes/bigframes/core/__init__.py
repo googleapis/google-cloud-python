@@ -117,18 +117,6 @@ class ArrayValue:
         )
         return schemata.ArraySchema(items)
 
-    def validate_schema(self):
-        tree_derived = self.node.schema
-        ibis_derived = self._compiled_schema
-        if tree_derived.names != ibis_derived.names:
-            raise ValueError(
-                f"Unexpected names internal {tree_derived.names} vs compiled {ibis_derived.names}"
-            )
-        if tree_derived.dtypes != ibis_derived.dtypes:
-            raise ValueError(
-                f"Unexpected types internal {tree_derived.dtypes} vs compiled {ibis_derived.dtypes}"
-            )
-
     def _try_evaluate_local(self):
         """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
         import ibis
