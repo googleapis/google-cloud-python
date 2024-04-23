@@ -45,9 +45,12 @@ def llm_remote_text_pandas_df():
     )
 
 
-def test_llm_palm_configure_fit(
-    llm_fine_tune_df_default_index, llm_remote_text_pandas_df
-):
+@pytest.fixture(scope="session")
+def llm_remote_text_df(session, llm_remote_text_pandas_df):
+    return session.read_pandas(llm_remote_text_pandas_df)
+
+
+def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
     model = bigframes.ml.llm.PaLM2TextGenerator(
         model_name="text-bison", max_iterations=1
     )
@@ -59,7 +62,7 @@ def test_llm_palm_configure_fit(
 
     assert model is not None
 
-    df = model.predict(llm_remote_text_pandas_df).to_pandas()
+    df = model.predict(llm_remote_text_df["prompt"]).to_pandas()
     assert df.shape == (3, 4)
     assert "ml_generate_text_llm_result" in df.columns
     series = df["ml_generate_text_llm_result"]
