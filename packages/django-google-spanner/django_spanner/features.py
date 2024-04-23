@@ -115,6 +115,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "timezones.tests.AdminTests.test_change_readonly_in_other_timezone",
         "timezones.tests.AdminTests.test_changelist",
         "timezones.tests.AdminTests.test_changelist_in_other_timezone",
+        "timezones.tests.LegacyDatabaseTests.test_cursor_execute_returns_naive_datetime",
+        "timezones.tests.NewDatabaseTests.test_cursor_execute_returns_naive_datetime",
         "validation.test_custom_messages.CustomMessagesTests.test_custom_null_message",
         "validation.test_custom_messages.CustomMessagesTests.test_custom_simple_validator_message",
         "validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_adding_and_pk_not_specified",  # noqa
