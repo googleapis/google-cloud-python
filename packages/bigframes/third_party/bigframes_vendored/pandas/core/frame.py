@@ -93,6 +93,88 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
+    def T(self) -> DataFrame:
+        """
+        The transpose of the DataFrame.
+
+        All columns must be the same dtype (numerics can be coerced to a common supertype).
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+            >>> df
+               col1  col2
+            0     1     3
+            1     2     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df.T
+                  0  1
+            col1  1  2
+            col2  3  4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Returns:
+            DataFrame: The transposed DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def transpose(self) -> DataFrame:
+        """
+        Transpose index and columns.
+
+        Reflect the DataFrame over its main diagonal by writing rows as columns
+        and vice-versa. The property :attr:`.T` is an accessor to the method
+        :meth:`transpose`.
+
+        All columns must be the same dtype (numerics can be coerced to a common supertype).
+
+        **Examples:**
+
+            **Square DataFrame with homogeneous dtype**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> d1 = {'col1': [1, 2], 'col2': [3, 4]}
+            >>> df1 = bpd.DataFrame(data=d1)
+            >>> df1
+               col1  col2
+            0     1     3
+            1     2     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df1_transposed = df1.T  # or df1.transpose()
+            >>> df1_transposed
+                  0  1
+            col1  1  2
+            col2  3  4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            When the dtype is homogeneous in the original DataFrame, we get a
+            transposed DataFrame with the same dtype:
+
+            >>> df1.dtypes
+            col1    Int64
+            col2    Int64
+            dtype: object
+            >>> df1_transposed.dtypes
+            0    Int64
+            1    Int64
+            dtype: object
+
+        Returns:
+            DataFrame: The transposed DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def info(
         self,
         verbose: bool | None = None,

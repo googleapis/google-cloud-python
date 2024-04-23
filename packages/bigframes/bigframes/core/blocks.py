@@ -35,6 +35,7 @@ import pandas as pd
 import pyarrow as pa
 
 import bigframes._config.sampling_options as sampling_options
+import bigframes.constants
 import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.expression as ex
@@ -1542,6 +1543,10 @@ class Block:
         var_names=typing.Sequence[typing.Hashable],
         value_name: typing.Hashable = "value",
     ):
+        """
+        Unpivot columns to produce longer, narrower dataframe.
+        Arguments correspond to pandas.melt arguments.
+        """
         # TODO: Implement col_level and ignore_index
         unpivot_col_id = guid.generate_guid()
         var_col_ids = tuple([guid.generate_guid() for _ in var_names])
@@ -1568,6 +1573,52 @@ class Block:
             unpivot_expr,
             column_labels=[*id_labels, *var_names, value_name],
             index_columns=[index_id],
+        )
+
+    def transpose(self) -> Block:
+        """Transpose the block. Will fail if dtypes aren't coercible to a common type or too many rows"""
+        original_col_index = self.column_labels
+        original_row_index = self.index.to_pandas()
+        original_row_count = len(original_row_index)
+        if original_row_count > bigframes.constants.MAX_COLUMNS:
+            raise NotImplementedError(
+                f"Object has {original_row_count} rows and is too large to transpose."
+            )
+
+        # Add row numbers to both axes to disambiguate, clean them up later
+        block = self
+        numbered_block = block.with_column_labels(
+            utils.combine_indices(
+                block.column_labels, pd.Index(range(len(block.column_labels)))
+            )
+        )
+        numbered_block, offsets = numbered_block.promote_offsets()
+
+        stacked_block = numbered_block.melt(
+            id_vars=(offsets,),
+            var_names=(
+                *[name for name in original_col_index.names],
+                "col_offset",
+            ),
+            value_vars=block.value_columns,
+        )
+        col_labels = stacked_block.value_columns[-2 - original_col_index.nlevels : -2]
+        col_offset = stacked_block.value_columns[-2]  # disambiguator we created earlier
+        cell_values = stacked_block.value_columns[-1]
+        # Groupby source column
+        stacked_block = stacked_block.set_index(
+            [*col_labels, col_offset]
+        )  # col index is now row index
+        result = stacked_block.pivot(
+            columns=[offsets],
+            values=[cell_values],
+            columns_unique_values=tuple(range(original_row_count)),
+        )
+        # Drop the offsets from both axes before returning
+        return (
+            result.with_column_labels(original_row_index)
+            .order_by([ordering.ascending_over(result.index_columns[-1])])
+            .drop_levels([result.index_columns[-1]])
         )
 
     def _create_stack_column(

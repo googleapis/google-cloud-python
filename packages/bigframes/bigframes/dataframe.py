@@ -314,6 +314,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _session(self) -> bigframes.Session:
         return self._get_block().expr.session
 
+    @property
+    def T(self) -> DataFrame:
+        return DataFrame(self._get_block().transpose())
+
+    def transpose(self) -> DataFrame:
+        return self.T
+
     def __len__(self):
         rows, _ = self.shape
         return rows
