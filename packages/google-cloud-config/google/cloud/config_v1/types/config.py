@@ -219,6 +219,12 @@ class Deployment(proto.Message):
             resources in terraform configuration files.
             There are limited resources on which quota
             validation applies.
+        annotations (MutableMapping[str, str]):
+            Optional. Arbitrary key-value metadata
+            storage e.g. to help client tools identify
+            deployments during automation. See
+            https://google.aip.dev/148#annotations for
+            details on format and size limitations.
     """
 
     class State(proto.Enum):
@@ -418,6 +424,11 @@ class Deployment(proto.Message):
         proto.ENUM,
         number=23,
         enum="QuotaValidation",
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=24,
     )
 
 
@@ -2013,6 +2024,15 @@ class Preview(proto.Message):
         logs (str):
             Output only. Location of preview logs in
             ``gs://{bucket}/{object}`` format.
+        tf_version (str):
+            Output only. The current Terraform version
+            set on the preview. It is in the format of
+            "Major.Minor.Patch", for example, "1.3.10".
+        tf_version_constraint (str):
+            Optional. The user-specified Terraform
+            version constraint. Example: "=1.3.10".
+
+            This field is a member of `oneof`_ ``_tf_version_constraint``.
     """
 
     class State(proto.Enum):
@@ -2181,6 +2201,15 @@ class Preview(proto.Message):
     logs: str = proto.Field(
         proto.STRING,
         number=17,
+    )
+    tf_version: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    tf_version_constraint: str = proto.Field(
+        proto.STRING,
+        number=19,
+        optional=True,
     )
 
 
