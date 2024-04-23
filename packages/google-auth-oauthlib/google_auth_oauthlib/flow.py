@@ -433,31 +433,33 @@ class InstalledAppFlow(Flow):
             bind_addr or host, port, wsgi_app, handler_class=_WSGIRequestHandler
         )
 
-        redirect_uri_format = (
-            "http://{}:{}/" if redirect_uri_trailing_slash else "http://{}:{}"
-        )
-        self.redirect_uri = redirect_uri_format.format(host, local_server.server_port)
-        auth_url, _ = self.authorization_url(**kwargs)
+        try:
+            redirect_uri_format = (
+                "http://{}:{}/" if redirect_uri_trailing_slash else "http://{}:{}"
+            )
+            self.redirect_uri = redirect_uri_format.format(
+                host, local_server.server_port
+            )
+            auth_url, _ = self.authorization_url(**kwargs)
 
-        if open_browser:
-            # if browser is None it defaults to default browser
-            webbrowser.get(browser).open(auth_url, new=1, autoraise=True)
+            if open_browser:
+                # if browser is None it defaults to default browser
+                webbrowser.get(browser).open(auth_url, new=1, autoraise=True)
 
-        if authorization_prompt_message:
-            print(authorization_prompt_message.format(url=auth_url))
+            if authorization_prompt_message:
+                print(authorization_prompt_message.format(url=auth_url))
 
-        local_server.timeout = timeout_seconds
-        local_server.handle_request()
+            local_server.timeout = timeout_seconds
+            local_server.handle_request()
 
-        # Note: using https here because oauthlib is very picky that
-        # OAuth 2.0 should only occur over https.
-        authorization_response = wsgi_app.last_request_uri.replace("http", "https")
-        self.fetch_token(
-            authorization_response=authorization_response, audience=token_audience
-        )
-
-        # This closes the socket
-        local_server.server_close()
+            # Note: using https here because oauthlib is very picky that
+            # OAuth 2.0 should only occur over https.
+            authorization_response = wsgi_app.last_request_uri.replace("http", "https")
+            self.fetch_token(
+                authorization_response=authorization_response, audience=token_audience
+            )
+        finally:
+            local_server.server_close()
 
         return self.credentials
 

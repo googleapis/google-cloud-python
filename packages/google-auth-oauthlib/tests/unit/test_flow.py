@@ -25,6 +25,7 @@ import mock
 import pytest
 import requests
 import urllib
+import webbrowser
 
 from google_auth_oauthlib import flow
 
@@ -440,3 +441,17 @@ class TestInstalledAppFlow(object):
         with pytest.raises(OSError) as exc:
             instance.run_local_server(port=port)
             assert "address already in use" in exc.strerror.lower()
+
+    @mock.patch("google_auth_oauthlib.flow.webbrowser.get", autospec=True)
+    @mock.patch("wsgiref.simple_server.make_server", autospec=True)
+    def test_local_server_socket_cleanup(
+        self, make_server_mock, webbrowser_mock, instance
+    ):
+        server_mock = mock.MagicMock()
+        make_server_mock.return_value = server_mock
+        webbrowser_mock.side_effect = webbrowser.Error("Browser not found")
+
+        with pytest.raises(webbrowser.Error):
+            instance.run_local_server()
+
+        server_mock.server_close.assert_called_once()
