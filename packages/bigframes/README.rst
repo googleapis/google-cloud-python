@@ -25,6 +25,7 @@ Documentation
 * `BigQuery DataFrames source code (GitHub) <https://github.com/googleapis/python-bigquery-dataframes>`_
 * `BigQuery DataFrames sample notebooks <https://github.com/googleapis/python-bigquery-dataframes/tree/main/notebooks>`_
 * `BigQuery DataFrames API reference <https://cloud.google.com/python/docs/reference/bigframes/latest/summary_overview>`_
+* `BigQuery DataFrames supported pandas APIs <https://cloud.google.com/python/docs/reference/bigframes/latest/supported_pandas_apis>`_
 
 
 Getting started with BigQuery DataFrames
