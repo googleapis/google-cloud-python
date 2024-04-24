@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.19.1...google-cloud-recaptcha-enterprise-v1.20.0) (2024-04-24)
+
+
+### Features
+
+* Add Fraud Prevention settings field ([5c373f6](https://github.com/googleapis/google-cloud-python/commit/5c373f6d82108b0c6548cd5d8fcacf4f025667be))
+
 ## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.19.0...google-cloud-recaptcha-enterprise-v1.19.1) (2024-04-17)
 
 

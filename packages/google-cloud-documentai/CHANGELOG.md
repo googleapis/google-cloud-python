@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.26.0...google-cloud-documentai-v2.27.0) (2024-04-24)
+
+
+### Features
+
+* Support Chunk header and footer in Doc AI external proto ([2615bd3](https://github.com/googleapis/google-cloud-python/commit/2615bd39fd3880cba0314e0fcc732ff24e4f0c9d))
+
+
+### Documentation
+
+* Keep the API doc up-to-date with recent changes ([2615bd3](https://github.com/googleapis/google-cloud-python/commit/2615bd39fd3880cba0314e0fcc732ff24e4f0c9d))
+
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.25.0...google-cloud-documentai-v2.26.0) (2024-04-17)
 
 
