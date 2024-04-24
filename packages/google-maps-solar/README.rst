@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Solar API
+===========================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Solar API`_: The Google Maps Platform Solar API is a service focused on helping accelerate solar and energy system installations.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-maps-solar/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-solar.svg
    :target: https://pypi.org/project/google-maps-solar/
-.. _: 
+.. _Solar API: https://developers.google.com/maps/documentation/solar/overview
 .. _Client Library Documentation: https://googleapis.dev/python/google-maps-solar/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://developers.google.com/maps/documentation/solar/overview
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Solar API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Solar API.:  https://developers.google.com/maps/documentation/solar/overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Solar API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Solar API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Solar API Product documentation:  https://developers.google.com/maps/documentation/solar/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
