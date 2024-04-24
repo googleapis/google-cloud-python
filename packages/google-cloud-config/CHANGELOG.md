@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.8...google-cloud-config-v0.1.9) (2024-04-24)
+
+
+### Features
+
+* Annotations are now supported to help client tools identify deployments during automation ([765e198](https://github.com/googleapis/google-cloud-python/commit/765e198d31bb3d8c12ef1e67179e86ddffbedab5))
+* Infrastructure manager supports 1.2.3, 1.3.10, 1.4.7, 1.5.7 versions of Terraform when creating a preview of a deployment ([765e198](https://github.com/googleapis/google-cloud-python/commit/765e198d31bb3d8c12ef1e67179e86ddffbedab5))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.7...google-cloud-config-v0.1.8) (2024-03-22)
 
 

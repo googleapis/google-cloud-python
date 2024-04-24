@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.26.0...google-cloud-asset-v3.26.1) (2024-04-24)
+
+
+### Documentation
+
+* fix required permissions for resources.searchAll and iamPolicies.searchAll ([bbc49a5](https://github.com/googleapis/google-cloud-python/commit/bbc49a5476ab8a3fc3dafd4186e2b39319d9e6bf))
+
 ## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.25.1...google-cloud-asset-v3.26.0) (2024-03-28)
 
 
