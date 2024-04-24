@@ -176,6 +176,7 @@
     "packages/google-maps-mapsplatformdatasets": "0.3.7",
     "packages/google-maps-places": "0.1.13",
     "packages/google-maps-routing": "0.6.8",
+    "packages/google-maps-solar": "0.0.0",
     "packages/google-shopping-css": "0.1.4",
     "packages/google-shopping-merchant-conversions": "0.1.0",
     "packages/google-shopping-merchant-inventories": "0.1.6",
