@@ -10,7 +10,7 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-datacatalog-lineage",
-    "api_id": "lineage.googleapis.com",
+    "api_id": "datalineage.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "lineage"
