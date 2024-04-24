@@ -634,13 +634,17 @@ class Document(proto.Message):
                     underlined (bool):
                         Whether the text is underlined.
                     strikeout (bool):
-                        Whether the text is strikethrough.
+                        Whether the text is strikethrough. This
+                        feature is not supported yet.
                     subscript (bool):
-                        Whether the text is a subscript.
+                        Whether the text is a subscript. This feature
+                        is not supported yet.
                     superscript (bool):
-                        Whether the text is a superscript.
+                        Whether the text is a superscript. This
+                        feature is not supported yet.
                     smallcaps (bool):
-                        Whether the text is in small caps.
+                        Whether the text is in small caps. This
+                        feature is not supported yet.
                     font_weight (int):
                         TrueType weight on a scale ``100`` (thin) to ``1000``
                         (ultra-heavy). Normal is ``400``, bold is ``700``.
@@ -2075,12 +2079,17 @@ class Document(proto.Message):
                 chunk_id (str):
                     ID of the chunk.
                 source_block_ids (MutableSequence[str]):
+                    DO NOT USE.
                     List of all parsed documents layout source
                     blocks used to generate the chunk.
                 content (str):
                     Text content of the chunk.
                 page_span (google.cloud.documentai_v1beta3.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):
                     Page span of the chunk.
+                page_headers (MutableSequence[google.cloud.documentai_v1beta3.types.Document.ChunkedDocument.Chunk.ChunkPageHeader]):
+                    Page headers associated with the chunk.
+                page_footers (MutableSequence[google.cloud.documentai_v1beta3.types.Document.ChunkedDocument.Chunk.ChunkPageFooter]):
+                    Page footers associated with the chunk.
             """
 
             class ChunkPageSpan(proto.Message):
@@ -2102,6 +2111,46 @@ class Document(proto.Message):
                     number=2,
                 )
 
+            class ChunkPageHeader(proto.Message):
+                r"""Represents the page header associated with the chunk.
+
+                Attributes:
+                    text (str):
+                        Header in text format.
+                    page_span (google.cloud.documentai_v1beta3.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):
+                        Page span of the header.
+                """
+
+                text: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                page_span: "Document.ChunkedDocument.Chunk.ChunkPageSpan" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
+                )
+
+            class ChunkPageFooter(proto.Message):
+                r"""Represents the page footer associated with the chunk.
+
+                Attributes:
+                    text (str):
+                        Footer in text format.
+                    page_span (google.cloud.documentai_v1beta3.types.Document.ChunkedDocument.Chunk.ChunkPageSpan):
+                        Page span of the footer.
+                """
+
+                text: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                page_span: "Document.ChunkedDocument.Chunk.ChunkPageSpan" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
+                )
+
             chunk_id: str = proto.Field(
                 proto.STRING,
                 number=1,
@@ -2118,6 +2167,20 @@ class Document(proto.Message):
                 proto.MESSAGE,
                 number=4,
                 message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
+            )
+            page_headers: MutableSequence[
+                "Document.ChunkedDocument.Chunk.ChunkPageHeader"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Document.ChunkedDocument.Chunk.ChunkPageHeader",
+            )
+            page_footers: MutableSequence[
+                "Document.ChunkedDocument.Chunk.ChunkPageFooter"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="Document.ChunkedDocument.Chunk.ChunkPageFooter",
             )
 
         chunks: MutableSequence["Document.ChunkedDocument.Chunk"] = proto.RepeatedField(
