@@ -3155,6 +3155,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-maps-solar": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-maps-solar",
+            "extra-files": [
+                "google/maps/solar/gapic_version.py",
+                "google/maps/solar_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.solar.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-css": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
