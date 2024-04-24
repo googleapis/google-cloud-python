@@ -264,8 +264,8 @@ class AssetServiceAsyncClient:
         callers especially administrators the ability to search all the
         resources within a scope, even if they don't have ``.get``
         permission of all the resources. Callers should have
-        ``cloud.assets.SearchAllResources`` permission on the requested
-        scope, otherwise the request will be rejected.
+        ``cloudasset.assets.searchAllResources`` permission on the
+        requested scope, otherwise the request will be rejected.
 
         .. code-block:: python
 
@@ -424,8 +424,9 @@ class AssetServiceAsyncClient:
         callers especially administrators the ability to search all the
         IAM policies within a scope, even if they don't have
         ``.getIamPolicy`` permission of all the IAM policies. Callers
-        should have ``cloud.assets.SearchAllIamPolicies`` permission on
-        the requested scope, otherwise the request will be rejected.
+        should have ``cloudasset.assets.searchAllIamPolicies``
+        permission on the requested scope, otherwise the request will be
+        rejected.
 
         .. code-block:: python
 

@@ -794,7 +794,34 @@ class Event(proto.Message):
             login/registration requests, or by providing
             user identifiers for guest actions like
             checkout.
+        fraud_prevention (google.cloud.recaptchaenterprise_v1.types.Event.FraudPrevention):
+            Optional. The Fraud Prevention setting for
+            this assessment.
     """
+
+    class FraudPrevention(proto.Enum):
+        r"""Setting that controls Fraud Prevention assessments.
+
+        Values:
+            FRAUD_PREVENTION_UNSPECIFIED (0):
+                Default, unspecified setting. If opted in for automatic
+                detection, ``fraud_prevention_assessment`` is returned based
+                on the request. Otherwise, ``fraud_prevention_assessment``
+                is returned if ``transaction_data`` is present in the
+                ``Event`` and Fraud Prevention is enabled in the Google
+                Cloud console.
+            ENABLED (1):
+                Enable Fraud Prevention for this assessment,
+                if Fraud Prevention is enabled in the Google
+                Cloud console.
+            DISABLED (2):
+                Disable Fraud Prevention for this assessment,
+                regardless of opt-in status or Google Cloud
+                console settings.
+        """
+        FRAUD_PREVENTION_UNSPECIFIED = 0
+        ENABLED = 1
+        DISABLED = 2
 
     token: str = proto.Field(
         proto.STRING,
@@ -853,6 +880,11 @@ class Event(proto.Message):
         proto.MESSAGE,
         number=15,
         message="UserInfo",
+    )
+    fraud_prevention: FraudPrevention = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=FraudPrevention,
     )
 
 

@@ -6652,6 +6652,8 @@ def test_get_preview(request_type, transport: str = "grpc"):
             build="build_value",
             error_logs="error_logs_value",
             logs="logs_value",
+            tf_version="tf_version_value",
+            tf_version_constraint="tf_version_constraint_value",
         )
         response = client.get_preview(request)
 
@@ -6674,6 +6676,8 @@ def test_get_preview(request_type, transport: str = "grpc"):
     assert response.build == "build_value"
     assert response.error_logs == "error_logs_value"
     assert response.logs == "logs_value"
+    assert response.tf_version == "tf_version_value"
+    assert response.tf_version_constraint == "tf_version_constraint_value"
 
 
 def test_get_preview_empty_call():
@@ -6742,6 +6746,8 @@ async def test_get_preview_empty_call_async():
                 build="build_value",
                 error_logs="error_logs_value",
                 logs="logs_value",
+                tf_version="tf_version_value",
+                tf_version_constraint="tf_version_constraint_value",
             )
         )
         response = await client.get_preview()
@@ -6779,6 +6785,8 @@ async def test_get_preview_async(
                 build="build_value",
                 error_logs="error_logs_value",
                 logs="logs_value",
+                tf_version="tf_version_value",
+                tf_version_constraint="tf_version_constraint_value",
             )
         )
         response = await client.get_preview(request)
@@ -6802,6 +6810,8 @@ async def test_get_preview_async(
     assert response.build == "build_value"
     assert response.error_logs == "error_logs_value"
     assert response.logs == "logs_value"
+    assert response.tf_version == "tf_version_value"
+    assert response.tf_version_constraint == "tf_version_constraint_value"
 
 
 @pytest.mark.asyncio
@@ -9421,6 +9431,7 @@ def test_create_deployment_rest(request_type):
         "tf_version_constraint": "tf_version_constraint_value",
         "tf_version": "tf_version_value",
         "quota_validation": 1,
+        "annotations": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9844,6 +9855,7 @@ def test_update_deployment_rest(request_type):
         "tf_version_constraint": "tf_version_constraint_value",
         "tf_version": "tf_version_value",
         "quota_validation": 1,
+        "annotations": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -13520,6 +13532,8 @@ def test_create_preview_rest(request_type):
             "artifacts": "artifacts_value",
         },
         "logs": "logs_value",
+        "tf_version": "tf_version_value",
+        "tf_version_constraint": "tf_version_constraint_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -13888,6 +13902,8 @@ def test_get_preview_rest(request_type):
             build="build_value",
             error_logs="error_logs_value",
             logs="logs_value",
+            tf_version="tf_version_value",
+            tf_version_constraint="tf_version_constraint_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -13914,6 +13930,8 @@ def test_get_preview_rest(request_type):
     assert response.build == "build_value"
     assert response.error_logs == "error_logs_value"
     assert response.logs == "logs_value"
+    assert response.tf_version == "tf_version_value"
+    assert response.tf_version_constraint == "tf_version_constraint_value"
 
 
 def test_get_preview_rest_required_fields(request_type=config.GetPreviewRequest):
