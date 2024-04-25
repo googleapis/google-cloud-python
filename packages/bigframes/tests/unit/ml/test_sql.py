@@ -319,6 +319,20 @@ def test_ml_predict_correct(
     )
 
 
+def test_ml_llm_evaluate_correct(
+    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
+):
+    sql = model_manipulation_sql_generator.ml_llm_evaluate(
+        source_df=mock_df, task_type="CLASSIFICATION"
+    )
+    assert (
+        sql
+        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
+            (input_X_sql), STRUCT("CLASSIFICATION" AS task_type))"""
+    )
+
+
 def test_ml_evaluate_correct(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
     mock_df: bpd.DataFrame,

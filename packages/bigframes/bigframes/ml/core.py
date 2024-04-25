@@ -187,6 +187,17 @@ class BqmlModel(BaseBqml):
 
         return self._session.read_gbq(sql)
 
+    def llm_evaluate(
+        self,
+        input_data: bpd.DataFrame,
+        task_type: Optional[str] = None,
+    ):
+        sql = self._model_manipulation_sql_generator.ml_llm_evaluate(
+            input_data, task_type
+        )
+
+        return self._session.read_gbq(sql)
+
     def arima_evaluate(self, show_all_candidate_models: bool = False):
         sql = self._model_manipulation_sql_generator.ml_arima_evaluate(
             show_all_candidate_models

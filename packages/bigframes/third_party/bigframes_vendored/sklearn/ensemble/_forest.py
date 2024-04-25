@@ -95,7 +95,7 @@ class RandomForestRegressor(ForestRegressor):
             Number of parallel trees constructed during each iteration. Default to 100. Minimum value is 2.
         tree_method (Optional[str]):
             Specify which tree method to use. Default to "auto". If this parameter is set to
-            default, XGBoost will choose the most conservative option available. Possible values: ""exact", "approx",
+            default, XGBoost will choose the most conservative option available. Possible values: "exact", "approx",
             "hist".
         min_child_weight (Optional[float]):
             Minimum sum of instance weight(hessian) needed in a child. Default to 1.
@@ -160,7 +160,7 @@ class RandomForestClassifier(ForestClassifier):
             Number of parallel trees constructed during each iteration. Default to 100. Minimum value is 2.
         tree_method (Optional[str]):
             Specify which tree method to use. Default to "auto". If this parameter is set to
-            default, XGBoost will choose the most conservative option available. Possible values: ""exact", "approx",
+            default, XGBoost will choose the most conservative option available. Possible values: "exact", "approx",
             "hist".
         min_child_weight (Optional[float]):
             Minimum sum of instance weight(hessian) needed in a child. Default to 1.

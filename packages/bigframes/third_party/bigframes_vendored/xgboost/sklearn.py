@@ -63,7 +63,7 @@ class XGBRegressor(XGBModel, XGBRegressorBase):
             Type of normalization algorithm for DART booster. Possible values: "TREE", "FOREST". Default to "TREE".
         tree_method (Optional[str]):
             Specify which tree method to use.  Default to "auto". If this parameter is set to
-            default, XGBoost will choose the most conservative option available. Possible values: ""exact", "approx",
+            default, XGBoost will choose the most conservative option available. Possible values: "exact", "approx",
             "hist".
         min_child_weight (Optional[float]):
             Minimum sum of instance weight(hessian) needed in a child. Default to 1.
@@ -110,7 +110,7 @@ class XGBClassifier(XGBModel, XGBClassifierMixIn, XGBClassifierBase):
             Type of normalization algorithm for DART booster. Possible values: "TREE", "FOREST". Default to "TREE".
         tree_method (Optional[str]):
             Specify which tree method to use.  Default to "auto". If this parameter is set to
-            default, XGBoost will choose the most conservative option available. Possible values: ""exact", "approx",
+            default, XGBoost will choose the most conservative option available. Possible values: "exact", "approx",
             "hist".
         min_child_weight (Optional[float]):
             Minimum sum of instance weight(hessian) needed in a child. Default to 1.
