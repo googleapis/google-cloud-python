@@ -430,7 +430,8 @@ class Session(
         index_cols: List[str],
         api_name: str,
         configuration: dict = {"query": {"useQueryCache": True}},
-    ) -> Tuple[Optional[bigquery.TableReference], Optional[bigquery.QueryJob]]:
+        do_clustering=True,
+    ) -> Tuple[Optional[bigquery.TableReference], bigquery.QueryJob]:
         # If a dry_run indicates this is not a query type job, then don't
         # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
         dry_run_config = bigquery.QueryJobConfig()
@@ -444,11 +445,14 @@ class Session(
         # internal issue 303057336.
         # Since we have a `statement_type == 'SELECT'`, schema should be populated.
         schema = typing.cast(Iterable[bigquery.SchemaField], dry_run_job.schema)
-        cluster_cols = [
-            item.name
-            for item in schema
-            if (item.name in index_cols) and _can_cluster_bq(item)
-        ][:_MAX_CLUSTER_COLUMNS]
+        if do_clustering:
+            cluster_cols = [
+                item.name
+                for item in schema
+                if (item.name in index_cols) and _can_cluster_bq(item)
+            ][:_MAX_CLUSTER_COLUMNS]
+        else:
+            cluster_cols = []
         temp_table = self._create_empty_temp_table(schema, cluster_cols)
 
         timeout_ms = configuration.get("jobTimeoutMs") or configuration["query"].get(

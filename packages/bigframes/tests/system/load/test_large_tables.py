@@ -90,3 +90,14 @@ def test_to_pandas_batches_large_table():
         del df
 
     assert row_count == expected_row_count
+
+
+def test_to_pandas_large_table():
+    df = bpd.read_gbq("load_testing.scalars_10gb")
+    # df will be downloaded locally
+    expected_row_count, expected_column_count = df.shape
+
+    df = df.to_pandas()
+    row_count, column_count = df.shape
+    assert column_count == expected_column_count
+    assert row_count == expected_row_count

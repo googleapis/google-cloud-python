@@ -517,9 +517,14 @@ class Block:
     ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
-        results_iterator, query_job = self.session._execute(
-            self.expr, sorted=materialize_options.ordered
+        _, query_job = self.session._query_to_destination(
+            self.session._to_sql(self.expr, sorted=True),
+            list(self.index_columns),
+            api_name="cached",
+            do_clustering=False,
         )
+        results_iterator = query_job.result()
+
         table_size = (
             self.session._get_table_size(query_job.destination) / _BYTES_TO_MEGABYTES
         )
