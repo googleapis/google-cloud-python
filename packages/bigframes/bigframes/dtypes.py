@@ -658,10 +658,14 @@ def is_compatible(scalar: typing.Any, dtype: Dtype) -> typing.Optional[Dtype]:
     return None
 
 
-def lcd_type(dtype1: Dtype, dtype2: Dtype) -> Dtype:
-    """Get the supertype of the two types."""
-    if dtype1 == dtype2:
-        return dtype1
+def lcd_type(*dtypes: Dtype) -> Dtype:
+    if len(dtypes) < 1:
+        raise ValueError("at least one dypes should be provided")
+    if len(dtypes) == 1:
+        return dtypes[0]
+    unique_dtypes = set(dtypes)
+    if len(unique_dtypes) == 1:
+        return unique_dtypes.pop()
     # Implicit conversion currently only supported for numeric types
     hierarchy: list[Dtype] = [
         pd.BooleanDtype(),
@@ -670,9 +674,9 @@ def lcd_type(dtype1: Dtype, dtype2: Dtype) -> Dtype:
         pd.ArrowDtype(pa.decimal256(76, 38)),
         pd.Float64Dtype(),
     ]
-    if (dtype1 not in hierarchy) or (dtype2 not in hierarchy):
+    if any([dtype not in hierarchy for dtype in dtypes]):
         return None
-    lcd_index = max(hierarchy.index(dtype1), hierarchy.index(dtype2))
+    lcd_index = max([hierarchy.index(dtype) for dtype in dtypes])
     return hierarchy[lcd_index]
 
 
