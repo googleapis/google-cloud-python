@@ -15,14 +15,14 @@ Code Samples
 
 Running a query:
 
-.. literalinclude:: ./samples/snippets/query.py
+.. literalinclude:: ../samples/snippets/query.py
    :dedent: 4
    :start-after: [START bigquery_jupyter_query]
    :end-before: [END bigquery_jupyter_query]
 
 Running a parameterized query:
 
-.. literalinclude:: ./samples/snippets/query_params_scalars.py
+.. literalinclude:: ../samples/snippets/query_params_scalars.py
    :dedent: 4
    :start-after: [START bigquery_jupyter_query_params_scalars]
    :end-before: [END bigquery_jupyter_query_params_scalars]

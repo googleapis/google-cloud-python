@@ -1,5 +1,5 @@
-Python Client for Google BigQuery
-=================================
+IPython Magics for BigQuery
+===========================
 
 |GA| |pypi| |versions|
 
@@ -70,7 +70,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-bigquery
+    <your-env>/bin/pip install bigquery-magics
 
 
 Windows
@@ -81,61 +81,4 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-bigquery
-
-Example Usage
--------------
-
-Perform a query
-~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    from google.cloud import bigquery
-
-    client = bigquery.Client()
-
-    # Perform a query.
-    QUERY = (
-        'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
-        'WHERE state = "TX" '
-        'LIMIT 100')
-    query_job = client.query(QUERY)  # API request
-    rows = query_job.result()  # Waits for query to finish
-
-    for row in rows:
-        print(row.name)
-
-Instrumenting With OpenTelemetry
---------------------------------
-
-This application uses `OpenTelemetry`_ to output tracing data from
-API calls to BigQuery. To enable OpenTelemetry tracing in
-the BigQuery client the following PyPI packages need to be installed:
-
-.. _OpenTelemetry: https://opentelemetry.io
-
-.. code-block:: console
-
-    pip install google-cloud-bigquery[opentelemetry] opentelemetry-exporter-gcp-trace
-
-After installation, OpenTelemetry can be used in the BigQuery
-client and in BigQuery jobs. First, however, an exporter must be
-specified for where the trace data will be outputted to. An
-example of this can be found here:
-
-.. code-block:: python
-
-    from opentelemetry import trace
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor
-    from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
-    tracer_provider = TracerProvider()
-    tracer_provider = BatchSpanProcessor(CloudTraceSpanExporter())
-    trace.set_tracer_provider(TracerProvider())
-
-In this example all tracing data will be published to the Google
-`Cloud Trace`_ console. For more information on OpenTelemetry, please consult the `OpenTelemetry documentation`_.
-
-.. _OpenTelemetry documentation: https://opentelemetry-python.readthedocs.io
-.. _Cloud Trace: https://cloud.google.com/trace
+    <your-env>\Scripts\pip.exe install bigquery-magics
