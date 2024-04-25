@@ -231,7 +231,9 @@ class Session(
         # Now that we're starting the session, don't allow the options to be
         # changed.
         context._session_started = True
-        self._df_snapshot: Dict[bigquery.TableReference, datetime.datetime] = {}
+        self._df_snapshot: Dict[
+            bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]
+        ] = {}
 
     @property
     def bqclient(self):
@@ -698,16 +700,25 @@ class Session(
         column(s), then return those too so that ordering generation can be
         avoided.
         """
-        # If there are primary keys defined, the query engine assumes these
-        # columns are unique, even if the constraint is not enforced. We make
-        # the same assumption and use these columns as the total ordering keys.
-        table = self.bqclient.get_table(table_ref)
+        (
+            snapshot_timestamp,
+            table,
+        ) = bigframes_io.get_snapshot_datetime_and_table_metadata(
+            self.bqclient,
+            table_ref=table_ref,
+            api_name=api_name,
+            cache=self._df_snapshot,
+            use_cache=use_cache,
+        )
 
         if table.location.casefold() != self._location.casefold():
             raise ValueError(
                 f"Current session is in {self._location} but dataset '{table.project}.{table.dataset_id}' is located in {table.location}"
             )
 
+        # If there are primary keys defined, the query engine assumes these
+        # columns are unique, even if the constraint is not enforced. We make
+        # the same assumption and use these columns as the total ordering keys.
         primary_keys = None
         if (
             (table_constraints := getattr(table, "table_constraints", None)) is not None
@@ -717,37 +728,6 @@ class Session(
             and (columns := primary_key.columns)
         ):
             primary_keys = columns
-
-        job_config = bigquery.QueryJobConfig()
-        job_config.labels["bigframes-api"] = api_name
-        if use_cache and table_ref in self._df_snapshot.keys():
-            snapshot_timestamp = self._df_snapshot[table_ref]
-
-            # Cache hit could be unexpected. See internal issue 329545805.
-            # Raise a warning with more information about how to avoid the
-            # problems with the cache.
-            warnings.warn(
-                f"Reading cached table from {snapshot_timestamp} to avoid "
-                "incompatibilies with previous reads of this table. To read "
-                "the latest version, set `use_cache=False` or close the "
-                "current session with Session.close() or "
-                "bigframes.pandas.close_session().",
-                # There are many layers before we get to (possibly) the user's code:
-                # pandas.read_gbq_table
-                # -> with_default_session
-                # -> Session.read_gbq_table
-                # -> _read_gbq_table
-                # -> _get_snapshot_sql_and_primary_key
-                stacklevel=6,
-            )
-        else:
-            snapshot_timestamp = list(
-                self.bqclient.query(
-                    "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
-                    job_config=job_config,
-                ).result()
-            )[0][0]
-            self._df_snapshot[table_ref] = snapshot_timestamp
 
         try:
             table_expression = self.ibis_client.sql(

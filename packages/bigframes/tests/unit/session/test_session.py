@@ -42,8 +42,11 @@ def test_read_gbq_cached_table():
         google.cloud.bigquery.DatasetReference("my-project", "my_dataset"),
         "my_table",
     )
-    session._df_snapshot[table_ref] = datetime.datetime(
-        1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc
+    table = google.cloud.bigquery.Table(table_ref)
+    table._properties["location"] = session._location
+    session._df_snapshot[table_ref] = (
+        datetime.datetime(1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
+        table,
     )
 
     with pytest.warns(UserWarning, match=re.escape("use_cache=False")):
