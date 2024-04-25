@@ -71,7 +71,7 @@ time.sleep(delay)
 
 with TestInstance() as instance_name:
     os.system(
-        """DJANGO_TEST_APPS="{apps}" SPANNER_TEST_INSTANCE={instance} bash ./django_test_suite.sh""".format(
+        """DJANGO_TEST_APPS="{apps}" SPANNER_TEST_INSTANCE={instance} bash ./django_test_suite_4.2.sh""".format(
             apps=" ".join(test_apps), instance=instance_name
         )
     )

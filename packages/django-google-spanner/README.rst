@@ -140,6 +140,24 @@ configured:
            }
        }
 
+  Transaction support in autocommit mode
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Django version 4.2 and higher by default supports transactions in autocommit mode.
+  A transaction is automatically started if you define an
+  [atomic block](https://docs.djangoproject.com/en/4.2/topics/db/transactions/#controlling-transactions-explicitly).
+  
+  Django version 3.2 and earlier did not support transactions in autocommit mode with Spanner.
+  You can enable transactions in autocommit mode with Spanner with the
+  `ALLOW_TRANSACTIONS_IN_AUTO_COMMIT` configuration option.
+
+  - To enable transactions in autocommit mode in V3.2, set
+  the flag "ALLOW_TRANSACTIONS_IN_AUTO_COMMIT" to True in your
+  settings.py file.
+  - To disable transactions in autocommit mode in V4.2, set
+  the flag "ALLOW_TRANSACTIONS_IN_AUTO_COMMIT" to False in your
+  settings.py file.
+
 
 Set credentials and project environment variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -12,7 +12,6 @@ from django.db.backends.base.introspection import (
 from django.db.models import Index
 from google.cloud.spanner_v1 import TypeCode
 from django_spanner import USE_EMULATOR
-from django_spanner import USING_DJANGO_3
 
 
 class DatabaseIntrospection(BaseDatabaseIntrospection):
@@ -107,33 +106,19 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                     internal_size = int(internal_size)
             else:
                 internal_size = None
-            if USING_DJANGO_3:
-                descriptions.append(
-                    FieldInfo(
-                        column_name,
-                        type_code,
-                        None,  # display_size
-                        internal_size,
-                        None,  # precision
-                        None,  # scale
-                        details.null_ok,
-                        None,  # default
-                        None,  # collation
-                    )
+            descriptions.append(
+                FieldInfo(
+                    column_name,
+                    type_code,
+                    None,  # display_size
+                    internal_size,
+                    None,  # precision
+                    None,  # scale
+                    details.null_ok,
+                    None,  # default
+                    None,  # collation
                 )
-            else:
-                descriptions.append(
-                    FieldInfo(
-                        column_name,
-                        type_code,
-                        None,  # display_size
-                        internal_size,
-                        None,  # precision
-                        None,  # scale
-                        details.null_ok,
-                        None,  # default
-                    )
-                )
+            )
 
         return descriptions
 

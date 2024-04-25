@@ -3,30 +3,30 @@ on:
     branches:
       - main
   pull_request:
-name: django-tests9
+name: Run Django Spanner integration tests against emulator 3.10
 jobs:
   system-tests:
     runs-on: ubuntu-latest
 
     services:
-      emulator-0:
+      emulator:
         image: gcr.io/cloud-spanner-emulator/emulator:latest
         ports:
           - 9010:9010
+          - 9020:9020
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Python
+      - name: Set up Python 3.20
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
-      - name: Run Django tests
-        run: sh django_test_suite.sh
+          python-version: "3.10"
+      - name: Install nox
+        run: python -m pip install nox
+      - name: Run nox
+        run: nox -s unit-3.10
         env:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: emulator-test-project
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
-          RUNNING_SPANNER_BACKEND_TESTS: 1
-          SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: queries.tests

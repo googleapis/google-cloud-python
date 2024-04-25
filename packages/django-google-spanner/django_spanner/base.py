@@ -17,6 +17,7 @@ from .features import DatabaseFeatures
 from .introspection import DatabaseIntrospection
 from .operations import DatabaseOperations
 from .schema import DatabaseSchemaEditor
+from django_spanner import USING_DJANGO_3
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -124,6 +125,15 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         ).instance(self.settings_dict["INSTANCE"])
 
     @property
+    def allow_transactions_in_auto_commit(self):
+        if "ALLOW_TRANSACTIONS_IN_AUTO_COMMIT" in self.settings_dict:
+            return self.settings_dict["ALLOW_TRANSACTIONS_IN_AUTO_COMMIT"]
+        if USING_DJANGO_3:
+            return False
+        else:
+            return True
+
+    @property
     def _nodb_connection(self):
         raise NotImplementedError(
             'Spanner does not have a "no db" connection.'
@@ -205,15 +215,14 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
         return True
 
-    # The usual way to start a transaction is to turn autocommit off.
-    # Spanner DB API does not properly start a transaction when disabling
-    # autocommit. To avoid this buggy behavior and to actually enter a new
-    # transaction, an explicit SELECT 1 is required.
     def _start_transaction_under_autocommit(self):
         """
         Start a transaction explicitly in autocommit mode.
-
-        Staying in autocommit mode works around a bug that breaks
-        save points when autocommit is disabled by django.
         """
-        self.connection.cursor().execute("SELECT 1")
+        if self.allow_transactions_in_auto_commit:
+            self.connection.cursor().execute("BEGIN")
+        else:
+            # This won't start a transaction and was a bug in Spanner Django 3.2 version.
+            # Set ALLOW_TRANSACTIONS_IN_AUTO_COMMIT = True in your settings.py file to enable
+            # transactions in autocommit mode for Django 3.2.
+            self.connection.cursor().execute("SELECT 1")

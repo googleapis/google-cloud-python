@@ -3,7 +3,7 @@ on:
     branches:
       - main
   pull_request:
-name: django-tests1
+name: django4.2-tests0
 jobs:
   system-tests:
     runs-on: ubuntu-latest
@@ -22,11 +22,11 @@ jobs:
         with:
           python-version: 3.8
       - name: Run Django tests
-        run: sh django_test_suite.sh
+        run: sh django_test_suite_4.2.sh
         env:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: emulator-test-project
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
           RUNNING_SPANNER_BACKEND_TESTS: 1
           SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: db_functions save_delete_hooks get_object_or_404 model_indexes custom_pk indexes transaction_hooks constraints schema custom_columns i18n from_db_value sites_tests mutually_referential model_package defer_regress update_only_fields backends redirects_tests expressions get_or_create foreign_object generic_relations_regress many_to_many select_related generic_relations queryset_pickle model_inheritance
+          DJANGO_TEST_APPS: admin_changelist admin_ordering aggregation distinct_on_fields expressions_window fixtures_model_package datetimes custom_methods generic_inline_admin field_defaults datatypes empty m2o_recursive many_to_one_null migration_test_data_persistence admin_docs invalid_models_tests migrate_signals model_forms.test_uuid model_forms.test_modelchoicefield syndication_tests view_tests update test_utils select_related_onetoone sessions_tests
