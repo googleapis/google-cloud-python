@@ -27,7 +27,7 @@ import itertools
 import os
 import random
 import typing
-from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple
+from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple, Union
 import warnings
 
 import google.cloud.bigquery as bigquery
@@ -105,6 +105,8 @@ class Block:
         index_columns: Iterable[str],
         column_labels: typing.Union[pd.Index, typing.Iterable[Label]],
         index_labels: typing.Union[pd.Index, typing.Iterable[Label], None] = None,
+        *,
+        transpose_cache: Optional[Block] = None,
     ):
         """Construct a block object, will create default index if no index columns specified."""
         index_columns = list(index_columns)
@@ -144,6 +146,7 @@ class Block:
         # TODO(kemppeterson) Add a cache for corr to parallel the single-column stats.
 
         self._stats_cache[" ".join(self.index_columns)] = {}
+        self._transpose_cache: Optional[Block] = transpose_cache
 
     @classmethod
     def from_local(cls, data: pd.DataFrame, session: bigframes.Session) -> Block:
@@ -716,6 +719,15 @@ class Block:
             index_labels=self.index.names,
         )
 
+    def with_transpose_cache(self, transposed: Block):
+        return Block(
+            self._expr,
+            index_columns=self.index_columns,
+            column_labels=self._column_labels,
+            index_labels=self.index.names,
+            transpose_cache=transposed,
+        )
+
     def with_index_labels(self, value: typing.Sequence[Label]) -> Block:
         if len(value) != len(self.index_columns):
             raise ValueError(
@@ -804,18 +816,35 @@ class Block:
     def multi_apply_unary_op(
         self,
         columns: typing.Sequence[str],
-        op: ops.UnaryOp,
+        op: Union[ops.UnaryOp, ex.Expression],
     ) -> Block:
+        if isinstance(op, ops.UnaryOp):
+            input_varname = guid.generate_guid()
+            expr = op.as_expr(input_varname)
+        else:
+            input_varnames = op.unbound_variables
+            assert len(input_varnames) == 1
+            expr = op
+            input_varname = input_varnames[0]
+
         block = self
-        for i, col_id in enumerate(columns):
+        for col_id in columns:
             label = self.col_id_to_label[col_id]
-            block, result_id = block.apply_unary_op(
-                col_id,
-                op,
-                result_label=label,
+            block, result_id = block.project_expr(
+                expr.bind_all_variables({input_varname: ex.free_var(col_id)}),
+                label=label,
             )
             block = block.copy_values(result_id, col_id)
             block = block.drop_columns([result_id])
+        # Special case, we can preserve transpose cache for full-frame unary ops
+        if (self._transpose_cache is not None) and set(self.value_columns) == set(
+            columns
+        ):
+            transpose_columns = self._transpose_cache.value_columns
+            new_transpose_cache = self._transpose_cache.multi_apply_unary_op(
+                transpose_columns, op
+            )
+            block = block.with_transpose_cache(new_transpose_cache)
         return block
 
     def apply_window_op(
@@ -922,20 +951,17 @@ class Block:
                 (ex.UnaryAggregation(operation, ex.free_var(col_id)), col_id)
                 for col_id in self.value_columns
             ]
-            index_col_ids = [
-                guid.generate_guid() for i in range(self.column_labels.nlevels)
-            ]
-            result_expr = self.expr.aggregate(aggregations, dropna=dropna).unpivot(
-                row_labels=self.column_labels.to_list(),
-                index_col_ids=index_col_ids,
-                unpivot_columns=tuple([(value_col_id, tuple(self.value_columns))]),
-            )
+            index_id = guid.generate_guid()
+            result_expr = self.expr.aggregate(
+                aggregations, dropna=dropna
+            ).assign_constant(index_id, None, None)
+            # Transpose as last operation so that final block has valid transpose cache
             return Block(
                 result_expr,
-                index_columns=index_col_ids,
-                column_labels=[None],
-                index_labels=self.column_labels.names,
-            )
+                index_columns=[index_id],
+                column_labels=self.column_labels,
+                index_labels=[None],
+            ).transpose(original_row_index=pd.Index([None]))
         else:  # axis_n == 1
             # using offsets as identity to group on.
             # TODO: Allow to promote identity/total_order columns instead for better perf
@@ -1575,10 +1601,19 @@ class Block:
             index_columns=[index_id],
         )
 
-    def transpose(self) -> Block:
-        """Transpose the block. Will fail if dtypes aren't coercible to a common type or too many rows"""
+    def transpose(self, *, original_row_index: Optional[pd.Index] = None) -> Block:
+        """Transpose the block. Will fail if dtypes aren't coercible to a common type or too many rows.
+        Can provide the original_row_index directly if it is already known, otherwise a query is needed.
+        """
+        if self._transpose_cache is not None:
+            return self._transpose_cache.with_transpose_cache(self)
+
         original_col_index = self.column_labels
-        original_row_index = self.index.to_pandas()
+        original_row_index = (
+            original_row_index
+            if original_row_index is not None
+            else self.index.to_pandas()
+        )
         original_row_count = len(original_row_index)
         if original_row_count > bigframes.constants.MAX_COLUMNS:
             raise NotImplementedError(
@@ -1619,6 +1654,7 @@ class Block:
             result.with_column_labels(original_row_index)
             .order_by([ordering.ascending_over(result.index_columns[-1])])
             .drop_levels([result.index_columns[-1]])
+            .with_transpose_cache(self)
         )
 
     def _create_stack_column(

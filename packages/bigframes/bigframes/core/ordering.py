@@ -167,6 +167,8 @@ class ExpressionOrdering:
                 truncated_refs.append(order_part)
                 if columns_seen.issuperset(must_see):
                     return tuple(truncated_refs)
+        if len(must_see) == 0:
+            return ()
         raise ValueError("Ordering did not contain all total_order_cols")
 
     def with_reverse(self):

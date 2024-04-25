@@ -823,17 +823,14 @@ class OrderedIR(BaseIbisIR):
                 for col in baked_ir.column_ids
             ]
             selection = ", ".join(map(lambda col_id: f"`{col_id}`", output_columns))
-            order_by_clause = baked_ir._ordering_clause(
-                baked_ir._ordering.all_ordering_columns
-            )
 
-            sql = textwrap.dedent(
-                f"SELECT {selection}\n"
-                "FROM (\n"
-                f"{sql}\n"
-                ")\n"
-                f"{order_by_clause}\n"
-            )
+            sql = textwrap.dedent(f"SELECT {selection}\n" "FROM (\n" f"{sql}\n" ")\n")
+            # Single row frames may not have any ordering columns
+            if len(baked_ir._ordering.all_ordering_columns) > 0:
+                order_by_clause = baked_ir._ordering_clause(
+                    baked_ir._ordering.all_ordering_columns
+                )
+                sql += f"{order_by_clause}\n"
         else:
             sql = ibis_bigquery.Backend().compile(
                 self._to_ibis_expr(
