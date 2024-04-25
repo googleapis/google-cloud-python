@@ -1529,6 +1529,7 @@ class Session(
         cloud_function_kms_key_name: Optional[str] = None,
         cloud_function_docker_repository: Optional[str] = None,
         max_batching_rows: Optional[int] = 1000,
+        cloud_function_timeout: Optional[int] = 600,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function. Check out
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
@@ -1632,6 +1633,16 @@ class Session(
                 `None` can be passed to let BQ remote functions service apply
                 default batching. See for more details
                 https://cloud.google.com/bigquery/docs/remote-functions#limiting_number_of_rows_in_a_batch_request.
+            cloud_function_timeout (int, Optional):
+                The maximum amount of time (in seconds) BigQuery should wait for
+                the cloud function to return a response. See for more details
+                https://cloud.google.com/functions/docs/configuring/timeout.
+                Please note that even though the cloud function (2nd gen) itself
+                allows seeting up to 60 minutes of timeout, BigQuery remote
+                function can wait only up to 20 minutes, see for more details
+                https://cloud.google.com/bigquery/quotas#remote_function_limits.
+                By default BigQuery DataFrames uses a 10 minute timeout. `None`
+                can be passed to let the cloud functions default timeout take effect.
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1654,6 +1665,7 @@ class Session(
             cloud_function_kms_key_name=cloud_function_kms_key_name,
             cloud_function_docker_repository=cloud_function_docker_repository,
             max_batching_rows=max_batching_rows,
+            cloud_function_timeout=cloud_function_timeout,
         )
 
     def read_gbq_function(
