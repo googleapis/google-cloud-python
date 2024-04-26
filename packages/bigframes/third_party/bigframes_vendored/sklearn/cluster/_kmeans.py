@@ -75,7 +75,7 @@ class KMeans(_BaseKMeans):
                 Not used, present here for API consistency by convention.
 
         Returns:
-            KMeans: Fitted Estimator.
+            KMeans: Fitted estimator.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

@@ -25,9 +25,8 @@ class Pipeline(BaseEstimator, metaclass=ABCMeta):
     The final estimator only needs to implement `fit`.
 
     The purpose of the pipeline is to assemble several steps that can be
-    cross-validated together while setting different parameters. This
-    simplifies code and allows for deploying an estimator and peprocessing
-    together, e.g. with `Pipeline.to_gbq(...).`
+    cross-validated together while setting different parameters. This simplifies code and allows for
+    deploying an estimator and preprocessing together, e.g. with `Pipeline.to_gbq(...).`
     """
 
     def fit(

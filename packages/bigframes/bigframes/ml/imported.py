@@ -89,7 +89,7 @@ class TensorFlowModel(base.Predictor):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                  Default to False.
 
@@ -166,7 +166,7 @@ class ONNXModel(base.Predictor):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                 Determine whether to replace if the model already exists. Default to False.
 
@@ -282,7 +282,7 @@ class XGBoostModel(base.Predictor):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                 Determine whether to replace if the model already exists. Default to False.
 

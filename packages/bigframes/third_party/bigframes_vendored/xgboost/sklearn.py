@@ -38,7 +38,7 @@ class XGBModel(XGBModelBase):
                 Target values. Will be cast to X's dtype if necessary.
 
         Returns:
-            XGBModel: Fitted Estimator.
+            XGBModel: Fitted estimator.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

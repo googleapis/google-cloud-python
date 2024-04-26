@@ -84,6 +84,6 @@ class OneHotEncoder(BaseEstimator):
                 The DataFrame or Series to be transformed.
 
         Returns:
-            bigframes.dataframe.DataFrame: The result is categorized as index: number, value: number.
-                Where index is the position of the dict that seeing the category, and value is 0 or 1."""
+            bigframes.dataframe.DataFrame: The result is categorized as index: number, value: number,
+                where index is the position of the dict seeing the category, and value is 0 or 1."""
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

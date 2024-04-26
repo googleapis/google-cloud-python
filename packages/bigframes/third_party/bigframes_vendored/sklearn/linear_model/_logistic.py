@@ -79,6 +79,6 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
 
 
         Returns:
-            LogisticRegression: Fitted Estimator.
+            LogisticRegression: Fitted estimator.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

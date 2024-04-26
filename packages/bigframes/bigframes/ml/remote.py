@@ -30,12 +30,12 @@ _REMOTE_MODEL_STATUS = "remote_model_status"
 
 @log_adapter.class_logger
 class VertexAIModel(base.BaseEstimator):
-    """Remote model from a Vertex AI https endpoint. User must specify https endpoint, input schema and output schema.
-    How to deploy a model in Vertex AI https://cloud.google.com/bigquery/docs/bigquery-ml-remote-model-tutorial#Deploy-Model-on-Vertex-AI.
+    """Remote model from a Vertex AI HTTPS endpoint. User must specify HTTPS endpoint, input schema and output schema.
+    For more information, see Deploy model on Vertex AI: https://cloud.google.com/bigquery/docs/bigquery-ml-remote-model-tutorial#Deploy-Model-on-Vertex-AI.
 
     Args:
         endpoint (str):
-            Vertex AI https endpoint.
+            Vertex AI HTTPS endpoint.
         input (Mapping):
             Input schema: `{column_name: column_type}`. Supported types are "bool", "string", "int64", "float64", "array<bool>", "array<string>", "array<int64>", "array<float64>".
         output (Mapping):
@@ -44,8 +44,8 @@ class VertexAIModel(base.BaseEstimator):
             BQ session to create the model. If None, use the global default session.
         connection_name (str or None):
             Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-            if None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
-            permission if the connection isn't fully setup.
+            If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
+            permission if the connection isn't fully set up.
     """
 
     def __init__(

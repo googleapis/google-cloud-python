@@ -361,7 +361,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                 Determine whether to replace if the model already exists. Default to False.
 

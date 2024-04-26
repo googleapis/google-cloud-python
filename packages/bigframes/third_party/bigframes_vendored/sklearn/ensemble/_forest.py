@@ -56,7 +56,7 @@ class BaseForest(MetaEstimatorMixin, BaseEstimator, metaclass=ABCMeta):
 
 
         Returns:
-            ForestModel: Fitted Estimator.
+            ForestModel: Fitted estimator.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

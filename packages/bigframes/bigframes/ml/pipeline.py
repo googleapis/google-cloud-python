@@ -126,12 +126,12 @@ class Pipeline(
 
         Args:
             model_name (str):
-                the name of the model(pipeline).
+                The name of the model(pipeline).
             replace (bool, default False):
-                whether to replace if the model(pipeline) already exists. Default to False.
+                Whether to replace if the model(pipeline) already exists. Default to False.
 
         Returns:
-            Pipeline: saved model(pipeline)."""
+            Pipeline: Saved model(pipeline)."""
         if not self._estimator._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 

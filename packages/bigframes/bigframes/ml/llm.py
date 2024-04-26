@@ -64,8 +64,8 @@ class PaLM2TextGenerator(base.BaseEstimator):
             BQ session to create the model. If None, use the global default session.
         connection_name (str or None):
             Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-            if None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
-            permission if the connection isn't fully setup.
+            If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
+            permission if the connection isn't fully set up.
         max_iterations (Optional[int], Default to 300):
             The number of steps to run when performing supervised tuning.
     """
@@ -191,7 +191,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
                 Training labels.
 
         Returns:
-            PaLM2TextGenerator: Fitted Estimator.
+            PaLM2TextGenerator: Fitted estimator.
         """
         X, y = utils.convert_to_dataframe(X, y)
 
@@ -372,12 +372,12 @@ class PaLM2TextGenerator(base.BaseEstimator):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                 Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            PaLM2TextGenerator: saved model."""
+            PaLM2TextGenerator: Saved model."""
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)
@@ -390,7 +390,7 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
     Args:
         model_name (str, Default to "textembedding-gecko"):
             The model for text embedding. “textembedding-gecko” returns model embeddings for text inputs.
-            "textembedding-gecko-multilingual" returns model embeddings for text inputs which support over 100 languages
+            "textembedding-gecko-multilingual" returns model embeddings for text inputs which support over 100 languages.
             Default to "textembedding-gecko".
         version (str or None):
             Model version. Accepted values are "001", "002", "003", "latest" etc. Will use the default version if unset.
@@ -398,8 +398,8 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
         session (bigframes.Session or None):
             BQ session to create the model. If None, use the global default session.
         connection_name (str or None):
-            connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-            if None, use default connection in session context.
+            Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+            If None, use default connection in session context.
     """
 
     def __init__(
@@ -539,12 +539,12 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                 Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            PaLM2TextEmbeddingGenerator: saved model."""
+            PaLM2TextEmbeddingGenerator: Saved model."""
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)
@@ -565,8 +565,8 @@ class GeminiTextGenerator(base.BaseEstimator):
             BQ session to create the model. If None, use the global default session.
         connection_name (str or None):
             Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-            if None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
-            permission if the connection isn't fully setup.
+            If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
+            permission if the connection isn't fully set up.
     """
 
     def __init__(
@@ -719,12 +719,12 @@ class GeminiTextGenerator(base.BaseEstimator):
 
         Args:
             model_name (str):
-                the name of the model.
+                The name of the model.
             replace (bool, default False):
                 Determine whether to replace if the model already exists. Default to False.
 
         Returns:
-            GeminiTextGenerator: saved model."""
+            GeminiTextGenerator: Saved model."""
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)

@@ -109,6 +109,6 @@ class LinearRegression(RegressorMixin, LinearModel):
                 Target values. Will be cast to X's dtype if necessary.
 
         Returns:
-            LinearRegression: Fitted Estimator.
+            LinearRegression: Fitted estimator.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
