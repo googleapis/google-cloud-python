@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.17.1](https://github.com/googleapis/gapic-generator-python/compare/v1.17.0...v1.17.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* Type error for compute client(s) tests ([#2014](https://github.com/googleapis/gapic-generator-python/issues/2014)) ([61f50f7](https://github.com/googleapis/gapic-generator-python/commit/61f50f76fcbc47ef2d0fd4686f9187d22c2e698e))
+
 ## [1.17.0](https://github.com/googleapis/gapic-generator-python/compare/v1.16.1...v1.17.0) (2024-04-18)
 
 
