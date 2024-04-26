@@ -135,6 +135,7 @@ def test_{{ method_name }}_empty_call():
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.{{ method_name }}()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -176,6 +177,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.{{ method.transport_safe_name|snake_case }}),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.{{ method_name }}(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -214,8 +216,8 @@ def test_{{ method_name }}_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.{{method.transport_safe_name|snake_case}}] = mock_rpc
-
         {% if method.client_streaming %}
         request = [{}]
         client.{{ method.safe_name|snake_case }}(request)
@@ -1338,6 +1340,7 @@ def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.{{method.transport_safe_name|snake_case}}] = mock_rpc
 
         {% if method.client_streaming %}

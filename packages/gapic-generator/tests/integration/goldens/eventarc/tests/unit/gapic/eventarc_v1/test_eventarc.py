@@ -833,6 +833,7 @@ def test_get_trigger_empty_call():
     with mock.patch.object(
             type(client.transport.get_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -858,6 +859,7 @@ def test_get_trigger_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -883,8 +885,8 @@ def test_get_trigger_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_trigger] = mock_rpc
-
         request = {}
         client.get_trigger(request)
 
@@ -1199,6 +1201,7 @@ def test_list_triggers_empty_call():
     with mock.patch.object(
             type(client.transport.list_triggers),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_triggers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1227,6 +1230,7 @@ def test_list_triggers_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.list_triggers),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_triggers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1255,8 +1259,8 @@ def test_list_triggers_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_triggers] = mock_rpc
-
         request = {}
         client.list_triggers(request)
 
@@ -1749,6 +1753,7 @@ def test_create_trigger_empty_call():
     with mock.patch.object(
             type(client.transport.create_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1775,6 +1780,7 @@ def test_create_trigger_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.create_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1801,8 +1807,8 @@ def test_create_trigger_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_trigger] = mock_rpc
-
         request = {}
         client.create_trigger(request)
 
@@ -2129,6 +2135,7 @@ def test_update_trigger_empty_call():
     with mock.patch.object(
             type(client.transport.update_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2153,6 +2160,7 @@ def test_update_trigger_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.update_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2177,8 +2185,8 @@ def test_update_trigger_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_trigger] = mock_rpc
-
         request = {}
         client.update_trigger(request)
 
@@ -2505,6 +2513,7 @@ def test_delete_trigger_empty_call():
     with mock.patch.object(
             type(client.transport.delete_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_trigger()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2531,6 +2540,7 @@ def test_delete_trigger_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.delete_trigger),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2557,8 +2567,8 @@ def test_delete_trigger_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_trigger] = mock_rpc
-
         request = {}
         client.delete_trigger(request)
 
@@ -2889,6 +2899,7 @@ def test_get_channel_empty_call():
     with mock.patch.object(
             type(client.transport.get_channel),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2914,6 +2925,7 @@ def test_get_channel_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_channel),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2939,8 +2951,8 @@ def test_get_channel_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_channel] = mock_rpc
-
         request = {}
         client.get_channel(request)
 
@@ -3258,6 +3270,7 @@ def test_list_channels_empty_call():
     with mock.patch.object(
             type(client.transport.list_channels),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_channels()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3285,6 +3298,7 @@ def test_list_channels_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.list_channels),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_channels(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3312,8 +3326,8 @@ def test_list_channels_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_channels] = mock_rpc
-
         request = {}
         client.list_channels(request)
 
@@ -3806,6 +3820,7 @@ def test_create_channel_empty_call():
     with mock.patch.object(
             type(client.transport.create_channel_),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3832,6 +3847,7 @@ def test_create_channel_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.create_channel_),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3858,8 +3874,8 @@ def test_create_channel_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
-
         request = {}
         client.create_channel(request)
 
@@ -4186,6 +4202,7 @@ def test_update_channel_empty_call():
     with mock.patch.object(
             type(client.transport.update_channel),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4210,6 +4227,7 @@ def test_update_channel_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.update_channel),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4234,8 +4252,8 @@ def test_update_channel_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_channel] = mock_rpc
-
         request = {}
         client.update_channel(request)
 
@@ -4552,6 +4570,7 @@ def test_delete_channel_empty_call():
     with mock.patch.object(
             type(client.transport.delete_channel),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_channel()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4577,6 +4596,7 @@ def test_delete_channel_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.delete_channel),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4602,8 +4622,8 @@ def test_delete_channel_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_channel] = mock_rpc
-
         request = {}
         client.delete_channel(request)
 
@@ -4915,6 +4935,7 @@ def test_get_provider_empty_call():
     with mock.patch.object(
             type(client.transport.get_provider),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_provider()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4940,6 +4961,7 @@ def test_get_provider_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_provider),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_provider(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4965,8 +4987,8 @@ def test_get_provider_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_provider] = mock_rpc
-
         request = {}
         client.get_provider(request)
 
@@ -5272,6 +5294,7 @@ def test_list_providers_empty_call():
     with mock.patch.object(
             type(client.transport.list_providers),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_providers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5300,6 +5323,7 @@ def test_list_providers_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.list_providers),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_providers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5328,8 +5352,8 @@ def test_list_providers_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_providers] = mock_rpc
-
         request = {}
         client.list_providers(request)
 
@@ -5831,6 +5855,7 @@ def test_get_channel_connection_empty_call():
     with mock.patch.object(
             type(client.transport.get_channel_connection),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5856,6 +5881,7 @@ def test_get_channel_connection_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_channel_connection),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_channel_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5881,8 +5907,8 @@ def test_get_channel_connection_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_channel_connection] = mock_rpc
-
         request = {}
         client.get_channel_connection(request)
 
@@ -6194,6 +6220,7 @@ def test_list_channel_connections_empty_call():
     with mock.patch.object(
             type(client.transport.list_channel_connections),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_channel_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6220,6 +6247,7 @@ def test_list_channel_connections_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.list_channel_connections),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_channel_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6246,8 +6274,8 @@ def test_list_channel_connections_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_channel_connections] = mock_rpc
-
         request = {}
         client.list_channel_connections(request)
 
@@ -6740,6 +6768,7 @@ def test_create_channel_connection_empty_call():
     with mock.patch.object(
             type(client.transport.create_channel_connection),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6766,6 +6795,7 @@ def test_create_channel_connection_non_empty_request_with_auto_populated_field()
     with mock.patch.object(
             type(client.transport.create_channel_connection),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_channel_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6792,8 +6822,8 @@ def test_create_channel_connection_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_channel_connection] = mock_rpc
-
         request = {}
         client.create_channel_connection(request)
 
@@ -7120,6 +7150,7 @@ def test_delete_channel_connection_empty_call():
     with mock.patch.object(
             type(client.transport.delete_channel_connection),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_channel_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7145,6 +7176,7 @@ def test_delete_channel_connection_non_empty_request_with_auto_populated_field()
     with mock.patch.object(
             type(client.transport.delete_channel_connection),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_channel_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7170,8 +7202,8 @@ def test_delete_channel_connection_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_channel_connection] = mock_rpc
-
         request = {}
         client.delete_channel_connection(request)
 
@@ -7483,6 +7515,7 @@ def test_get_google_channel_config_empty_call():
     with mock.patch.object(
             type(client.transport.get_google_channel_config),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_google_channel_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7508,6 +7541,7 @@ def test_get_google_channel_config_non_empty_request_with_auto_populated_field()
     with mock.patch.object(
             type(client.transport.get_google_channel_config),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_google_channel_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7533,8 +7567,8 @@ def test_get_google_channel_config_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_google_channel_config] = mock_rpc
-
         request = {}
         client.get_google_channel_config(request)
 
@@ -7840,6 +7874,7 @@ def test_update_google_channel_config_empty_call():
     with mock.patch.object(
             type(client.transport.update_google_channel_config),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_google_channel_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7864,6 +7899,7 @@ def test_update_google_channel_config_non_empty_request_with_auto_populated_fiel
     with mock.patch.object(
             type(client.transport.update_google_channel_config),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_google_channel_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7888,8 +7924,8 @@ def test_update_google_channel_config_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_google_channel_config] = mock_rpc
-
         request = {}
         client.update_google_channel_config(request)
 
@@ -8218,6 +8254,7 @@ def test_get_trigger_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_trigger] = mock_rpc
 
         request = {}
@@ -8486,6 +8523,7 @@ def test_list_triggers_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_triggers] = mock_rpc
 
         request = {}
@@ -8868,6 +8906,7 @@ def test_create_trigger_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_trigger] = mock_rpc
 
         request = {}
@@ -9222,6 +9261,7 @@ def test_update_trigger_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_trigger] = mock_rpc
 
         request = {}
@@ -9497,6 +9537,7 @@ def test_delete_trigger_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_trigger] = mock_rpc
 
         request = {}
@@ -9789,6 +9830,7 @@ def test_get_channel_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_channel] = mock_rpc
 
         request = {}
@@ -10057,6 +10099,7 @@ def test_list_channels_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_channels] = mock_rpc
 
         request = {}
@@ -10439,6 +10482,7 @@ def test_create_channel_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_channel_] = mock_rpc
 
         request = {}
@@ -10793,6 +10837,7 @@ def test_update_channel_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_channel] = mock_rpc
 
         request = {}
@@ -11066,6 +11111,7 @@ def test_delete_channel_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_channel] = mock_rpc
 
         request = {}
@@ -11347,6 +11393,7 @@ def test_get_provider_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_provider] = mock_rpc
 
         request = {}
@@ -11615,6 +11662,7 @@ def test_list_providers_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_providers] = mock_rpc
 
         request = {}
@@ -11944,6 +11992,7 @@ def test_get_channel_connection_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_channel_connection] = mock_rpc
 
         request = {}
@@ -12212,6 +12261,7 @@ def test_list_channel_connections_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_channel_connections] = mock_rpc
 
         request = {}
@@ -12594,6 +12644,7 @@ def test_create_channel_connection_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_channel_connection] = mock_rpc
 
         request = {}
@@ -12873,6 +12924,7 @@ def test_delete_channel_connection_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_channel_connection] = mock_rpc
 
         request = {}
@@ -13141,6 +13193,7 @@ def test_get_google_channel_config_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_google_channel_config] = mock_rpc
 
         request = {}
@@ -13473,6 +13526,7 @@ def test_update_google_channel_config_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_google_channel_config] = mock_rpc
 
         request = {}

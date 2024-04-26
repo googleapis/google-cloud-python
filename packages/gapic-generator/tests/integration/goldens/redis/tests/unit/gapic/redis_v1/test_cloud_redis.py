@@ -818,6 +818,7 @@ def test_list_instances_empty_call():
     with mock.patch.object(
             type(client.transport.list_instances),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_instances()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -844,6 +845,7 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.list_instances),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -870,8 +872,8 @@ def test_list_instances_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_instances] = mock_rpc
-
         request = {}
         client.list_instances(request)
 
@@ -1419,6 +1421,7 @@ def test_get_instance_empty_call():
     with mock.patch.object(
             type(client.transport.get_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1444,6 +1447,7 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1469,8 +1473,8 @@ def test_get_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_instance] = mock_rpc
-
         request = {}
         client.get_instance(request)
 
@@ -1849,6 +1853,7 @@ def test_get_instance_auth_string_empty_call():
     with mock.patch.object(
             type(client.transport.get_instance_auth_string),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_instance_auth_string()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1874,6 +1879,7 @@ def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_instance_auth_string),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_instance_auth_string(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1899,8 +1905,8 @@ def test_get_instance_auth_string_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_instance_auth_string] = mock_rpc
-
         request = {}
         client.get_instance_auth_string(request)
 
@@ -2198,6 +2204,7 @@ def test_create_instance_empty_call():
     with mock.patch.object(
             type(client.transport.create_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2224,6 +2231,7 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.create_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2250,8 +2258,8 @@ def test_create_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_instance] = mock_rpc
-
         request = {}
         client.create_instance(request)
 
@@ -2578,6 +2586,7 @@ def test_update_instance_empty_call():
     with mock.patch.object(
             type(client.transport.update_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2602,6 +2611,7 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.update_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2626,8 +2636,8 @@ def test_update_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_instance] = mock_rpc
-
         request = {}
         client.update_instance(request)
 
@@ -2944,6 +2954,7 @@ def test_upgrade_instance_empty_call():
     with mock.patch.object(
             type(client.transport.upgrade_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.upgrade_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2970,6 +2981,7 @@ def test_upgrade_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.upgrade_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.upgrade_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2996,8 +3008,8 @@ def test_upgrade_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.upgrade_instance] = mock_rpc
-
         request = {}
         client.upgrade_instance(request)
 
@@ -3314,6 +3326,7 @@ def test_import_instance_empty_call():
     with mock.patch.object(
             type(client.transport.import_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.import_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3339,6 +3352,7 @@ def test_import_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.import_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.import_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3364,8 +3378,8 @@ def test_import_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.import_instance] = mock_rpc
-
         request = {}
         client.import_instance(request)
 
@@ -3682,6 +3696,7 @@ def test_export_instance_empty_call():
     with mock.patch.object(
             type(client.transport.export_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.export_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3707,6 +3722,7 @@ def test_export_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.export_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.export_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3732,8 +3748,8 @@ def test_export_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.export_instance] = mock_rpc
-
         request = {}
         client.export_instance(request)
 
@@ -4050,6 +4066,7 @@ def test_failover_instance_empty_call():
     with mock.patch.object(
             type(client.transport.failover_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.failover_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4075,6 +4092,7 @@ def test_failover_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.failover_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.failover_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4100,8 +4118,8 @@ def test_failover_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.failover_instance] = mock_rpc
-
         request = {}
         client.failover_instance(request)
 
@@ -4418,6 +4436,7 @@ def test_delete_instance_empty_call():
     with mock.patch.object(
             type(client.transport.delete_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4443,6 +4462,7 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.delete_instance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4468,8 +4488,8 @@ def test_delete_instance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_instance] = mock_rpc
-
         request = {}
         client.delete_instance(request)
 
@@ -4776,6 +4796,7 @@ def test_reschedule_maintenance_empty_call():
     with mock.patch.object(
             type(client.transport.reschedule_maintenance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.reschedule_maintenance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4801,6 +4822,7 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.reschedule_maintenance),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.reschedule_maintenance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4826,8 +4848,8 @@ def test_reschedule_maintenance_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.reschedule_maintenance] = mock_rpc
-
         request = {}
         client.reschedule_maintenance(request)
 
@@ -5162,6 +5184,7 @@ def test_list_instances_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_instances] = mock_rpc
 
         request = {}
@@ -5537,6 +5560,7 @@ def test_get_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_instance] = mock_rpc
 
         request = {}
@@ -5803,6 +5827,7 @@ def test_get_instance_auth_string_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_instance_auth_string] = mock_rpc
 
         request = {}
@@ -6128,6 +6153,7 @@ def test_create_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_instance] = mock_rpc
 
         request = {}
@@ -6471,6 +6497,7 @@ def test_update_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_instance] = mock_rpc
 
         request = {}
@@ -6732,6 +6759,7 @@ def test_upgrade_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.upgrade_instance] = mock_rpc
 
         request = {}
@@ -7000,6 +7028,7 @@ def test_import_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.import_instance] = mock_rpc
 
         request = {}
@@ -7264,6 +7293,7 @@ def test_export_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.export_instance] = mock_rpc
 
         request = {}
@@ -7528,6 +7558,7 @@ def test_failover_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.failover_instance] = mock_rpc
 
         request = {}
@@ -7792,6 +7823,7 @@ def test_delete_instance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_instance] = mock_rpc
 
         request = {}
@@ -8053,6 +8085,7 @@ def test_reschedule_maintenance_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.reschedule_maintenance] = mock_rpc
 
         request = {}

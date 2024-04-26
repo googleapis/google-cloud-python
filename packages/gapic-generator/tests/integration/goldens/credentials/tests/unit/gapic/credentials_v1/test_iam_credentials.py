@@ -805,6 +805,7 @@ def test_generate_access_token_empty_call():
     with mock.patch.object(
             type(client.transport.generate_access_token),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.generate_access_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -830,6 +831,7 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.generate_access_token),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.generate_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -855,8 +857,8 @@ def test_generate_access_token_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
-
         request = {}
         client.generate_access_token(request)
 
@@ -1183,6 +1185,7 @@ def test_generate_id_token_empty_call():
     with mock.patch.object(
             type(client.transport.generate_id_token),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.generate_id_token()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1209,6 +1212,7 @@ def test_generate_id_token_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.generate_id_token),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.generate_id_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1235,8 +1239,8 @@ def test_generate_id_token_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.generate_id_token] = mock_rpc
-
         request = {}
         client.generate_id_token(request)
 
@@ -1569,6 +1573,7 @@ def test_sign_blob_empty_call():
     with mock.patch.object(
             type(client.transport.sign_blob),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.sign_blob()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1594,6 +1599,7 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.sign_blob),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.sign_blob(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1619,8 +1625,8 @@ def test_sign_blob_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.sign_blob] = mock_rpc
-
         request = {}
         client.sign_blob(request)
 
@@ -1946,6 +1952,7 @@ def test_sign_jwt_empty_call():
     with mock.patch.object(
             type(client.transport.sign_jwt),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.sign_jwt()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1972,6 +1979,7 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.sign_jwt),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.sign_jwt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1998,8 +2006,8 @@ def test_sign_jwt_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.sign_jwt] = mock_rpc
-
         request = {}
         client.sign_jwt(request)
 
@@ -2330,6 +2338,7 @@ def test_generate_access_token_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
 
         request = {}
@@ -2607,6 +2616,7 @@ def test_generate_id_token_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.generate_id_token] = mock_rpc
 
         request = {}
@@ -2886,6 +2896,7 @@ def test_sign_blob_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.sign_blob] = mock_rpc
 
         request = {}
@@ -3163,6 +3174,7 @@ def test_sign_jwt_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.sign_jwt] = mock_rpc
 
         request = {}

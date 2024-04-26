@@ -792,6 +792,7 @@ def test_list_log_metrics_empty_call():
     with mock.patch.object(
             type(client.transport.list_log_metrics),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_log_metrics()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -818,6 +819,7 @@ def test_list_log_metrics_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.list_log_metrics),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.list_log_metrics(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -844,8 +846,8 @@ def test_list_log_metrics_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_log_metrics] = mock_rpc
-
         request = {}
         client.list_log_metrics(request)
 
@@ -1350,6 +1352,7 @@ def test_get_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.get_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1375,6 +1378,7 @@ def test_get_log_metric_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.get_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.get_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1400,8 +1404,8 @@ def test_get_log_metric_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_log_metric] = mock_rpc
-
         request = {}
         client.get_log_metric(request)
 
@@ -1732,6 +1736,7 @@ def test_create_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.create_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1757,6 +1762,7 @@ def test_create_log_metric_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.create_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.create_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1782,8 +1788,8 @@ def test_create_log_metric_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_log_metric] = mock_rpc
-
         request = {}
         client.create_log_metric(request)
 
@@ -2124,6 +2130,7 @@ def test_update_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.update_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2149,6 +2156,7 @@ def test_update_log_metric_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.update_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.update_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2174,8 +2182,8 @@ def test_update_log_metric_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.update_log_metric] = mock_rpc
-
         request = {}
         client.update_log_metric(request)
 
@@ -2501,6 +2509,7 @@ def test_delete_log_metric_empty_call():
     with mock.patch.object(
             type(client.transport.delete_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_log_metric()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2526,6 +2535,7 @@ def test_delete_log_metric_non_empty_request_with_auto_populated_field():
     with mock.patch.object(
             type(client.transport.delete_log_metric),
             '__call__') as call:
+        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client.delete_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2551,8 +2561,8 @@ def test_delete_log_metric_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_log_metric] = mock_rpc
-
         request = {}
         client.delete_log_metric(request)
 
