@@ -603,8 +603,8 @@ class ListTasksRequest(proto.Message):
             http://aip.dev/160 for examples of filter syntax. If you
             don't specify a value, or if you filter on an empty string,
             then all Tasks are returned. For information about the Task
-            properties that you can filter on, see `Task
-            list </maps/documentation/transportation-logistics/last-mile-fleet-solution/fleet-performance/fleet-engine/deliveries_api#list_tasks>`__.
+            properties that you can filter on, see `List
+            tasks <https://developers.google.com/maps/documentation/transportation-logistics/last-mile-fleet-solution/fleet-performance/fleet-engine/deliveries_api#list-tasks>`__.
     """
 
     header: mfd_header.DeliveryRequestHeader = proto.Field(
