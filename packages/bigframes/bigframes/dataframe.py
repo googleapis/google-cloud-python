@@ -3397,6 +3397,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _get_block(self) -> blocks.Block:
         return self._block
 
+    def cache(self):
+        """
+        Materializes the DataFrame to a temporary table.
+
+        Useful if the dataframe will be used multiple times, as this will avoid recomputating the shared intermediate value.
+
+        Returns:
+            DataFrame: Self
+        """
+        return self._cached(force=True)
+
     def _cached(self, *, force: bool = False) -> DataFrame:
         """Materialize dataframe to a temporary table.
         No-op if the dataframe represents a trivial transformation of an existing materialization.

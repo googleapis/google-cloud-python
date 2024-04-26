@@ -4204,7 +4204,7 @@ def test_df_cached(scalars_df_index):
     )
     df = df[df["rowindex_2"] % 2 == 0]
 
-    df_cached_copy = df._cached()
+    df_cached_copy = df.cache()
     pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())
 
 
