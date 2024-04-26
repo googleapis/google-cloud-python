@@ -44,6 +44,12 @@ def create_bigquery_session(
         google.auth.credentials.Credentials, instance=True
     )
 
+    if anonymous_dataset is None:
+        anonymous_dataset = google.cloud.bigquery.DatasetReference(
+            "test-project",
+            "test_dataset",
+        )
+
     if bqclient is None:
         bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
         bqclient.project = "test-project"
@@ -53,6 +59,10 @@ def create_bigquery_session(
         table._properties = {}
         type(table).location = mock.PropertyMock(return_value="test-region")
         type(table).schema = mock.PropertyMock(return_value=table_schema)
+        type(table).reference = mock.PropertyMock(
+            return_value=anonymous_dataset.table("test_table")
+        )
+        type(table).num_rows = mock.PropertyMock(return_value=1000000000)
         bqclient.get_table.return_value = table
 
     if anonymous_dataset is None:

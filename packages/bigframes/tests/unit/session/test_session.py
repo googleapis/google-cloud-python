@@ -49,6 +49,16 @@ def test_read_gbq_cached_table():
         table,
     )
 
+    def get_table_mock(table_ref):
+        table = google.cloud.bigquery.Table(
+            table_ref, (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
+        )
+        table._properties["numRows"] = "1000000000"
+        table._properties["location"] = session._location
+        return table
+
+    session.bqclient.get_table = get_table_mock
+
     with pytest.warns(UserWarning, match=re.escape("use_cache=False")):
         df = session.read_gbq("my-project.my_dataset.my_table")
 
@@ -137,10 +147,13 @@ def test_read_gbq_external_table_no_drive_access(api_name, query_or_table):
 
     session.bqclient.query = query_mock
 
-    def get_table_mock(dataset_ref):
-        dataset = google.cloud.bigquery.Dataset(dataset_ref)
-        dataset.location = session._location
-        return dataset
+    def get_table_mock(table_ref):
+        table = google.cloud.bigquery.Table(
+            table_ref, (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
+        )
+        table._properties["numRows"] = 1000000000
+        table._properties["location"] = session._location
+        return table
 
     session.bqclient.get_table = get_table_mock
 
