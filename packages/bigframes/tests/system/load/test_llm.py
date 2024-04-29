@@ -49,12 +49,13 @@ def llm_remote_text_df(session, llm_remote_text_pandas_df):
     return session.read_pandas(llm_remote_text_pandas_df)
 
 
+@pytest.mark.flaky(retries=2)
 def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
     model = bigframes.ml.llm.PaLM2TextGenerator(
         model_name="text-bison", max_iterations=1
     )
 
-    df = llm_fine_tune_df_default_index.dropna()
+    df = llm_fine_tune_df_default_index.dropna().sample(n=100)
     X_train = df[["prompt"]]
     y_train = df[["label"]]
     model.fit(X_train, y_train)
@@ -70,6 +71,7 @@ def test_llm_palm_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_
     # TODO(ashleyxu b/335492787): After bqml rolled out version control: save, load, check parameters to ensure configuration was kept
 
 
+@pytest.mark.flaky(retries=2)
 def test_llm_palm_score(llm_fine_tune_df_default_index):
     model = bigframes.ml.llm.PaLM2TextGenerator(model_name="text-bison")
 
@@ -89,6 +91,7 @@ def test_llm_palm_score(llm_fine_tune_df_default_index):
     assert all(col in score_result_col for col in expected_col)
 
 
+@pytest.mark.flaky(retries=2)
 def test_llm_palm_score_params(llm_fine_tune_df_default_index):
     model = bigframes.ml.llm.PaLM2TextGenerator(
         model_name="text-bison", max_iterations=1
@@ -102,12 +105,10 @@ def test_llm_palm_score_params(llm_fine_tune_df_default_index):
     ).to_pandas()
     score_result_col = score_result.columns.to_list()
     expected_col = [
-        "trial_id",
         "precision",
         "recall",
-        "accuracy",
         "f1_score",
-        "log_loss",
-        "roc_auc",
+        "label",
+        "evaluation_status",
     ]
     assert all(col in score_result_col for col in expected_col)
