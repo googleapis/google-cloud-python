@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -225,8 +226,12 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[
-            str, BinauthzManagementServiceV1Beta1Transport
+        transport: Optional[
+            Union[
+                str,
+                BinauthzManagementServiceV1Beta1Transport,
+                Callable[..., BinauthzManagementServiceV1Beta1Transport],
+            ]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -239,9 +244,11 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BinauthzManagementServiceV1Beta1Transport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BinauthzManagementServiceV1Beta1Transport,Callable[..., BinauthzManagementServiceV1Beta1Transport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BinauthzManagementServiceV1Beta1Transport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -360,8 +367,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -369,7 +376,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetPolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetPolicyRequest):
+            request = service.GetPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -378,21 +388,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_policy,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -491,8 +489,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([policy])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -500,7 +498,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdatePolicyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdatePolicyRequest):
+            request = service.UpdatePolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -509,21 +510,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_policy,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -644,8 +633,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, attestor_id, attestor])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -653,7 +642,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateAttestorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateAttestorRequest):
+            request = service.CreateAttestorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -666,11 +658,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_attestor,
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_attestor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -759,8 +749,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -768,7 +758,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetAttestorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetAttestorRequest):
+            request = service.GetAttestorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -777,21 +770,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_attestor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_attestor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -887,8 +868,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([attestor])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -896,7 +877,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateAttestorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateAttestorRequest):
+            request = service.UpdateAttestorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -905,21 +889,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_attestor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_attestor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1012,8 +984,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1021,7 +993,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListAttestorsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListAttestorsRequest):
+            request = service.ListAttestorsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1030,21 +1005,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_attestors,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_attestors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1132,8 +1095,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1141,7 +1104,10 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteAttestorRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteAttestorRequest):
+            request = service.DeleteAttestorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1150,21 +1116,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_attestor,
-            default_retry=retries.AsyncRetry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_attestor
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

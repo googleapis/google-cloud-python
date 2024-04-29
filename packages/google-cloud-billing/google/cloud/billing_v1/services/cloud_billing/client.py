@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -570,7 +571,9 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, CloudBillingTransport]] = None,
+        transport: Optional[
+            Union[str, CloudBillingTransport, Callable[..., CloudBillingTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -582,9 +585,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudBillingTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudBillingTransport,Callable[..., CloudBillingTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudBillingTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -690,8 +695,15 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[CloudBillingTransport], Callable[..., CloudBillingTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., CloudBillingTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -768,8 +780,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -777,10 +789,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.GetBillingAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.GetBillingAccountRequest):
             request = cloud_billing.GetBillingAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -881,8 +891,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -890,10 +900,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.ListBillingAccountsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.ListBillingAccountsRequest):
             request = cloud_billing.ListBillingAccountsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1006,8 +1014,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, account])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1015,10 +1023,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.UpdateBillingAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.UpdateBillingAccountRequest):
             request = cloud_billing.UpdateBillingAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1143,8 +1149,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([billing_account, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1152,10 +1158,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.CreateBillingAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.CreateBillingAccountRequest):
             request = cloud_billing.CreateBillingAccountRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1253,8 +1257,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1262,10 +1266,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.ListProjectBillingInfoRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.ListProjectBillingInfoRequest):
             request = cloud_billing.ListProjectBillingInfoRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1380,8 +1382,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1389,10 +1391,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.GetProjectBillingInfoRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.GetProjectBillingInfoRequest):
             request = cloud_billing.GetProjectBillingInfoRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1535,8 +1535,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, project_billing_info])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1544,10 +1544,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.UpdateProjectBillingInfoRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.UpdateProjectBillingInfoRequest):
             request = cloud_billing.UpdateProjectBillingInfoRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1677,8 +1675,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1687,8 +1685,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -1815,8 +1813,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1825,8 +1823,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -1934,8 +1932,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1944,8 +1942,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             )
 
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -2035,10 +2033,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a cloud_billing.MoveBillingAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, cloud_billing.MoveBillingAccountRequest):
             request = cloud_billing.MoveBillingAccountRequest(request)
 

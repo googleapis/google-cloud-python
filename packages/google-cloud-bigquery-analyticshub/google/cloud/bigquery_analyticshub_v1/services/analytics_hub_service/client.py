@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -628,7 +629,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AnalyticsHubServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                AnalyticsHubServiceTransport,
+                Callable[..., AnalyticsHubServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -640,9 +647,11 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AnalyticsHubServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AnalyticsHubServiceTransport,Callable[..., AnalyticsHubServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AnalyticsHubServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -751,8 +760,16 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AnalyticsHubServiceTransport],
+                Callable[..., AnalyticsHubServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AnalyticsHubServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -830,8 +847,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -839,10 +856,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.ListDataExchangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.ListDataExchangesRequest):
             request = analyticshub.ListDataExchangesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -953,8 +968,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([organization])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -962,10 +977,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.ListOrgDataExchangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.ListOrgDataExchangesRequest):
             request = analyticshub.ListOrgDataExchangesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1071,8 +1084,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1080,10 +1093,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.GetDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.GetDataExchangeRequest):
             request = analyticshub.GetDataExchangeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1191,8 +1202,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_exchange])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1200,10 +1211,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.CreateDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.CreateDataExchangeRequest):
             request = analyticshub.CreateDataExchangeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1313,8 +1322,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_exchange, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1322,10 +1331,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.UpdateDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.UpdateDataExchangeRequest):
             request = analyticshub.UpdateDataExchangeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1413,8 +1420,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1422,10 +1429,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.DeleteDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.DeleteDataExchangeRequest):
             request = analyticshub.DeleteDataExchangeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1519,8 +1524,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1528,10 +1533,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.ListListingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.ListListingsRequest):
             request = analyticshub.ListListingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1636,8 +1639,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1645,10 +1648,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.GetListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.GetListingRequest):
             request = analyticshub.GetListingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1755,8 +1756,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, listing])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1764,10 +1765,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.CreateListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.CreateListingRequest):
             request = analyticshub.CreateListingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1876,8 +1875,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([listing, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1885,10 +1884,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.UpdateListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.UpdateListingRequest):
             request = analyticshub.UpdateListingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1975,8 +1972,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1984,10 +1981,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.DeleteListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.DeleteListingRequest):
             request = analyticshub.DeleteListingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2089,8 +2084,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2098,10 +2093,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.SubscribeListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.SubscribeListingRequest):
             request = analyticshub.SubscribeListingRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2208,8 +2201,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2217,10 +2210,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.SubscribeDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.SubscribeDataExchangeRequest):
             request = analyticshub.SubscribeDataExchangeRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2332,8 +2323,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2341,10 +2332,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.RefreshSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.RefreshSubscriptionRequest):
             request = analyticshub.RefreshSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2448,8 +2437,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2457,10 +2446,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.GetSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.GetSubscriptionRequest):
             request = analyticshub.GetSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2558,8 +2545,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2567,10 +2554,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.ListSubscriptionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.ListSubscriptionsRequest):
             request = analyticshub.ListSubscriptionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2683,8 +2668,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2692,10 +2677,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.ListSharedResourceSubscriptionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.ListSharedResourceSubscriptionsRequest):
             request = analyticshub.ListSharedResourceSubscriptionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2799,8 +2782,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2808,10 +2791,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.RevokeSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.RevokeSubscriptionRequest):
             request = analyticshub.RevokeSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2918,8 +2899,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2927,10 +2908,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analyticshub.DeleteSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, analyticshub.DeleteSubscriptionRequest):
             request = analyticshub.DeleteSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3052,8 +3031,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -3165,8 +3144,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
@@ -3249,8 +3228,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.

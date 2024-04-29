@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -577,7 +578,13 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataTransferServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                DataTransferServiceTransport,
+                Callable[..., DataTransferServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -589,9 +596,11 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataTransferServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataTransferServiceTransport,Callable[..., DataTransferServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataTransferServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -700,8 +709,16 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataTransferServiceTransport],
+                Callable[..., DataTransferServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataTransferServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -777,8 +794,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -786,10 +803,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.GetDataSourceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.GetDataSourceRequest):
             request = datatransfer.GetDataSourceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -890,8 +905,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -899,10 +914,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.ListDataSourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.ListDataSourcesRequest):
             request = datatransfer.ListDataSourcesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1035,8 +1048,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, transfer_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1044,10 +1057,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.CreateTransferConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.CreateTransferConfigRequest):
             request = datatransfer.CreateTransferConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1162,8 +1173,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([transfer_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1171,10 +1182,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.UpdateTransferConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.UpdateTransferConfigRequest):
             request = datatransfer.UpdateTransferConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1267,8 +1276,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1276,10 +1285,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.DeleteTransferConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.DeleteTransferConfigRequest):
             request = datatransfer.DeleteTransferConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1377,8 +1384,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1386,10 +1393,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.GetTransferConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.GetTransferConfigRequest):
             request = datatransfer.GetTransferConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1488,8 +1493,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1497,10 +1502,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.ListTransferConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.ListTransferConfigsRequest):
             request = datatransfer.ListTransferConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1628,8 +1631,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, start_time, end_time])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1637,10 +1640,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.ScheduleTransferRunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.ScheduleTransferRunsRequest):
             request = datatransfer.ScheduleTransferRunsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1734,10 +1735,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.StartManualTransferRunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.StartManualTransferRunsRequest):
             request = datatransfer.StartManualTransferRunsRequest(request)
 
@@ -1830,8 +1829,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 Represents a data transfer run.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1839,10 +1838,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.GetTransferRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.GetTransferRunRequest):
             request = datatransfer.GetTransferRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1929,8 +1926,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1938,10 +1935,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.DeleteTransferRunRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.DeleteTransferRunRequest):
             request = datatransfer.DeleteTransferRunRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2038,8 +2033,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2047,10 +2042,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.ListTransferRunsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.ListTransferRunsRequest):
             request = datatransfer.ListTransferRunsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2159,8 +2152,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2168,10 +2161,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.ListTransferLogsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.ListTransferLogsRequest):
             request = datatransfer.ListTransferLogsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2285,8 +2276,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2294,10 +2285,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.CheckValidCredsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.CheckValidCredsRequest):
             request = datatransfer.CheckValidCredsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2381,10 +2370,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.EnrollDataSourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.EnrollDataSourcesRequest):
             request = datatransfer.EnrollDataSourcesRequest(request)
 
@@ -2459,10 +2446,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datatransfer.UnenrollDataSourcesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, datatransfer.UnenrollDataSourcesRequest):
             request = datatransfer.UnenrollDataSourcesRequest(request)
 

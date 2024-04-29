@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -559,7 +560,13 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AppConnectorsServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                AppConnectorsServiceTransport,
+                Callable[..., AppConnectorsServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -571,9 +578,11 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AppConnectorsServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AppConnectorsServiceTransport,Callable[..., AppConnectorsServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AppConnectorsServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -682,8 +691,16 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AppConnectorsServiceTransport],
+                Callable[..., AppConnectorsServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AppConnectorsServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -763,8 +780,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -772,10 +789,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a app_connectors_service.ListAppConnectorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, app_connectors_service.ListAppConnectorsRequest):
             request = app_connectors_service.ListAppConnectorsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -887,8 +902,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -896,10 +911,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a app_connectors_service.GetAppConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, app_connectors_service.GetAppConnectorRequest):
             request = app_connectors_service.GetAppConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1031,8 +1044,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, app_connector, app_connector_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1040,10 +1053,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a app_connectors_service.CreateAppConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, app_connectors_service.CreateAppConnectorRequest):
             request = app_connectors_service.CreateAppConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1177,8 +1188,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([app_connector, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1186,10 +1197,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a app_connectors_service.UpdateAppConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, app_connectors_service.UpdateAppConnectorRequest):
             request = app_connectors_service.UpdateAppConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1310,8 +1319,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1319,10 +1328,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a app_connectors_service.DeleteAppConnectorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, app_connectors_service.DeleteAppConnectorRequest):
             request = app_connectors_service.DeleteAppConnectorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1447,8 +1454,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([app_connector, resource_info])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1456,10 +1463,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a app_connectors_service.ReportStatusRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, app_connectors_service.ReportStatusRequest):
             request = app_connectors_service.ReportStatusRequest(request)
             # If we have keyword arguments corresponding to fields on the
