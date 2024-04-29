@@ -175,12 +175,12 @@ def pytype(session):
 def mypy(session):
     """Run type-checking."""
     session.install(".[grpc]", "mypy")
-    # Exclude types-protobuf==4.24.0.20240106
-    # See https://github.com/python/typeshed/issues/11254
     session.install(
         "types-setuptools",
         "types-requests",
-        "types-protobuf!=4.24.0.20240106",
+        # TODO(https://github.com/googleapis/python-api-core/issues/642):
+        # Use the latest version of types-protobuf.
+        "types-protobuf<5",
         "types-mock",
         "types-dataclasses",
     )

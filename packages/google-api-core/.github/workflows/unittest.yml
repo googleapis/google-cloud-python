@@ -43,9 +43,9 @@ jobs:
       run: |
         nox -s unit${{ matrix.option }}-${{ matrix.python }}
     - name: Upload coverage results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: coverage-artifacts
+        name: coverage-artifact-${{ matrix.option }}-${{ matrix.python }}
         path: .coverage${{ matrix.option }}-${{ matrix.python }}
 
   report-coverage:
@@ -65,11 +65,11 @@ jobs:
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
     - name: Download coverage results
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: coverage-artifacts
         path: .coverage-results/
     - name: Report coverage results
       run: |
-        coverage combine .coverage-results/.coverage*
+        find .coverage-results -type f -name '*.zip' -exec unzip {} \;
+        coverage combine .coverage-results/**/.coverage*
         coverage report --show-missing --fail-under=100
