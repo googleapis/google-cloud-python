@@ -310,6 +310,35 @@ def test_remote_function_explicit_with_bigframes_series(
         )
 
 
+@pytest.mark.parametrize(
+    ("input_types"),
+    [
+        pytest.param([int], id="list-of-int"),
+        pytest.param(int, id="int"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_input_types(session, scalars_dfs, input_types):
+    try:
+
+        def add_one(x):
+            return x + 1
+
+        remote_add_one = session.remote_function(input_types, int)(add_one)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result = scalars_df.int64_too.map(remote_add_one).to_pandas()
+        pd_result = scalars_pandas_df.int64_too.map(add_one)
+
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, remote_add_one
+        )
+
+
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_explicit_dataset_not_created(
     session,

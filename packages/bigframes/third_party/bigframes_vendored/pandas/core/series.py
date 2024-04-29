@@ -1181,7 +1181,7 @@ class Series(NDFrame):  # type: ignore[misc]
         to potentially reuse a previously deployed `remote_function` from
         the same user defined function.
 
-            >>> @bpd.remote_function([int], float, reuse=False)
+            >>> @bpd.remote_function(int, float, reuse=False)
             ... def minutes_to_hours(x):
             ...     return x/60
 
@@ -1208,7 +1208,7 @@ class Series(NDFrame):  # type: ignore[misc]
         `packages` param.
 
             >>> @bpd.remote_function(
-            ...     [str],
+            ...     str,
             ...     str,
             ...     reuse=False,
             ...     packages=["cryptography"],
@@ -3341,7 +3341,7 @@ class Series(NDFrame):  # type: ignore[misc]
         condition is evaluated based on a complicated business logic which cannot
         be expressed in form of a Series.
 
-            >>> @bpd.remote_function([str], bool, reuse=False)
+            >>> @bpd.remote_function(str, bool, reuse=False)
             ... def should_mask(name):
             ...     hash = 0
             ...     for char_ in name:
@@ -3860,7 +3860,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
         It also accepts a remote function:
 
-            >>> @bpd.remote_function([str], str)
+            >>> @bpd.remote_function(str, str)
             ... def my_mapper(val):
             ...     vowels = ["a", "e", "i", "o", "u"]
             ...     if val:

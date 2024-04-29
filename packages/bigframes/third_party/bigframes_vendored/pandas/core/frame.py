@@ -3892,7 +3892,7 @@ class DataFrame(generic.NDFrame):
         to potentially reuse a previously deployed ``remote_function`` from
         the same user defined function.
 
-            >>> @bpd.remote_function([int], float, reuse=False)
+            >>> @bpd.remote_function(int, float, reuse=False)
             ... def minutes_to_hours(x):
             ...     return x/60
 

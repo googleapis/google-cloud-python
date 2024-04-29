@@ -47,7 +47,7 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     # of the penguins, which is a real number, into a category, which is a
     # string.
     @bpd.remote_function(
-        [float],
+        float,
         str,
         reuse=False,
     )
@@ -91,7 +91,7 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     # as a remote function. The custom function in this example has external
     # package dependency, which can be specified via `packages` parameter.
     @bpd.remote_function(
-        [str],
+        str,
         str,
         reuse=False,
         packages=["cryptography"],
