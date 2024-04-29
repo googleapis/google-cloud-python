@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -223,7 +224,13 @@ class LivestreamServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, LivestreamServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                LivestreamServiceTransport,
+                Callable[..., LivestreamServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -235,9 +242,11 @@ class LivestreamServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.LivestreamServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,LivestreamServiceTransport,Callable[..., LivestreamServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the LivestreamServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -371,8 +380,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, channel, channel_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -380,7 +389,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateChannelRequest):
+            request = service.CreateChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -393,11 +405,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_channel_,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_channel_
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -493,8 +503,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -502,7 +512,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListChannelsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListChannelsRequest):
+            request = service.ListChannelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -511,20 +524,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_channels,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_channels
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -623,8 +625,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -632,7 +634,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetChannelRequest):
+            request = service.GetChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -641,20 +646,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_channel,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -752,8 +746,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -761,7 +755,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteChannelRequest):
+            request = service.DeleteChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -770,11 +767,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_channel,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -903,8 +898,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([channel, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -912,7 +907,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateChannelRequest):
+            request = service.UpdateChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -923,11 +921,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_channel,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1031,8 +1027,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1040,7 +1036,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.StartChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StartChannelRequest):
+            request = service.StartChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1049,11 +1048,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_channel,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1155,8 +1152,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1164,7 +1161,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.StopChannelRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StopChannelRequest):
+            request = service.StopChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1173,11 +1173,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.stop_channel,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_channel
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1293,8 +1291,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, input, input_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1302,7 +1300,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateInputRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateInputRequest):
+            request = service.CreateInputRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1315,11 +1316,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_input,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_input
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1414,8 +1413,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1423,7 +1422,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListInputsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListInputsRequest):
+            request = service.ListInputsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1432,20 +1434,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_inputs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_inputs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1539,8 +1530,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1548,7 +1539,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetInputRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetInputRequest):
+            request = service.GetInputRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1557,20 +1551,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_input,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_input
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1668,8 +1651,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1677,7 +1660,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteInputRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteInputRequest):
+            request = service.DeleteInputRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1686,11 +1672,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_input,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_input
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1807,8 +1791,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([input, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1816,7 +1800,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateInputRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdateInputRequest):
+            request = service.UpdateInputRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1827,11 +1814,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_input,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_input
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1946,8 +1931,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, event, event_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1955,7 +1940,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateEventRequest):
+            request = service.CreateEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1968,11 +1956,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_event,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2061,8 +2047,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2070,7 +2056,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListEventsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListEventsRequest):
+            request = service.ListEventsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2079,20 +2068,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_events,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_events
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2187,8 +2165,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2196,7 +2174,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetEventRequest):
+            request = service.GetEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2205,20 +2186,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_event,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=10.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2293,8 +2263,8 @@ class LivestreamServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2302,7 +2272,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteEventRequest):
+            request = service.DeleteEventRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2311,11 +2284,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_event,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2421,8 +2392,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, asset, asset_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2430,7 +2401,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.CreateAssetRequest):
+            request = service.CreateAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2443,11 +2417,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_asset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2553,8 +2525,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2562,7 +2534,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.DeleteAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.DeleteAssetRequest):
+            request = service.DeleteAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2571,11 +2546,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_asset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2666,8 +2639,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2675,7 +2648,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetAssetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetAssetRequest):
+            request = service.GetAssetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2684,11 +2660,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_asset,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_asset
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2775,8 +2749,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2784,7 +2758,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.ListAssetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListAssetsRequest):
+            request = service.ListAssetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2793,11 +2770,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_assets,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_assets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2895,8 +2870,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2904,7 +2879,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.GetPoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.GetPoolRequest):
+            request = service.GetPoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2913,11 +2891,7 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_pool]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3024,8 +2998,8 @@ class LivestreamServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3033,7 +3007,10 @@ class LivestreamServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdatePoolRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.UpdatePoolRequest):
+            request = service.UpdatePoolRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3044,11 +3021,9 @@ class LivestreamServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_pool,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_pool
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

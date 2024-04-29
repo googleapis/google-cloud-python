@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -246,7 +247,13 @@ class VideoStitcherServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, VideoStitcherServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[
+                str,
+                VideoStitcherServiceTransport,
+                Callable[..., VideoStitcherServiceTransport],
+            ]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -258,9 +265,11 @@ class VideoStitcherServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.VideoStitcherServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VideoStitcherServiceTransport,Callable[..., VideoStitcherServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VideoStitcherServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -400,8 +409,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cdn_key, cdn_key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -409,7 +418,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.CreateCdnKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.CreateCdnKeyRequest):
+            request = video_stitcher_service.CreateCdnKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -422,11 +434,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_cdn_key,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_cdn_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -525,8 +535,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -534,7 +544,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.ListCdnKeysRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.ListCdnKeysRequest):
+            request = video_stitcher_service.ListCdnKeysRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -543,11 +556,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_cdn_keys,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_cdn_keys
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -642,8 +653,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -651,7 +662,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetCdnKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetCdnKeyRequest):
+            request = video_stitcher_service.GetCdnKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -660,11 +674,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_cdn_key,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_cdn_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -764,8 +776,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -773,7 +785,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.DeleteCdnKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.DeleteCdnKeyRequest):
+            request = video_stitcher_service.DeleteCdnKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -782,11 +797,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_cdn_key,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_cdn_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -895,8 +908,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cdn_key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -904,7 +917,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.UpdateCdnKeyRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.UpdateCdnKeyRequest):
+            request = video_stitcher_service.UpdateCdnKeyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -915,11 +931,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_cdn_key,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_cdn_key
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1032,8 +1046,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, vod_session])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1041,7 +1055,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.CreateVodSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.CreateVodSessionRequest):
+            request = video_stitcher_service.CreateVodSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1052,11 +1069,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_vod_session,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_vod_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1144,8 +1159,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1153,7 +1168,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetVodSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetVodSessionRequest):
+            request = video_stitcher_service.GetVodSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1162,11 +1180,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_vod_session,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_vod_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1257,8 +1273,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1266,7 +1282,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.ListVodStitchDetailsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.ListVodStitchDetailsRequest):
+            request = video_stitcher_service.ListVodStitchDetailsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1275,11 +1294,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_vod_stitch_details,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_vod_stitch_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1378,8 +1395,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1387,7 +1404,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetVodStitchDetailRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetVodStitchDetailRequest):
+            request = video_stitcher_service.GetVodStitchDetailRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1396,11 +1416,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_vod_stitch_detail,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_vod_stitch_detail
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1491,8 +1509,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1500,7 +1518,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.ListVodAdTagDetailsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.ListVodAdTagDetailsRequest):
+            request = video_stitcher_service.ListVodAdTagDetailsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1509,11 +1530,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_vod_ad_tag_details,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_vod_ad_tag_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1612,8 +1631,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1621,7 +1640,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetVodAdTagDetailRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetVodAdTagDetailRequest):
+            request = video_stitcher_service.GetVodAdTagDetailRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1630,11 +1652,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_vod_ad_tag_detail,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_vod_ad_tag_detail
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1724,8 +1744,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1733,7 +1753,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.ListLiveAdTagDetailsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.ListLiveAdTagDetailsRequest):
+            request = video_stitcher_service.ListLiveAdTagDetailsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1742,11 +1765,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_live_ad_tag_details,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_live_ad_tag_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1841,8 +1862,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1850,7 +1871,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetLiveAdTagDetailRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetLiveAdTagDetailRequest):
+            request = video_stitcher_service.GetLiveAdTagDetailRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1859,11 +1883,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_live_ad_tag_detail,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_live_ad_tag_detail
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1976,8 +1998,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, slate, slate_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1985,7 +2007,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.CreateSlateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.CreateSlateRequest):
+            request = video_stitcher_service.CreateSlateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1998,11 +2023,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_slate,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_slate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2098,8 +2121,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2107,7 +2130,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.ListSlatesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.ListSlatesRequest):
+            request = video_stitcher_service.ListSlatesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2116,11 +2142,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_slates,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_slates
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2211,8 +2235,8 @@ class VideoStitcherServiceAsyncClient:
                 Slate object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2220,7 +2244,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetSlateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetSlateRequest):
+            request = video_stitcher_service.GetSlateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2229,11 +2256,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_slate,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_slate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2333,8 +2358,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([slate, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2342,7 +2367,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.UpdateSlateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.UpdateSlateRequest):
+            request = video_stitcher_service.UpdateSlateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2353,11 +2381,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_slate,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_slate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2467,8 +2493,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2476,7 +2502,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.DeleteSlateRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.DeleteSlateRequest):
+            request = video_stitcher_service.DeleteSlateRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2485,11 +2514,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_slate,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_slate
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2597,8 +2624,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, live_session])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2606,7 +2633,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.CreateLiveSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.CreateLiveSessionRequest):
+            request = video_stitcher_service.CreateLiveSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2617,11 +2647,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_live_session,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_live_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2708,8 +2736,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2717,7 +2745,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetLiveSessionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetLiveSessionRequest):
+            request = video_stitcher_service.GetLiveSessionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2726,11 +2757,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_live_session,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_live_session
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2846,8 +2875,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, live_config, live_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2855,7 +2884,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.CreateLiveConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.CreateLiveConfigRequest):
+            request = video_stitcher_service.CreateLiveConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2868,11 +2900,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_live_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_live_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2971,8 +3001,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2980,7 +3010,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.ListLiveConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.ListLiveConfigsRequest):
+            request = video_stitcher_service.ListLiveConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2989,11 +3022,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_live_configs,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_live_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3089,8 +3120,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3098,7 +3129,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.GetLiveConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.GetLiveConfigRequest):
+            request = video_stitcher_service.GetLiveConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3107,11 +3141,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_live_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_live_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3211,8 +3243,8 @@ class VideoStitcherServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3220,7 +3252,10 @@ class VideoStitcherServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = video_stitcher_service.DeleteLiveConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, video_stitcher_service.DeleteLiveConfigRequest):
+            request = video_stitcher_service.DeleteLiveConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3229,11 +3264,9 @@ class VideoStitcherServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_live_config,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_live_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

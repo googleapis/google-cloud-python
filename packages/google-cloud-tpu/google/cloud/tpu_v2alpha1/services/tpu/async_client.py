@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -201,7 +202,9 @@ class TpuAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TpuTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, TpuTransport, Callable[..., TpuTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -213,9 +216,11 @@ class TpuAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TpuTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,TpuTransport,Callable[..., TpuTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the TpuTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -322,8 +327,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -331,7 +336,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.ListNodesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.ListNodesRequest):
+            request = cloud_tpu.ListNodesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -340,11 +348,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_nodes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_nodes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -432,8 +438,8 @@ class TpuAsyncClient:
                 A TPU instance.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -441,7 +447,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.GetNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.GetNodeRequest):
+            request = cloud_tpu.GetNodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -450,11 +459,7 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_node,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_node]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -558,8 +563,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, node, node_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -567,7 +572,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.CreateNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.CreateNodeRequest):
+            request = cloud_tpu.CreateNodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -580,11 +588,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_node,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_node
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -687,8 +693,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -696,7 +702,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.DeleteNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.DeleteNodeRequest):
+            request = cloud_tpu.DeleteNodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -705,11 +714,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_node,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_node
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -800,15 +807,16 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = cloud_tpu.StopNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.StopNodeRequest):
+            request = cloud_tpu.StopNodeRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.stop_node,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_node
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -898,15 +906,16 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = cloud_tpu.StartNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.StartNodeRequest):
+            request = cloud_tpu.StartNodeRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.start_node,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_node
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1016,8 +1025,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([node, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1025,7 +1034,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.UpdateNodeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.UpdateNodeRequest):
+            request = cloud_tpu.UpdateNodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1036,11 +1048,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_node,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_node
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1135,8 +1145,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1144,7 +1154,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.ListQueuedResourcesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.ListQueuedResourcesRequest):
+            request = cloud_tpu.ListQueuedResourcesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1153,11 +1166,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_queued_resources,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_queued_resources
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1249,8 +1260,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1258,7 +1269,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.GetQueuedResourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.GetQueuedResourceRequest):
+            request = cloud_tpu.GetQueuedResourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1267,11 +1281,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_queued_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_queued_resource
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1373,8 +1385,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, queued_resource, queued_resource_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1382,7 +1394,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.CreateQueuedResourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.CreateQueuedResourceRequest):
+            request = cloud_tpu.CreateQueuedResourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1395,11 +1410,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_queued_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_queued_resource
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1495,8 +1508,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1504,7 +1517,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.DeleteQueuedResourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.DeleteQueuedResourceRequest):
+            request = cloud_tpu.DeleteQueuedResourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1513,11 +1529,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_queued_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_queued_resource
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1615,8 +1629,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1624,7 +1638,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.ResetQueuedResourceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.ResetQueuedResourceRequest):
+            request = cloud_tpu.ResetQueuedResourceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1633,11 +1650,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.reset_queued_resource,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reset_queued_resource
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1721,15 +1736,16 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = cloud_tpu.GenerateServiceIdentityRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.GenerateServiceIdentityRequest):
+            request = cloud_tpu.GenerateServiceIdentityRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.generate_service_identity,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_service_identity
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1814,8 +1830,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1823,7 +1839,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.ListAcceleratorTypesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.ListAcceleratorTypesRequest):
+            request = cloud_tpu.ListAcceleratorTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1832,11 +1851,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_accelerator_types,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_accelerator_types
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1926,8 +1943,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1935,7 +1952,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.GetAcceleratorTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.GetAcceleratorTypeRequest):
+            request = cloud_tpu.GetAcceleratorTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1944,11 +1964,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_accelerator_type,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_accelerator_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2033,8 +2051,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2042,7 +2060,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.ListRuntimeVersionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.ListRuntimeVersionsRequest):
+            request = cloud_tpu.ListRuntimeVersionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2051,11 +2072,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_runtime_versions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_runtime_versions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2145,8 +2164,8 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2154,7 +2173,10 @@ class TpuAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tpu.GetRuntimeVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.GetRuntimeVersionRequest):
+            request = cloud_tpu.GetRuntimeVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2163,11 +2185,9 @@ class TpuAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_runtime_version,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_runtime_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2242,15 +2262,16 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = cloud_tpu.GetGuestAttributesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.GetGuestAttributesRequest):
+            request = cloud_tpu.GetGuestAttributesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_guest_attributes,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_guest_attributes
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2334,15 +2355,16 @@ class TpuAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = cloud_tpu.SimulateMaintenanceEventRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_tpu.SimulateMaintenanceEventRequest):
+            request = cloud_tpu.SimulateMaintenanceEventRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.simulate_maintenance_event,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.simulate_maintenance_event
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

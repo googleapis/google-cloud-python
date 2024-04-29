@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -538,7 +539,13 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, StorageTransferServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                StorageTransferServiceTransport,
+                Callable[..., StorageTransferServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -550,9 +557,11 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, StorageTransferServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,StorageTransferServiceTransport,Callable[..., StorageTransferServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the StorageTransferServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -661,8 +670,16 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[StorageTransferServiceTransport],
+                Callable[..., StorageTransferServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., StorageTransferServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -734,10 +751,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 Google service account
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.GetGoogleServiceAccountRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.GetGoogleServiceAccountRequest):
             request = transfer.GetGoogleServiceAccountRequest(request)
 
@@ -821,10 +836,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.CreateTransferJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.CreateTransferJobRequest):
             request = transfer.CreateTransferJobRequest(request)
 
@@ -910,10 +923,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.UpdateTransferJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.UpdateTransferJobRequest):
             request = transfer.UpdateTransferJobRequest(request)
 
@@ -995,10 +1006,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.GetTransferJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.GetTransferJobRequest):
             request = transfer.GetTransferJobRequest(request)
 
@@ -1084,10 +1093,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.ListTransferJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.ListTransferJobsRequest):
             request = transfer.ListTransferJobsRequest(request)
 
@@ -1162,10 +1169,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.PauseTransferOperationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.PauseTransferOperationRequest):
             request = transfer.PauseTransferOperationRequest(request)
 
@@ -1234,10 +1239,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.ResumeTransferOperationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.ResumeTransferOperationRequest):
             request = transfer.ResumeTransferOperationRequest(request)
 
@@ -1334,10 +1337,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.RunTransferJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.RunTransferJobRequest):
             request = transfer.RunTransferJobRequest(request)
 
@@ -1419,10 +1420,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.DeleteTransferJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.DeleteTransferJobRequest):
             request = transfer.DeleteTransferJobRequest(request)
 
@@ -1540,8 +1539,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 Represents an On-Premises Agent pool.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, agent_pool, agent_pool_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1549,10 +1548,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.CreateAgentPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.CreateAgentPoolRequest):
             request = transfer.CreateAgentPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1676,8 +1673,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 Represents an On-Premises Agent pool.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([agent_pool, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1685,10 +1682,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.UpdateAgentPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.UpdateAgentPoolRequest):
             request = transfer.UpdateAgentPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1783,8 +1778,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 Represents an On-Premises Agent pool.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1792,10 +1787,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.GetAgentPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.GetAgentPoolRequest):
             request = transfer.GetAgentPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1891,8 +1884,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1900,10 +1893,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.ListAgentPoolsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.ListAgentPoolsRequest):
             request = transfer.ListAgentPoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1998,8 +1989,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2007,10 +1998,8 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a transfer.DeleteAgentPoolRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, transfer.DeleteAgentPoolRequest):
             request = transfer.DeleteAgentPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
