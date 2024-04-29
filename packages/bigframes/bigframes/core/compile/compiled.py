@@ -1050,8 +1050,8 @@ class OrderedIR(BaseIbisIR):
     def _bake_ordering(self) -> OrderedIR:
         """Bakes ordering expression into the selection, maybe creating hidden columns."""
         ordering_expressions = self._ordering.all_ordering_columns
-        new_exprs = []
-        new_baked_cols = []
+        new_exprs: list[OrderingExpression] = []
+        new_baked_cols: list[ibis_types.Value] = []
         for expr in ordering_expressions:
             if isinstance(expr.scalar_expression, ex.OpExpression):
                 baked_column = self._compile_expression(expr.scalar_expression).name(
@@ -1059,18 +1059,28 @@ class OrderedIR(BaseIbisIR):
                 )
                 new_baked_cols.append(baked_column)
                 new_expr = OrderingExpression(
-                    ex.free_var(baked_column.name), expr.direction, expr.na_last
+                    ex.free_var(baked_column.get_name()), expr.direction, expr.na_last
                 )
                 new_exprs.append(new_expr)
-            else:
+            elif isinstance(expr.scalar_expression, ex.UnboundVariableExpression):
+                order_col = expr.scalar_expression.id
                 new_exprs.append(expr)
+                if order_col not in self.column_ids:
+                    new_baked_cols.append(
+                        self._ibis_bindings[expr.scalar_expression.id]
+                    )
 
-        ordering = self._ordering.with_ordering_columns(new_exprs)
+        new_ordering = ExpressionOrdering(
+            tuple(new_exprs),
+            self._ordering.integer_encoding,
+            self._ordering.string_encoding,
+            self._ordering.total_ordering_columns,
+        )
         return OrderedIR(
             self._table,
             columns=self.columns,
-            hidden_ordering_columns=[*self._hidden_ordering_columns, *new_baked_cols],
-            ordering=ordering,
+            hidden_ordering_columns=tuple(new_baked_cols),
+            ordering=new_ordering,
             predicates=self._predicates,
         )
 

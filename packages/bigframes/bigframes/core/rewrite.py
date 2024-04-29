@@ -35,16 +35,21 @@ class SquashedSelect:
     columns: Tuple[Tuple[scalar_exprs.Expression, str], ...]
     predicate: Optional[scalar_exprs.Expression]
     ordering: Tuple[order.OrderingExpression, ...]
+    reverse_root: bool = False
 
     @classmethod
-    def from_node(cls, node: nodes.BigFrameNode) -> SquashedSelect:
+    def from_node(
+        cls, node: nodes.BigFrameNode, projections_only: bool = False
+    ) -> SquashedSelect:
         if isinstance(node, nodes.ProjectionNode):
-            return cls.from_node(node.child).project(node.assignments)
-        elif isinstance(node, nodes.FilterNode):
+            return cls.from_node(node.child, projections_only=projections_only).project(
+                node.assignments
+            )
+        elif not projections_only and isinstance(node, nodes.FilterNode):
             return cls.from_node(node.child).filter(node.predicate)
-        elif isinstance(node, nodes.ReversedNode):
+        elif not projections_only and isinstance(node, nodes.ReversedNode):
             return cls.from_node(node.child).reverse()
-        elif isinstance(node, nodes.OrderByNode):
+        elif not projections_only and isinstance(node, nodes.OrderByNode):
             return cls.from_node(node.child).order_with(node.by)
         else:
             selection = tuple(
@@ -63,7 +68,9 @@ class SquashedSelect:
         new_columns = tuple(
             (expr.bind_all_variables(self.column_lookup), id) for expr, id in projection
         )
-        return SquashedSelect(self.root, new_columns, self.predicate, self.ordering)
+        return SquashedSelect(
+            self.root, new_columns, self.predicate, self.ordering, self.reverse_root
+        )
 
     def filter(self, predicate: scalar_exprs.Expression) -> SquashedSelect:
         if self.predicate is None:
@@ -72,18 +79,24 @@ class SquashedSelect:
             new_predicate = ops.and_op.as_expr(
                 self.predicate, predicate.bind_all_variables(self.column_lookup)
             )
-        return SquashedSelect(self.root, self.columns, new_predicate, self.ordering)
+        return SquashedSelect(
+            self.root, self.columns, new_predicate, self.ordering, self.reverse_root
+        )
 
     def reverse(self) -> SquashedSelect:
         new_ordering = tuple(expr.with_reverse() for expr in self.ordering)
-        return SquashedSelect(self.root, self.columns, self.predicate, new_ordering)
+        return SquashedSelect(
+            self.root, self.columns, self.predicate, new_ordering, not self.reverse_root
+        )
 
     def order_with(self, by: Tuple[order.OrderingExpression, ...]):
         adjusted_orderings = [
             order_part.bind_variables(self.column_lookup) for order_part in by
         ]
         new_ordering = (*adjusted_orderings, *self.ordering)
-        return SquashedSelect(self.root, self.columns, self.predicate, new_ordering)
+        return SquashedSelect(
+            self.root, self.columns, self.predicate, new_ordering, self.reverse_root
+        )
 
     def maybe_join(
         self, right: SquashedSelect, join_def: join_defs.JoinDefinition
@@ -126,8 +139,10 @@ class SquashedSelect:
         new_columns = remap_names(join_def, lselection, rselection)
 
         # Reconstruct ordering
+        reverse_root = self.reverse_root
         if join_type == "right":
             new_ordering = right.ordering
+            reverse_root = right.reverse_root
         elif join_type == "outer":
             if lmask is not None:
                 prefix = order.OrderingExpression(lmask, order.OrderingDirection.DESC)
@@ -158,16 +173,29 @@ class SquashedSelect:
             new_ordering = self.ordering
         else:
             raise ValueError(f"Unexpected join type {join_type}")
-        return SquashedSelect(self.root, new_columns, new_predicate, new_ordering)
+        return SquashedSelect(
+            self.root, new_columns, new_predicate, new_ordering, reverse_root
+        )
 
     def expand(self) -> nodes.BigFrameNode:
         # Safest to apply predicates first, as it may filter out inputs that cannot be handled by other expressions
         root = self.root
+        if self.reverse_root:
+            root = nodes.ReversedNode(child=root)
         if self.predicate:
             root = nodes.FilterNode(child=root, predicate=self.predicate)
         if self.ordering:
             root = nodes.OrderByNode(child=root, by=self.ordering)
         return nodes.ProjectionNode(child=root, assignments=self.columns)
+
+
+def maybe_squash_projection(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
+    if isinstance(node, nodes.ProjectionNode) and isinstance(
+        node.child, nodes.ProjectionNode
+    ):
+        # Conservative approach, only squash consecutive projections, even though could also squash filters, reorderings
+        return SquashedSelect.from_node(node, projections_only=True).expand()
+    return node
 
 
 def maybe_rewrite_join(join_node: nodes.JoinNode) -> nodes.BigFrameNode:
