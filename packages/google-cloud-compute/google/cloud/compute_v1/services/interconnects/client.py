@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, InterconnectsTransport]] = None,
+        transport: Optional[
+            Union[str, InterconnectsTransport, Callable[..., InterconnectsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, InterconnectsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,InterconnectsTransport,Callable[..., InterconnectsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the InterconnectsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -630,8 +635,15 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[InterconnectsTransport], Callable[..., InterconnectsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., InterconnectsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -710,8 +722,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -719,10 +731,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInterconnectRequest):
             request = compute.DeleteInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -828,8 +838,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -837,10 +847,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteInterconnectRequest):
             request = compute.DeleteInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -975,8 +983,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -984,10 +992,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetInterconnectRequest):
             request = compute.GetInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1103,8 +1109,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1112,10 +1118,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetDiagnosticsInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetDiagnosticsInterconnectRequest):
             request = compute.GetDiagnosticsInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1226,8 +1230,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1235,10 +1239,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetMacsecConfigInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetMacsecConfigInterconnectRequest):
             request = compute.GetMacsecConfigInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1344,8 +1346,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1353,10 +1355,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInterconnectRequest):
             request = compute.InsertInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1457,8 +1457,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1466,10 +1466,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertInterconnectRequest):
             request = compute.InsertInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1592,8 +1590,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1601,10 +1599,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListInterconnectsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListInterconnectsRequest):
             request = compute.ListInterconnectsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1721,8 +1717,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect, interconnect_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1730,10 +1726,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchInterconnectRequest):
             request = compute.PatchInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1850,8 +1844,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, interconnect, interconnect_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1859,10 +1853,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchInterconnectRequest):
             request = compute.PatchInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2005,8 +1997,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_labels_request_resource]
         )
@@ -2016,10 +2008,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsInterconnectRequest):
             request = compute.SetLabelsInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2140,8 +2130,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_labels_request_resource]
         )
@@ -2151,10 +2141,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsInterconnectRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsInterconnectRequest):
             request = compute.SetLabelsInterconnectRequest(request)
             # If we have keyword arguments corresponding to fields on the

@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class AddressesClient(metaclass=AddressesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AddressesTransport]] = None,
+        transport: Optional[
+            Union[str, AddressesTransport, Callable[..., AddressesTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AddressesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AddressesTransport,Callable[..., AddressesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AddressesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class AddressesClient(metaclass=AddressesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AddressesTransport], Callable[..., AddressesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AddressesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -704,8 +716,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -713,10 +725,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListAddressesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListAddressesRequest):
             request = compute.AggregatedListAddressesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -833,8 +843,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, address])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -842,10 +852,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteAddressRequest):
             request = compute.DeleteAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -963,8 +971,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, address])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -972,10 +980,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteAddressRequest):
             request = compute.DeleteAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1122,8 +1128,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, address])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1131,10 +1137,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetAddressRequest):
             request = compute.GetAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1250,8 +1254,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, address_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1259,10 +1263,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertAddressRequest):
             request = compute.InsertAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1377,8 +1379,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, address_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1386,10 +1388,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertAddressRequest):
             request = compute.InsertAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1526,8 +1526,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1535,10 +1535,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListAddressesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListAddressesRequest):
             request = compute.ListAddressesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1669,8 +1667,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, address, region_addresses_move_request_resource]
         )
@@ -1680,10 +1678,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.MoveAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.MoveAddressRequest):
             request = compute.MoveAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1812,8 +1808,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, address, region_addresses_move_request_resource]
         )
@@ -1823,10 +1819,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.MoveAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.MoveAddressRequest):
             request = compute.MoveAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1982,8 +1976,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_labels_request_resource]
         )
@@ -1993,10 +1987,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsAddressRequest):
             request = compute.SetLabelsAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2127,8 +2119,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_labels_request_resource]
         )
@@ -2138,10 +2130,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsAddressRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsAddressRequest):
             request = compute.SetLabelsAddressRequest(request)
             # If we have keyword arguments corresponding to fields on the

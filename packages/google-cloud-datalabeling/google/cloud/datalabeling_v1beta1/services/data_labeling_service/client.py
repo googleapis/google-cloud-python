@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -689,7 +690,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DataLabelingServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                DataLabelingServiceTransport,
+                Callable[..., DataLabelingServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -701,9 +708,11 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DataLabelingServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,DataLabelingServiceTransport,Callable[..., DataLabelingServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the DataLabelingServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -812,8 +821,16 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[DataLabelingServiceTransport],
+                Callable[..., DataLabelingServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., DataLabelingServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -896,8 +913,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, dataset])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -905,10 +922,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.CreateDatasetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.CreateDatasetRequest):
             request = data_labeling_service.CreateDatasetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1004,8 +1019,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1013,10 +1028,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetDatasetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetDatasetRequest):
             request = data_labeling_service.GetDatasetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1123,8 +1136,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1132,10 +1145,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListDatasetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListDatasetsRequest):
             request = data_labeling_service.ListDatasetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1231,8 +1242,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1240,10 +1251,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.DeleteDatasetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.DeleteDatasetRequest):
             request = data_labeling_service.DeleteDatasetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1352,8 +1361,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, input_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1361,10 +1370,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ImportDataRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ImportDataRequest):
             request = data_labeling_service.ImportDataRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1501,8 +1508,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, annotated_dataset, filter, output_config])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1510,10 +1517,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ExportDataRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ExportDataRequest):
             request = data_labeling_service.ExportDataRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1620,8 +1625,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1629,10 +1634,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetDataItemRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetDataItemRequest):
             request = data_labeling_service.GetDataItemRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1740,8 +1743,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1749,10 +1752,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListDataItemsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListDataItemsRequest):
             request = data_labeling_service.ListDataItemsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1862,8 +1863,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1871,10 +1872,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetAnnotatedDatasetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetAnnotatedDatasetRequest):
             request = data_labeling_service.GetAnnotatedDatasetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1983,8 +1982,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1992,10 +1991,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListAnnotatedDatasetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListAnnotatedDatasetsRequest):
             request = data_labeling_service.ListAnnotatedDatasetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2084,10 +2081,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.DeleteAnnotatedDatasetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.DeleteAnnotatedDatasetRequest):
             request = data_labeling_service.DeleteAnnotatedDatasetRequest(request)
 
@@ -2207,8 +2202,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, basic_config, feature])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2216,10 +2211,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.LabelImageRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.LabelImageRequest):
             request = data_labeling_service.LabelImageRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2357,8 +2350,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, basic_config, feature])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2366,10 +2359,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.LabelVideoRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.LabelVideoRequest):
             request = data_labeling_service.LabelVideoRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2507,8 +2498,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, basic_config, feature])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2516,10 +2507,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.LabelTextRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.LabelTextRequest):
             request = data_labeling_service.LabelTextRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2635,8 +2624,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2644,10 +2633,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetExampleRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetExampleRequest):
             request = data_labeling_service.GetExampleRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2756,8 +2743,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2765,10 +2752,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListExamplesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListExamplesRequest):
             request = data_labeling_service.ListExamplesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2888,8 +2873,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, annotation_spec_set])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2897,10 +2882,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.CreateAnnotationSpecSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, data_labeling_service.CreateAnnotationSpecSetRequest
         ):
@@ -3005,8 +2988,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3014,10 +2997,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetAnnotationSpecSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetAnnotationSpecSetRequest):
             request = data_labeling_service.GetAnnotationSpecSetRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3125,8 +3106,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3134,10 +3115,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListAnnotationSpecSetsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListAnnotationSpecSetsRequest):
             request = data_labeling_service.ListAnnotationSpecSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3236,8 +3215,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3245,10 +3224,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.DeleteAnnotationSpecSetRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, data_labeling_service.DeleteAnnotationSpecSetRequest
         ):
@@ -3359,8 +3336,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instruction])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3368,10 +3345,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.CreateInstructionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.CreateInstructionRequest):
             request = data_labeling_service.CreateInstructionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3477,8 +3452,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3486,10 +3461,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetInstructionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetInstructionRequest):
             request = data_labeling_service.GetInstructionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3596,8 +3569,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3605,10 +3578,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListInstructionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListInstructionsRequest):
             request = data_labeling_service.ListInstructionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3705,8 +3676,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3714,10 +3685,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.DeleteInstructionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.DeleteInstructionRequest):
             request = data_labeling_service.DeleteInstructionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3812,8 +3781,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3821,10 +3790,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetEvaluationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetEvaluationRequest):
             request = data_labeling_service.GetEvaluationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3963,8 +3930,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3972,10 +3939,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.SearchEvaluationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.SearchEvaluationsRequest):
             request = data_labeling_service.SearchEvaluationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4091,8 +4056,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4100,10 +4065,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.SearchExampleComparisonsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(
             request, data_labeling_service.SearchExampleComparisonsRequest
         ):
@@ -4223,8 +4186,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4232,10 +4195,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.CreateEvaluationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.CreateEvaluationJobRequest):
             request = data_labeling_service.CreateEvaluationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4357,8 +4318,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([evaluation_job, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4366,10 +4327,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.UpdateEvaluationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.UpdateEvaluationJobRequest):
             request = data_labeling_service.UpdateEvaluationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4472,8 +4431,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4481,10 +4440,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.GetEvaluationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.GetEvaluationJobRequest):
             request = data_labeling_service.GetEvaluationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4573,8 +4530,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4582,10 +4539,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.PauseEvaluationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.PauseEvaluationJobRequest):
             request = data_labeling_service.PauseEvaluationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4671,8 +4626,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4680,10 +4635,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ResumeEvaluationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ResumeEvaluationJobRequest):
             request = data_labeling_service.ResumeEvaluationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4767,8 +4720,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4776,10 +4729,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.DeleteEvaluationJobRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.DeleteEvaluationJobRequest):
             request = data_labeling_service.DeleteEvaluationJobRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -4892,8 +4843,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4901,10 +4852,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a data_labeling_service.ListEvaluationJobsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, data_labeling_service.ListEvaluationJobsRequest):
             request = data_labeling_service.ListEvaluationJobsRequest(request)
             # If we have keyword arguments corresponding to fields on the

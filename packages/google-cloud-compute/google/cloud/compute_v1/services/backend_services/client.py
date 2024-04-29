@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -506,7 +507,11 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, BackendServicesTransport]] = None,
+        transport: Optional[
+            Union[
+                str, BackendServicesTransport, Callable[..., BackendServicesTransport]
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -518,9 +523,11 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, BackendServicesTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,BackendServicesTransport,Callable[..., BackendServicesTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the BackendServicesTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -632,8 +639,15 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[BackendServicesTransport], Callable[..., BackendServicesTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., BackendServicesTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -725,8 +739,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, signed_url_key_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -734,10 +748,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddSignedUrlKeyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddSignedUrlKeyBackendServiceRequest):
             request = compute.AddSignedUrlKeyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -858,8 +870,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, signed_url_key_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -867,10 +879,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AddSignedUrlKeyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AddSignedUrlKeyBackendServiceRequest):
             request = compute.AddSignedUrlKeyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1006,8 +1016,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1015,10 +1025,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.AggregatedListBackendServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.AggregatedListBackendServicesRequest):
             request = compute.AggregatedListBackendServicesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1128,8 +1136,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1137,10 +1145,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteBackendServiceRequest):
             request = compute.DeleteBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1248,8 +1254,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1257,10 +1263,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteBackendServiceRequest):
             request = compute.DeleteBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1406,8 +1410,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, key_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1415,10 +1419,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteSignedUrlKeyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteSignedUrlKeyBackendServiceRequest):
             request = compute.DeleteSignedUrlKeyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1542,8 +1544,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, key_name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1551,10 +1553,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteSignedUrlKeyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteSignedUrlKeyBackendServiceRequest):
             request = compute.DeleteSignedUrlKeyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1701,8 +1701,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1710,10 +1710,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetBackendServiceRequest):
             request = compute.GetBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1829,8 +1827,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, backend_service, resource_group_reference_resource]
         )
@@ -1840,10 +1838,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetHealthBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetHealthBackendServiceRequest):
             request = compute.GetHealthBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1978,8 +1974,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1987,10 +1983,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicyBackendServiceRequest):
             request = compute.GetIamPolicyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2097,8 +2091,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2106,10 +2100,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertBackendServiceRequest):
             request = compute.InsertBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2211,8 +2203,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2220,10 +2212,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertBackendServiceRequest):
             request = compute.InsertBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2346,8 +2336,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2355,10 +2345,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListBackendServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListBackendServicesRequest):
             request = compute.ListBackendServicesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2464,8 +2452,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2473,10 +2461,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListUsableBackendServicesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListUsableBackendServicesRequest):
             request = compute.ListUsableBackendServicesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2596,8 +2582,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, backend_service_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2605,10 +2591,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchBackendServiceRequest):
             request = compute.PatchBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2728,8 +2712,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, backend_service_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2737,10 +2721,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.PatchBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.PatchBackendServiceRequest):
             request = compute.PatchBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2887,8 +2869,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, backend_service, security_policy_reference_resource]
         )
@@ -2898,10 +2880,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetEdgeSecurityPolicyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetEdgeSecurityPolicyBackendServiceRequest):
             request = compute.SetEdgeSecurityPolicyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3026,8 +3006,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, backend_service, security_policy_reference_resource]
         )
@@ -3037,10 +3017,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetEdgeSecurityPolicyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetEdgeSecurityPolicyBackendServiceRequest):
             request = compute.SetEdgeSecurityPolicyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3207,8 +3185,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_policy_request_resource]
         )
@@ -3218,10 +3196,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicyBackendServiceRequest):
             request = compute.SetIamPolicyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3346,8 +3322,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, backend_service, security_policy_reference_resource]
         )
@@ -3357,10 +3333,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSecurityPolicyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSecurityPolicyBackendServiceRequest):
             request = compute.SetSecurityPolicyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3485,8 +3459,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, backend_service, security_policy_reference_resource]
         )
@@ -3496,10 +3470,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetSecurityPolicyBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetSecurityPolicyBackendServiceRequest):
             request = compute.SetSecurityPolicyBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3644,8 +3616,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, test_permissions_request_resource]
         )
@@ -3655,10 +3627,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsBackendServiceRequest):
             request = compute.TestIamPermissionsBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3778,8 +3748,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, backend_service_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3787,10 +3757,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateBackendServiceRequest):
             request = compute.UpdateBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3908,8 +3876,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_service, backend_service_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3917,10 +3885,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.UpdateBackendServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.UpdateBackendServiceRequest):
             request = compute.UpdateBackendServiceRequest(request)
             # If we have keyword arguments corresponding to fields on the

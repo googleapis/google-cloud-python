@@ -18,6 +18,7 @@ import functools
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -504,7 +505,9 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, SnapshotsTransport]] = None,
+        transport: Optional[
+            Union[str, SnapshotsTransport, Callable[..., SnapshotsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -516,9 +519,11 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, SnapshotsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,SnapshotsTransport,Callable[..., SnapshotsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the SnapshotsTransport constructor.
+                If set to None, a transport is chosen automatically.
                 NOTE: "rest" transport functionality is currently in a
                 beta state (preview). We welcome your feedback via an
                 issue in this library's source repository.
@@ -627,8 +632,15 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[SnapshotsTransport], Callable[..., SnapshotsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., SnapshotsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -715,8 +727,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -724,10 +736,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteSnapshotRequest):
             request = compute.DeleteSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -841,8 +851,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -850,10 +860,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.DeleteSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.DeleteSnapshotRequest):
             request = compute.DeleteSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -987,8 +995,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -996,10 +1004,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetSnapshotRequest):
             request = compute.GetSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1128,8 +1134,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1137,10 +1143,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.GetIamPolicySnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.GetIamPolicySnapshotRequest):
             request = compute.GetIamPolicySnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1250,8 +1254,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1259,10 +1263,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertSnapshotRequest):
             request = compute.InsertSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1367,8 +1369,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot_resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1376,10 +1378,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.InsertSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.InsertSnapshotRequest):
             request = compute.InsertSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1501,8 +1501,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1510,10 +1510,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.ListSnapshotsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.ListSnapshotsRequest):
             request = compute.ListSnapshotsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1652,8 +1650,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_policy_request_resource]
         )
@@ -1663,10 +1661,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetIamPolicySnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetIamPolicySnapshotRequest):
             request = compute.SetIamPolicySnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1787,8 +1783,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_labels_request_resource]
         )
@@ -1798,10 +1794,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsSnapshotRequest):
             request = compute.SetLabelsSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1922,8 +1916,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_labels_request_resource]
         )
@@ -1933,10 +1927,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.SetLabelsSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.SetLabelsSnapshotRequest):
             request = compute.SetLabelsSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2081,8 +2073,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, test_permissions_request_resource]
         )
@@ -2092,10 +2084,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a compute.TestIamPermissionsSnapshotRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, compute.TestIamPermissionsSnapshotRequest):
             request = compute.TestIamPermissionsSnapshotRequest(request)
             # If we have keyword arguments corresponding to fields on the
