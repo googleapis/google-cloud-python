@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -710,7 +711,13 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, VideoStitcherServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                VideoStitcherServiceTransport,
+                Callable[..., VideoStitcherServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -722,9 +729,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, VideoStitcherServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,VideoStitcherServiceTransport,Callable[..., VideoStitcherServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the VideoStitcherServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -833,8 +842,16 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[VideoStitcherServiceTransport],
+                Callable[..., VideoStitcherServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., VideoStitcherServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -942,8 +959,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cdn_key, cdn_key_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -951,10 +968,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.CreateCdnKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.CreateCdnKeyRequest):
             request = video_stitcher_service.CreateCdnKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1067,8 +1082,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1076,10 +1091,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.ListCdnKeysRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.ListCdnKeysRequest):
             request = video_stitcher_service.ListCdnKeysRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1184,8 +1197,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1193,10 +1206,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetCdnKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetCdnKeyRequest):
             request = video_stitcher_service.GetCdnKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1306,8 +1317,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1315,10 +1326,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.DeleteCdnKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.DeleteCdnKeyRequest):
             request = video_stitcher_service.DeleteCdnKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1437,8 +1446,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([cdn_key, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1446,10 +1455,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.UpdateCdnKeyRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.UpdateCdnKeyRequest):
             request = video_stitcher_service.UpdateCdnKeyRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1574,8 +1581,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, vod_session])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1583,10 +1590,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.CreateVodSessionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.CreateVodSessionRequest):
             request = video_stitcher_service.CreateVodSessionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1686,8 +1691,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1695,10 +1700,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetVodSessionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetVodSessionRequest):
             request = video_stitcher_service.GetVodSessionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1799,8 +1802,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1808,10 +1811,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.ListVodStitchDetailsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.ListVodStitchDetailsRequest):
             request = video_stitcher_service.ListVodStitchDetailsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1920,8 +1921,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1929,10 +1930,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetVodStitchDetailRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetVodStitchDetailRequest):
             request = video_stitcher_service.GetVodStitchDetailRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2033,8 +2032,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2042,10 +2041,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.ListVodAdTagDetailsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.ListVodAdTagDetailsRequest):
             request = video_stitcher_service.ListVodAdTagDetailsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2154,8 +2151,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2163,10 +2160,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetVodAdTagDetailRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetVodAdTagDetailRequest):
             request = video_stitcher_service.GetVodAdTagDetailRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2266,8 +2261,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2275,10 +2270,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.ListLiveAdTagDetailsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.ListLiveAdTagDetailsRequest):
             request = video_stitcher_service.ListLiveAdTagDetailsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2383,8 +2376,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2392,10 +2385,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetLiveAdTagDetailRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetLiveAdTagDetailRequest):
             request = video_stitcher_service.GetLiveAdTagDetailRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2518,8 +2509,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, slate, slate_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2527,10 +2518,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.CreateSlateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.CreateSlateRequest):
             request = video_stitcher_service.CreateSlateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2640,8 +2629,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2649,10 +2638,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.ListSlatesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.ListSlatesRequest):
             request = video_stitcher_service.ListSlatesRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2753,8 +2740,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 Slate object
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2762,10 +2749,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetSlateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetSlateRequest):
             request = video_stitcher_service.GetSlateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2875,8 +2860,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([slate, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2884,10 +2869,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.UpdateSlateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.UpdateSlateRequest):
             request = video_stitcher_service.UpdateSlateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3009,8 +2992,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3018,10 +3001,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.DeleteSlateRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.DeleteSlateRequest):
             request = video_stitcher_service.DeleteSlateRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3139,8 +3120,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, live_session])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3148,10 +3129,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.CreateLiveSessionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.CreateLiveSessionRequest):
             request = video_stitcher_service.CreateLiveSessionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3250,8 +3229,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3259,10 +3238,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetLiveSessionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetLiveSessionRequest):
             request = video_stitcher_service.GetLiveSessionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3388,8 +3365,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, live_config, live_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3397,10 +3374,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.CreateLiveConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.CreateLiveConfigRequest):
             request = video_stitcher_service.CreateLiveConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3513,8 +3488,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3522,10 +3497,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.ListLiveConfigsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.ListLiveConfigsRequest):
             request = video_stitcher_service.ListLiveConfigsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3631,8 +3604,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3640,10 +3613,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.GetLiveConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.GetLiveConfigRequest):
             request = video_stitcher_service.GetLiveConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -3753,8 +3724,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3762,10 +3733,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a video_stitcher_service.DeleteLiveConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, video_stitcher_service.DeleteLiveConfigRequest):
             request = video_stitcher_service.DeleteLiveConfigRequest(request)
             # If we have keyword arguments corresponding to fields on the

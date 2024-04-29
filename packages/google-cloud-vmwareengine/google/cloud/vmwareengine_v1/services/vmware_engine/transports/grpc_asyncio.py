@@ -16,7 +16,9 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -68,7 +70,6 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -98,7 +99,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -118,15 +119,18 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -136,11 +140,11 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -167,7 +171,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -207,7 +211,9 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -2548,6 +2554,687 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["revoke_dns_bind_permission"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_private_clouds: gapic_v1.method_async.wrap_method(
+                self.list_private_clouds,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_private_cloud: gapic_v1.method_async.wrap_method(
+                self.get_private_cloud,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_private_cloud: gapic_v1.method_async.wrap_method(
+                self.create_private_cloud,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_private_cloud: gapic_v1.method_async.wrap_method(
+                self.update_private_cloud,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_private_cloud: gapic_v1.method_async.wrap_method(
+                self.delete_private_cloud,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.undelete_private_cloud: gapic_v1.method_async.wrap_method(
+                self.undelete_private_cloud,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_clusters: gapic_v1.method_async.wrap_method(
+                self.list_clusters,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_cluster: gapic_v1.method_async.wrap_method(
+                self.get_cluster,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_cluster: gapic_v1.method_async.wrap_method(
+                self.create_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_cluster: gapic_v1.method_async.wrap_method(
+                self.update_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_cluster: gapic_v1.method_async.wrap_method(
+                self.delete_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_nodes: gapic_v1.method_async.wrap_method(
+                self.list_nodes,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_node: gapic_v1.method_async.wrap_method(
+                self.get_node,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_external_addresses: gapic_v1.method_async.wrap_method(
+                self.list_external_addresses,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.fetch_network_policy_external_addresses: gapic_v1.method_async.wrap_method(
+                self.fetch_network_policy_external_addresses,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_external_address: gapic_v1.method_async.wrap_method(
+                self.get_external_address,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_external_address: gapic_v1.method_async.wrap_method(
+                self.create_external_address,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_external_address: gapic_v1.method_async.wrap_method(
+                self.update_external_address,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_external_address: gapic_v1.method_async.wrap_method(
+                self.delete_external_address,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_subnets: gapic_v1.method_async.wrap_method(
+                self.list_subnets,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_subnet: gapic_v1.method_async.wrap_method(
+                self.get_subnet,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_subnet: gapic_v1.method_async.wrap_method(
+                self.update_subnet,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_external_access_rules: gapic_v1.method_async.wrap_method(
+                self.list_external_access_rules,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_external_access_rule: gapic_v1.method_async.wrap_method(
+                self.get_external_access_rule,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_external_access_rule: gapic_v1.method_async.wrap_method(
+                self.create_external_access_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_external_access_rule: gapic_v1.method_async.wrap_method(
+                self.update_external_access_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_external_access_rule: gapic_v1.method_async.wrap_method(
+                self.delete_external_access_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_logging_servers: gapic_v1.method_async.wrap_method(
+                self.list_logging_servers,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_logging_server: gapic_v1.method_async.wrap_method(
+                self.get_logging_server,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_logging_server: gapic_v1.method_async.wrap_method(
+                self.create_logging_server,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_logging_server: gapic_v1.method_async.wrap_method(
+                self.update_logging_server,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_logging_server: gapic_v1.method_async.wrap_method(
+                self.delete_logging_server,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_node_types: gapic_v1.method_async.wrap_method(
+                self.list_node_types,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_node_type: gapic_v1.method_async.wrap_method(
+                self.get_node_type,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.show_nsx_credentials: gapic_v1.method_async.wrap_method(
+                self.show_nsx_credentials,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.show_vcenter_credentials: gapic_v1.method_async.wrap_method(
+                self.show_vcenter_credentials,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.reset_nsx_credentials: gapic_v1.method_async.wrap_method(
+                self.reset_nsx_credentials,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reset_vcenter_credentials: gapic_v1.method_async.wrap_method(
+                self.reset_vcenter_credentials,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_dns_forwarding: gapic_v1.method_async.wrap_method(
+                self.get_dns_forwarding,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_dns_forwarding: gapic_v1.method_async.wrap_method(
+                self.update_dns_forwarding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_network_peering: gapic_v1.method_async.wrap_method(
+                self.get_network_peering,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_network_peerings: gapic_v1.method_async.wrap_method(
+                self.list_network_peerings,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_network_peering: gapic_v1.method_async.wrap_method(
+                self.create_network_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_network_peering: gapic_v1.method_async.wrap_method(
+                self.delete_network_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_network_peering: gapic_v1.method_async.wrap_method(
+                self.update_network_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_peering_routes: gapic_v1.method_async.wrap_method(
+                self.list_peering_routes,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_hcx_activation_key: gapic_v1.method_async.wrap_method(
+                self.create_hcx_activation_key,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_hcx_activation_keys: gapic_v1.method_async.wrap_method(
+                self.list_hcx_activation_keys,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_hcx_activation_key: gapic_v1.method_async.wrap_method(
+                self.get_hcx_activation_key,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_network_policy: gapic_v1.method_async.wrap_method(
+                self.get_network_policy,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_network_policies: gapic_v1.method_async.wrap_method(
+                self.list_network_policies,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_network_policy: gapic_v1.method_async.wrap_method(
+                self.create_network_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_network_policy: gapic_v1.method_async.wrap_method(
+                self.update_network_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_network_policy: gapic_v1.method_async.wrap_method(
+                self.delete_network_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_management_dns_zone_bindings: gapic_v1.method_async.wrap_method(
+                self.list_management_dns_zone_bindings,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+                self.get_management_dns_zone_binding,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+                self.create_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+                self.update_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+                self.delete_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.repair_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+                self.repair_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_vmware_engine_network: gapic_v1.method_async.wrap_method(
+                self.create_vmware_engine_network,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_vmware_engine_network: gapic_v1.method_async.wrap_method(
+                self.update_vmware_engine_network,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_vmware_engine_network: gapic_v1.method_async.wrap_method(
+                self.delete_vmware_engine_network,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_vmware_engine_network: gapic_v1.method_async.wrap_method(
+                self.get_vmware_engine_network,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_vmware_engine_networks: gapic_v1.method_async.wrap_method(
+                self.list_vmware_engine_networks,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_private_connection: gapic_v1.method_async.wrap_method(
+                self.create_private_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_private_connection: gapic_v1.method_async.wrap_method(
+                self.get_private_connection,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_private_connections: gapic_v1.method_async.wrap_method(
+                self.list_private_connections,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_private_connection: gapic_v1.method_async.wrap_method(
+                self.update_private_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_private_connection: gapic_v1.method_async.wrap_method(
+                self.delete_private_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_private_connection_peering_routes: gapic_v1.method_async.wrap_method(
+                self.list_private_connection_peering_routes,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.grant_dns_bind_permission: gapic_v1.method_async.wrap_method(
+                self.grant_dns_bind_permission,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_dns_bind_permission: gapic_v1.method_async.wrap_method(
+                self.get_dns_bind_permission,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.revoke_dns_bind_permission: gapic_v1.method_async.wrap_method(
+                self.revoke_dns_bind_permission,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()
