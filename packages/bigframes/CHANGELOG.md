@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.4.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.3.0...v1.4.0) (2024-04-29)
+
+
+### Features
+
+* Add .cache() method to persist intermediate dataframe ([#626](https://github.com/googleapis/python-bigquery-dataframes/issues/626)) ([a5c94ec](https://github.com/googleapis/python-bigquery-dataframes/commit/a5c94ec90dcf2c541d7d4b9558a629f935649dd2))
+* Add transpose support for small homogeneously typed DataFrames. ([#621](https://github.com/googleapis/python-bigquery-dataframes/issues/621)) ([054075d](https://github.com/googleapis/python-bigquery-dataframes/commit/054075d448f7de1b3bc1a4631b4e2340643de4ef))
+* Allow single input type in `remote_function` ([#641](https://github.com/googleapis/python-bigquery-dataframes/issues/641)) ([3aa643f](https://github.com/googleapis/python-bigquery-dataframes/commit/3aa643f7ab6dd0ff826ca2aafbeef29035d7c912))
+* Expose gcf max timeout in `remote_function` ([#639](https://github.com/googleapis/python-bigquery-dataframes/issues/639)) ([dfeaad0](https://github.com/googleapis/python-bigquery-dataframes/commit/dfeaad0ae3b3557a9e8ccb21ddbdc55cfd611e0f))
+* Series binary ops compatible with more types ([#618](https://github.com/googleapis/python-bigquery-dataframes/issues/618)) ([518d315](https://github.com/googleapis/python-bigquery-dataframes/commit/518d315487f351c227070c0127382d11381c5e88))
+* Support the `score` method for `PaLM2TextGenerator` ([#634](https://github.com/googleapis/python-bigquery-dataframes/issues/634)) ([3ffc1d2](https://github.com/googleapis/python-bigquery-dataframes/commit/3ffc1d275ae110bffea2f08e63ef75b053764a0c))
+
+
+### Bug Fixes
+
+* Allow to_pandas to download more than 10GB ([#637](https://github.com/googleapis/python-bigquery-dataframes/issues/637)) ([ce56495](https://github.com/googleapis/python-bigquery-dataframes/commit/ce5649513b66c5191a56fc1fd29240b5dbe02394))
+* Extend row hash to 128 bits to guarantee unique row id ([#632](https://github.com/googleapis/python-bigquery-dataframes/issues/632)) ([9005c6e](https://github.com/googleapis/python-bigquery-dataframes/commit/9005c6e79297d7130e93a0e632eb3936aa145efe))
+* Llm fine tuning tests ([#627](https://github.com/googleapis/python-bigquery-dataframes/issues/627)) ([4724a1a](https://github.com/googleapis/python-bigquery-dataframes/commit/4724a1a456076d003613d2e964a8dd2d80a09ad9))
+* Llm palm score tests ([#643](https://github.com/googleapis/python-bigquery-dataframes/issues/643)) ([cf4ec3a](https://github.com/googleapis/python-bigquery-dataframes/commit/cf4ec3af96c28d42e76868c6230a38511052c44e))
+
+
+### Performance Improvements
+
+* Automatically condense internal expression representation ([#516](https://github.com/googleapis/python-bigquery-dataframes/issues/516)) ([03c1b0d](https://github.com/googleapis/python-bigquery-dataframes/commit/03c1b0d8122afe9e56b480100d6207d1228ca576))
+* Cache transpose to allow performant retranspose ([#635](https://github.com/googleapis/python-bigquery-dataframes/issues/635)) ([44b738d](https://github.com/googleapis/python-bigquery-dataframes/commit/44b738df07d0ee9d9ae2ced339a123f31139f887))
+
+
+### Documentation
+
+* Add supported pandas apis on the main page ([#628](https://github.com/googleapis/python-bigquery-dataframes/issues/628)) ([8d2a51c](https://github.com/googleapis/python-bigquery-dataframes/commit/8d2a51c4079844daba20f414b6c0c0ca030ba1f9))
+* Add the first sample for the Single time-series forecasting from Google Analytics data tutorial ([#623](https://github.com/googleapis/python-bigquery-dataframes/issues/623)) ([2b84c4f](https://github.com/googleapis/python-bigquery-dataframes/commit/2b84c4f173e956ba2c7fcc0ad92785ae95161d8e))
+* Address more technical writers' feedback ([#640](https://github.com/googleapis/python-bigquery-dataframes/issues/640)) ([1e7793c](https://github.com/googleapis/python-bigquery-dataframes/commit/1e7793cdcb56b8c0bcccc1c1ab356bac44454592))
+
 ## [1.3.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.2.0...v1.3.0) (2024-04-22)
 
 
