@@ -10,20 +10,19 @@ branchProtectionRules:
     - 'cla/google'
     - 'OwlBot Post Processor'
     - 'lint'
-    # TODO: Enable once the docs tests ready.
-    # - 'docs'
+    - 'Kokoro system-3.8'
+    - 'Kokoro system-3.11 (noextras)'
+    - 'Kokoro system-3.12'
+    - 'docs'
     - 'unit (3.7)'
     - 'unit (3.8)'
     - 'unit (3.11)'
     - 'unit (3.12)'
     - 'cover'
-    # TODO: enable once the samples tests ready.
-    # - 'Samples - Lint'
-    # - 'Samples - Python 3.8'
-    # - 'Samples - Python 3.9'
-    # - 'Samples - Python 3.10'
-    # - 'Samples - Python 3.11'
-    # - 'Samples - Python 3.12'
+    - 'Samples - Lint'
+    - 'Samples - Python 3.8'
+    - 'Samples - Python 3.11'
+    - 'Samples - Python 3.12'
 permissionRules:
   - team: actools-python
     permission: admin
