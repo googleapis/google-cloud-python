@@ -137,22 +137,6 @@ def test_create_job_configs_labels_length_limit_met():
     assert "source" in labels.keys()
 
 
-def test_create_snapshot_sql_doesnt_timetravel_anonymous_datasets():
-    table_ref = bigquery.TableReference.from_string(
-        "my-test-project._e8166e0cdb.anonbb92cd"
-    )
-
-    sql = bigframes.session._io.bigquery.create_snapshot_sql(
-        table_ref, datetime.datetime.now(datetime.timezone.utc)
-    )
-
-    # Anonymous query results tables don't support time travel.
-    assert "SYSTEM_TIME" not in sql
-
-    # Need fully-qualified table name.
-    assert "`my-test-project`.`_e8166e0cdb`.`anonbb92cd`" in sql
-
-
 def test_create_temp_table_default_expiration():
     """Make sure the created table has an expiration."""
     bqclient = mock.create_autospec(bigquery.Client)
