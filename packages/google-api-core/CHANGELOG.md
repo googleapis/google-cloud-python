@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.19.0](https://github.com/googleapis/python-api-core/compare/v2.18.0...v2.19.0) (2024-04-29)
+
+
+### Features
+
+* Add google.api_core.version_header ([#638](https://github.com/googleapis/python-api-core/issues/638)) ([a7b53e9](https://github.com/googleapis/python-api-core/commit/a7b53e9e9a7deb88baf92a2827958429e3677069))
+
 ## [2.18.0](https://github.com/googleapis/python-api-core/compare/v2.17.1...v2.18.0) (2024-03-20)
 
 
