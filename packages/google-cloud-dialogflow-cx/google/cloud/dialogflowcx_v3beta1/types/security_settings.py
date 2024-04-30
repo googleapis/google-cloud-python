@@ -337,9 +337,9 @@ class SecuritySettings(proto.Message):
                 internal default 365d TTLs.
             REMOVE_AFTER_CONVERSATION (1):
                 Removes data when the conversation ends. If there is no
-                [Conversation][] explicitly established, a default
-                conversation ends when the corresponding Dialogflow session
-                ends.
+                [Conversation][google.cloud.dialogflow.cx.v3beta1.Conversation]
+                explicitly established, a default conversation ends when the
+                corresponding Dialogflow session ends.
         """
         RETENTION_STRATEGY_UNSPECIFIED = 0
         REMOVE_AFTER_CONVERSATION = 1

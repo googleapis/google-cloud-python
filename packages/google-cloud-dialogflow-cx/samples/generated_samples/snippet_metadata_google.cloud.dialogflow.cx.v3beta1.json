@@ -2111,6 +2111,483 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryAsyncClient",
+          "shortName": "ConversationHistoryAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryAsyncClient.delete_conversation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory.DeleteConversation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
+            "shortName": "ConversationHistory"
+          },
+          "shortName": "DeleteConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeleteConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_conversation"
+      },
+      "description": "Sample for DeleteConversation",
+      "file": "dialogflow_v3beta1_generated_conversation_history_delete_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_ConversationHistory_DeleteConversation_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_conversation_history_delete_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryClient",
+          "shortName": "ConversationHistoryClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryClient.delete_conversation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory.DeleteConversation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
+            "shortName": "ConversationHistory"
+          },
+          "shortName": "DeleteConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeleteConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_conversation"
+      },
+      "description": "Sample for DeleteConversation",
+      "file": "dialogflow_v3beta1_generated_conversation_history_delete_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_ConversationHistory_DeleteConversation_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_conversation_history_delete_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryAsyncClient",
+          "shortName": "ConversationHistoryAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryAsyncClient.get_conversation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory.GetConversation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
+            "shortName": "ConversationHistory"
+          },
+          "shortName": "GetConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Conversation",
+        "shortName": "get_conversation"
+      },
+      "description": "Sample for GetConversation",
+      "file": "dialogflow_v3beta1_generated_conversation_history_get_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_ConversationHistory_GetConversation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_conversation_history_get_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryClient",
+          "shortName": "ConversationHistoryClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryClient.get_conversation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory.GetConversation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
+            "shortName": "ConversationHistory"
+          },
+          "shortName": "GetConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Conversation",
+        "shortName": "get_conversation"
+      },
+      "description": "Sample for GetConversation",
+      "file": "dialogflow_v3beta1_generated_conversation_history_get_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_ConversationHistory_GetConversation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_conversation_history_get_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryAsyncClient",
+          "shortName": "ConversationHistoryAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryAsyncClient.list_conversations",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory.ListConversations",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
+            "shortName": "ConversationHistory"
+          },
+          "shortName": "ListConversations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListConversationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.conversation_history.pagers.ListConversationsAsyncPager",
+        "shortName": "list_conversations"
+      },
+      "description": "Sample for ListConversations",
+      "file": "dialogflow_v3beta1_generated_conversation_history_list_conversations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_ConversationHistory_ListConversations_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_conversation_history_list_conversations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryClient",
+          "shortName": "ConversationHistoryClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ConversationHistoryClient.list_conversations",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory.ListConversations",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.ConversationHistory",
+            "shortName": "ConversationHistory"
+          },
+          "shortName": "ListConversations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListConversationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.conversation_history.pagers.ListConversationsPager",
+        "shortName": "list_conversations"
+      },
+      "description": "Sample for ListConversations",
+      "file": "dialogflow_v3beta1_generated_conversation_history_list_conversations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_ConversationHistory_ListConversations_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_conversation_history_list_conversations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.dialogflowcx_v3beta1.DeploymentsAsyncClient",
           "shortName": "DeploymentsAsyncClient"
         },
