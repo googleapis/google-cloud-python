@@ -189,5 +189,9 @@
         uid: bigframes.ml.remote.VertexAIModel
       name: remote
     name: bigframes.ml
+  - items:
+    - name: BigQuery built-in functions
+      uid: bigframes.bigquery
+    name: bigframes.bigquery
   name: BigQuery DataFrames
   status: beta

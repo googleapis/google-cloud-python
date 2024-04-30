@@ -10,3 +10,4 @@ packages.
     bigframes/index
     bigframes.pandas/index
     bigframes.ml/index
+    bigframes.bigquery/index
