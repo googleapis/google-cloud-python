@@ -1023,6 +1023,7 @@ from google.cloud.compute_v1.types.compute import NodeGroupNode
 from google.cloud.compute_v1.types.compute import NodeGroupsAddNodesRequest
 from google.cloud.compute_v1.types.compute import NodeGroupsDeleteNodesRequest
 from google.cloud.compute_v1.types.compute import NodeGroupsListNodes
+from google.cloud.compute_v1.types.compute import NodeGroupsPerformMaintenanceRequest
 from google.cloud.compute_v1.types.compute import NodeGroupsScopedList
 from google.cloud.compute_v1.types.compute import NodeGroupsSetNodeTemplateRequest
 from google.cloud.compute_v1.types.compute import NodeGroupsSimulateMaintenanceEventRequest
@@ -1107,6 +1108,7 @@ from google.cloud.compute_v1.types.compute import PatchUrlMapRequest
 from google.cloud.compute_v1.types.compute import PathMatcher
 from google.cloud.compute_v1.types.compute import PathRule
 from google.cloud.compute_v1.types.compute import PerformMaintenanceInstanceRequest
+from google.cloud.compute_v1.types.compute import PerformMaintenanceNodeGroupRequest
 from google.cloud.compute_v1.types.compute import PerInstanceConfig
 from google.cloud.compute_v1.types.compute import Policy
 from google.cloud.compute_v1.types.compute import PreconfiguredWafSet
@@ -2616,6 +2618,7 @@ __all__ = ('AcceleratorTypesClient',
     'NodeGroupsAddNodesRequest',
     'NodeGroupsDeleteNodesRequest',
     'NodeGroupsListNodes',
+    'NodeGroupsPerformMaintenanceRequest',
     'NodeGroupsScopedList',
     'NodeGroupsSetNodeTemplateRequest',
     'NodeGroupsSimulateMaintenanceEventRequest',
@@ -2700,6 +2703,7 @@ __all__ = ('AcceleratorTypesClient',
     'PathMatcher',
     'PathRule',
     'PerformMaintenanceInstanceRequest',
+    'PerformMaintenanceNodeGroupRequest',
     'PerInstanceConfig',
     'Policy',
     'PreconfiguredWafSet',

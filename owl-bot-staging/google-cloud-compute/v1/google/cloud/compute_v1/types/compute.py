@@ -931,6 +931,7 @@ __protobuf__ = proto.module(
         'NodeGroupsAddNodesRequest',
         'NodeGroupsDeleteNodesRequest',
         'NodeGroupsListNodes',
+        'NodeGroupsPerformMaintenanceRequest',
         'NodeGroupsScopedList',
         'NodeGroupsSetNodeTemplateRequest',
         'NodeGroupsSimulateMaintenanceEventRequest',
@@ -1016,6 +1017,7 @@ __protobuf__ = proto.module(
         'PathRule',
         'PerInstanceConfig',
         'PerformMaintenanceInstanceRequest',
+        'PerformMaintenanceNodeGroupRequest',
         'Policy',
         'PreconfiguredWafSet',
         'PreservedState',
@@ -11233,7 +11235,7 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
 
 class AllocationSpecificSKUReservation(proto.Message):
     r"""This reservation type allows to pre allocate specific
-    instance configuration. Next ID: 6
+    instance configuration.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -28502,6 +28504,18 @@ class ForwardingRule(proto.Message):
             identifier is defined by the server.
 
             This field is a member of `oneof`_ ``_id``.
+        ip_collection (str):
+            Resource reference of a PublicDelegatedPrefix. The PDP must
+            be a sub-PDP in EXTERNAL_IPV6_FORWARDING_RULE_CREATION mode.
+            Use one of the following formats to specify a sub-PDP when
+            creating an IPv6 NetLB forwarding rule using BYOIP: Full
+            resource URL, as in
+            https://www.googleapis.com/compute/v1/projects/project_id/regions/region
+            /publicDelegatedPrefixes/sub-pdp-name Partial URL, as in: -
+            projects/project_id/regions/region/publicDelegatedPrefixes/sub-pdp-name
+            - regions/region/publicDelegatedPrefixes/sub-pdp-name
+
+            This field is a member of `oneof`_ ``_ip_collection``.
         ip_version (str):
             The IP Version that will be used by this
             forwarding rule. Valid options are IPV4 or IPV6.
@@ -28953,6 +28967,11 @@ class ForwardingRule(proto.Message):
     id: int = proto.Field(
         proto.UINT64,
         number=3355,
+        optional=True,
+    )
+    ip_collection: str = proto.Field(
+        proto.STRING,
+        number=176818358,
         optional=True,
     )
     ip_version: str = proto.Field(
@@ -70795,6 +70814,13 @@ class NodeGroup(proto.Message):
             NodeTemplate.
 
             This field is a member of `oneof`_ ``_location_hint``.
+        maintenance_interval (str):
+            Specifies the frequency of planned maintenance events. The
+            accepted values are: ``AS_NEEDED`` and ``RECURRENT``. Check
+            the MaintenanceInterval enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_maintenance_interval``.
         maintenance_policy (str):
             Specifies how to handle instances when a node in the group
             undergoes maintenance. Set to one of: DEFAULT,
@@ -70846,6 +70872,34 @@ class NodeGroup(proto.Message):
 
             This field is a member of `oneof`_ ``_zone``.
     """
+    class MaintenanceInterval(proto.Enum):
+        r"""Specifies the frequency of planned maintenance events. The accepted
+        values are: ``AS_NEEDED`` and ``RECURRENT``.
+
+        Values:
+            UNDEFINED_MAINTENANCE_INTERVAL (0):
+                A value indicating that the enum field is not
+                set.
+            AS_NEEDED (500724834):
+                VMs are eligible to receive infrastructure
+                and hypervisor updates as they become available.
+                This may result in more maintenance operations
+                (live migrations or terminations) for the VM
+                than the PERIODIC and RECURRENT options.
+            RECURRENT (194244550):
+                VMs receive infrastructure and hypervisor updates on a
+                periodic basis, minimizing the number of maintenance
+                operations (live migrations or terminations) on an
+                individual VM. This may mean a VM will take longer to
+                receive an update than if it was configured for AS_NEEDED.
+                Security updates will still be applied as soon as they are
+                available. RECURRENT is used for GEN3 and Slice of Hardware
+                VMs.
+        """
+        UNDEFINED_MAINTENANCE_INTERVAL = 0
+        AS_NEEDED = 500724834
+        RECURRENT = 194244550
+
     class MaintenancePolicy(proto.Enum):
         r"""Specifies how to handle instances when a node in the group undergoes
         maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or
@@ -70939,6 +70993,11 @@ class NodeGroup(proto.Message):
     location_hint: str = proto.Field(
         proto.STRING,
         number=350519505,
+        optional=True,
+    )
+    maintenance_interval: str = proto.Field(
+        proto.STRING,
+        number=403368049,
         optional=True,
     )
     maintenance_policy: str = proto.Field(
@@ -71303,6 +71362,11 @@ class NodeGroupNode(proto.Message):
             node.
 
             This field is a member of `oneof`_ ``_total_resources``.
+        upcoming_maintenance (google.cloud.compute_v1.types.UpcomingMaintenance):
+            [Output Only] The information about an upcoming maintenance
+            event.
+
+            This field is a member of `oneof`_ ``_upcoming_maintenance``.
     """
     class CpuOvercommitType(proto.Enum):
         r"""CPU overcommit.
@@ -71415,6 +71479,12 @@ class NodeGroupNode(proto.Message):
         optional=True,
         message='InstanceConsumptionInfo',
     )
+    upcoming_maintenance: 'UpcomingMaintenance' = proto.Field(
+        proto.MESSAGE,
+        number=227348592,
+        optional=True,
+        message='UpcomingMaintenance',
+    )
 
 
 class NodeGroupsAddNodesRequest(proto.Message):
@@ -71523,6 +71593,32 @@ class NodeGroupsListNodes(proto.Message):
         number=50704284,
         optional=True,
         message='Warning',
+    )
+
+
+class NodeGroupsPerformMaintenanceRequest(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        nodes (MutableSequence[str]):
+            [Required] List of nodes affected by the call.
+        start_time (str):
+            The start time of the schedule. The timestamp
+            is an RFC3339 string.
+
+            This field is a member of `oneof`_ ``_start_time``.
+    """
+
+    nodes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=104993457,
+    )
+    start_time: str = proto.Field(
+        proto.STRING,
+        number=37467274,
+        optional=True,
     )
 
 
@@ -73430,7 +73526,7 @@ class PacketMirroring(proto.Message):
             This field is a member of `oneof`_ ``_enable``.
         filter (google.cloud.compute_v1.types.PacketMirroringFilter):
             Filter for mirrored traffic. If unspecified,
-            all traffic is mirrored.
+            all IPv4 traffic is mirrored.
 
             This field is a member of `oneof`_ ``_filter``.
         id (int):
@@ -73674,7 +73770,7 @@ class PacketMirroringFilter(proto.Message):
             mirrored.
         cidr_ranges (MutableSequence[str]):
             One or more IPv4 or IPv6 CIDR ranges that
-            apply as filter on the source (ingress) or
+            apply as filters on the source (ingress) or
             destination (egress) IP in the IP header. If no
             ranges are specified, all IPv4 traffic that
             matches the specified IPProtocols is mirrored.
@@ -77365,6 +77461,66 @@ class PerformMaintenanceInstanceRequest(proto.Message):
     )
 
 
+class PerformMaintenanceNodeGroupRequest(proto.Message):
+    r"""A request message for NodeGroups.PerformMaintenance. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        node_group (str):
+            Name of the node group scoping this request.
+        node_groups_perform_maintenance_request_resource (google.cloud.compute_v1.types.NodeGroupsPerformMaintenanceRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    node_group: str = proto.Field(
+        proto.STRING,
+        number=469958146,
+    )
+    node_groups_perform_maintenance_request_resource: 'NodeGroupsPerformMaintenanceRequest' = proto.Field(
+        proto.MESSAGE,
+        number=185310294,
+        message='NodeGroupsPerformMaintenanceRequest',
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class Policy(proto.Message):
     r"""An Identity and Access Management (IAM) policy, which specifies
     access controls for Google Cloud resources. A ``Policy`` is a
@@ -78639,6 +78795,14 @@ class PublicDelegatedPrefix(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        allocatable_prefix_length (int):
+            The allocatable prefix length supported by
+            this public delegated prefix. This field is
+            optional and cannot be set for prefixes in
+            DELEGATION mode. It cannot be set for IPv4
+            prefixes either, and it always defaults to 32.
+
+            This field is a member of `oneof`_ ``_allocatable_prefix_length``.
         byoip_api_version (str):
             [Output Only] The version of BYOIP API. Check the
             ByoipApiVersion enum for the list of possible values.
@@ -78686,6 +78850,12 @@ class PublicDelegatedPrefix(proto.Message):
             compute#publicDelegatedPrefix for public delegated prefixes.
 
             This field is a member of `oneof`_ ``_kind``.
+        mode (str):
+            The public delegated prefix mode for IPv6
+            only. Check the Mode enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_mode``.
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -78751,6 +78921,26 @@ class PublicDelegatedPrefix(proto.Message):
         V1 = 2715
         V2 = 2716
 
+    class Mode(proto.Enum):
+        r"""The public delegated prefix mode for IPv6 only.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            DELEGATION (264149288):
+                The public delegated prefix is used for
+                further sub-delegation only. Such prefixes
+                cannot set allocatablePrefixLength.
+            EXTERNAL_IPV6_FORWARDING_RULE_CREATION (398684356):
+                The public delegated prefix is used for
+                creating forwarding rules only. Such prefixes
+                cannot set publicDelegatedSubPrefixes.
+        """
+        UNDEFINED_MODE = 0
+        DELEGATION = 264149288
+        EXTERNAL_IPV6_FORWARDING_RULE_CREATION = 398684356
+
     class Status(proto.Enum):
         r"""[Output Only] The status of the public delegated prefix, which can
         be one of following values: - ``INITIALIZING`` The public delegated
@@ -78790,6 +78980,11 @@ class PublicDelegatedPrefix(proto.Message):
         INITIALIZING = 306588749
         READY_TO_ANNOUNCE = 64641265
 
+    allocatable_prefix_length: int = proto.Field(
+        proto.INT32,
+        number=38427446,
+        optional=True,
+    )
     byoip_api_version: str = proto.Field(
         proto.STRING,
         number=162683283,
@@ -78828,6 +79023,11 @@ class PublicDelegatedPrefix(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=3292052,
+        optional=True,
+    )
+    mode: str = proto.Field(
+        proto.STRING,
+        number=3357091,
         optional=True,
     )
     name: str = proto.Field(
@@ -79026,6 +79226,11 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        allocatable_prefix_length (int):
+            The allocatable prefix length supported by
+            this PublicDelegatedSubPrefix.
+
+            This field is a member of `oneof`_ ``_allocatable_prefix_length``.
         delegatee_project (str):
             Name of the project scoping this
             PublicDelegatedSubPrefix.
@@ -79047,6 +79252,12 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
             Address resources in the delegatee project.
 
             This field is a member of `oneof`_ ``_is_address``.
+        mode (str):
+            The PublicDelegatedSubPrefix mode for IPv6
+            only. Check the Mode enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_mode``.
         name (str):
             The name of the sub public delegated prefix.
 
@@ -79062,6 +79273,26 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
 
             This field is a member of `oneof`_ ``_status``.
     """
+    class Mode(proto.Enum):
+        r"""The PublicDelegatedSubPrefix mode for IPv6 only.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            DELEGATION (264149288):
+                The public delegated prefix is used for
+                further sub-delegation only. Such prefixes
+                cannot set allocatablePrefixLength.
+            EXTERNAL_IPV6_FORWARDING_RULE_CREATION (398684356):
+                The public delegated prefix is used for
+                creating forwarding rules only. Such prefixes
+                cannot set publicDelegatedSubPrefixes.
+        """
+        UNDEFINED_MODE = 0
+        DELEGATION = 264149288
+        EXTERNAL_IPV6_FORWARDING_RULE_CREATION = 398684356
+
     class Status(proto.Enum):
         r"""[Output Only] The status of the sub public delegated prefix.
 
@@ -79078,6 +79309,11 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
         ACTIVE = 314733318
         INACTIVE = 270421099
 
+    allocatable_prefix_length: int = proto.Field(
+        proto.INT32,
+        number=38427446,
+        optional=True,
+    )
     delegatee_project: str = proto.Field(
         proto.STRING,
         number=414860634,
@@ -79096,6 +79332,11 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     is_address: bool = proto.Field(
         proto.BOOL,
         number=352617951,
+        optional=True,
+    )
+    mode: str = proto.Field(
+        proto.STRING,
+        number=3357091,
         optional=True,
     )
     name: str = proto.Field(
@@ -79461,6 +79702,8 @@ class Quota(proto.Message):
                 No description available.
             SSL_CERTIFICATES (378372399):
                 No description available.
+            SSL_POLICIES (523254339):
+                No description available.
             STATIC_ADDRESSES (93624049):
                 No description available.
             STATIC_BYOIP_ADDRESSES (275809649):
@@ -79645,6 +79888,7 @@ class Quota(proto.Message):
         SNAPSHOTS = 343405327
         SSD_TOTAL_GB = 161732561
         SSL_CERTIFICATES = 378372399
+        SSL_POLICIES = 523254339
         STATIC_ADDRESSES = 93624049
         STATIC_BYOIP_ADDRESSES = 275809649
         STATIC_EXTERNAL_IPV6_ADDRESS_RANGES = 472346774
@@ -85218,6 +85462,16 @@ class RouterBgp(proto.Message):
             router will have the same local ASN.
 
             This field is a member of `oneof`_ ``_asn``.
+        identifier_range (str):
+            Explicitly specifies a range of valid BGP
+            Identifiers for this Router. It is provided as a
+            link-local IPv4 range (from 169.254.0.0/16), of
+            size at least /30, even if the BGP sessions are
+            over IPv6. It must not overlap with any IPv4 BGP
+            session ranges. Other vendors commonly call this
+            "router ID".
+
+            This field is a member of `oneof`_ ``_identifier_range``.
         keepalive_interval (int):
             The interval in seconds between BGP keepalive
             messages that are sent to the peer. Hold time is
@@ -85282,6 +85536,11 @@ class RouterBgp(proto.Message):
     asn: int = proto.Field(
         proto.UINT32,
         number=96892,
+        optional=True,
+    )
+    identifier_range: str = proto.Field(
+        proto.STRING,
+        number=501573159,
         optional=True,
     )
     keepalive_interval: int = proto.Field(
@@ -85353,11 +85612,30 @@ class RouterBgpPeer(proto.Message):
             Enable enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_enable``.
+        enable_ipv4 (bool):
+            Enable IPv4 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 4.
+
+            This field is a member of `oneof`_ ``_enable_ipv4``.
         enable_ipv6 (bool):
-            Enable IPv6 traffic over BGP Peer. If not
-            specified, it is disabled by default.
+            Enable IPv6 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 6.
 
             This field is a member of `oneof`_ ``_enable_ipv6``.
+        export_policies (MutableSequence[str]):
+            List of export policies applied to this peer, in the order
+            they must be evaluated. The name must correspond to an
+            existing policy that has ROUTE_POLICY_TYPE_EXPORT type. Note
+            that Route Policies are currently available in preview.
+            Please use Beta API to use Route Policies.
+        import_policies (MutableSequence[str]):
+            List of import policies applied to this peer, in the order
+            they must be evaluated. The name must correspond to an
+            existing policy that has ROUTE_POLICY_TYPE_IMPORT type. Note
+            that Route Policies are currently available in preview.
+            Please use Beta API to use Route Policies.
         interface_name (str):
             Name of the interface the BGP peer is
             associated with.
@@ -85365,9 +85643,14 @@ class RouterBgpPeer(proto.Message):
             This field is a member of `oneof`_ ``_interface_name``.
         ip_address (str):
             IP address of the interface inside Google
-            Cloud Platform. Only IPv4 is supported.
+            Cloud Platform.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv4_nexthop_address (str):
+            IPv4 address of the interface inside Google
+            Cloud Platform.
+
+            This field is a member of `oneof`_ ``_ipv4_nexthop_address``.
         ipv6_nexthop_address (str):
             IPv6 address of the interface inside Google
             Cloud Platform.
@@ -85410,9 +85693,14 @@ class RouterBgpPeer(proto.Message):
             This field is a member of `oneof`_ ``_peer_asn``.
         peer_ip_address (str):
             IP address of the BGP interface outside
-            Google Cloud Platform. Only IPv4 is supported.
+            Google Cloud Platform.
 
             This field is a member of `oneof`_ ``_peer_ip_address``.
+        peer_ipv4_nexthop_address (str):
+            IPv4 address of the BGP interface outside
+            Google Cloud Platform.
+
+            This field is a member of `oneof`_ ``_peer_ipv4_nexthop_address``.
         peer_ipv6_nexthop_address (str):
             IPv6 address of the BGP interface outside
             Google Cloud Platform.
@@ -85552,10 +85840,23 @@ class RouterBgpPeer(proto.Message):
         number=311764355,
         optional=True,
     )
+    enable_ipv4: bool = proto.Field(
+        proto.BOOL,
+        number=181467937,
+        optional=True,
+    )
     enable_ipv6: bool = proto.Field(
         proto.BOOL,
         number=181467939,
         optional=True,
+    )
+    export_policies: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=134084987,
+    )
+    import_policies: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=451147946,
     )
     interface_name: str = proto.Field(
         proto.STRING,
@@ -85565,6 +85866,11 @@ class RouterBgpPeer(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=406272220,
+        optional=True,
+    )
+    ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=5703377,
         optional=True,
     )
     ipv6_nexthop_address: str = proto.Field(
@@ -85595,6 +85901,11 @@ class RouterBgpPeer(proto.Message):
     peer_ip_address: str = proto.Field(
         proto.STRING,
         number=207735769,
+        optional=True,
+    )
+    peer_ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=469221774,
         optional=True,
     )
     peer_ipv6_nexthop_address: str = proto.Field(
@@ -85731,15 +86042,29 @@ class RouterInterface(proto.Message):
 
     Attributes:
         ip_range (str):
-            IP address and range of the interface. The IP
-            range must be in the RFC3927 link-local IP
-            address space. The value must be a
-            CIDR-formatted string, for example:
-            169.254.0.1/30. NOTE: Do not truncate the
-            address as it represents the IP address of the
-            interface.
+            IP address and range of the interface. - For
+            Internet Protocol version 4 (IPv4), the IP range
+            must be in the RFC3927 link-local IP address
+            space. The value must be a CIDR-formatted
+            string, for example, 169.254.0.1/30. Note: Do
+            not truncate the IP address, as it represents
+            the IP address of the interface. - For Internet
+            Protocol version 6 (IPv6), the value must be a
+            unique local address (ULA) range from
+            fdff:1::/64 with a mask length of 126 or less.
+            This value should be a CIDR-formatted string,
+            for example, fc00:0:1:1::1/112. Within the
+            router's VPC, this IPv6 prefix will be reserved
+            exclusively for this connection and cannot be
+            used for any other purpose.
 
             This field is a member of `oneof`_ ``_ip_range``.
+        ip_version (str):
+            IP version of this interface.
+            Check the IpVersion enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_ip_version``.
         linked_interconnect_attachment (str):
             URI of the linked Interconnect attachment. It
             must be in the same region as the router. Each
@@ -85814,6 +86139,22 @@ class RouterInterface(proto.Message):
 
             This field is a member of `oneof`_ ``_subnetwork``.
     """
+    class IpVersion(proto.Enum):
+        r"""IP version of this interface.
+
+        Values:
+            UNDEFINED_IP_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4 (2254341):
+                No description available.
+            IPV6 (2254343):
+                No description available.
+        """
+        UNDEFINED_IP_VERSION = 0
+        IPV4 = 2254341
+        IPV6 = 2254343
+
     class ManagementType(proto.Enum):
         r"""[Output Only] The resource that configures and manages this
         interface. - MANAGED_BY_USER is the default value and can be managed
@@ -85846,6 +86187,11 @@ class RouterInterface(proto.Message):
     ip_range: str = proto.Field(
         proto.STRING,
         number=145092645,
+        optional=True,
+    )
+    ip_version: str = proto.Field(
+        proto.STRING,
+        number=294959552,
         optional=True,
     )
     linked_interconnect_attachment: str = proto.Field(
@@ -86657,15 +87003,26 @@ class RouterStatusBgpPeerStatus(proto.Message):
         bfd_status (google.cloud.compute_v1.types.BfdStatus):
 
             This field is a member of `oneof`_ ``_bfd_status``.
+        enable_ipv4 (bool):
+            Enable IPv4 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 4.
+
+            This field is a member of `oneof`_ ``_enable_ipv4``.
         enable_ipv6 (bool):
-            Enable IPv6 traffic over BGP Peer. If not
-            specified, it is disabled by default.
+            Enable IPv6 traffic over BGP Peer. It is
+            enabled by default if the peerIpAddress is
+            version 6.
 
             This field is a member of `oneof`_ ``_enable_ipv6``.
         ip_address (str):
             IP address of the local BGP interface.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv4_nexthop_address (str):
+            IPv4 address of the local BGP interface.
+
+            This field is a member of `oneof`_ ``_ipv4_nexthop_address``.
         ipv6_nexthop_address (str):
             IPv6 address of the local BGP interface.
 
@@ -86694,6 +87051,10 @@ class RouterStatusBgpPeerStatus(proto.Message):
             IP address of the remote BGP interface.
 
             This field is a member of `oneof`_ ``_peer_ip_address``.
+        peer_ipv4_nexthop_address (str):
+            IPv4 address of the remote BGP interface.
+
+            This field is a member of `oneof`_ ``_peer_ipv4_nexthop_address``.
         peer_ipv6_nexthop_address (str):
             IPv6 address of the remote BGP interface.
 
@@ -86761,6 +87122,12 @@ class RouterStatusBgpPeerStatus(proto.Message):
             UNDEFINED_STATUS_REASON (0):
                 A value indicating that the enum field is not
                 set.
+            IPV4_PEER_ON_IPV6_ONLY_CONNECTION (435936662):
+                BGP peer disabled because it requires IPv4
+                but the underlying connection is IPv6-only.
+            IPV6_PEER_ON_IPV4_ONLY_CONNECTION (436304082):
+                BGP peer disabled because it requires IPv6
+                but the underlying connection is IPv4-only.
             MD5_AUTH_INTERNAL_PROBLEM (140462259):
                 Indicates internal problems with
                 configuration of MD5 authentication. This
@@ -86770,6 +87137,8 @@ class RouterStatusBgpPeerStatus(proto.Message):
                 No description available.
         """
         UNDEFINED_STATUS_REASON = 0
+        IPV4_PEER_ON_IPV6_ONLY_CONNECTION = 435936662
+        IPV6_PEER_ON_IPV4_ONLY_CONNECTION = 436304082
         MD5_AUTH_INTERNAL_PROBLEM = 140462259
         STATUS_REASON_UNSPECIFIED = 394331913
 
@@ -86784,6 +87153,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         optional=True,
         message='BfdStatus',
     )
+    enable_ipv4: bool = proto.Field(
+        proto.BOOL,
+        number=181467937,
+        optional=True,
+    )
     enable_ipv6: bool = proto.Field(
         proto.BOOL,
         number=181467939,
@@ -86792,6 +87166,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=406272220,
+        optional=True,
+    )
+    ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=5703377,
         optional=True,
     )
     ipv6_nexthop_address: str = proto.Field(
@@ -86822,6 +87201,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
     peer_ip_address: str = proto.Field(
         proto.STRING,
         number=207735769,
+        optional=True,
+    )
+    peer_ipv4_nexthop_address: str = proto.Field(
+        proto.STRING,
+        number=469221774,
         optional=True,
     )
     peer_ipv6_nexthop_address: str = proto.Field(

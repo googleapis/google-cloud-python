@@ -1023,6 +1023,7 @@ from .types.compute import NodeGroupNode
 from .types.compute import NodeGroupsAddNodesRequest
 from .types.compute import NodeGroupsDeleteNodesRequest
 from .types.compute import NodeGroupsListNodes
+from .types.compute import NodeGroupsPerformMaintenanceRequest
 from .types.compute import NodeGroupsScopedList
 from .types.compute import NodeGroupsSetNodeTemplateRequest
 from .types.compute import NodeGroupsSimulateMaintenanceEventRequest
@@ -1107,6 +1108,7 @@ from .types.compute import PatchUrlMapRequest
 from .types.compute import PathMatcher
 from .types.compute import PathRule
 from .types.compute import PerformMaintenanceInstanceRequest
+from .types.compute import PerformMaintenanceNodeGroupRequest
 from .types.compute import PerInstanceConfig
 from .types.compute import Policy
 from .types.compute import PreconfiguredWafSet
@@ -2560,6 +2562,7 @@ __all__ = (
 'NodeGroupsClient',
 'NodeGroupsDeleteNodesRequest',
 'NodeGroupsListNodes',
+'NodeGroupsPerformMaintenanceRequest',
 'NodeGroupsScopedList',
 'NodeGroupsSetNodeTemplateRequest',
 'NodeGroupsSimulateMaintenanceEventRequest',
@@ -2648,6 +2651,7 @@ __all__ = (
 'PathRule',
 'PerInstanceConfig',
 'PerformMaintenanceInstanceRequest',
+'PerformMaintenanceNodeGroupRequest',
 'Policy',
 'PreconfiguredWafSet',
 'PreservedState',
