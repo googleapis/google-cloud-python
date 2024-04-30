@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/googleapis/python-spanner-django/compare/v3.1.0...v4.0.0) (2024-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support Django 4.2 ([#865](https://github.com/googleapis/python-spanner-django/issues/865))
+
+### Features
+
+* Support Django 4.2 ([#865](https://github.com/googleapis/python-spanner-django/issues/865)) ([75cd9bc](https://github.com/googleapis/python-spanner-django/commit/75cd9bc25bed283f9e22cf2b4b3a9791f5fc5059))
+
 ## [3.1.0](https://github.com/googleapis/python-spanner-django/compare/v3.0.2...v3.1.0) (2024-04-23)
 
 
