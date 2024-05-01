@@ -128,7 +128,10 @@ def resourcemanager_client(
 
 @pytest.fixture(scope="session")
 def session() -> bigframes.Session:
-    return bigframes.Session()
+    context = bigframes.BigQueryOptions(
+        location="US",
+    )
+    return bigframes.Session(context=context)
 
 
 @pytest.fixture(scope="session")
