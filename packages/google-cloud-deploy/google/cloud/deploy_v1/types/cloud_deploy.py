@@ -248,7 +248,9 @@ class DeliveryPipeline(proto.Message):
     Attributes:
         name (str):
             Optional. Name of the ``DeliveryPipeline``. Format is
-            ``projects/{project}/locations/{location}/deliveryPipelines/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}``.
+            The ``deliveryPipeline`` component must match
+            ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         uid (str):
             Output only. Unique identifier of the ``DeliveryPipeline``.
         description (str):
@@ -1434,7 +1436,9 @@ class Target(proto.Message):
     Attributes:
         name (str):
             Optional. Name of the ``Target``. Format is
-            ``projects/{project}/locations/{location}/targets/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/targets/{target}``.
+            The ``target`` component must match
+            ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         target_id (str):
             Output only. Resource id of the ``Target``.
         uid (str):
@@ -1778,7 +1782,7 @@ class GkeCluster(proto.Message):
 
     Attributes:
         cluster (str):
-            Information specifying a GKE Cluster. Format is
+            Optional. Information specifying a GKE Cluster. Format is
             ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``.
         internal_ip (bool):
             Optional. If true, ``cluster`` is accessed using the private
@@ -1807,8 +1811,8 @@ class AnthosCluster(proto.Message):
 
     Attributes:
         membership (str):
-            Membership of the GKE Hub-registered cluster to which to
-            apply the Skaffold configuration. Format is
+            Optional. Membership of the GKE Hub-registered cluster to
+            which to apply the Skaffold configuration. Format is
             ``projects/{project}/locations/{location}/memberships/{membership_name}``.
     """
 
@@ -2166,7 +2170,9 @@ class CustomTargetType(proto.Message):
     Attributes:
         name (str):
             Optional. Name of the ``CustomTargetType``. Format is
-            ``projects/{project}/locations/{location}/customTargetTypes/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/customTargetTypes/{customTargetType}``.
+            The ``customTargetType`` component must match
+            ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         custom_target_type_id (str):
             Output only. Resource id of the ``CustomTargetType``.
         uid (str):
@@ -2360,7 +2366,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing `gs://my-bucket/dir/configs/*` will
+                For example, providing "gs://my-bucket/dir/configs/*" will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
@@ -2758,7 +2764,9 @@ class Release(proto.Message):
     Attributes:
         name (str):
             Optional. Name of the ``Release``. Format is
-            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}``.
+            The ``release`` component must match
+            ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         uid (str):
             Output only. Unique identifier of the ``Release``.
         description (str):
@@ -3499,7 +3507,9 @@ class Rollout(proto.Message):
     Attributes:
         name (str):
             Optional. Name of the ``Rollout``. Format is
-            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
+            The ``rollout`` component must match
+            ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``
         uid (str):
             Output only. Unique identifier of the ``Rollout``.
         description (str):
@@ -3569,7 +3579,7 @@ class Rollout(proto.Message):
             about the rollout.
         controller_rollout (str):
             Output only. Name of the ``ControllerRollout``. Format is
-            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
         rollback_of_rollout (str):
             Output only. Name of the ``Rollout`` that is rolled back by
             this ``Rollout``. Empty if this ``Rollout`` wasn't created
@@ -5123,7 +5133,7 @@ class CreateChildRolloutJobRun(proto.Message):
     Attributes:
         rollout (str):
             Output only. Name of the ``ChildRollout``. Format is
-            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
         rollout_phase_id (str):
             Output only. The ID of the childRollout Phase
             initiated by this JobRun.
@@ -5146,7 +5156,7 @@ class AdvanceChildRolloutJobRun(proto.Message):
     Attributes:
         rollout (str):
             Output only. Name of the ``ChildRollout``. Format is
-            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/[a-z][a-z0-9\-]{0,62}``.
+            ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
         rollout_phase_id (str):
             Output only. the ID of the ChildRollout's
             Phase.
@@ -5574,7 +5584,7 @@ class PromoteReleaseRule(proto.Message):
         id (str):
             Required. ID of the rule. This id must be unique in the
             ``Automation`` resource to which this rule belongs. The
-            format is ``[a-z][a-z0-9\-]{0,62}``.
+            format is ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``.
         wait (google.protobuf.duration_pb2.Duration):
             Optional. How long the release need to be
             paused until being promoted to the next target.
@@ -5629,7 +5639,7 @@ class AdvanceRolloutRule(proto.Message):
         id (str):
             Required. ID of the rule. This id must be unique in the
             ``Automation`` resource to which this rule belongs. The
-            format is ``[a-z][a-z0-9\-]{0,62}``.
+            format is ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``.
         source_phases (MutableSequence[str]):
             Optional. Proceeds only after phase name matched any one in
             the list. This value must consist of lower-case letters,
@@ -5673,7 +5683,7 @@ class RepairRolloutRule(proto.Message):
         id (str):
             Required. ID of the rule. This id must be unique in the
             ``Automation`` resource to which this rule belongs. The
-            format is ``[a-z][a-z0-9\-]{0,62}``.
+            format is ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``.
         source_phases (MutableSequence[str]):
             Optional. Phases within which jobs are subject to automatic
             repair actions on failure. Proceeds only after phase name
