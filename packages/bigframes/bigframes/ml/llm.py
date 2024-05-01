@@ -233,7 +233,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
             max_output_tokens (int, default 128):
                 Maximum number of tokens that can be generated in the response. Specify a lower value for shorter responses and a higher value for longer responses.
                 A token may be smaller than a word. A token is approximately four characters. 100 tokens correspond to roughly 60-80 words.
-                Default 128. For the 'text-bison' model, possible values are in the range [1, 1024]. For the 'text-bison-32k' model, possible values are in the range [1, 8196].
+                Default 128. For the 'text-bison' model, possible values are in the range [1, 1024]. For the 'text-bison-32k' model, possible values are in the range [1, 8192].
                 Please ensure that the specified value for max_output_tokens is within the appropriate range for the model being used.
 
             top_k (int, default 40):
@@ -269,10 +269,10 @@ class PaLM2TextGenerator(base.BaseEstimator):
 
         if (
             self.model_name == _TEXT_GENERATOR_BISON_32K_ENDPOINT
-            and max_output_tokens not in range(1, 8197)
+            and max_output_tokens not in range(1, 8193)
         ):
             raise ValueError(
-                f"max_output_token must be [1, 8196] for TextBison 32k model, but is {max_output_tokens}."
+                f"max_output_token must be [1, 8192] for TextBison 32k model, but is {max_output_tokens}."
             )
 
         if top_k not in range(1, 41):
