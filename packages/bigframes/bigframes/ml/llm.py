@@ -144,7 +144,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
         kwargs: dict = {}
         last_fitting = model.training_runs[-1]["trainingOptions"]
 
-        dummy_text_generator = cls()
+        dummy_text_generator = cls(session=session)
         for bf_param, _ in dummy_text_generator.__dict__.items():
             bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
             if bqml_param in last_fitting:
