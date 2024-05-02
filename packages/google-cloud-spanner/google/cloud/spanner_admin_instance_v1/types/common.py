@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,9 +25,28 @@ from google.protobuf import timestamp_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.spanner.admin.instance.v1",
     manifest={
+        "FulfillmentPeriod",
         "OperationProgress",
     },
 )
+
+
+class FulfillmentPeriod(proto.Enum):
+    r"""Indicates the expected fulfillment period of an operation.
+
+    Values:
+        FULFILLMENT_PERIOD_UNSPECIFIED (0):
+            Not specified.
+        FULFILLMENT_PERIOD_NORMAL (1):
+            Normal fulfillment period. The operation is
+            expected to complete within minutes.
+        FULFILLMENT_PERIOD_EXTENDED (2):
+            Extended fulfillment period. It can take up
+            to an hour for the operation to complete.
+    """
+    FULFILLMENT_PERIOD_UNSPECIFIED = 0
+    FULFILLMENT_PERIOD_NORMAL = 1
+    FULFILLMENT_PERIOD_EXTENDED = 2
 
 
 class OperationProgress(proto.Message):

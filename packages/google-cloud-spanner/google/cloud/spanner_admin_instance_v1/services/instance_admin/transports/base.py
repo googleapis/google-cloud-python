@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ class InstanceAdminTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'spanner.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -127,6 +127,10 @@ class InstanceAdminTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+    @property
+    def host(self):
+        return self._host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -196,6 +200,11 @@ class InstanceAdminTransport(abc.ABC):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
+            self.list_instance_partitions: gapic_v1.method.wrap_method(
+                self.list_instance_partitions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_instance: gapic_v1.method.wrap_method(
                 self.get_instance,
                 default_retry=retries.Retry(
@@ -259,6 +268,31 @@ class InstanceAdminTransport(abc.ABC):
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_instance_partition: gapic_v1.method.wrap_method(
+                self.get_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_instance_partition: gapic_v1.method.wrap_method(
+                self.create_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_instance_partition: gapic_v1.method.wrap_method(
+                self.delete_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_instance_partition: gapic_v1.method.wrap_method(
+                self.update_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_instance_partition_operations: gapic_v1.method.wrap_method(
+                self.list_instance_partition_operations,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -353,6 +387,18 @@ class InstanceAdminTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_instance_partitions(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstancePartitionsRequest],
+        Union[
+            spanner_instance_admin.ListInstancePartitionsResponse,
+            Awaitable[spanner_instance_admin.ListInstancePartitionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_instance(
         self,
     ) -> Callable[
@@ -416,6 +462,57 @@ class InstanceAdminTransport(abc.ABC):
         Union[
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.GetInstancePartitionRequest],
+        Union[
+            spanner_instance_admin.InstancePartition,
+            Awaitable[spanner_instance_admin.InstancePartition],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.CreateInstancePartitionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.DeleteInstancePartitionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.UpdateInstancePartitionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_instance_partition_operations(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstancePartitionOperationsRequest],
+        Union[
+            spanner_instance_admin.ListInstancePartitionOperationsResponse,
+            Awaitable[spanner_instance_admin.ListInstancePartitionOperationsResponse],
         ],
     ]:
         raise NotImplementedError()

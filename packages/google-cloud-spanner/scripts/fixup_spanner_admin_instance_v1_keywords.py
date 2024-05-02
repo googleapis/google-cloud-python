@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,18 +41,24 @@ class spanner_admin_instanceCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_instance': ('parent', 'instance_id', 'instance', ),
         'create_instance_config': ('parent', 'instance_config_id', 'instance_config', 'validate_only', ),
+        'create_instance_partition': ('parent', 'instance_partition_id', 'instance_partition', ),
         'delete_instance': ('name', ),
         'delete_instance_config': ('name', 'etag', 'validate_only', ),
+        'delete_instance_partition': ('name', 'etag', ),
         'get_iam_policy': ('resource', 'options', ),
         'get_instance': ('name', 'field_mask', ),
         'get_instance_config': ('name', ),
+        'get_instance_partition': ('name', ),
         'list_instance_config_operations': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_instance_configs': ('parent', 'page_size', 'page_token', ),
-        'list_instances': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_instance_partition_operations': ('parent', 'filter', 'page_size', 'page_token', 'instance_partition_deadline', ),
+        'list_instance_partitions': ('parent', 'page_size', 'page_token', 'instance_partition_deadline', ),
+        'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'instance_deadline', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_instance': ('instance', 'field_mask', ),
         'update_instance_config': ('instance_config', 'update_mask', 'validate_only', ),
+        'update_instance_partition': ('instance_partition', 'field_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -422,6 +422,279 @@ class ListInstancesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instances:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListInstancePartitionsPager:
+    """A pager for iterating through ``list_instance_partitions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``instance_partitions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListInstancePartitions`` requests and continue to iterate
+    through the ``instance_partitions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., spanner_instance_admin.ListInstancePartitionsResponse],
+        request: spanner_instance_admin.ListInstancePartitionsRequest,
+        response: spanner_instance_admin.ListInstancePartitionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsRequest):
+                The initial request object.
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = spanner_instance_admin.ListInstancePartitionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[spanner_instance_admin.ListInstancePartitionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[spanner_instance_admin.InstancePartition]:
+        for page in self.pages:
+            yield from page.instance_partitions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListInstancePartitionsAsyncPager:
+    """A pager for iterating through ``list_instance_partitions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``instance_partitions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListInstancePartitions`` requests and continue to iterate
+    through the ``instance_partitions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[spanner_instance_admin.ListInstancePartitionsResponse]
+        ],
+        request: spanner_instance_admin.ListInstancePartitionsRequest,
+        response: spanner_instance_admin.ListInstancePartitionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsRequest):
+                The initial request object.
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = spanner_instance_admin.ListInstancePartitionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[spanner_instance_admin.ListInstancePartitionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[spanner_instance_admin.InstancePartition]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.instance_partitions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListInstancePartitionOperationsPager:
+    """A pager for iterating through ``list_instance_partition_operations`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``operations`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListInstancePartitionOperations`` requests and continue to iterate
+    through the ``operations`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., spanner_instance_admin.ListInstancePartitionOperationsResponse
+        ],
+        request: spanner_instance_admin.ListInstancePartitionOperationsRequest,
+        response: spanner_instance_admin.ListInstancePartitionOperationsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsRequest):
+                The initial request object.
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = spanner_instance_admin.ListInstancePartitionOperationsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[spanner_instance_admin.ListInstancePartitionOperationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[operations_pb2.Operation]:
+        for page in self.pages:
+            yield from page.operations
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListInstancePartitionOperationsAsyncPager:
+    """A pager for iterating through ``list_instance_partition_operations`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``operations`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListInstancePartitionOperations`` requests and continue to iterate
+    through the ``operations`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[spanner_instance_admin.ListInstancePartitionOperationsResponse],
+        ],
+        request: spanner_instance_admin.ListInstancePartitionOperationsRequest,
+        response: spanner_instance_admin.ListInstancePartitionOperationsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsRequest):
+                The initial request object.
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = spanner_instance_admin.ListInstancePartitionOperationsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[spanner_instance_admin.ListInstancePartitionOperationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[operations_pb2.Operation]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.operations:
                     yield response
 
         return async_generator()

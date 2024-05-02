@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -399,6 +399,25 @@ class TransactionOptions(proto.Message):
             the ``session`` resource.
 
             This field is a member of `oneof`_ ``mode``.
+        exclude_txn_from_change_streams (bool):
+            When ``exclude_txn_from_change_streams`` is set to ``true``:
+
+            -  Mutations from this transaction will not be recorded in
+               change streams with DDL option
+               ``allow_txn_exclusion=true`` that are tracking columns
+               modified by these transactions.
+            -  Mutations from this transaction will be recorded in
+               change streams with DDL option
+               ``allow_txn_exclusion=false or not set`` that are
+               tracking columns modified by these transactions.
+
+            When ``exclude_txn_from_change_streams`` is set to ``false``
+            or not set, mutations from this transaction will be recorded
+            in all change streams that are tracking columns modified by
+            these transactions. ``exclude_txn_from_change_streams`` may
+            only be specified for read-write or partitioned-dml
+            transactions, otherwise the API will return an
+            ``INVALID_ARGUMENT`` error.
     """
 
     class ReadWrite(proto.Message):
@@ -580,6 +599,10 @@ class TransactionOptions(proto.Message):
         number=2,
         oneof="mode",
         message=ReadOnly,
+    )
+    exclude_txn_from_change_streams: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

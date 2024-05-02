@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class SpannerTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'spanner.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -127,6 +127,10 @@ class SpannerTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+    @property
+    def host(self):
+        return self._host
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
@@ -137,6 +141,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -151,6 +156,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -165,6 +171,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -179,6 +186,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=3600.0,
@@ -193,6 +201,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -207,6 +216,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -226,6 +236,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -240,6 +251,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -259,6 +271,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -273,6 +286,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=3600.0,
@@ -287,6 +301,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -301,6 +316,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -315,6 +331,7 @@ class SpannerTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,

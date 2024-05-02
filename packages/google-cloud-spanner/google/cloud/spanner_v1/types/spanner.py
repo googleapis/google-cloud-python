@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -166,6 +166,16 @@ class Session(proto.Message):
             earlier than the actual last use time.
         creator_role (str):
             The database role which created this session.
+        multiplexed (bool):
+            Optional. If true, specifies a multiplexed session. A
+            multiplexed session may be used for multiple, concurrent
+            read-only operations but can not be used for read-write
+            transactions, partitioned reads, or partitioned queries.
+            Multiplexed sessions can be created via
+            [CreateSession][google.spanner.v1.Spanner.CreateSession] but
+            not via
+            [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
+            Multiplexed sessions may not be deleted nor listed.
     """
 
     name: str = proto.Field(
@@ -190,6 +200,10 @@ class Session(proto.Message):
     creator_role: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    multiplexed: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -409,9 +423,9 @@ class DirectedReadOptions(proto.Message):
 
             This field is a member of `oneof`_ ``replicas``.
         exclude_replicas (google.cloud.spanner_v1.types.DirectedReadOptions.ExcludeReplicas):
-            Exclude_replicas indicates that should be excluded from
-            serving requests. Spanner will not route requests to the
-            replicas in this list.
+            Exclude_replicas indicates that specified replicas should be
+            excluded from serving requests. Spanner will not route
+            requests to the replicas in this list.
 
             This field is a member of `oneof`_ ``replicas``.
     """
@@ -429,7 +443,7 @@ class DirectedReadOptions(proto.Message):
         -  ``location:us-east1`` --> The "us-east1" replica(s) of any
            available type will be used to process the request.
         -  ``type:READ_ONLY`` --> The "READ_ONLY" type replica(s) in nearest
-           . available location will be used to process the request.
+           available location will be used to process the request.
         -  ``location:us-east1 type:READ_ONLY`` --> The "READ_ONLY" type
            replica(s) in location "us-east1" will be used to process the
            request.
@@ -1024,9 +1038,10 @@ class PartitionQueryRequest(proto.Message):
             Required. The query request to generate partitions for. The
             request will fail if the query is not root partitionable.
             For a query to be root partitionable, it needs to satisfy a
-            few conditions. For example, the first operator in the query
-            execution plan must be a distributed union operator. For
-            more information about other conditions, see `Read data in
+            few conditions. For example, if the query execution plan
+            contains a distributed union operator, then it must be the
+            first operator in the plan. For more information about other
+            conditions, see `Read data in
             parallel <https://cloud.google.com/spanner/docs/reads#read_data_in_parallel>`__.
 
             The query request must not contain DML commands, such as
@@ -1516,6 +1531,23 @@ class BatchWriteRequest(proto.Message):
         mutation_groups (MutableSequence[google.cloud.spanner_v1.types.BatchWriteRequest.MutationGroup]):
             Required. The groups of mutations to be
             applied.
+        exclude_txn_from_change_streams (bool):
+            Optional. When ``exclude_txn_from_change_streams`` is set to
+            ``true``:
+
+            -  Mutations from all transactions in this batch write
+               operation will not be recorded in change streams with DDL
+               option ``allow_txn_exclusion=true`` that are tracking
+               columns modified by these transactions.
+            -  Mutations from all transactions in this batch write
+               operation will be recorded in change streams with DDL
+               option ``allow_txn_exclusion=false or not set`` that are
+               tracking columns modified by these transactions.
+
+            When ``exclude_txn_from_change_streams`` is set to ``false``
+            or not set, mutations from all transactions in this batch
+            write operation will be recorded in all change streams that
+            are tracking columns modified by these transactions.
     """
 
     class MutationGroup(proto.Message):
@@ -1548,6 +1580,10 @@ class BatchWriteRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=MutationGroup,
+    )
+    exclude_txn_from_change_streams: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

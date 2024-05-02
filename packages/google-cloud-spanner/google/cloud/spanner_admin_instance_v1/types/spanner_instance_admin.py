@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,6 +50,17 @@ __protobuf__ = proto.module(
         "UpdateInstanceMetadata",
         "CreateInstanceConfigMetadata",
         "UpdateInstanceConfigMetadata",
+        "InstancePartition",
+        "CreateInstancePartitionMetadata",
+        "CreateInstancePartitionRequest",
+        "DeleteInstancePartitionRequest",
+        "GetInstancePartitionRequest",
+        "UpdateInstancePartitionRequest",
+        "UpdateInstancePartitionMetadata",
+        "ListInstancePartitionsRequest",
+        "ListInstancePartitionsResponse",
+        "ListInstancePartitionOperationsRequest",
+        "ListInstancePartitionOperationsResponse",
     },
 )
 
@@ -1012,6 +1023,13 @@ class ListInstancesRequest(proto.Message):
             -  ``name:howl labels.env:dev`` --> The instance's name
                contains "howl" and it has the label "env" with its value
                containing "dev".
+        instance_deadline (google.protobuf.timestamp_pb2.Timestamp):
+            Deadline used while retrieving metadata for instances.
+            Instances whose metadata cannot be retrieved within this
+            deadline will be added to
+            [unreachable][google.spanner.admin.instance.v1.ListInstancesResponse.unreachable]
+            in
+            [ListInstancesResponse][google.spanner.admin.instance.v1.ListInstancesResponse].
     """
 
     parent: str = proto.Field(
@@ -1030,6 +1048,11 @@ class ListInstancesRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    instance_deadline: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListInstancesResponse(proto.Message):
@@ -1043,6 +1066,10 @@ class ListInstancesResponse(proto.Message):
             ``next_page_token`` can be sent in a subsequent
             [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances]
             call to fetch more of the matching instances.
+        unreachable (MutableSequence[str]):
+            The list of unreachable instances. It includes the names of
+            instances whose metadata could not be retrieved within
+            [instance_deadline][google.spanner.admin.instance.v1.ListInstancesRequest.instance_deadline].
     """
 
     @property
@@ -1057,6 +1084,10 @@ class ListInstancesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1127,6 +1158,9 @@ class CreateInstanceMetadata(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this operation failed or
             was completed successfully.
+        expected_fulfillment_period (google.cloud.spanner_admin_instance_v1.types.FulfillmentPeriod):
+            The expected fulfillment period of this
+            create operation.
     """
 
     instance: "Instance" = proto.Field(
@@ -1148,6 +1182,11 @@ class CreateInstanceMetadata(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    expected_fulfillment_period: common.FulfillmentPeriod = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=common.FulfillmentPeriod,
     )
 
 
@@ -1170,6 +1209,9 @@ class UpdateInstanceMetadata(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this operation failed or
             was completed successfully.
+        expected_fulfillment_period (google.cloud.spanner_admin_instance_v1.types.FulfillmentPeriod):
+            The expected fulfillment period of this
+            update operation.
     """
 
     instance: "Instance" = proto.Field(
@@ -1191,6 +1233,11 @@ class UpdateInstanceMetadata(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    expected_fulfillment_period: common.FulfillmentPeriod = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=common.FulfillmentPeriod,
     )
 
 
@@ -1257,6 +1304,597 @@ class UpdateInstanceConfigMetadata(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class InstancePartition(proto.Message):
+    r"""An isolated set of Cloud Spanner resources that databases can
+    define placements on.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. A unique identifier for the instance partition.
+            Values are of the form
+            ``projects/<project>/instances/<instance>/instancePartitions/[a-z][-a-z0-9]*[a-z0-9]``.
+            The final segment of the name must be between 2 and 64
+            characters in length. An instance partition's name cannot be
+            changed after the instance partition is created.
+        config (str):
+            Required. The name of the instance partition's
+            configuration. Values are of the form
+            ``projects/<project>/instanceConfigs/<configuration>``. See
+            also
+            [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig]
+            and
+            [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
+        display_name (str):
+            Required. The descriptive name for this
+            instance partition as it appears in UIs. Must be
+            unique per project and between 4 and 30
+            characters in length.
+        node_count (int):
+            The number of nodes allocated to this instance partition.
+
+            Users can set the node_count field to specify the target
+            number of nodes allocated to the instance partition.
+
+            This may be zero in API responses for instance partitions
+            that are not yet in state ``READY``.
+
+            This field is a member of `oneof`_ ``compute_capacity``.
+        processing_units (int):
+            The number of processing units allocated to this instance
+            partition.
+
+            Users can set the processing_units field to specify the
+            target number of processing units allocated to the instance
+            partition.
+
+            This may be zero in API responses for instance partitions
+            that are not yet in state ``READY``.
+
+            This field is a member of `oneof`_ ``compute_capacity``.
+        state (google.cloud.spanner_admin_instance_v1.types.InstancePartition.State):
+            Output only. The current instance partition
+            state.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the instance
+            partition was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the instance
+            partition was most recently updated.
+        referencing_databases (MutableSequence[str]):
+            Output only. The names of the databases that
+            reference this instance partition. Referencing
+            databases should share the parent instance. The
+            existence of any referencing database prevents
+            the instance partition from being deleted.
+        referencing_backups (MutableSequence[str]):
+            Output only. The names of the backups that
+            reference this instance partition. Referencing
+            backups should share the parent instance. The
+            existence of any referencing backup prevents the
+            instance partition from being deleted.
+        etag (str):
+            Used for optimistic concurrency control as a
+            way to help prevent simultaneous updates of a
+            instance partition from overwriting each other.
+            It is strongly suggested that systems make use
+            of the etag in the read-modify-write cycle to
+            perform instance partition updates in order to
+            avoid race conditions: An etag is returned in
+            the response which contains instance partitions,
+            and systems are expected to put that etag in the
+            request to update instance partitions to ensure
+            that their change will be applied to the same
+            version of the instance partition. If no etag is
+            provided in the call to update instance
+            partition, then the existing instance partition
+            is overwritten blindly.
+    """
+
+    class State(proto.Enum):
+        r"""Indicates the current state of the instance partition.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not specified.
+            CREATING (1):
+                The instance partition is still being
+                created. Resources may not be available yet, and
+                operations such as creating placements using
+                this instance partition may not work.
+            READY (2):
+                The instance partition is fully created and
+                ready to do work such as creating placements and
+                using in databases.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        READY = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    node_count: int = proto.Field(
+        proto.INT32,
+        number=5,
+        oneof="compute_capacity",
+    )
+    processing_units: int = proto.Field(
+        proto.INT32,
+        number=6,
+        oneof="compute_capacity",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    referencing_databases: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
+    referencing_backups: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+
+
+class CreateInstancePartitionMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition].
+
+    Attributes:
+        instance_partition (google.cloud.spanner_admin_instance_v1.types.InstancePartition):
+            The instance partition being created.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the
+            [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition]
+            request was received.
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation was
+            cancelled. If set, this operation is in the
+            process of undoing itself (which is guaranteed
+            to succeed) and cannot be cancelled again.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation failed or
+            was completed successfully.
+    """
+
+    instance_partition: "InstancePartition" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InstancePartition",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class CreateInstancePartitionRequest(proto.Message):
+    r"""The request for
+    [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition].
+
+    Attributes:
+        parent (str):
+            Required. The name of the instance in which to create the
+            instance partition. Values are of the form
+            ``projects/<project>/instances/<instance>``.
+        instance_partition_id (str):
+            Required. The ID of the instance partition to create. Valid
+            identifiers are of the form ``[a-z][-a-z0-9]*[a-z0-9]`` and
+            must be between 2 and 64 characters in length.
+        instance_partition (google.cloud.spanner_admin_instance_v1.types.InstancePartition):
+            Required. The instance partition to create. The
+            instance_partition.name may be omitted, but if specified
+            must be
+            ``<parent>/instancePartitions/<instance_partition_id>``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_partition_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance_partition: "InstancePartition" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InstancePartition",
+    )
+
+
+class DeleteInstancePartitionRequest(proto.Message):
+    r"""The request for
+    [DeleteInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstancePartition].
+
+    Attributes:
+        name (str):
+            Required. The name of the instance partition to be deleted.
+            Values are of the form
+            ``projects/{project}/instances/{instance}/instancePartitions/{instance_partition}``
+        etag (str):
+            Optional. If not empty, the API only deletes
+            the instance partition when the etag provided
+            matches the current status of the requested
+            instance partition. Otherwise, deletes the
+            instance partition without checking the current
+            status of the requested instance partition.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetInstancePartitionRequest(proto.Message):
+    r"""The request for
+    [GetInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.GetInstancePartition].
+
+    Attributes:
+        name (str):
+            Required. The name of the requested instance partition.
+            Values are of the form
+            ``projects/{project}/instances/{instance}/instancePartitions/{instance_partition}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateInstancePartitionRequest(proto.Message):
+    r"""The request for
+    [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition].
+
+    Attributes:
+        instance_partition (google.cloud.spanner_admin_instance_v1.types.InstancePartition):
+            Required. The instance partition to update, which must
+            always include the instance partition name. Otherwise, only
+            fields mentioned in
+            [field_mask][google.spanner.admin.instance.v1.UpdateInstancePartitionRequest.field_mask]
+            need be included.
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. A mask specifying which fields in
+            [InstancePartition][google.spanner.admin.instance.v1.InstancePartition]
+            should be updated. The field mask must always be specified;
+            this prevents any future fields in
+            [InstancePartition][google.spanner.admin.instance.v1.InstancePartition]
+            from being erased accidentally by clients that do not know
+            about them.
+    """
+
+    instance_partition: "InstancePartition" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InstancePartition",
+    )
+    field_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class UpdateInstancePartitionMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition].
+
+    Attributes:
+        instance_partition (google.cloud.spanner_admin_instance_v1.types.InstancePartition):
+            The desired end state of the update.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which
+            [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition]
+            request was received.
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation was
+            cancelled. If set, this operation is in the
+            process of undoing itself (which is guaranteed
+            to succeed) and cannot be cancelled again.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation failed or
+            was completed successfully.
+    """
+
+    instance_partition: "InstancePartition" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InstancePartition",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    cancel_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ListInstancePartitionsRequest(proto.Message):
+    r"""The request for
+    [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+
+    Attributes:
+        parent (str):
+            Required. The instance whose instance partitions should be
+            listed. Values are of the form
+            ``projects/<project>/instances/<instance>``.
+        page_size (int):
+            Number of instance partitions to be returned
+            in the response. If 0 or less, defaults to the
+            server's maximum allowed page size.
+        page_token (str):
+            If non-empty, ``page_token`` should contain a
+            [next_page_token][google.spanner.admin.instance.v1.ListInstancePartitionsResponse.next_page_token]
+            from a previous
+            [ListInstancePartitionsResponse][google.spanner.admin.instance.v1.ListInstancePartitionsResponse].
+        instance_partition_deadline (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Deadline used while retrieving metadata for
+            instance partitions. Instance partitions whose metadata
+            cannot be retrieved within this deadline will be added to
+            [unreachable][google.spanner.admin.instance.v1.ListInstancePartitionsResponse.unreachable]
+            in
+            [ListInstancePartitionsResponse][google.spanner.admin.instance.v1.ListInstancePartitionsResponse].
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    instance_partition_deadline: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ListInstancePartitionsResponse(proto.Message):
+    r"""The response for
+    [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+
+    Attributes:
+        instance_partitions (MutableSequence[google.cloud.spanner_admin_instance_v1.types.InstancePartition]):
+            The list of requested instancePartitions.
+        next_page_token (str):
+            ``next_page_token`` can be sent in a subsequent
+            [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions]
+            call to fetch more of the matching instance partitions.
+        unreachable (MutableSequence[str]):
+            The list of unreachable instance partitions. It includes the
+            names of instance partitions whose metadata could not be
+            retrieved within
+            [instance_partition_deadline][google.spanner.admin.instance.v1.ListInstancePartitionsRequest.instance_partition_deadline].
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    instance_partitions: MutableSequence["InstancePartition"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="InstancePartition",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListInstancePartitionOperationsRequest(proto.Message):
+    r"""The request for
+    [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+
+    Attributes:
+        parent (str):
+            Required. The parent instance of the instance partition
+            operations. Values are of the form
+            ``projects/<project>/instances/<instance>``.
+        filter (str):
+            Optional. An expression that filters the list of returned
+            operations.
+
+            A filter expression consists of a field name, a comparison
+            operator, and a value for filtering. The value must be a
+            string, a number, or a boolean. The comparison operator must
+            be one of: ``<``, ``>``, ``<=``, ``>=``, ``!=``, ``=``, or
+            ``:``. Colon ``:`` is the contains operator. Filter rules
+            are not case sensitive.
+
+            The following fields in the
+            [Operation][google.longrunning.Operation] are eligible for
+            filtering:
+
+            -  ``name`` - The name of the long-running operation
+            -  ``done`` - False if the operation is in progress, else
+               true.
+            -  ``metadata.@type`` - the type of metadata. For example,
+               the type string for
+               [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata]
+               is
+               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata``.
+            -  ``metadata.<field_name>`` - any field in metadata.value.
+               ``metadata.@type`` must be specified first, if filtering
+               on metadata fields.
+            -  ``error`` - Error associated with the long-running
+               operation.
+            -  ``response.@type`` - the type of response.
+            -  ``response.<field_name>`` - any field in response.value.
+
+            You can combine multiple expressions by enclosing each
+            expression in parentheses. By default, expressions are
+            combined with AND logic. However, you can specify AND, OR,
+            and NOT logic explicitly.
+
+            Here are a few examples:
+
+            -  ``done:true`` - The operation is complete.
+            -  ``(metadata.@type=``
+               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata) AND``
+               ``(metadata.instance_partition.name:custom-instance-partition) AND``
+               ``(metadata.start_time < \"2021-03-28T14:50:00Z\") AND``
+               ``(error:*)`` - Return operations where:
+
+               -  The operation's metadata type is
+                  [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
+               -  The instance partition name contains
+                  "custom-instance-partition".
+               -  The operation started before 2021-03-28T14:50:00Z.
+               -  The operation resulted in an error.
+        page_size (int):
+            Optional. Number of operations to be returned
+            in the response. If 0 or less, defaults to the
+            server's maximum allowed page size.
+        page_token (str):
+            Optional. If non-empty, ``page_token`` should contain a
+            [next_page_token][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse.next_page_token]
+            from a previous
+            [ListInstancePartitionOperationsResponse][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse]
+            to the same ``parent`` and with the same ``filter``.
+        instance_partition_deadline (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Deadline used while retrieving metadata for
+            instance partition operations. Instance partitions whose
+            operation metadata cannot be retrieved within this deadline
+            will be added to
+            [unreachable][ListInstancePartitionOperationsResponse.unreachable]
+            in
+            [ListInstancePartitionOperationsResponse][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse].
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    instance_partition_deadline: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ListInstancePartitionOperationsResponse(proto.Message):
+    r"""The response for
+    [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+
+    Attributes:
+        operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
+            The list of matching instance partition [long-running
+            operations][google.longrunning.Operation]. Each operation's
+            name will be prefixed by the instance partition's name. The
+            operation's
+            [metadata][google.longrunning.Operation.metadata] field type
+            ``metadata.type_url`` describes the type of the metadata.
+        next_page_token (str):
+            ``next_page_token`` can be sent in a subsequent
+            [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations]
+            call to fetch more of the matching metadata.
+        unreachable_instance_partitions (MutableSequence[str]):
+            The list of unreachable instance partitions. It includes the
+            names of instance partitions whose operation metadata could
+            not be retrieved within
+            [instance_partition_deadline][google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest.instance_partition_deadline].
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    operations: MutableSequence[operations_pb2.Operation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=operations_pb2.Operation,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable_instance_partitions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

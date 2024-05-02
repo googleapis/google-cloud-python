@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
@@ -90,11 +90,23 @@ class InstanceAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_instance_partition(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_instance_partition(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def pre_delete_instance_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_instance_partition(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -122,6 +134,14 @@ class InstanceAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_instance_partition(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_instance_partition(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_instance_config_operations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -135,6 +155,22 @@ class InstanceAdminRestInterceptor:
                 return request, metadata
 
             def post_list_instance_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_instance_partition_operations(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_instance_partition_operations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_instance_partitions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_instance_partitions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -175,6 +211,14 @@ class InstanceAdminRestInterceptor:
                 return request, metadata
 
             def post_update_instance_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_instance_partition(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_instance_partition(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -232,6 +276,31 @@ class InstanceAdminRestInterceptor:
         """
         return response
 
+    def pre_create_instance_partition(
+        self,
+        request: spanner_instance_admin.CreateInstancePartitionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        spanner_instance_admin.CreateInstancePartitionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_instance_partition
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_create_instance_partition(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_instance_partition
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_instance(
         self,
         request: spanner_instance_admin.DeleteInstanceRequest,
@@ -252,6 +321,20 @@ class InstanceAdminRestInterceptor:
         spanner_instance_admin.DeleteInstanceConfigRequest, Sequence[Tuple[str, str]]
     ]:
         """Pre-rpc interceptor for delete_instance_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def pre_delete_instance_partition(
+        self,
+        request: spanner_instance_admin.DeleteInstancePartitionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        spanner_instance_admin.DeleteInstancePartitionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_instance_partition
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the InstanceAdmin server.
@@ -327,6 +410,31 @@ class InstanceAdminRestInterceptor:
         """
         return response
 
+    def pre_get_instance_partition(
+        self,
+        request: spanner_instance_admin.GetInstancePartitionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        spanner_instance_admin.GetInstancePartitionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_instance_partition
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_get_instance_partition(
+        self, response: spanner_instance_admin.InstancePartition
+    ) -> spanner_instance_admin.InstancePartition:
+        """Post-rpc interceptor for get_instance_partition
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_instance_config_operations(
         self,
         request: spanner_instance_admin.ListInstanceConfigOperationsRequest,
@@ -371,6 +479,57 @@ class InstanceAdminRestInterceptor:
         self, response: spanner_instance_admin.ListInstanceConfigsResponse
     ) -> spanner_instance_admin.ListInstanceConfigsResponse:
         """Post-rpc interceptor for list_instance_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_instance_partition_operations(
+        self,
+        request: spanner_instance_admin.ListInstancePartitionOperationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstancePartitionOperationsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_instance_partition_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_list_instance_partition_operations(
+        self, response: spanner_instance_admin.ListInstancePartitionOperationsResponse
+    ) -> spanner_instance_admin.ListInstancePartitionOperationsResponse:
+        """Post-rpc interceptor for list_instance_partition_operations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_instance_partitions(
+        self,
+        request: spanner_instance_admin.ListInstancePartitionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        spanner_instance_admin.ListInstancePartitionsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_instance_partitions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_list_instance_partitions(
+        self, response: spanner_instance_admin.ListInstancePartitionsResponse
+    ) -> spanner_instance_admin.ListInstancePartitionsResponse:
+        """Post-rpc interceptor for list_instance_partitions
 
         Override in a subclass to manipulate the response
         after it is returned by the InstanceAdmin server but before
@@ -493,6 +652,31 @@ class InstanceAdminRestInterceptor:
         """
         return response
 
+    def pre_update_instance_partition(
+        self,
+        request: spanner_instance_admin.UpdateInstancePartitionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        spanner_instance_admin.UpdateInstancePartitionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_instance_partition
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_update_instance_partition(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_instance_partition
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class InstanceAdminRestStub:
@@ -555,7 +739,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'spanner.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -737,9 +921,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -748,7 +930,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -836,9 +1017,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -847,7 +1026,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -875,6 +1053,104 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_instance_config(resp)
+            return resp
+
+    class _CreateInstancePartition(InstanceAdminRestStub):
+        def __hash__(self):
+            return hash("CreateInstancePartition")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: spanner_instance_admin.CreateInstancePartitionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create instance partition method over HTTP.
+
+            Args:
+                request (~.spanner_instance_admin.CreateInstancePartitionRequest):
+                    The request object. The request for
+                [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/instances/*}/instancePartitions",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_instance_partition(
+                request, metadata
+            )
+            pb_request = spanner_instance_admin.CreateInstancePartitionRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_instance_partition(resp)
             return resp
 
     class _DeleteInstance(InstanceAdminRestStub):
@@ -929,7 +1205,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1006,7 +1281,84 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteInstancePartition(InstanceAdminRestStub):
+        def __hash__(self):
+            return hash("DeleteInstancePartition")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: spanner_instance_admin.DeleteInstancePartitionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete instance partition method over HTTP.
+
+            Args:
+                request (~.spanner_instance_admin.DeleteInstancePartitionRequest):
+                    The request object. The request for
+                [DeleteInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstancePartition].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_instance_partition(
+                request, metadata
+            )
+            pb_request = spanner_instance_admin.DeleteInstancePartitionRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     use_integers_for_enums=True,
                 )
             )
@@ -1156,9 +1508,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1167,7 +1517,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1258,7 +1607,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1351,7 +1699,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1380,6 +1727,97 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_instance_config(resp)
+            return resp
+
+    class _GetInstancePartition(InstanceAdminRestStub):
+        def __hash__(self):
+            return hash("GetInstancePartition")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: spanner_instance_admin.GetInstancePartitionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> spanner_instance_admin.InstancePartition:
+            r"""Call the get instance partition method over HTTP.
+
+            Args:
+                request (~.spanner_instance_admin.GetInstancePartitionRequest):
+                    The request object. The request for
+                [GetInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.GetInstancePartition].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.spanner_instance_admin.InstancePartition:
+                    An isolated set of Cloud Spanner
+                resources that databases can define
+                placements on.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_instance_partition(
+                request, metadata
+            )
+            pb_request = spanner_instance_admin.GetInstancePartitionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = spanner_instance_admin.InstancePartition()
+            pb_resp = spanner_instance_admin.InstancePartition.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_instance_partition(resp)
             return resp
 
     class _ListInstanceConfigOperations(InstanceAdminRestStub):
@@ -1445,7 +1883,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1538,7 +1975,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1567,6 +2003,198 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_instance_configs(resp)
+            return resp
+
+    class _ListInstancePartitionOperations(InstanceAdminRestStub):
+        def __hash__(self):
+            return hash("ListInstancePartitionOperations")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: spanner_instance_admin.ListInstancePartitionOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> spanner_instance_admin.ListInstancePartitionOperationsResponse:
+            r"""Call the list instance partition
+            operations method over HTTP.
+
+                Args:
+                    request (~.spanner_instance_admin.ListInstancePartitionOperationsRequest):
+                        The request object. The request for
+                    [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.spanner_instance_admin.ListInstancePartitionOperationsResponse:
+                        The response for
+                    [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/instances/*}/instancePartitionOperations",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_instance_partition_operations(
+                request, metadata
+            )
+            pb_request = (
+                spanner_instance_admin.ListInstancePartitionOperationsRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = spanner_instance_admin.ListInstancePartitionOperationsResponse()
+            pb_resp = spanner_instance_admin.ListInstancePartitionOperationsResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_instance_partition_operations(resp)
+            return resp
+
+    class _ListInstancePartitions(InstanceAdminRestStub):
+        def __hash__(self):
+            return hash("ListInstancePartitions")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: spanner_instance_admin.ListInstancePartitionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> spanner_instance_admin.ListInstancePartitionsResponse:
+            r"""Call the list instance partitions method over HTTP.
+
+            Args:
+                request (~.spanner_instance_admin.ListInstancePartitionsRequest):
+                    The request object. The request for
+                [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.spanner_instance_admin.ListInstancePartitionsResponse:
+                    The response for
+                [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/instances/*}/instancePartitions",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_instance_partitions(
+                request, metadata
+            )
+            pb_request = spanner_instance_admin.ListInstancePartitionsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = spanner_instance_admin.ListInstancePartitionsResponse()
+            pb_resp = spanner_instance_admin.ListInstancePartitionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_instance_partitions(resp)
             return resp
 
     class _ListInstances(InstanceAdminRestStub):
@@ -1627,7 +2255,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1785,9 +2412,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1796,7 +2421,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1882,9 +2506,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1893,7 +2515,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1981,9 +2602,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1992,7 +2611,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -2080,9 +2698,7 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -2091,7 +2707,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -2121,6 +2736,104 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
             resp = self._interceptor.post_update_instance_config(resp)
             return resp
 
+    class _UpdateInstancePartition(InstanceAdminRestStub):
+        def __hash__(self):
+            return hash("UpdateInstancePartition")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: spanner_instance_admin.UpdateInstancePartitionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update instance partition method over HTTP.
+
+            Args:
+                request (~.spanner_instance_admin.UpdateInstancePartitionRequest):
+                    The request object. The request for
+                [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{instance_partition.name=projects/*/instances/*/instancePartitions/*}",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_instance_partition(
+                request, metadata
+            )
+            pb_request = spanner_instance_admin.UpdateInstancePartitionRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_instance_partition(resp)
+            return resp
+
     @property
     def create_instance(
         self,
@@ -2142,6 +2855,17 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
         return self._CreateInstanceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.CreateInstancePartitionRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_instance(
         self,
     ) -> Callable[[spanner_instance_admin.DeleteInstanceRequest], empty_pb2.Empty]:
@@ -2158,6 +2882,16 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstanceConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.DeleteInstancePartitionRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
@@ -2189,6 +2923,17 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
         return self._GetInstanceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.GetInstancePartitionRequest],
+        spanner_instance_admin.InstancePartition,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_instance_config_operations(
         self,
     ) -> Callable[
@@ -2209,6 +2954,28 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_instance_partition_operations(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstancePartitionOperationsRequest],
+        spanner_instance_admin.ListInstancePartitionOperationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListInstancePartitionOperations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_instance_partitions(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstancePartitionsRequest],
+        spanner_instance_admin.ListInstancePartitionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListInstancePartitions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(
@@ -2259,6 +3026,17 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstanceConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.UpdateInstancePartitionRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

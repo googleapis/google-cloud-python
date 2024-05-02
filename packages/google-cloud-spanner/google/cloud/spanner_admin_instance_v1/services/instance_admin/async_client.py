@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -38,9 +39,9 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 try:
-    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -84,14 +85,22 @@ class InstanceAdminAsyncClient:
 
     _client: InstanceAdminClient
 
+    # Copy defaults from the synchronous client for use here.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = InstanceAdminClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = InstanceAdminClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = InstanceAdminClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = InstanceAdminClient._DEFAULT_UNIVERSE
 
     instance_path = staticmethod(InstanceAdminClient.instance_path)
     parse_instance_path = staticmethod(InstanceAdminClient.parse_instance_path)
     instance_config_path = staticmethod(InstanceAdminClient.instance_config_path)
     parse_instance_config_path = staticmethod(
         InstanceAdminClient.parse_instance_config_path
+    )
+    instance_partition_path = staticmethod(InstanceAdminClient.instance_partition_path)
+    parse_instance_partition_path = staticmethod(
+        InstanceAdminClient.parse_instance_partition_path
     )
     common_billing_account_path = staticmethod(
         InstanceAdminClient.common_billing_account_path
@@ -196,6 +205,25 @@ class InstanceAdminAsyncClient:
         """
         return self._client.transport
 
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used by the client instance.
+        """
+        return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._client._universe_domain
+
     get_transport_class = functools.partial(
         type(InstanceAdminClient).get_transport_class, type(InstanceAdminClient)
     )
@@ -204,11 +232,13 @@ class InstanceAdminAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, InstanceAdminTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, InstanceAdminTransport, Callable[..., InstanceAdminTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the instance admin client.
+        """Instantiates the instance admin async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -216,25 +246,42 @@ class InstanceAdminAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.InstanceAdminTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
-                (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
-                environment variable can also be used to override the endpoint:
+            transport (Optional[Union[str,InstanceAdminTransport,Callable[..., InstanceAdminTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the InstanceAdminTransport constructor.
+                If set to None, a transport is chosen automatically.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client.
+
+                1. The ``api_endpoint`` property can be used to override the
+                default endpoint provided by the client when ``transport`` is
+                not explicitly provided. Only if this property is not set and
+                ``transport`` was not explicitly provided, the endpoint is
+                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+                variable, which have one of the following values:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint) and "auto" (auto switch to the
-                default mTLS endpoint if client certificate is present, this is
-                the default value). However, the ``api_endpoint`` property takes
-                precedence if provided.
-                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                use the default regular endpoint) and "auto" (auto-switch to the
+                default mTLS endpoint if client certificate is present; this is
+                the default value).
+
+                2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
                 is "true", then the ``client_cert_source`` property can be used
-                to provide client certificate for mutual TLS transport. If
+                to provide a client certificate for mTLS transport. If
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
+
+                3. The ``universe_domain`` property can be used to override the
+                default "googleapis.com" universe. Note that ``api_endpoint``
+                property still takes precedence; and ``universe_domain`` is
+                currently not supported for mTLS.
+
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -316,8 +363,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -325,7 +372,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.ListInstanceConfigsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.ListInstanceConfigsRequest):
+            request = spanner_instance_admin.ListInstanceConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -334,27 +384,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instance_configs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=32.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=3600.0,
-            ),
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instance_configs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -443,8 +484,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -452,7 +493,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.GetInstanceConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.GetInstanceConfigRequest):
+            request = spanner_instance_admin.GetInstanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -461,27 +505,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=32.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=3600.0,
-            ),
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -632,8 +667,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance_config, instance_config_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -641,7 +676,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.CreateInstanceConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.CreateInstanceConfigRequest):
+            request = spanner_instance_admin.CreateInstanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -654,17 +692,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instance_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -821,8 +860,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance_config, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -830,7 +869,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.UpdateInstanceConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.UpdateInstanceConfigRequest):
+            request = spanner_instance_admin.UpdateInstanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -841,11 +883,9 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_instance_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -854,6 +894,9 @@ class InstanceAdminAsyncClient:
                 (("instance_config.name", request.instance_config.name),)
             ),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -937,8 +980,8 @@ class InstanceAdminAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -946,7 +989,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.DeleteInstanceConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.DeleteInstanceConfigRequest):
+            request = spanner_instance_admin.DeleteInstanceConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -955,17 +1001,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instance_config,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -1053,8 +1100,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1062,7 +1109,14 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.ListInstanceConfigOperationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_instance_admin.ListInstanceConfigOperationsRequest
+        ):
+            request = spanner_instance_admin.ListInstanceConfigOperationsRequest(
+                request
+            )
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1071,17 +1125,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instance_config_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instance_config_operations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1171,8 +1226,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1180,7 +1235,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.ListInstancesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.ListInstancesRequest):
+            request = spanner_instance_admin.ListInstancesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1189,27 +1247,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_instances,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=32.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=3600.0,
-            ),
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1222,6 +1271,130 @@ class InstanceAdminAsyncClient:
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListInstancesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_instance_partitions(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.ListInstancePartitionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListInstancePartitionsAsyncPager:
+        r"""Lists all instance partitions for the given instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_list_instance_partitions():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.ListInstancePartitionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instance_partitions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionsRequest, dict]]):
+                The request object. The request for
+                [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+            parent (:class:`str`):
+                Required. The instance whose instance partitions should
+                be listed. Values are of the form
+                ``projects/<project>/instances/<instance>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstancePartitionsAsyncPager:
+                The response for
+                   [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_instance_admin.ListInstancePartitionsRequest
+        ):
+            request = spanner_instance_admin.ListInstancePartitionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instance_partitions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListInstancePartitionsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1295,8 +1468,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1304,7 +1477,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.GetInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.GetInstanceRequest):
+            request = spanner_instance_admin.GetInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1313,27 +1489,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_instance,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=32.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=3600.0,
-            ),
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1479,8 +1646,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, instance_id, instance])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1488,7 +1655,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.CreateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.CreateInstanceRequest):
+            request = spanner_instance_admin.CreateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1501,17 +1671,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_instance,
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1668,8 +1839,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([instance, field_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1677,7 +1848,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.UpdateInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.UpdateInstanceRequest):
+            request = spanner_instance_admin.UpdateInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1688,11 +1862,9 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_instance,
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1701,6 +1873,9 @@ class InstanceAdminAsyncClient:
                 (("instance.name", request.instance.name),)
             ),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1786,8 +1961,8 @@ class InstanceAdminAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1795,7 +1970,10 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = spanner_instance_admin.DeleteInstanceRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.DeleteInstanceRequest):
+            request = spanner_instance_admin.DeleteInstanceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1804,27 +1982,18 @@ class InstanceAdminAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_instance,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=32.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=3600.0,
-            ),
-            default_timeout=3600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(
@@ -1929,8 +2098,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1938,28 +2107,27 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.SetIamPolicyRequest(
-                resource=resource,
-            )
+            request = iam_policy_pb2.SetIamPolicyRequest(resource=resource)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_iam_policy,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2068,8 +2236,8 @@ class InstanceAdminAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2077,38 +2245,27 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.GetIamPolicyRequest(
-                resource=resource,
-            )
+            request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_iam_policy,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=32.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=30.0,
-            ),
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -2199,8 +2356,8 @@ class InstanceAdminAsyncClient:
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2208,23 +2365,20 @@ class InstanceAdminAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             request = iam_policy_pb2.TestIamPermissionsRequest(
-                resource=resource,
-                permissions=permissions,
+                resource=resource, permissions=permissions
             )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.test_iam_permissions,
-            default_timeout=30.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.test_iam_permissions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2232,11 +2386,767 @@ class InstanceAdminAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_instance_partition(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.GetInstancePartitionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> spanner_instance_admin.InstancePartition:
+        r"""Gets information about a particular instance
+        partition.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_get_instance_partition():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.GetInstancePartitionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_instance_partition(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.GetInstancePartitionRequest, dict]]):
+                The request object. The request for
+                [GetInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.GetInstancePartition].
+            name (:class:`str`):
+                Required. The name of the requested instance partition.
+                Values are of the form
+                ``projects/{project}/instances/{instance}/instancePartitions/{instance_partition}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_instance_v1.types.InstancePartition:
+                An isolated set of Cloud Spanner
+                resources that databases can define
+                placements on.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, spanner_instance_admin.GetInstancePartitionRequest):
+            request = spanner_instance_admin.GetInstancePartitionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance_partition
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_instance_partition(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.CreateInstancePartitionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        instance_partition: Optional[spanner_instance_admin.InstancePartition] = None,
+        instance_partition_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates an instance partition and begins preparing it to be
+        used. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of preparing the new instance partition. The
+        instance partition name is assigned by the caller. If the named
+        instance partition already exists, ``CreateInstancePartition``
+        returns ``ALREADY_EXISTS``.
+
+        Immediately upon completion of this request:
+
+        -  The instance partition is readable via the API, with all
+           requested attributes but no allocated resources. Its state is
+           ``CREATING``.
+
+        Until completion of the returned operation:
+
+        -  Cancelling the operation renders the instance partition
+           immediately unreadable via the API.
+        -  The instance partition can be deleted.
+        -  All other attempts to modify the instance partition are
+           rejected.
+
+        Upon completion of the returned operation:
+
+        -  Billing for all successfully-allocated resources begins (some
+           types may have lower than the requested levels).
+        -  Databases can start using this instance partition.
+        -  The instance partition's allocated resource levels are
+           readable via the API.
+        -  The instance partition's state becomes ``READY``.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_partition_name>/operations/<operation_id>``
+        and can be used to track creation of the instance partition. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstancePartition][google.spanner.admin.instance.v1.InstancePartition],
+        if successful.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_create_instance_partition():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                instance_partition = spanner_admin_instance_v1.InstancePartition()
+                instance_partition.node_count = 1070
+                instance_partition.name = "name_value"
+                instance_partition.config = "config_value"
+                instance_partition.display_name = "display_name_value"
+
+                request = spanner_admin_instance_v1.CreateInstancePartitionRequest(
+                    parent="parent_value",
+                    instance_partition_id="instance_partition_id_value",
+                    instance_partition=instance_partition,
+                )
+
+                # Make the request
+                operation = client.create_instance_partition(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.CreateInstancePartitionRequest, dict]]):
+                The request object. The request for
+                [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition].
+            parent (:class:`str`):
+                Required. The name of the instance in which to create
+                the instance partition. Values are of the form
+                ``projects/<project>/instances/<instance>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_partition (:class:`google.cloud.spanner_admin_instance_v1.types.InstancePartition`):
+                Required. The instance partition to create. The
+                instance_partition.name may be omitted, but if specified
+                must be
+                ``<parent>/instancePartitions/<instance_partition_id>``.
+
+                This corresponds to the ``instance_partition`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_partition_id (:class:`str`):
+                Required. The ID of the instance partition to create.
+                Valid identifiers are of the form
+                ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 2 and 64
+                characters in length.
+
+                This corresponds to the ``instance_partition_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.spanner_admin_instance_v1.types.InstancePartition` An isolated set of Cloud Spanner resources that databases can define
+                   placements on.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, instance_partition, instance_partition_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_instance_admin.CreateInstancePartitionRequest
+        ):
+            request = spanner_instance_admin.CreateInstancePartitionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if instance_partition is not None:
+            request.instance_partition = instance_partition
+        if instance_partition_id is not None:
+            request.instance_partition_id = instance_partition_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance_partition
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            spanner_instance_admin.InstancePartition,
+            metadata_type=spanner_instance_admin.CreateInstancePartitionMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_instance_partition(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.DeleteInstancePartitionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an existing instance partition. Requires that the
+        instance partition is not used by any database or backup and is
+        not the default instance partition of an instance.
+
+        Authorization requires ``spanner.instancePartitions.delete``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstancePartition.name].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_delete_instance_partition():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.DeleteInstancePartitionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_instance_partition(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstancePartitionRequest, dict]]):
+                The request object. The request for
+                [DeleteInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstancePartition].
+            name (:class:`str`):
+                Required. The name of the instance partition to be
+                deleted. Values are of the form
+                ``projects/{project}/instances/{instance}/instancePartitions/{instance_partition}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_instance_admin.DeleteInstancePartitionRequest
+        ):
+            request = spanner_instance_admin.DeleteInstancePartitionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance_partition
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_instance_partition(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.UpdateInstancePartitionRequest, dict]
+        ] = None,
+        *,
+        instance_partition: Optional[spanner_instance_admin.InstancePartition] = None,
+        field_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates an instance partition, and begins allocating or
+        releasing resources as requested. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of updating the instance partition. If the named
+        instance partition does not exist, returns ``NOT_FOUND``.
+
+        Immediately upon completion of this request:
+
+        -  For resource types for which a decrease in the instance
+           partition's allocation has been requested, billing is based
+           on the newly-requested level.
+
+        Until completion of the returned operation:
+
+        -  Cancelling the operation sets its metadata's
+           [cancel_time][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata.cancel_time],
+           and begins restoring resources to their pre-request values.
+           The operation is guaranteed to succeed at undoing all
+           resource changes, after which point it terminates with a
+           ``CANCELLED`` status.
+        -  All other attempts to modify the instance partition are
+           rejected.
+        -  Reading the instance partition via the API continues to give
+           the pre-request resource levels.
+
+        Upon completion of the returned operation:
+
+        -  Billing begins for all successfully-allocated resources (some
+           types may have lower than the requested levels).
+        -  All newly-reserved resources are available for serving the
+           instance partition's tables.
+        -  The instance partition's new resource levels are readable via
+           the API.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_partition_name>/operations/<operation_id>``
+        and can be used to track the instance partition modification.
+        The [metadata][google.longrunning.Operation.metadata] field type
+        is
+        [UpdateInstancePartitionMetadata][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstancePartition][google.spanner.admin.instance.v1.InstancePartition],
+        if successful.
+
+        Authorization requires ``spanner.instancePartitions.update``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstancePartition.name].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_update_instance_partition():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                instance_partition = spanner_admin_instance_v1.InstancePartition()
+                instance_partition.node_count = 1070
+                instance_partition.name = "name_value"
+                instance_partition.config = "config_value"
+                instance_partition.display_name = "display_name_value"
+
+                request = spanner_admin_instance_v1.UpdateInstancePartitionRequest(
+                    instance_partition=instance_partition,
+                )
+
+                # Make the request
+                operation = client.update_instance_partition(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstancePartitionRequest, dict]]):
+                The request object. The request for
+                [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition].
+            instance_partition (:class:`google.cloud.spanner_admin_instance_v1.types.InstancePartition`):
+                Required. The instance partition to update, which must
+                always include the instance partition name. Otherwise,
+                only fields mentioned in
+                [field_mask][google.spanner.admin.instance.v1.UpdateInstancePartitionRequest.field_mask]
+                need be included.
+
+                This corresponds to the ``instance_partition`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            field_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. A mask specifying which fields in
+                [InstancePartition][google.spanner.admin.instance.v1.InstancePartition]
+                should be updated. The field mask must always be
+                specified; this prevents any future fields in
+                [InstancePartition][google.spanner.admin.instance.v1.InstancePartition]
+                from being erased accidentally by clients that do not
+                know about them.
+
+                This corresponds to the ``field_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.spanner_admin_instance_v1.types.InstancePartition` An isolated set of Cloud Spanner resources that databases can define
+                   placements on.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([instance_partition, field_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_instance_admin.UpdateInstancePartitionRequest
+        ):
+            request = spanner_instance_admin.UpdateInstancePartitionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if instance_partition is not None:
+            request.instance_partition = instance_partition
+        if field_mask is not None:
+            request.field_mask = field_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance_partition
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("instance_partition.name", request.instance_partition.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            spanner_instance_admin.InstancePartition,
+            metadata_type=spanner_instance_admin.UpdateInstancePartitionMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_instance_partition_operations(
+        self,
+        request: Optional[
+            Union[spanner_instance_admin.ListInstancePartitionOperationsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListInstancePartitionOperationsAsyncPager:
+        r"""Lists instance partition [long-running
+        operations][google.longrunning.Operation] in the given instance.
+        An instance partition operation has a name of the form
+        ``projects/<project>/instances/<instance>/instancePartitions/<instance_partition>/operations/<operation>``.
+        The long-running operation
+        [metadata][google.longrunning.Operation.metadata] field type
+        ``metadata.type_url`` describes the type of the metadata.
+        Operations returned include those that have
+        completed/failed/canceled within the last 7 days, and pending
+        operations. Operations returned are ordered by
+        ``operation.metadata.value.start_time`` in descending order
+        starting from the most recently started operation.
+
+        Authorization requires
+        ``spanner.instancePartitionOperations.list`` permission on the
+        resource
+        [parent][google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest.parent].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_instance_v1
+
+            async def sample_list_instance_partition_operations():
+                # Create a client
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_instance_v1.ListInstancePartitionOperationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instance_partition_operations(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_instance_v1.types.ListInstancePartitionOperationsRequest, dict]]):
+                The request object. The request for
+                [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+            parent (:class:`str`):
+                Required. The parent instance of the instance partition
+                operations. Values are of the form
+                ``projects/<project>/instances/<instance>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstancePartitionOperationsAsyncPager:
+                The response for
+                   [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_instance_admin.ListInstancePartitionOperationsRequest
+        ):
+            request = spanner_instance_admin.ListInstancePartitionOperationsRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instance_partition_operations
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListInstancePartitionOperationsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 

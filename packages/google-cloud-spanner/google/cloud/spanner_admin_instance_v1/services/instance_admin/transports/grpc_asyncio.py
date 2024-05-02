@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -92,7 +94,6 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 the credentials from the environment.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -122,7 +123,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[aio.Channel] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -136,21 +137,24 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'spanner.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if a ``channel`` instance is provided.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
-                which to make calls.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
+                A ``Channel`` instance through which to make calls, or a Callable
+                that constructs and returns one. If set to None, ``self.create_channel``
+                is used to create the channel. If a Callable is given, it will be called
+                with the same arguments as used in ``self.create_channel``.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
@@ -160,11 +164,11 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for the grpc channel. It is ignored if ``channel`` is provided.
+                for the grpc channel. It is ignored if a ``channel`` instance is provided.
             client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 A callback to provide client certificate bytes and private key bytes,
                 both in PEM format. It is used to configure a mutual TLS channel. It is
-                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+                ignored if a ``channel`` instance or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -191,7 +195,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if channel:
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = False
             # If a channel was explicitly provided, set it.
@@ -231,7 +235,9 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         )
 
         if not self._grpc_channel:
-            self._grpc_channel = type(self).create_channel(
+            # initialize with the provided callable or the default channel
+            channel_init = channel or type(self).create_channel
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -592,6 +598,35 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         return self._stubs["list_instances"]
 
     @property
+    def list_instance_partitions(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstancePartitionsRequest],
+        Awaitable[spanner_instance_admin.ListInstancePartitionsResponse],
+    ]:
+        r"""Return a callable for the list instance partitions method over gRPC.
+
+        Lists all instance partitions for the given instance.
+
+        Returns:
+            Callable[[~.ListInstancePartitionsRequest],
+                    Awaitable[~.ListInstancePartitionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_instance_partitions" not in self._stubs:
+            self._stubs["list_instance_partitions"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitions",
+                request_serializer=spanner_instance_admin.ListInstancePartitionsRequest.serialize,
+                response_deserializer=spanner_instance_admin.ListInstancePartitionsResponse.deserialize,
+            )
+        return self._stubs["list_instance_partitions"]
+
+    @property
     def get_instance(
         self,
     ) -> Callable[
@@ -892,6 +927,430 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
+
+    @property
+    def get_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.GetInstancePartitionRequest],
+        Awaitable[spanner_instance_admin.InstancePartition],
+    ]:
+        r"""Return a callable for the get instance partition method over gRPC.
+
+        Gets information about a particular instance
+        partition.
+
+        Returns:
+            Callable[[~.GetInstancePartitionRequest],
+                    Awaitable[~.InstancePartition]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_instance_partition" not in self._stubs:
+            self._stubs["get_instance_partition"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstancePartition",
+                request_serializer=spanner_instance_admin.GetInstancePartitionRequest.serialize,
+                response_deserializer=spanner_instance_admin.InstancePartition.deserialize,
+            )
+        return self._stubs["get_instance_partition"]
+
+    @property
+    def create_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.CreateInstancePartitionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create instance partition method over gRPC.
+
+        Creates an instance partition and begins preparing it to be
+        used. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of preparing the new instance partition. The
+        instance partition name is assigned by the caller. If the named
+        instance partition already exists, ``CreateInstancePartition``
+        returns ``ALREADY_EXISTS``.
+
+        Immediately upon completion of this request:
+
+        -  The instance partition is readable via the API, with all
+           requested attributes but no allocated resources. Its state is
+           ``CREATING``.
+
+        Until completion of the returned operation:
+
+        -  Cancelling the operation renders the instance partition
+           immediately unreadable via the API.
+        -  The instance partition can be deleted.
+        -  All other attempts to modify the instance partition are
+           rejected.
+
+        Upon completion of the returned operation:
+
+        -  Billing for all successfully-allocated resources begins (some
+           types may have lower than the requested levels).
+        -  Databases can start using this instance partition.
+        -  The instance partition's allocated resource levels are
+           readable via the API.
+        -  The instance partition's state becomes ``READY``.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_partition_name>/operations/<operation_id>``
+        and can be used to track creation of the instance partition. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstancePartition][google.spanner.admin.instance.v1.InstancePartition],
+        if successful.
+
+        Returns:
+            Callable[[~.CreateInstancePartitionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_instance_partition" not in self._stubs:
+            self._stubs["create_instance_partition"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstancePartition",
+                request_serializer=spanner_instance_admin.CreateInstancePartitionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_instance_partition"]
+
+    @property
+    def delete_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.DeleteInstancePartitionRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete instance partition method over gRPC.
+
+        Deletes an existing instance partition. Requires that the
+        instance partition is not used by any database or backup and is
+        not the default instance partition of an instance.
+
+        Authorization requires ``spanner.instancePartitions.delete``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstancePartition.name].
+
+        Returns:
+            Callable[[~.DeleteInstancePartitionRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_instance_partition" not in self._stubs:
+            self._stubs["delete_instance_partition"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstancePartition",
+                request_serializer=spanner_instance_admin.DeleteInstancePartitionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_instance_partition"]
+
+    @property
+    def update_instance_partition(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.UpdateInstancePartitionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update instance partition method over gRPC.
+
+        Updates an instance partition, and begins allocating or
+        releasing resources as requested. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of updating the instance partition. If the named
+        instance partition does not exist, returns ``NOT_FOUND``.
+
+        Immediately upon completion of this request:
+
+        -  For resource types for which a decrease in the instance
+           partition's allocation has been requested, billing is based
+           on the newly-requested level.
+
+        Until completion of the returned operation:
+
+        -  Cancelling the operation sets its metadata's
+           [cancel_time][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata.cancel_time],
+           and begins restoring resources to their pre-request values.
+           The operation is guaranteed to succeed at undoing all
+           resource changes, after which point it terminates with a
+           ``CANCELLED`` status.
+        -  All other attempts to modify the instance partition are
+           rejected.
+        -  Reading the instance partition via the API continues to give
+           the pre-request resource levels.
+
+        Upon completion of the returned operation:
+
+        -  Billing begins for all successfully-allocated resources (some
+           types may have lower than the requested levels).
+        -  All newly-reserved resources are available for serving the
+           instance partition's tables.
+        -  The instance partition's new resource levels are readable via
+           the API.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format ``<instance_partition_name>/operations/<operation_id>``
+        and can be used to track the instance partition modification.
+        The [metadata][google.longrunning.Operation.metadata] field type
+        is
+        [UpdateInstancePartitionMetadata][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is
+        [InstancePartition][google.spanner.admin.instance.v1.InstancePartition],
+        if successful.
+
+        Authorization requires ``spanner.instancePartitions.update``
+        permission on the resource
+        [name][google.spanner.admin.instance.v1.InstancePartition.name].
+
+        Returns:
+            Callable[[~.UpdateInstancePartitionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_instance_partition" not in self._stubs:
+            self._stubs["update_instance_partition"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstancePartition",
+                request_serializer=spanner_instance_admin.UpdateInstancePartitionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_instance_partition"]
+
+    @property
+    def list_instance_partition_operations(
+        self,
+    ) -> Callable[
+        [spanner_instance_admin.ListInstancePartitionOperationsRequest],
+        Awaitable[spanner_instance_admin.ListInstancePartitionOperationsResponse],
+    ]:
+        r"""Return a callable for the list instance partition
+        operations method over gRPC.
+
+        Lists instance partition [long-running
+        operations][google.longrunning.Operation] in the given instance.
+        An instance partition operation has a name of the form
+        ``projects/<project>/instances/<instance>/instancePartitions/<instance_partition>/operations/<operation>``.
+        The long-running operation
+        [metadata][google.longrunning.Operation.metadata] field type
+        ``metadata.type_url`` describes the type of the metadata.
+        Operations returned include those that have
+        completed/failed/canceled within the last 7 days, and pending
+        operations. Operations returned are ordered by
+        ``operation.metadata.value.start_time`` in descending order
+        starting from the most recently started operation.
+
+        Authorization requires
+        ``spanner.instancePartitionOperations.list`` permission on the
+        resource
+        [parent][google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest.parent].
+
+        Returns:
+            Callable[[~.ListInstancePartitionOperationsRequest],
+                    Awaitable[~.ListInstancePartitionOperationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_instance_partition_operations" not in self._stubs:
+            self._stubs[
+                "list_instance_partition_operations"
+            ] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitionOperations",
+                request_serializer=spanner_instance_admin.ListInstancePartitionOperationsRequest.serialize,
+                response_deserializer=spanner_instance_admin.ListInstancePartitionOperationsResponse.deserialize,
+            )
+        return self._stubs["list_instance_partition_operations"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.list_instance_configs: gapic_v1.method_async.wrap_method(
+                self.list_instance_configs,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.get_instance_config: gapic_v1.method_async.wrap_method(
+                self.get_instance_config,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.create_instance_config: gapic_v1.method_async.wrap_method(
+                self.create_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_instance_config: gapic_v1.method_async.wrap_method(
+                self.update_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_instance_config: gapic_v1.method_async.wrap_method(
+                self.delete_instance_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_instance_config_operations: gapic_v1.method_async.wrap_method(
+                self.list_instance_config_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_instances: gapic_v1.method_async.wrap_method(
+                self.list_instances,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.list_instance_partitions: gapic_v1.method_async.wrap_method(
+                self.list_instance_partitions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_instance: gapic_v1.method_async.wrap_method(
+                self.get_instance,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.create_instance: gapic_v1.method_async.wrap_method(
+                self.create_instance,
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.update_instance: gapic_v1.method_async.wrap_method(
+                self.update_instance,
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.delete_instance: gapic_v1.method_async.wrap_method(
+                self.delete_instance,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=3600.0,
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+                self.set_iam_policy,
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+                self.get_iam_policy,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=32.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+                self.test_iam_permissions,
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_instance_partition: gapic_v1.method_async.wrap_method(
+                self.get_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_instance_partition: gapic_v1.method_async.wrap_method(
+                self.create_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_instance_partition: gapic_v1.method_async.wrap_method(
+                self.delete_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_instance_partition: gapic_v1.method_async.wrap_method(
+                self.update_instance_partition,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_instance_partition_operations: gapic_v1.method_async.wrap_method(
+                self.list_instance_partition_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()

@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class spannerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'batch_create_sessions': ('database', 'session_count', 'session_template', ),
-        'batch_write': ('session', 'mutation_groups', 'request_options', ),
+        'batch_write': ('session', 'mutation_groups', 'request_options', 'exclude_txn_from_change_streams', ),
         'begin_transaction': ('session', 'options', 'request_options', ),
         'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', 'max_commit_delay', 'request_options', ),
         'create_session': ('database', 'session', ),

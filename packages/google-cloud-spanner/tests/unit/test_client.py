@@ -490,7 +490,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        api = InstanceAdminClient(credentials=mock.Mock())
+        api = InstanceAdminClient()
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -537,7 +537,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        api = InstanceAdminClient(credentials=mock.Mock())
+        api = InstanceAdminClient()
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -613,7 +613,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        api = InstanceAdminClient(credentials=mock.Mock())
+        api = InstanceAdminClient()
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -661,7 +661,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        api = InstanceAdminClient(credentials=mock.Mock())
+        api = InstanceAdminClient()
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api

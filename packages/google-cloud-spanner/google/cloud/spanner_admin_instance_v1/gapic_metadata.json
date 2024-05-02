@@ -20,6 +20,11 @@
                 "create_instance_config"
               ]
             },
+            "CreateInstancePartition": {
+              "methods": [
+                "create_instance_partition"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
@@ -28,6 +33,11 @@
             "DeleteInstanceConfig": {
               "methods": [
                 "delete_instance_config"
+              ]
+            },
+            "DeleteInstancePartition": {
+              "methods": [
+                "delete_instance_partition"
               ]
             },
             "GetIamPolicy": {
@@ -45,6 +55,11 @@
                 "get_instance_config"
               ]
             },
+            "GetInstancePartition": {
+              "methods": [
+                "get_instance_partition"
+              ]
+            },
             "ListInstanceConfigOperations": {
               "methods": [
                 "list_instance_config_operations"
@@ -53,6 +68,16 @@
             "ListInstanceConfigs": {
               "methods": [
                 "list_instance_configs"
+              ]
+            },
+            "ListInstancePartitionOperations": {
+              "methods": [
+                "list_instance_partition_operations"
+              ]
+            },
+            "ListInstancePartitions": {
+              "methods": [
+                "list_instance_partitions"
               ]
             },
             "ListInstances": {
@@ -78,6 +103,11 @@
             "UpdateInstanceConfig": {
               "methods": [
                 "update_instance_config"
+              ]
+            },
+            "UpdateInstancePartition": {
+              "methods": [
+                "update_instance_partition"
               ]
             }
           }
@@ -95,6 +125,11 @@
                 "create_instance_config"
               ]
             },
+            "CreateInstancePartition": {
+              "methods": [
+                "create_instance_partition"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
@@ -103,6 +138,11 @@
             "DeleteInstanceConfig": {
               "methods": [
                 "delete_instance_config"
+              ]
+            },
+            "DeleteInstancePartition": {
+              "methods": [
+                "delete_instance_partition"
               ]
             },
             "GetIamPolicy": {
@@ -120,6 +160,11 @@
                 "get_instance_config"
               ]
             },
+            "GetInstancePartition": {
+              "methods": [
+                "get_instance_partition"
+              ]
+            },
             "ListInstanceConfigOperations": {
               "methods": [
                 "list_instance_config_operations"
@@ -128,6 +173,16 @@
             "ListInstanceConfigs": {
               "methods": [
                 "list_instance_configs"
+              ]
+            },
+            "ListInstancePartitionOperations": {
+              "methods": [
+                "list_instance_partition_operations"
+              ]
+            },
+            "ListInstancePartitions": {
+              "methods": [
+                "list_instance_partitions"
               ]
             },
             "ListInstances": {
@@ -153,6 +208,11 @@
             "UpdateInstanceConfig": {
               "methods": [
                 "update_instance_config"
+              ]
+            },
+            "UpdateInstancePartition": {
+              "methods": [
+                "update_instance_partition"
               ]
             }
           }
@@ -170,6 +230,11 @@
                 "create_instance_config"
               ]
             },
+            "CreateInstancePartition": {
+              "methods": [
+                "create_instance_partition"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
@@ -178,6 +243,11 @@
             "DeleteInstanceConfig": {
               "methods": [
                 "delete_instance_config"
+              ]
+            },
+            "DeleteInstancePartition": {
+              "methods": [
+                "delete_instance_partition"
               ]
             },
             "GetIamPolicy": {
@@ -195,6 +265,11 @@
                 "get_instance_config"
               ]
             },
+            "GetInstancePartition": {
+              "methods": [
+                "get_instance_partition"
+              ]
+            },
             "ListInstanceConfigOperations": {
               "methods": [
                 "list_instance_config_operations"
@@ -203,6 +278,16 @@
             "ListInstanceConfigs": {
               "methods": [
                 "list_instance_configs"
+              ]
+            },
+            "ListInstancePartitionOperations": {
+              "methods": [
+                "list_instance_partition_operations"
+              ]
+            },
+            "ListInstancePartitions": {
+              "methods": [
+                "list_instance_partitions"
               ]
             },
             "ListInstances": {
@@ -228,6 +313,11 @@
             "UpdateInstanceConfig": {
               "methods": [
                 "update_instance_config"
+              ]
+            },
+            "UpdateInstancePartition": {
+              "methods": [
+                "update_instance_partition"
               ]
             }
           }
