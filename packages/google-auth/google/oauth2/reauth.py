@@ -274,6 +274,7 @@ def get_rapt_token(
 
     # Get rapt token from reauth API.
     rapt_token = _obtain_rapt(request, access_token, requested_scopes=scopes)
+    sys.stderr.write("Reauthentication successful.\n")
 
     return rapt_token
 
