@@ -63,6 +63,7 @@ import bigframes.core.joins
 import bigframes.core.reshape
 import bigframes.core.tools
 import bigframes.dataframe
+import bigframes.enums
 import bigframes.operations as ops
 import bigframes.series
 import bigframes.session
@@ -423,7 +424,13 @@ def read_csv(
         Union[MutableSequence[Any], numpy.ndarray[Any, Any], Tuple[Any, ...], range]
     ] = None,
     index_col: Optional[
-        Union[int, str, Sequence[Union[str, int]], Literal[False]]
+        Union[
+            int,
+            str,
+            Sequence[Union[str, int]],
+            bigframes.enums.DefaultIndexKind,
+            Literal[False],
+        ]
     ] = None,
     usecols: Optional[
         Union[
@@ -491,7 +498,7 @@ read_json.__doc__ = inspect.getdoc(bigframes.session.Session.read_json)
 def read_gbq(
     query_or_table: str,
     *,
-    index_col: Iterable[str] | str = (),
+    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
     columns: Iterable[str] = (),
     configuration: Optional[Dict] = None,
     max_results: Optional[int] = None,
@@ -529,7 +536,7 @@ read_gbq_model.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_model
 def read_gbq_query(
     query: str,
     *,
-    index_col: Iterable[str] | str = (),
+    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
     columns: Iterable[str] = (),
     configuration: Optional[Dict] = None,
     max_results: Optional[int] = None,
@@ -555,7 +562,7 @@ read_gbq_query.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_query
 def read_gbq_table(
     query: str,
     *,
-    index_col: Iterable[str] | str = (),
+    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = (),
     columns: Iterable[str] = (),
     max_results: Optional[int] = None,
     filters: vendored_pandas_gbq.FiltersType = (),

@@ -116,10 +116,20 @@ class Block:
                 raise ValueError(
                     f"'index_columns' (size {len(index_columns)}) and 'index_labels' (size {len(index_labels)}) must have equal length"
                 )
+
+        # If no index columns are set, create one.
+        #
+        # Note: get_index_cols_and_uniqueness in
+        # bigframes/session/_io/bigquery/read_gbq_table.py depends on this
+        # being as sequential integer index column. If this default behavior
+        # ever changes, please also update get_index_cols_and_uniqueness so
+        # that users who explicitly request a sequential integer index can
+        # still get one.
         if len(index_columns) == 0:
             new_index_col_id = guid.generate_guid()
             expr = expr.promote_offsets(new_index_col_id)
             index_columns = [new_index_col_id]
+
         self._index_columns = tuple(index_columns)
         # Index labels don't need complicated hierarchical access so can store as tuple
         self._index_labels = (

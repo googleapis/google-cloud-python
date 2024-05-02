@@ -21,6 +21,7 @@ from typing import (
 import numpy as np
 
 from bigframes import constants
+import bigframes.enums
 
 
 class ReaderIOMixin:
@@ -34,7 +35,13 @@ class ReaderIOMixin:
             Union[MutableSequence[Any], np.ndarray[Any, Any], Tuple[Any, ...], range]
         ] = None,
         index_col: Optional[
-            Union[int, str, Sequence[Union[str, int]], Literal[False]]
+            Union[
+                int,
+                str,
+                Sequence[Union[str, int]],
+                bigframes.enums.DefaultIndexKind,
+                Literal[False],
+            ]
         ] = None,
         usecols=None,
         dtype: Optional[Dict] = None,

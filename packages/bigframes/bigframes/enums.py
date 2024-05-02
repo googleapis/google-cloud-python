@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Public exceptions and warnings used across BigQuery DataFrames."""
+"""Public enums used across BigQuery DataFrames."""
 
 # NOTE: This module should not depend on any others in the package.
 
 
-class UnknownLocationWarning(Warning):
-    """The location is set to an unknown value."""
+import enum
 
 
-class NoDefaultIndexError(ValueError):
-    """Unable to create a default index."""
+class DefaultIndexKind(enum.Enum):
+    """Sentinel values used to override default indexing behavior."""
+
+    #: Use consecutive integers as the index. This is ``0``, ``1``, ``2``, ...,
+    #: ``n - 3``, ``n - 2``, ``n - 1``, where ``n`` is the number of items in
+    #: the index.
+    SEQUENTIAL_INT64 = enum.auto()

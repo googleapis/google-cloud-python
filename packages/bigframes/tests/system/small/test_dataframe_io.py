@@ -117,8 +117,8 @@ def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
 
 
 @pytest.mark.parametrize(
-    ("index"),
-    [True, False],
+    ("index",),
+    [(True,), (False,)],
 )
 def test_to_csv_index(
     scalars_dfs: Tuple[bigframes.dataframe.DataFrame, pd.DataFrame],

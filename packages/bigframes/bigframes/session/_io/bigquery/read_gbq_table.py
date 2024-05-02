@@ -35,6 +35,7 @@ import ibis.expr.types as ibis_types
 
 import bigframes
 import bigframes.clients
+import bigframes.constants
 import bigframes.core as core
 import bigframes.core.compile
 import bigframes.core.guid as guid
@@ -206,12 +207,35 @@ def _get_primary_keys(
     return primary_keys
 
 
+def _is_table_clustered_or_partitioned(
+    table: bigquery.table.Table,
+) -> bool:
+    """Returns True if the table is clustered or partitioned."""
+
+    # Could be None or an empty tuple if it's not clustered, both of which are
+    # falsey.
+    if table.clustering_fields:
+        return True
+
+    if (
+        time_partitioning := table.time_partitioning
+    ) is not None and time_partitioning.type_ is not None:
+        return True
+
+    if (
+        range_partitioning := table.range_partitioning
+    ) is not None and range_partitioning.field is not None:
+        return True
+
+    return False
+
+
 def get_index_cols_and_uniqueness(
     bqclient: bigquery.Client,
     ibis_client: ibis.BaseBackend,
     table: bigquery.table.Table,
     table_expression: ibis_types.Table,
-    index_col: Iterable[str] | str,
+    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind,
     api_name: str,
 ) -> Tuple[List[str], bool]:
     """
@@ -222,7 +246,23 @@ def get_index_cols_and_uniqueness(
 
     # Transform index_col -> index_cols so we have a variable that is
     # always a list of column names (possibly empty).
-    if isinstance(index_col, str):
+    if isinstance(index_col, bigframes.enums.DefaultIndexKind):
+        if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
+            # User has explicity asked for a default, sequential index.
+            # Use that, even if there are primary keys on the table.
+            #
+            # Note: This relies on the default behavior of the Block
+            # constructor to create a default sequential index. If that ever
+            # changes, this logic will need to be revisited.
+            return [], False
+        else:
+            # Note: It's actually quite difficult to mock this out to unit
+            # test, as it's not possible to subclass enums in Python. See:
+            # https://stackoverflow.com/a/33680021/101923
+            raise NotImplementedError(
+                f"Got unexpected index_col {repr(index_col)}. {bigframes.constants.FEEDBACK_LINK}"
+            )
+    elif isinstance(index_col, str):
         index_cols: List[str] = [index_col]
     else:
         index_cols = list(index_col)
@@ -230,14 +270,26 @@ def get_index_cols_and_uniqueness(
     # If the isn't an index selected, use the primary keys of the table as the
     # index. If there are no primary keys, we'll return an empty list.
     if len(index_cols) == 0:
-        index_cols = _get_primary_keys(table)
+        primary_keys = _get_primary_keys(table)
 
-        # TODO(b/335727141): If table has clustering/partitioning, fail if
-        # index_cols is empty.
+        # If table has clustering/partitioning, fail if we haven't been able to
+        # find index_cols to use. This is to avoid unexpected performance and
+        # resource utilization because of the default sequential index. See
+        # internal issue 335727141.
+        if _is_table_clustered_or_partitioned(table) and not primary_keys:
+            raise bigframes.exceptions.NoDefaultIndexError(
+                f"Table '{str(table.reference)}' is clustered and/or "
+                "partitioned, but BigQuery DataFrames was not able to find a "
+                "suitable index. To avoid this error, set at least one of: "
+                # TODO(b/338037499): Allow max_results to override this too,
+                # once we make it more efficient.
+                "`index_col` or `filters`."
+            )
 
         # If there are primary keys defined, the query engine assumes these
         # columns are unique, even if the constraint is not enforced. We make
         # the same assumption and use these columns as the total ordering keys.
+        index_cols = primary_keys
         is_index_unique = len(index_cols) != 0
     else:
         is_index_unique = _check_index_uniqueness(

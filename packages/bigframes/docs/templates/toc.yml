@@ -32,6 +32,10 @@
       - name: Session
         uid: bigframes.session.Session
       name: Session
+    - name: Enumerations
+      uid: bigframes.enums
+    - name: Exceptions and warnings
+      uid: bigframes.exceptions
     name: Core Objects
   - items:
     - name: DataFrame

@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import Any, Dict, Iterable, Literal, Optional, Tuple, Union
 
 from bigframes import constants
+import bigframes.enums
 
 FilterOps = Literal["in", "not in", "<", "<=", "==", "!=", ">=", ">", "LIKE"]
 FilterType = Tuple[str, FilterOps, Any]
@@ -17,7 +18,7 @@ class GBQIOMixin:
         self,
         query_or_table: str,
         *,
-        index_col: Iterable[str] | str = (),
+        index_col: Union[Iterable[str], str, bigframes.enums.DefaultIndexKind] = (),
         columns: Iterable[str] = (),
         configuration: Optional[Dict] = None,
         max_results: Optional[int] = None,
@@ -28,16 +29,23 @@ class GBQIOMixin:
         """Loads a DataFrame from BigQuery.
 
         BigQuery tables are an unordered, unindexed data source. To add support
-        pandas-compatibility, the following indexing options are supported:
+        pandas-compatibility, the following indexing options are supported via
+        the ``index_col`` parameter:
 
-        * (Default behavior) Add an arbitrary sequential index and ordering
-          using an an analytic windowed operation that prevents filtering
-          push down.
+        * (Empty iterable, default) A default index. **Behavior may change.**
+          Explicitly set ``index_col`` if your application makes use of
+          specific index values.
+
+          If a table has primary key(s), those are used as the index,
+          otherwise a sequential index is generated.
+        * (:attr:`bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64`) Add an
+          arbitrary sequential index and ordering. **Warning** This uses an
+          analytic windowed operation that prevents filtering push down. Avoid
+          using on large clustered or partitioned tables.
         * (Recommended) Set the ``index_col`` argument to one or more columns.
           Unique values for the row labels are recommended. Duplicate labels
           are possible, but note that joins on a non-unique index can duplicate
-          rows and operations like ``cumsum()`` that window across a non-unique
-          index can have some non-deternimism.
+          rows via pandas-like outer join behavior.
 
         .. note::
             By default, even SQL query inputs with an ORDER BY clause create a
@@ -107,11 +115,18 @@ class GBQIOMixin:
                 `project.dataset.tablename` or `dataset.tablename`.
                 Can also take wildcard table name, such as `project.dataset.table_prefix*`.
                 In tha case, will read all the matched table as one DataFrame.
-            index_col (Iterable[str] or str):
+            index_col (Iterable[str], str, bigframes.enums.DefaultIndexKind):
                 Name of result column(s) to use for index in results DataFrame.
+
+                If an empty iterable, such as ``()``, a default index is
+                generated. Do not depend on specific index values in this case.
 
                 **New in bigframes version 1.3.0**: If ``index_cols`` is not
                 set, the primary key(s) of the table are used as the index.
+
+                **New in bigframes version 1.4.0**: Support
+                :class:`bigframes.enums.DefaultIndexKind` to override default index
+                behavior.
             columns (Iterable[str]):
                 List of BigQuery column names in the desired order for results
                 DataFrame.
@@ -140,6 +155,11 @@ class GBQIOMixin:
                 `configuration` to avoid conflicts.
             col_order (Iterable[str]):
                 Alias for columns, retained for backwards compatibility.
+
+        Raises:
+            bigframes.exceptions.NoDefaultIndexError:
+                Using the default index is discouraged, such as with clustered
+                or partitioned tables without primary keys.
 
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame representing results of the query or table.

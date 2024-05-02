@@ -524,7 +524,11 @@ def test_read_csv_gcs_bq_engine(session, scalars_dfs, gcs_folder):
     scalars_df, _ = scalars_dfs
     path = gcs_folder + "test_read_csv_gcs_bq_engine_w_index*.csv"
     scalars_df.to_csv(path, index=False)
-    df = session.read_csv(path, engine="bigquery")
+    df = session.read_csv(
+        path,
+        engine="bigquery",
+        index_col=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
+    )
 
     # TODO(chelsealin): If we serialize the index, can more easily compare values.
     pd.testing.assert_index_equal(df.columns, scalars_df.columns)
@@ -629,44 +633,24 @@ def test_read_csv_localbuffer_bq_engine(session, scalars_dfs):
         pd.testing.assert_series_equal(df.dtypes, scalars_df.dtypes)
 
 
-@pytest.mark.parametrize(
-    ("kwargs", "match"),
-    [
-        pytest.param(
-            {"engine": "bigquery", "names": []},
-            "BigQuery engine does not support these arguments",
-            id="with_names",
-        ),
-        pytest.param(
-            {"engine": "bigquery", "dtype": {}},
-            "BigQuery engine does not support these arguments",
-            id="with_dtype",
-        ),
-        pytest.param(
-            {"engine": "bigquery", "index_col": False},
-            "BigQuery engine only supports a single column name for `index_col`.",
-            id="with_index_col_false",
-        ),
-        pytest.param(
-            {"engine": "bigquery", "index_col": 5},
-            "BigQuery engine only supports a single column name for `index_col`.",
-            id="with_index_col_not_str",
-        ),
-        pytest.param(
-            {"engine": "bigquery", "usecols": [1, 2]},
-            "BigQuery engine only supports an iterable of strings for `usecols`.",
-            id="with_usecols_invalid",
-        ),
-        pytest.param(
-            {"engine": "bigquery", "encoding": "ASCII"},
-            "BigQuery engine only supports the following encodings",
-            id="with_encoding_invalid",
-        ),
-    ],
-)
-def test_read_csv_bq_engine_throws_not_implemented_error(session, kwargs, match):
-    with pytest.raises(NotImplementedError, match=match):
-        session.read_csv("", **kwargs)
+def test_read_csv_bq_engine_supports_index_col_false(
+    session, scalars_df_index, gcs_folder
+):
+    path = gcs_folder + "test_read_csv_bq_engine_supports_index_col_false*.csv"
+    read_path = utils.get_first_file_from_wildcard(path)
+    scalars_df_index.to_csv(path)
+
+    df = session.read_csv(
+        read_path,
+        # Normally, pandas uses the first column as the index. index_col=False
+        # turns off that behavior.
+        index_col=False,
+    )
+    assert df.shape[0] == scalars_df_index.shape[0]
+
+    # We use a default index because of index_col=False, so the previous index
+    # column is just loaded as a column.
+    assert len(df.columns) == len(scalars_df_index.columns) + 1
 
 
 @pytest.mark.parametrize(

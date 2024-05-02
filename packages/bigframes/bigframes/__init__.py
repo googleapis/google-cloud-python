@@ -17,6 +17,8 @@
 from bigframes._config import option_context, options
 from bigframes._config.bigquery_options import BigQueryOptions
 from bigframes.core.global_session import close_session, get_global_session
+import bigframes.enums as enums
+import bigframes.exceptions as exceptions
 from bigframes.session import connect, Session
 from bigframes.version import __version__
 
@@ -25,6 +27,8 @@ __all__ = [
     "BigQueryOptions",
     "get_global_session",
     "close_session",
+    "enums",
+    "exceptions",
     "connect",
     "Session",
     "__version__",
