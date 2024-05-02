@@ -31,6 +31,7 @@ DEFAULT_EXPIRATION = datetime.timedelta(days=7)
 # https://cloud.google.com/bigquery/docs/locations
 ALL_BIGQUERY_LOCATIONS = frozenset(
     {
+        # regions
         "us-east5",
         "us-south1",
         "us-central1",
@@ -74,6 +75,9 @@ ALL_BIGQUERY_LOCATIONS = frozenset(
         "me-central1",
         "me-west1",
         "africa-south1",
+        # multi-regions
+        "US",
+        "EU",
     }
 )
 
