@@ -318,6 +318,10 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
             return f"""SELECT * FROM ML.EVALUATE(MODEL `{self._model_name}`,
   ({source_sql}))"""
 
+    def ml_arima_coefficients(self) -> str:
+        """Encode ML.ARIMA_COEFFICIENTS for BQML"""
+        return f"""SELECT * FROM ML.ARIMA_COEFFICIENTS(MODEL `{self._model_name}`)"""
+
     # ML evaluation TVFs
     def ml_llm_evaluate(
         self, source_df: bpd.DataFrame, task_type: Optional[str] = None

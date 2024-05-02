@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pandas as pd
+import pytest
 
 from bigframes.ml import forecasting
 
@@ -31,15 +32,22 @@ ARIMA_EVALUATE_OUTPUT_COL = [
 ]
 
 
-def test_arima_plus_model_fit_score(
-    time_series_df_default_index, dataset_id, new_time_series_df
-):
+@pytest.fixture(scope="module")
+def arima_model(time_series_df_default_index):
     model = forecasting.ARIMAPlus()
     X_train = time_series_df_default_index[["parsed_date"]]
     y_train = time_series_df_default_index[["total_visits"]]
     model.fit(X_train, y_train)
+    return model
 
-    result = model.score(
+
+def test_arima_plus_model_fit_score(
+    dataset_id,
+    new_time_series_df,
+    arima_model,
+):
+
+    result = arima_model.score(
         new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
     ).to_pandas()
     expected = pd.DataFrame(
@@ -56,27 +64,37 @@ def test_arima_plus_model_fit_score(
     pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load to ensure configuration was kept
-    reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
+    reloaded_model = arima_model.to_gbq(
+        f"{dataset_id}.temp_arima_plus_model", replace=True
+    )
     assert (
         f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
     )
 
 
-def test_arima_plus_model_fit_summary(time_series_df_default_index, dataset_id):
-    model = forecasting.ARIMAPlus()
-    X_train = time_series_df_default_index[["parsed_date"]]
-    y_train = time_series_df_default_index[["total_visits"]]
-    model.fit(X_train, y_train)
+def test_arima_plus_model_fit_summary(dataset_id, arima_model):
 
-    result = model.summary()
+    result = arima_model.summary()
     assert result.shape == (1, 12)
     assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
 
     # save, load to ensure configuration was kept
-    reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
+    reloaded_model = arima_model.to_gbq(
+        f"{dataset_id}.temp_arima_plus_model", replace=True
+    )
     assert (
         f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
     )
+
+
+def test_arima_coefficients(arima_model):
+    got = arima_model.coef_
+    expected_columns = {
+        "ar_coefficients",
+        "ma_coefficients",
+        "intercept_or_drift",
+    }
+    assert set(got.columns) == expected_columns
 
 
 def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):

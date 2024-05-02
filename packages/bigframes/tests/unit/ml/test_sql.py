@@ -47,6 +47,16 @@ def mock_df():
     return mock_df
 
 
+def test_ml_arima_coefficients(
+    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+):
+    sql = model_manipulation_sql_generator.ml_arima_coefficients()
+    assert (
+        sql
+        == """SELECT * FROM ML.ARIMA_COEFFICIENTS(MODEL `my_project_id.my_dataset_id.my_model_id`)"""
+    )
+
+
 def test_options_correct(base_sql_generator: ml_sql.BaseSqlGenerator):
     sql = base_sql_generator.options(
         model_type="lin_reg", input_label_cols=["col_a"], l1_reg=0.6

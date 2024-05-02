@@ -269,6 +269,27 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             options={"horizon": horizon, "confidence_level": confidence_level}
         )
 
+    @property
+    def coef_(
+        self,
+    ) -> bpd.DataFrame:
+        """Inspect the coefficients of the model.
+
+        ..note::
+
+            Output matches that of the ML.ARIMA_COEFFICIENTS function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-arima-coefficients
+            for the outputs relevant to this model type.
+
+        Returns:
+            bigframes.dataframe.DataFrame:
+                A DataFrame with the coefficients for the model.
+        """
+
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before inspect coefficients")
+        return self._bqml_model.arima_coefficients()
+
     def detect_anomalies(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
