@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.46.0](https://github.com/googleapis/python-spanner/compare/v3.45.0...v3.46.0) (2024-05-02)
+
+
+### Features
+
+* **spanner:** Adding EXPECTED_FULFILLMENT_PERIOD to the indicate instance creation times (with FULFILLMENT_PERIOD_NORMAL or FULFILLMENT_PERIOD_EXTENDED ENUM) with the extended instance creation time triggered by On-Demand Capacity Feature ([293ecda](https://github.com/googleapis/python-spanner/commit/293ecdad78b51f248f8d5c023bdba3bac998ea5c))
+
+
+### Documentation
+
+* Remove duplicate paramter description ([#1052](https://github.com/googleapis/python-spanner/issues/1052)) ([1164743](https://github.com/googleapis/python-spanner/commit/116474318d42a6f1ea0f9c2f82707e5dde281159))
+
 ## [3.45.0](https://github.com/googleapis/python-spanner/compare/v3.44.0...v3.45.0) (2024-04-17)
 
 
