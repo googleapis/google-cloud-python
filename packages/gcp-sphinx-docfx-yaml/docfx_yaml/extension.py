@@ -400,6 +400,7 @@ def _parse_docstring_summary(summary):
     summary_parts = []
     attributes = []
     attribute_type_token = ":type:"
+    enum_type_token = "Values:"
     keyword = name = description = var_type = ""
 
     notice_open_tag = '<aside class="{notice_tag}">\n<b>{notice_name}:</b>'
@@ -486,7 +487,29 @@ def _parse_docstring_summary(summary):
 
         # Parse keywords if found.
         # lstrip is added to parse code blocks that are not formatted well.
-        if part.lstrip('\n').startswith('..'):
+        if (potential_keyword := part.lstrip('\n')) and (
+            potential_keyword.startswith('..') or
+            potential_keyword.startswith(enum_type_token)
+        ):
+            if enum_type_token in potential_keyword:
+                # Handle the enum section starting with `Values:`
+                parts = [split_part for split_part in part.split("\n") if split_part][1:]
+                if not parts:
+                    continue
+                tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
+                if tab_space == 0:
+                    raise ValueError("Content in the block should be indented."\
+                                     f"Please check the docstring: \n{summary}")
+                parts = "\n".join(
+                    [indent_code_left(part, tab_space) for part in parts]
+                )
+                summary_parts.append(
+                    "Enum values:\n\n```\n"
+                    f"{parts}"
+                    "\n```\n"
+                )
+                continue
+
             try:
                 keyword = extract_keyword(part.lstrip('\n'))
             except ValueError:
@@ -566,14 +589,14 @@ def _extract_docstring_info(summary_info, summary, name):
         ':type': 'variables',
         ':param': 'variables',
         ':raises': 'exceptions',
-        ':raises:': 'exceptions'
+        ':raises:': 'exceptions',
     }
-    
+
     initial_index = -1
     front_tag = '<xref'
     end_tag = '/xref>'
     end_len = len(end_tag)
-        
+
     # Prevent GoogleDocstring crashing on custom types and parse all xrefs to normal
     if front_tag in parsed_text:
         type_pairs = []
@@ -581,7 +604,7 @@ def _extract_docstring_info(summary_info, summary, name):
         initial_index = max(0, parsed_text.find(front_tag))
 
         summary_part = parsed_text[initial_index:]
-       
+
         # Remove all occurrences of "<xref uid="uid">text</xref>"
         while front_tag in summary_part:
 
@@ -611,12 +634,12 @@ def _extract_docstring_info(summary_info, summary, name):
         for pairs in type_pairs:
             original_type, safe_type = pairs[0], pairs[1]
             parsed_text = parsed_text.replace(original_type, safe_type)
-        
+
     # Clean the string by cleaning newlines and backlashes, then split by white space.
     config = Config(napoleon_use_param=True, napoleon_use_rtype=True)
     # Convert Google style to reStructuredText
     parsed_text = str(GoogleDocstring(parsed_text, config))
-    
+
     # Trim the top summary but maintain its formatting.
     indexes = []
     for types in var_types:
@@ -666,7 +689,7 @@ def _extract_docstring_info(summary_info, summary, name):
     while index <= len(parsed_text):
         word = parsed_text[index] if index < len(parsed_text) else ""
         # Check if we encountered specific words.
-        if word in var_types or index == len(parsed_text):               
+        if word in var_types or index == len(parsed_text):
             # Finish processing previous section.
             if cur_type:
                 if cur_type == ':type':
@@ -698,11 +721,11 @@ def _extract_docstring_info(summary_info, summary, name):
                 # process further.
                 if word not in var_types:
                     raise ValueError(f"Encountered wrong formatting, please check docstring for {name}")
-   
+
             # Reached end of string, break after finishing processing
             if index == len(parsed_text):
                 break
-    
+
             # Start processing for new section
             cur_type = word
             if cur_type in [':type', ':param', ':raises', ':raises:']:
