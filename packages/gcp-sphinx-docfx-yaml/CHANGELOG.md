@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.2.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.1.0...v3.2.0) (2024-05-02)
+
+
+### Features
+
+* Add support for enums ([#374](https://github.com/googleapis/sphinx-docfx-yaml/issues/374)) ([4575ffe](https://github.com/googleapis/sphinx-docfx-yaml/commit/4575ffebb8ded4b8ed43d4bfd3308deaa3a7b1b8))
+
+
+### Documentation
+
+* Add summary_overview template ([#367](https://github.com/googleapis/sphinx-docfx-yaml/issues/367)) ([39baecb](https://github.com/googleapis/sphinx-docfx-yaml/commit/39baecb0afcbd9a116cb809a0866bf61ac784f0e))
+
 ## [3.1.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.0.1...v3.1.0) (2024-04-01)
 
 
