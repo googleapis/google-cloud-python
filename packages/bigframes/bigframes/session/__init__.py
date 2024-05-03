@@ -1699,6 +1699,12 @@ class Session(
                 bigframes.options.compute.maximum_bytes_billed
             )
 
+        current_labels = job_config.labels if job_config.labels else {}
+        for key, value in bigframes.options.compute.extra_query_labels.items():
+            if key not in current_labels:
+                current_labels[key] = value
+        job_config.labels = current_labels
+
         if self._bq_kms_key_name:
             job_config.destination_encryption_configuration = (
                 bigquery.EncryptionConfiguration(kms_key_name=self._bq_kms_key_name)
