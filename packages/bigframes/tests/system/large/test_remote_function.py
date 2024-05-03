@@ -1414,3 +1414,43 @@ def test_remote_function_gcf_timeout_max_supported_exceeded(session):
         @session.remote_function([int], int, reuse=False, cloud_function_timeout=1201)
         def square(x):
             return x * x
+
+
+@pytest.mark.parametrize(
+    ("max_instances_args", "expected_max_instances"),
+    [
+        pytest.param({}, 100, id="no-set"),
+        pytest.param({"cloud_function_max_instances": None}, 100, id="set-None"),
+        pytest.param({"cloud_function_max_instances": 1000}, 1000, id="set-explicit"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_max_instances(
+    session, scalars_dfs, max_instances_args, expected_max_instances
+):
+    try:
+
+        def square(x):
+            return x * x
+
+        square_remote = session.remote_function(
+            [int], int, reuse=False, **max_instances_args
+        )(square)
+
+        # Assert that the GCF is created with the intended max instance count
+        gcf = session.cloudfunctionsclient.get_function(
+            name=square_remote.bigframes_cloud_function
+        )
+        assert gcf.service_config.max_instance_count == expected_max_instances
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result = scalars_df["int64_too"].apply(square_remote).to_pandas()
+        pd_result = scalars_pandas_df["int64_too"].apply(square)
+
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square_remote
+        )

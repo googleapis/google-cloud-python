@@ -652,6 +652,7 @@ def remote_function(
     cloud_function_docker_repository: Optional[str] = None,
     max_batching_rows: Optional[int] = 1000,
     cloud_function_timeout: Optional[int] = 600,
+    cloud_function_max_instances: Optional[int] = None,
 ):
     return global_session.with_default_session(
         bigframes.session.Session.remote_function,
@@ -667,6 +668,7 @@ def remote_function(
         cloud_function_docker_repository=cloud_function_docker_repository,
         max_batching_rows=max_batching_rows,
         cloud_function_timeout=cloud_function_timeout,
+        cloud_function_max_instances=cloud_function_max_instances,
     )
 
 

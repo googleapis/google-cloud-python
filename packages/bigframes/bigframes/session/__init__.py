@@ -1466,6 +1466,7 @@ class Session(
         cloud_function_docker_repository: Optional[str] = None,
         max_batching_rows: Optional[int] = 1000,
         cloud_function_timeout: Optional[int] = 600,
+        cloud_function_max_instances: Optional[int] = None,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function. Check out
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
@@ -1580,6 +1581,14 @@ class Session(
                 https://cloud.google.com/bigquery/quotas#remote_function_limits.
                 By default BigQuery DataFrames uses a 10 minute timeout. `None`
                 can be passed to let the cloud functions default timeout take effect.
+            cloud_function_max_instances (int, Optional):
+                The maximumm instance count for the cloud function created. This
+                can be used to control how many cloud function instances can be
+                active at max at any given point of time. Lower setting can help
+                control the spike in the billing. Higher setting can help
+                support processing larger scale data. When not specified, cloud
+                function's default setting applies. For more details see
+                https://cloud.google.com/functions/docs/configuring/max-instances
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1603,6 +1612,7 @@ class Session(
             cloud_function_docker_repository=cloud_function_docker_repository,
             max_batching_rows=max_batching_rows,
             cloud_function_timeout=cloud_function_timeout,
+            cloud_function_max_instances=cloud_function_max_instances,
         )
 
     def read_gbq_function(
