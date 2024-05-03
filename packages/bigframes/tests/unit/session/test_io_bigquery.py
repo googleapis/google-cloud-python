@@ -14,7 +14,6 @@
 
 import datetime
 from typing import Iterable
-import unittest.mock as mock
 
 import google.cloud.bigquery as bigquery
 import pytest
@@ -139,16 +138,15 @@ def test_create_job_configs_labels_length_limit_met():
 
 def test_create_temp_table_default_expiration():
     """Make sure the created table has an expiration."""
-    bqclient = mock.create_autospec(bigquery.Client)
-    dataset = bigquery.DatasetReference("test-project", "test_dataset")
     expiration = datetime.datetime(
         2023, 11, 2, 13, 44, 55, 678901, datetime.timezone.utc
     )
 
-    bigframes.session._io.bigquery.create_temp_table(bqclient, dataset, expiration)
+    session = resources.create_bigquery_session()
+    bigframes.session._io.bigquery.create_temp_table(session, expiration)
 
-    bqclient.create_table.assert_called_once()
-    call_args = bqclient.create_table.call_args
+    session.bqclient.create_table.assert_called_once()
+    call_args = session.bqclient.create_table.call_args
     table = call_args.args[0]
     assert table.project == "test-project"
     assert table.dataset_id == "test_dataset"

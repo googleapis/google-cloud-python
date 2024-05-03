@@ -2928,8 +2928,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
             if_exists = "replace"
 
-            temp_table_ref = bigframes.session._io.bigquery.random_table(
-                self._session._anonymous_dataset
+            temp_table_ref = self._session._random_table(
+                # The client code owns this table reference now, so skip_cleanup=True
+                #  to not clean it up when we close the session.
+                skip_cleanup=True,
             )
             destination_table = f"{temp_table_ref.project}.{temp_table_ref.dataset_id}.{temp_table_ref.table_id}"
 

@@ -706,6 +706,68 @@ def to_datetime(
 to_datetime.__doc__ = vendored_pandas_datetimes.to_datetime.__doc__
 
 
+def get_default_session_id() -> str:
+    """Gets the session id that is used whenever a custom session
+    has not been provided.
+
+    It is the session id of the default global session. It is prefixed to
+    the table id of all temporary tables created in the global session.
+
+    Returns:
+        str, the default global session id, ex. 'sessiona1b2c'
+    """
+    return get_global_session().session_id
+
+
+def clean_up_by_session_id(
+    session_id: str,
+    location: Optional[str] = None,
+    project: Optional[str] = None,
+) -> None:
+    """Searches through table names in BigQuery and deletes tables
+    found matching the expected format.
+
+    This could be useful if the session object has been lost.
+    Calling `session.close()` or `bigframes.pandas.close_session()`
+    is preferred in most cases.
+
+    Args:
+        session_id (str):
+            The session id to clean up. Can be found using
+            session.session_id or get_default_session_id().
+
+        location (str, default None):
+            The location of the session to clean up. If given, used
+            together with project kwarg to determine the dataset
+            to search through for tables to clean up.
+
+        project (str, default None):
+            The project id associated with the session to clean up.
+            If given, used together with location kwarg to determine
+            the dataset to search through for tables to clean up.
+
+    Returns:
+        None
+    """
+    session = get_global_session()
+    client = session.bqclient
+
+    if (location is None) != (project is None):
+        raise ValueError(
+            "Only one of project or location was given. Must specify both or neither."
+        )
+    elif location is None and project is None:
+        dataset = session._anonymous_dataset
+    else:
+        dataset = bigframes.session._io.bigquery.create_bq_dataset_reference(
+            client, location=location, project=project
+        )
+
+    bigframes.session._io.bigquery.delete_tables_matching_session_id(
+        client, dataset, session_id
+    )
+
+
 # pandas dtype attributes
 NA = pandas.NA
 BooleanDtype = pandas.BooleanDtype

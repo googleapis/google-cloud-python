@@ -21,6 +21,7 @@ import datetime
 import logging
 import os
 import re
+import secrets
 import typing
 from typing import (
     Any,
@@ -37,6 +38,7 @@ from typing import (
     Tuple,
     Union,
 )
+import uuid
 import warnings
 
 # Even though the ibis.backends.bigquery import is unused, it's needed
@@ -99,6 +101,8 @@ if typing.TYPE_CHECKING:
     import bigframes.series
 
 _BIGFRAMES_DEFAULT_CONNECTION_ID = "bigframes-default-connection"
+
+_TEMP_TABLE_ID_FORMAT = "bqdf{date}_{session_id}_{random_id}"
 
 _MAX_CLUSTER_COLUMNS = 4
 
@@ -203,7 +207,11 @@ class Session(
                 bq_kms_key_name=self._bq_kms_key_name,
             )
 
-        self._create_bq_datasets()
+        self._anonymous_dataset = (
+            bigframes.session._io.bigquery.create_bq_dataset_reference(
+                self.bqclient, location=self._location
+            )
+        )
 
         # TODO(shobs): Remove this logic after https://github.com/ibis-project/ibis/issues/8494
         # has been fixed. The ibis client changes the default query job config
@@ -232,6 +240,13 @@ class Session(
         self._df_snapshot: Dict[
             bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]
         ] = {}
+
+        # unique session identifier, short enough to be human readable
+        # only needs to be unique among sessions created by the same user
+        # at the same time in the same region
+        self._session_id: str = "session" + secrets.token_hex(3)
+        self._table_ids: List[str] = []
+        # store table ids and delete them when the session is closed
 
     @property
     def bqclient(self):
@@ -264,6 +279,10 @@ class Session(
         return self._bq_connection_manager
 
     @property
+    def session_id(self):
+        return self._session_id
+
+    @property
     def _project(self):
         return self.bqclient.project
 
@@ -271,24 +290,15 @@ class Session(
         # Stable hash needed to use in expression tree
         return hash(str(self._anonymous_dataset))
 
-    def _create_bq_datasets(self):
-        """Create and identify dataset(s) for temporary BQ resources."""
-        query_job = self.bqclient.query("SELECT 1", location=self._location)
-        query_job.result()  # blocks until finished
-
-        # The anonymous dataset is used by BigQuery to write query results and
-        # session tables. BigQuery DataFrames also writes temp tables directly
-        # to the dataset, no BigQuery Session required. Note: there is a
-        # different anonymous dataset per location. See:
-        # https://cloud.google.com/bigquery/docs/cached-results#how_cached_results_are_stored
-        query_destination = query_job.destination
-        self._anonymous_dataset = bigquery.DatasetReference(
-            query_destination.project,
-            query_destination.dataset_id,
-        )
-
     def close(self):
-        """No-op. Temporary resources are deleted after 7 days."""
+        """Delete tables that were created with this session's session_id."""
+        client = self.bqclient
+        project_id = self._anonymous_dataset.project
+        dataset_id = self._anonymous_dataset.dataset_id
+
+        for table_id in self._table_ids:
+            full_id = ".".join([project_id, dataset_id, table_id])
+            client.delete_table(full_id, not_found_ok=True)
 
     def read_gbq(
         self,
@@ -1063,7 +1073,7 @@ class Session(
 
         job_config.labels = {"bigframes-api": api_name}
 
-        load_table_destination = bigframes_io.random_table(self._anonymous_dataset)
+        load_table_destination = self._random_table()
         load_job = self.bqclient.load_table_from_dataframe(
             pandas_dataframe_copy,
             load_table_destination,
@@ -1145,7 +1155,7 @@ class Session(
         encoding: Optional[str] = None,
         **kwargs,
     ) -> dataframe.DataFrame:
-        table = bigframes_io.random_table(self._anonymous_dataset)
+        table = self._random_table()
 
         if engine is not None and engine == "bigquery":
             if any(param is not None for param in (dtype, names)):
@@ -1282,7 +1292,7 @@ class Session(
         *,
         engine: str = "auto",
     ) -> dataframe.DataFrame:
-        table = bigframes_io.random_table(self._anonymous_dataset)
+        table = self._random_table()
 
         if engine == "bigquery":
             job_config = self._prepare_load_job_config()
@@ -1319,7 +1329,7 @@ class Session(
         engine: Literal["ujson", "pyarrow", "bigquery"] = "ujson",
         **kwargs,
     ) -> dataframe.DataFrame:
-        table = bigframes_io.random_table(self._anonymous_dataset)
+        table = self._random_table()
 
         if engine == "bigquery":
 
@@ -1416,14 +1426,12 @@ class Session(
     ) -> bigquery.TableReference:
         # Can't set a table in _SESSION as destination via query job API, so we
         # run DDL, instead.
-        dataset = self._anonymous_dataset
         expiration = (
             datetime.datetime.now(datetime.timezone.utc) + constants.DEFAULT_EXPIRATION
         )
 
         table = bigframes_io.create_temp_table(
-            self.bqclient,
-            dataset,
+            self,
             expiration,
             schema=schema,
             cluster_columns=cluster_cols,
@@ -1938,6 +1946,32 @@ class Session(
             )  # Wait for the job to complete
         else:
             job.result()
+
+    def _random_table(self, skip_cleanup: bool = False) -> bigquery.TableReference:
+        """Generate a random table ID with BigQuery DataFrames prefix.
+
+        The generated ID will be stored and checked for deletion when the
+        session is closed, unless skip_cleanup is True.
+
+        Args:
+            skip_cleanup (bool, default False):
+                If True, do not add the generated ID to the list of tables
+                to clean up when the session is closed.
+
+        Returns:
+            google.cloud.bigquery.TableReference:
+                Fully qualified table ID of a table that doesn't exist.
+        """
+        dataset = self._anonymous_dataset
+        session_id = self.session_id
+        now = datetime.datetime.now(datetime.timezone.utc)
+        random_id = uuid.uuid4().hex
+        table_id = _TEMP_TABLE_ID_FORMAT.format(
+            date=now.strftime("%Y%m%d"), session_id=session_id, random_id=random_id
+        )
+        if not skip_cleanup:
+            self._table_ids.append(table_id)
+        return dataset.table(table_id)
 
 
 def connect(context: Optional[bigquery_options.BigQueryOptions] = None) -> Session:

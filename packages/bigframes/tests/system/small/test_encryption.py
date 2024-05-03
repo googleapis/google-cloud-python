@@ -86,9 +86,7 @@ def test_session_load_job(bq_cmek, session_with_bq_cmek):
         pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
     # Session should have cmek set in the default query and load job configs
-    load_table = bigframes.session._io.bigquery.random_table(
-        session_with_bq_cmek._anonymous_dataset
-    )
+    load_table = session_with_bq_cmek._random_table()
 
     df = pandas.DataFrame({"col0": [1, 2, 3]})
     load_job_config = session_with_bq_cmek._prepare_load_job_config()
@@ -188,9 +186,7 @@ def test_to_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
 
     # Write the result to BQ custom table and assert encryption
     session_with_bq_cmek.bqclient.get_table(output_table_id)
-    output_table_ref = bigframes.session._io.bigquery.random_table(
-        session_with_bq_cmek._anonymous_dataset
-    )
+    output_table_ref = session_with_bq_cmek._random_table()
     output_table_id = str(output_table_ref)
     df.to_gbq(output_table_id)
     output_table = session_with_bq_cmek.bqclient.get_table(output_table_id)

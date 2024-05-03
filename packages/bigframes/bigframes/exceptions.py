@@ -21,5 +21,9 @@ class UnknownLocationWarning(Warning):
     """The location is set to an unknown value."""
 
 
+class CleanupFailedWarning(Warning):
+    """Bigframes failed to clean up a table resource."""
+
+
 class NoDefaultIndexError(ValueError):
     """Unable to create a default index."""
