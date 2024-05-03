@@ -256,6 +256,8 @@ def system(session):
 
     install_systemtest_dependencies(session, "-c", constraints_path)
 
+    session.run("python", "-m", "pip", "freeze")
+
     # Run py.test against the system tests.
     if system_test_exists:
         session.run(
@@ -511,6 +513,7 @@ def prerelease_deps(session):
         "requests",
     ]
     session.install(*other_deps)
+    session.run("python", "-m", "pip", "freeze")
 
     # Print out prerelease package versions
     session.run(
