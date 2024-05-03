@@ -222,3 +222,24 @@ def test_wrap_method_with_call_not_supported():
     with pytest.raises(ValueError) as exc_info:
         google.api_core.gapic_v1.method.wrap_method(method, with_call=True)
     assert "with_call=True is only supported for unary calls" in str(exc_info.value)
+
+
+def test_benchmark_gapic_call():
+    """
+    Ensure the __call__ method performance does not regress from expectations
+
+    __call__ builds a new wrapped function using passed-in timeout and retry, but
+    subsequent calls are cached
+
+    Note: The threshold has been tuned for the CI workers. Test may flake on
+    slower hardware
+    """
+    from google.api_core.gapic_v1.method import _GapicCallable
+    from google.api_core.retry import Retry
+    from timeit import timeit
+
+    gapic_callable = _GapicCallable(
+        lambda *a, **k: 1, retry=Retry(), timeout=1010, compression=False
+    )
+    avg_time = timeit(lambda: gapic_callable(), number=10_000)
+    assert avg_time < 0.4
