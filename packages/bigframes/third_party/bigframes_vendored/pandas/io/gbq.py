@@ -157,7 +157,7 @@ class GBQIOMixin:
                 Alias for columns, retained for backwards compatibility.
 
         Raises:
-            bigframes.exceptions.NoDefaultIndexError:
+            bigframes.exceptions.DefaultIndexWarning:
                 Using the default index is discouraged, such as with clustered
                 or partitioned tables without primary keys.
 

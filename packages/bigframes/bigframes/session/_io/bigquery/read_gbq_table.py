@@ -277,13 +277,14 @@ def get_index_cols_and_uniqueness(
         # resource utilization because of the default sequential index. See
         # internal issue 335727141.
         if _is_table_clustered_or_partitioned(table) and not primary_keys:
-            raise bigframes.exceptions.NoDefaultIndexError(
+            warnings.warn(
                 f"Table '{str(table.reference)}' is clustered and/or "
                 "partitioned, but BigQuery DataFrames was not able to find a "
-                "suitable index. To avoid this error, set at least one of: "
+                "suitable index. To avoid this warning, set at least one of: "
                 # TODO(b/338037499): Allow max_results to override this too,
                 # once we make it more efficient.
-                "`index_col` or `filters`."
+                "`index_col` or `filters`.",
+                category=bigframes.exceptions.DefaultIndexWarning,
             )
 
         # If there are primary keys defined, the query engine assumes these

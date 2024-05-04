@@ -25,5 +25,5 @@ class CleanupFailedWarning(Warning):
     """Bigframes failed to clean up a table resource."""
 
 
-class NoDefaultIndexError(ValueError):
-    """Unable to create a default index."""
+class DefaultIndexWarning(Warning):
+    """Default index may cause unexpected costs."""

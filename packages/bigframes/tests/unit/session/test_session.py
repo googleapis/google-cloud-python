@@ -17,6 +17,7 @@ import datetime
 import os
 import re
 from unittest import mock
+import warnings
 
 import google.api_core.exceptions
 import google.cloud.bigquery
@@ -186,7 +187,7 @@ def test_read_gbq_cached_table():
 
 
 @pytest.mark.parametrize("table", CLUSTERED_OR_PARTITIONED_TABLES)
-def test_no_default_index_error_raised_by_read_gbq(table):
+def test_default_index_warning_raised_by_read_gbq(table):
     """Because of the windowing operation to create a default index, row
     filters can't push down to the clustering column.
 
@@ -202,12 +203,12 @@ def test_no_default_index_error_raised_by_read_gbq(table):
     session = resources.create_bigquery_session(bqclient=bqclient)
     table._properties["location"] = session._location
 
-    with pytest.raises(bigframes.exceptions.NoDefaultIndexError):
+    with pytest.warns(bigframes.exceptions.DefaultIndexWarning):
         session.read_gbq("my-project.my_dataset.my_table")
 
 
 @pytest.mark.parametrize("table", CLUSTERED_OR_PARTITIONED_TABLES)
-def test_no_default_index_error_not_raised_by_read_gbq_index_col_sequential_int64(
+def test_default_index_warning_not_raised_by_read_gbq_index_col_sequential_int64(
     table,
 ):
     """Because of the windowing operation to create a default index, row
@@ -224,11 +225,13 @@ def test_no_default_index_error_not_raised_by_read_gbq_index_col_sequential_int6
     session = resources.create_bigquery_session(bqclient=bqclient)
     table._properties["location"] = session._location
 
-    # No exception raised because we set the option allowing the default indexes.
-    df = session.read_gbq(
-        "my-project.my_dataset.my_table",
-        index_col=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
-    )
+    # No warnings raised because we set the option allowing the default indexes.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", bigframes.exceptions.DefaultIndexWarning)
+        df = session.read_gbq(
+            "my-project.my_dataset.my_table",
+            index_col=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
+        )
 
     # We expect a window operation because we specificaly requested a sequential index.
     generated_sql = df.sql.casefold()
@@ -246,7 +249,7 @@ def test_no_default_index_error_not_raised_by_read_gbq_index_col_sequential_int6
     ),
 )
 @pytest.mark.parametrize("table", CLUSTERED_OR_PARTITIONED_TABLES)
-def test_no_default_index_error_not_raised_by_read_gbq_index_col_columns(
+def test_default_index_warning_not_raised_by_read_gbq_index_col_columns(
     total_count,
     distinct_count,
     table,
@@ -270,10 +273,12 @@ def test_no_default_index_error_not_raised_by_read_gbq_index_col_columns(
     )
     table._properties["location"] = session._location
 
-    # No exception raised because there are columns to use as the index.
-    df = session.read_gbq(
-        "my-project.my_dataset.my_table", index_col=("idx_1", "idx_2")
-    )
+    # No warning raised because there are columns to use as the index.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", bigframes.exceptions.DefaultIndexWarning)
+        df = session.read_gbq(
+            "my-project.my_dataset.my_table", index_col=("idx_1", "idx_2")
+        )
 
     # There should be no analytic operators to prevent row filtering pushdown.
     assert "OVER" not in df.sql
@@ -281,7 +286,7 @@ def test_no_default_index_error_not_raised_by_read_gbq_index_col_columns(
 
 
 @pytest.mark.parametrize("table", CLUSTERED_OR_PARTITIONED_TABLES)
-def test_no_default_index_error_not_raised_by_read_gbq_primary_key(table):
+def test_default_index_warning_not_raised_by_read_gbq_primary_key(table):
     """If a primary key is set on the table, we use that as the index column
     by default, no error should be raised in this case.
 
@@ -310,8 +315,10 @@ def test_no_default_index_error_not_raised_by_read_gbq_primary_key(table):
     )
     table._properties["location"] = session._location
 
-    # No exception raised because there is a primary key to use as the index.
-    df = session.read_gbq("my-project.my_dataset.my_table")
+    # No warning raised because there is a primary key to use as the index.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", bigframes.exceptions.DefaultIndexWarning)
+        df = session.read_gbq("my-project.my_dataset.my_table")
 
     # There should be no analytic operators to prevent row filtering pushdown.
     assert "OVER" not in df.sql
