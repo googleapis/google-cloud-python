@@ -42,7 +42,7 @@ class DatabaseDialect(proto.Enum):
             Default value. This value will create a database with the
             GOOGLE_STANDARD_SQL dialect.
         GOOGLE_STANDARD_SQL (1):
-            Google standard SQL.
+            GoogleSQL supported SQL.
         POSTGRESQL (2):
             PostgreSQL supported SQL.
     """
@@ -90,11 +90,35 @@ class EncryptionConfig(proto.Message):
             The Cloud KMS key to be used for encrypting and decrypting
             the database. Values are of the form
             ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+        kms_key_names (MutableSequence[str]):
+            Specifies the KMS configuration for the one or more keys
+            used to encrypt the database. Values are of the form
+            ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+
+            The keys referenced by kms_key_names must fully cover all
+            regions of the database instance configuration. Some
+            examples:
+
+            -  For single region database instance configs, specify a
+               single regional location KMS key.
+            -  For multi-regional database instance configs of type
+               GOOGLE_MANAGED, either specify a multi-regional location
+               KMS key or multiple regional location KMS keys that cover
+               all regions in the instance config.
+            -  For a database instance config of type USER_MANAGED,
+               please specify only regional location KMS keys to cover
+               each region in the instance config. Multi-regional
+               location KMS keys are not supported for USER_MANAGED
+               instance configs.
     """
 
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    kms_key_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

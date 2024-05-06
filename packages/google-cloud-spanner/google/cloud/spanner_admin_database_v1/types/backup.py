@@ -111,6 +111,16 @@ class Backup(proto.Message):
         encryption_info (google.cloud.spanner_admin_database_v1.types.EncryptionInfo):
             Output only. The encryption information for
             the backup.
+        encryption_information (MutableSequence[google.cloud.spanner_admin_database_v1.types.EncryptionInfo]):
+            Output only. The encryption information for the backup,
+            whether it is protected by one or more KMS keys. The
+            information includes all Cloud KMS key versions used to
+            encrypt the backup. The
+            ``encryption_status' field inside of each``\ EncryptionInfo\`
+            is not populated. At least one of the key versions must be
+            available for the backup to be restored. If a key version is
+            revoked in the middle of a restore, the restore behavior is
+            undefined.
         database_dialect (google.cloud.spanner_admin_database_v1.types.DatabaseDialect):
             Output only. The database dialect information
             for the backup.
@@ -188,6 +198,13 @@ class Backup(proto.Message):
     encryption_info: common.EncryptionInfo = proto.Field(
         proto.MESSAGE,
         number=8,
+        message=common.EncryptionInfo,
+    )
+    encryption_information: MutableSequence[
+        common.EncryptionInfo
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
         message=common.EncryptionInfo,
     )
     database_dialect: common.DatabaseDialect = proto.Field(
@@ -366,7 +383,7 @@ class CopyBackupRequest(proto.Message):
 
 
 class CopyBackupMetadata(proto.Message):
-    r"""Metadata type for the google.longrunning.Operation returned by
+    r"""Metadata type for the operation returned by
     [CopyBackup][google.spanner.admin.database.v1.DatabaseAdmin.CopyBackup].
 
     Attributes:
@@ -652,8 +669,8 @@ class ListBackupOperationsRequest(proto.Message):
 
                -  The operation's metadata type is
                   [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
-               -  The database the backup was taken from has a name
-                  containing the string "prod".
+               -  The source database name of backup contains the string
+                  "prod".
 
             -  ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
                ``(metadata.name:howl) AND``
@@ -673,8 +690,7 @@ class ListBackupOperationsRequest(proto.Message):
 
                -  The operation's metadata type is
                   [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
-               -  The source backup of the copied backup name contains
-                  the string "test".
+               -  The source backup name contains the string "test".
                -  The operation started before 2022-01-18T14:50:00Z.
                -  The operation resulted in an error.
 
@@ -688,12 +704,12 @@ class ListBackupOperationsRequest(proto.Message):
 
                   -  The operation's metadata type is
                      [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]
-                     AND the database the backup was taken from has name
-                     containing string "test_db"
+                     AND the source database name of the backup contains
+                     the string "test_db"
                   -  The operation's metadata type is
                      [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata]
-                     AND the backup the backup was copied from has name
-                     containing string "test_bkp"
+                     AND the source backup name contains the string
+                     "test_bkp"
 
                -  The operation resulted in an error.
         page_size (int):
@@ -819,6 +835,26 @@ class CreateBackupEncryptionConfig(proto.Message):
             [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type]
             is ``CUSTOMER_MANAGED_ENCRYPTION``. Values are of the form
             ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+        kms_key_names (MutableSequence[str]):
+            Optional. Specifies the KMS configuration for the one or
+            more keys used to protect the backup. Values are of the form
+            ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+
+            The keys referenced by kms_key_names must fully cover all
+            regions of the backup's instance configuration. Some
+            examples:
+
+            -  For single region instance configs, specify a single
+               regional location KMS key.
+            -  For multi-regional instance configs of type
+               GOOGLE_MANAGED, either specify a multi-regional location
+               KMS key or multiple regional location KMS keys that cover
+               all regions in the instance config.
+            -  For an instance config of type USER_MANAGED, please
+               specify only regional location KMS keys to cover each
+               region in the instance config. Multi-regional location
+               KMS keys are not supported for USER_MANAGED instance
+               configs.
     """
 
     class EncryptionType(proto.Enum):
@@ -854,6 +890,10 @@ class CreateBackupEncryptionConfig(proto.Message):
         proto.STRING,
         number=2,
     )
+    kms_key_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CopyBackupEncryptionConfig(proto.Message):
@@ -868,6 +908,27 @@ class CopyBackupEncryptionConfig(proto.Message):
             [encryption_type][google.spanner.admin.database.v1.CopyBackupEncryptionConfig.encryption_type]
             is ``CUSTOMER_MANAGED_ENCRYPTION``. Values are of the form
             ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+        kms_key_names (MutableSequence[str]):
+            Optional. Specifies the KMS configuration for the one or
+            more keys used to protect the backup. Values are of the form
+            ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+            Kms keys specified can be in any order.
+
+            The keys referenced by kms_key_names must fully cover all
+            regions of the backup's instance configuration. Some
+            examples:
+
+            -  For single region instance configs, specify a single
+               regional location KMS key.
+            -  For multi-regional instance configs of type
+               GOOGLE_MANAGED, either specify a multi-regional location
+               KMS key or multiple regional location KMS keys that cover
+               all regions in the instance config.
+            -  For an instance config of type USER_MANAGED, please
+               specify only regional location KMS keys to cover each
+               region in the instance config. Multi-regional location
+               KMS keys are not supported for USER_MANAGED instance
+               configs.
     """
 
     class EncryptionType(proto.Enum):
@@ -887,8 +948,9 @@ class CopyBackupEncryptionConfig(proto.Message):
             GOOGLE_DEFAULT_ENCRYPTION (2):
                 Use Google default encryption.
             CUSTOMER_MANAGED_ENCRYPTION (3):
-                Use customer managed encryption. If specified,
-                ``kms_key_name`` must contain a valid Cloud KMS key.
+                Use customer managed encryption. If specified, either
+                ``kms_key_name`` or ``kms_key_names`` must contain valid
+                Cloud KMS key(s).
         """
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
@@ -903,6 +965,10 @@ class CopyBackupEncryptionConfig(proto.Message):
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    kms_key_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

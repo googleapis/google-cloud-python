@@ -47,7 +47,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
 
     -  create, drop, and list databases
     -  update the schema of pre-existing databases
-    -  create, delete and list backups for a database
+    -  create, delete, copy and list backups for a database
     -  restore a database from an existing backup
 
     This class defines the same methods as the primary client, so the
@@ -695,8 +695,8 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         The [response][google.longrunning.Operation.response] field type
         is [Backup][google.spanner.admin.database.v1.Backup], if
         successful. Cancelling the returned operation will stop the
-        copying and delete the backup. Concurrent CopyBackup requests
-        can run on the same source backup.
+        copying and delete the destination backup. Concurrent CopyBackup
+        requests can run on the same source backup.
 
         Returns:
             Callable[[~.CopyBackupRequest],

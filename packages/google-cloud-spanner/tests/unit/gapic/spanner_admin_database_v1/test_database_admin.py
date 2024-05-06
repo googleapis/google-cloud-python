@@ -10905,7 +10905,10 @@ def test_update_database_rest(request_type):
                 "source_database": "source_database_value",
             },
         },
-        "encryption_config": {"kms_key_name": "kms_key_name_value"},
+        "encryption_config": {
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
+        },
         "encryption_info": [
             {
                 "encryption_type": 1,
@@ -13174,6 +13177,7 @@ def test_create_backup_rest(request_type):
             },
             "kms_key_version": "kms_key_version_value",
         },
+        "encryption_information": {},
         "database_dialect": 1,
         "referencing_backups": [
             "referencing_backups_value1",
@@ -14241,6 +14245,7 @@ def test_update_backup_rest(request_type):
             },
             "kms_key_version": "kms_key_version_value",
         },
+        "encryption_information": {},
         "database_dialect": 1,
         "referencing_backups": [
             "referencing_backups_value1",

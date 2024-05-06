@@ -69,7 +69,7 @@ class DatabaseAdminAsyncClient:
 
     -  create, drop, and list databases
     -  update the schema of pre-existing databases
-    -  create, delete and list backups for a database
+    -  create, delete, copy and list backups for a database
     -  restore a database from an existing backup
     """
 
@@ -351,7 +351,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabasesAsyncPager:
                 The response for
-                [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
+                   [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1168,7 +1168,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse:
                 The response for
-                [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
+                   [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 
         """
         # Create or coerce a protobuf request object.
@@ -1807,8 +1807,8 @@ class DatabaseAdminAsyncClient:
         The [response][google.longrunning.Operation.response] field type
         is [Backup][google.spanner.admin.database.v1.Backup], if
         successful. Cancelling the returned operation will stop the
-        copying and delete the backup. Concurrent CopyBackup requests
-        can run on the same source backup.
+        copying and delete the destination backup. Concurrent CopyBackup
+        requests can run on the same source backup.
 
         .. code-block:: python
 
@@ -2347,7 +2347,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupsAsyncPager:
                 The response for
-                [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
+                   [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2889,7 +2889,7 @@ class DatabaseAdminAsyncClient:
             parent (:class:`str`):
                 Required. The database whose roles should be listed.
                 Values are of the form
-                ``projects/<project>/instances/<instance>/databases/<database>/databaseRoles``.
+                ``projects/<project>/instances/<instance>/databases/<database>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2903,7 +2903,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabaseRolesAsyncPager:
                 The response for
-                [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles].
+                   [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
