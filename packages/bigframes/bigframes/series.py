@@ -282,7 +282,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         opts = bigframes.options.display
         max_results = opts.max_rows
         if opts.repr_mode == "deferred":
-            return formatter.repr_query_job(self.query_job)
+            return formatter.repr_query_job(self._compute_dry_run())
 
         self._cached()
         pandas_df, _, query_job = self._block.retrieve_repr_request_results(max_results)

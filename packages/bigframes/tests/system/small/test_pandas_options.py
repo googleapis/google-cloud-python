@@ -27,8 +27,11 @@ import bigframes.pandas as bpd
 
 @pytest.fixture(autouse=True)
 def reset_default_session_and_location():
-    bpd.close_session()
-    bpd.options.bigquery.location = None
+    # Note: This starts a thread-local session and closes it once the test
+    # finishes.
+    with bpd.option_context("bigquery.location", None):
+        bpd.options.bigquery.location = None
+        yield
 
 
 @pytest.mark.parametrize(
@@ -80,7 +83,9 @@ def test_read_gbq_start_sets_session_location(
     ):
         read_method(query)
 
-    # Close global session to start over
+    # Close the global session to start over.
+    # Note: This is a thread-local operation because of the
+    # reset_default_session_and_location fixture above.
     bpd.close_session()
 
     # There should still be the previous location set in the bigquery options
@@ -289,13 +294,25 @@ def test_credentials_need_reauthentication(monkeypatch):
         with pytest.raises(google.auth.exceptions.RefreshError):
             bpd.read_gbq(test_query)
 
-        # Now verify that closing the session works and we throw
-        # the expected warning
+        # Now verify that closing the session works We look at the
+        # thread-local session because of the
+        # reset_default_session_and_location fixture and that this test mutates
+        # state that might otherwise be used by tests running in parallel.
+        assert (
+            bigframes.core.global_session._global_session_state.thread_local_session
+            is not None
+        )
+
         with warnings.catch_warnings(record=True) as warned:
             bpd.close_session()  # CleanupFailedWarning: can't clean up
+
         assert len(warned) == 1
         assert warned[0].category == bigframes.exceptions.CleanupFailedWarning
-        assert bigframes.core.global_session._global_session is None
+
+        assert (
+            bigframes.core.global_session._global_session_state.thread_local_session
+            is None
+        )
 
     # Now verify that use is able to start over
     df = bpd.read_gbq(test_query)

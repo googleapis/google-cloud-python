@@ -26,6 +26,24 @@ import bigframes.session
 
 _global_session: Optional[bigframes.session.Session] = None
 _global_session_lock = threading.Lock()
+_global_session_state = threading.local()
+_global_session_state.thread_local_session = None
+
+
+def _try_close_session(session):
+    """Try to close the session and warn if couldn't."""
+    try:
+        session.close()
+    except google.auth.exceptions.RefreshError as e:
+        session_id = session.session_id
+        location = session._location
+        project_id = session._project
+        warnings.warn(
+            f"Session cleanup failed for session with id: {session_id}, "
+            f"location: {location}, project: {project_id}",
+            category=bigframes.exceptions.CleanupFailedWarning,
+        )
+        traceback.print_tb(e.__traceback__)
 
 
 def close_session() -> None:
@@ -37,24 +55,30 @@ def close_session() -> None:
     Returns:
         None
     """
-    global _global_session
+    global _global_session, _global_session_lock, _global_session_state
+
+    if bigframes._config.options.is_bigquery_thread_local:
+        if _global_session_state.thread_local_session is not None:
+            _try_close_session(_global_session_state.thread_local_session)
+            _global_session_state.thread_local_session = None
+
+        # Currently using thread-local options, so no global lock needed.
+        # Don't reset options.bigquery, as that's the responsibility
+        # of the context manager that started it in the first place. The user
+        # might have explicitly closed the session in the context manager and
+        # the thread-locality property needs to be retained.
+        bigframes._config.options.bigquery._session_started = False
+
+        # Don't close the non-thread-local session.
+        return
 
     with _global_session_lock:
         if _global_session is not None:
-            try:
-                _global_session.close()
-            except google.auth.exceptions.RefreshError as e:
-                session_id = _global_session.session_id
-                location = _global_session._location
-                project_id = _global_session._project
-                warnings.warn(
-                    f"Session cleanup failed for session with id: {session_id}, "
-                    f"location: {location}, project: {project_id}",
-                    category=bigframes.exceptions.CleanupFailedWarning,
-                )
-                traceback.print_tb(e.__traceback__)
+            _try_close_session(_global_session)
             _global_session = None
 
+        # This should be global, not thread-local because of the if clause
+        # above.
         bigframes._config.options.bigquery._session_started = False
 
 
@@ -63,7 +87,15 @@ def get_global_session():
 
     Creates the global session if it does not exist.
     """
-    global _global_session, _global_session_lock
+    global _global_session, _global_session_lock, _global_session_state
+
+    if bigframes._config.options.is_bigquery_thread_local:
+        if _global_session_state.thread_local_session is None:
+            _global_session_state.thread_local_session = bigframes.session.connect(
+                bigframes._config.options.bigquery
+            )
+
+        return _global_session_state.thread_local_session
 
     with _global_session_lock:
         if _global_session is None:

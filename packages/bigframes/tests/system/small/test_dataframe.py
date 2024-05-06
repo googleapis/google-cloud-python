@@ -142,18 +142,13 @@ def test_df_construct_from_dict():
 def test_df_construct_inline_respects_location():
     import bigframes.pandas as bpd
 
-    bpd.close_session()
-    bpd.options.bigquery.location = "europe-west1"
+    # Note: This starts a thread-local session.
+    with bpd.option_context("bigquery.location", "europe-west1"):
+        df = bpd.DataFrame([[1, 2, 3], [4, 5, 6]])
+        repr(df)
 
-    df = bpd.DataFrame([[1, 2, 3], [4, 5, 6]])
-    repr(df)
-
-    table = bpd.get_global_session().bqclient.get_table(df.query_job.destination)
-    assert table.location == "europe-west1"
-
-    # Reset global session
-    bpd.close_session()
-    bpd.options.bigquery.location = "us"
+        table = bpd.get_global_session().bqclient.get_table(df.query_job.destination)
+        assert table.location == "europe-west1"
 
 
 def test_get_column(scalars_dfs):

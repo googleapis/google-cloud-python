@@ -595,7 +595,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         opts = bigframes.options.display
         max_results = opts.max_rows
         if opts.repr_mode == "deferred":
-            return formatter.repr_query_job(self.query_job)
+            return formatter.repr_query_job(self._compute_dry_run())
 
         self._cached()
         # TODO(swast): pass max_columns and get the true column count back. Maybe
@@ -632,9 +632,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         many notebooks are not configured for large tables.
         """
         opts = bigframes.options.display
-        max_results = bigframes.options.display.max_rows
+        max_results = opts.max_rows
         if opts.repr_mode == "deferred":
-            return formatter.repr_query_job_html(self.query_job)
+            return formatter.repr_query_job(self._compute_dry_run())
 
         self._cached()
         # TODO(swast): pass max_columns and get the true column count back. Maybe

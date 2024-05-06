@@ -55,25 +55,28 @@ def test_create_text_generator_model_default_session(
 ):
     import bigframes.pandas as bpd
 
-    bpd.close_session()
-    bpd.options.bigquery.bq_connection = bq_connection
-    bpd.options.bigquery.location = "us"
+    # Note: This starts a thread-local session.
+    with bpd.option_context(
+        "bigquery.bq_connection",
+        bq_connection,
+        "bigquery.location",
+        "US",
+    ):
+        model = llm.PaLM2TextGenerator()
+        assert model is not None
+        assert model._bqml_model is not None
+        assert (
+            model.connection_name.casefold()
+            == f"{bigquery_client.project}.us.bigframes-rf-conn"
+        )
 
-    model = llm.PaLM2TextGenerator()
-    assert model is not None
-    assert model._bqml_model is not None
-    assert (
-        model.connection_name.casefold()
-        == f"{bigquery_client.project}.us.bigframes-rf-conn"
-    )
+        llm_text_df = bpd.read_pandas(llm_text_pandas_df)
 
-    llm_text_df = bpd.read_pandas(llm_text_pandas_df)
-
-    df = model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+        df = model.predict(llm_text_df).to_pandas()
+        assert df.shape == (3, 4)
+        assert "ml_generate_text_llm_result" in df.columns
+        series = df["ml_generate_text_llm_result"]
+        assert all(series.str.len() > 20)
 
 
 @pytest.mark.flaky(retries=2)
@@ -82,25 +85,28 @@ def test_create_text_generator_32k_model_default_session(
 ):
     import bigframes.pandas as bpd
 
-    bpd.close_session()
-    bpd.options.bigquery.bq_connection = bq_connection
-    bpd.options.bigquery.location = "us"
+    # Note: This starts a thread-local session.
+    with bpd.option_context(
+        "bigquery.bq_connection",
+        bq_connection,
+        "bigquery.location",
+        "US",
+    ):
+        model = llm.PaLM2TextGenerator(model_name="text-bison-32k")
+        assert model is not None
+        assert model._bqml_model is not None
+        assert (
+            model.connection_name.casefold()
+            == f"{bigquery_client.project}.us.bigframes-rf-conn"
+        )
 
-    model = llm.PaLM2TextGenerator(model_name="text-bison-32k")
-    assert model is not None
-    assert model._bqml_model is not None
-    assert (
-        model.connection_name.casefold()
-        == f"{bigquery_client.project}.us.bigframes-rf-conn"
-    )
+        llm_text_df = bpd.read_pandas(llm_text_pandas_df)
 
-    llm_text_df = bpd.read_pandas(llm_text_pandas_df)
-
-    df = model.predict(llm_text_df).to_pandas()
-    assert df.shape == (3, 4)
-    assert "ml_generate_text_llm_result" in df.columns
-    series = df["ml_generate_text_llm_result"]
-    assert all(series.str.len() > 20)
+        df = model.predict(llm_text_df).to_pandas()
+        assert df.shape == (3, 4)
+        assert "ml_generate_text_llm_result" in df.columns
+        series = df["ml_generate_text_llm_result"]
+        assert all(series.str.len() > 20)
 
 
 @pytest.mark.flaky(retries=2)
@@ -232,27 +238,33 @@ def test_create_embedding_generator_multilingual_model(
 def test_create_text_embedding_generator_model_defaults(bq_connection):
     import bigframes.pandas as bpd
 
-    bpd.close_session()
-    bpd.options.bigquery.bq_connection = bq_connection
-    bpd.options.bigquery.location = "us"
-
-    model = llm.PaLM2TextEmbeddingGenerator()
-    assert model is not None
-    assert model._bqml_model is not None
+    # Note: This starts a thread-local session.
+    with bpd.option_context(
+        "bigquery.bq_connection",
+        bq_connection,
+        "bigquery.location",
+        "US",
+    ):
+        model = llm.PaLM2TextEmbeddingGenerator()
+        assert model is not None
+        assert model._bqml_model is not None
 
 
 def test_create_text_embedding_generator_multilingual_model_defaults(bq_connection):
     import bigframes.pandas as bpd
 
-    bpd.close_session()
-    bpd.options.bigquery.bq_connection = bq_connection
-    bpd.options.bigquery.location = "us"
-
-    model = llm.PaLM2TextEmbeddingGenerator(
-        model_name="textembedding-gecko-multilingual"
-    )
-    assert model is not None
-    assert model._bqml_model is not None
+    # Note: This starts a thread-local session.
+    with bpd.option_context(
+        "bigquery.bq_connection",
+        bq_connection,
+        "bigquery.location",
+        "US",
+    ):
+        model = llm.PaLM2TextEmbeddingGenerator(
+            model_name="textembedding-gecko-multilingual"
+        )
+        assert model is not None
+        assert model._bqml_model is not None
 
 
 @pytest.mark.flaky(retries=2)
