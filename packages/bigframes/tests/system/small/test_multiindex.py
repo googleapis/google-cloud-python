@@ -1191,3 +1191,22 @@ def test_explode_w_multi_index():
         check_dtype=False,
         check_index_type=False,
     )
+
+
+def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "rowindex_2"]
+    level1 = pandas.Index(["b", "c", "d"])
+    # Need resulting column to be pyarrow string rather than object dtype
+    level2 = pandas.Index([None, "b", "b"], dtype="string[pyarrow]")
+    multi_columns = pandas.MultiIndex.from_arrays([level1, level2])
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    pd_result = pd_df.stack()
+    bf_result = bf_df.stack().to_pandas()
+
+    # Pandas produces pd.NA, where bq dataframes produces NaN
+    pd_result["c"] = pd_result["c"].replace(pandas.NA, np.nan)
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
