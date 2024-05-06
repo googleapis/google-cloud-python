@@ -50,6 +50,7 @@ _INTERVAL_PATTERN = re.compile(
     r"(?P<days>-?\d+) "
     r"(?P<time_sign>-?)(?P<hours>\d+):(?P<minutes>\d+):(?P<seconds>\d+)\.?(?P<fraction>\d*)?$"
 )
+_RANGE_PATTERN = re.compile(r"\[.*, .*\)")
 
 BIGQUERY_EMULATOR_HOST = "BIGQUERY_EMULATOR_HOST"
 """Environment variable defining host for emulator."""
@@ -334,9 +335,8 @@ def _range_from_json(value, field):
             The parsed range object from ``value`` if the ``field`` is not
             null (otherwise it is :data:`None`).
     """
-    range_literal = re.compile(r"\[.*, .*\)")
     if _not_null(value, field):
-        if range_literal.match(value):
+        if _RANGE_PATTERN.match(value):
             start, end = value[1:-1].split(", ")
             start = _range_element_from_json(start, field.range_element_type)
             end = _range_element_from_json(end, field.range_element_type)
@@ -531,6 +531,52 @@ def _time_to_json(value):
     return value
 
 
+def _range_element_to_json(value, element_type=None):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if value is None:
+        return None
+    elif isinstance(value, str):
+        if value.upper() in ("UNBOUNDED", "NULL"):
+            return None
+        else:
+            # We do not enforce range element value to be valid to reduce
+            # redundancy with backend.
+            return value
+    elif (
+        element_type and element_type.element_type.upper() in _SUPPORTED_RANGE_ELEMENTS
+    ):
+        converter = _SCALAR_VALUE_TO_JSON_ROW.get(element_type.element_type.upper())
+        return converter(value)
+    else:
+        raise ValueError(
+            f"Unsupported RANGE element type {element_type}, or "
+            "element type is empty. Must be DATE, DATETIME, or "
+            "TIMESTAMP"
+        )
+
+
+def _range_field_to_json(range_element_type, value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, str):
+        # string literal
+        if _RANGE_PATTERN.match(value):
+            start, end = value[1:-1].split(", ")
+        else:
+            raise ValueError(f"RANGE literal {value} has incorrect format")
+    elif isinstance(value, dict):
+        # dictionary
+        start = value.get("start")
+        end = value.get("end")
+    else:
+        raise ValueError(
+            f"Unsupported type of RANGE value {value}, must be " "string or dict"
+        )
+
+    start = _range_element_to_json(start, range_element_type)
+    end = _range_element_to_json(end, range_element_type)
+    return {"start": start, "end": end}
+
+
 # Converters used for scalar values marshalled to the BigQuery API, such as in
 # query parameters or the tabledata.insert API.
 _SCALAR_VALUE_TO_JSON_ROW = {
@@ -676,6 +722,8 @@ def _single_field_to_json(field, row_value):
 
     if field.field_type == "RECORD":
         return _record_field_to_json(field.fields, row_value)
+    if field.field_type == "RANGE":
+        return _range_field_to_json(field.range_element_type, row_value)
 
     return _scalar_field_to_json(field, row_value)
 

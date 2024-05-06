@@ -1049,10 +1049,22 @@ class Test_time_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(when), "12:13:41")
 
 
-def _make_field(field_type, mode="NULLABLE", name="testing", fields=()):
+def _make_field(
+    field_type,
+    mode="NULLABLE",
+    name="testing",
+    fields=(),
+    range_element_type=None,
+):
     from google.cloud.bigquery.schema import SchemaField
 
-    return SchemaField(name=name, field_type=field_type, mode=mode, fields=fields)
+    return SchemaField(
+        name=name,
+        field_type=field_type,
+        mode=mode,
+        fields=fields,
+        range_element_type=range_element_type,
+    )
 
 
 class Test_scalar_field_to_json(unittest.TestCase):
@@ -1251,6 +1263,98 @@ class Test_record_field_to_json(unittest.TestCase):
         )
 
 
+class Test_range_field_to_json(unittest.TestCase):
+    def _call_fut(self, field, value):
+        from google.cloud.bigquery._helpers import _range_field_to_json
+
+        return _range_field_to_json(field, value)
+
+    def test_w_date(self):
+        field = _make_field("RANGE", range_element_type="DATE")
+        start = datetime.date(2016, 12, 3)
+        original = {"start": start}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_date_string(self):
+        field = _make_field("RANGE", range_element_type="DATE")
+        original = {"start": "2016-12-03"}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_datetime(self):
+        field = _make_field("RANGE", range_element_type="DATETIME")
+        start = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456)
+        original = {"start": start}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03T14:11:27.123456", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_datetime_string(self):
+        field = _make_field("RANGE", range_element_type="DATETIME")
+        original = {"start": "2016-12-03T14:11:27.123456"}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03T14:11:27.123456", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_timestamp(self):
+        from google.cloud._helpers import UTC
+
+        field = _make_field("RANGE", range_element_type="TIMESTAMP")
+        start = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
+        original = {"start": start}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03T14:11:27.123456Z", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_timestamp_string(self):
+        field = _make_field("RANGE", range_element_type="TIMESTAMP")
+        original = {"start": "2016-12-03T14:11:27.123456Z"}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03T14:11:27.123456Z", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_timestamp_float(self):
+        field = _make_field("RANGE", range_element_type="TIMESTAMP")
+        original = {"start": 12.34567}
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": 12.34567, "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_string_literal(self):
+        field = _make_field("RANGE", range_element_type="DATE")
+        original = "[2016-12-03, UNBOUNDED)"
+        converted = self._call_fut(field.range_element_type, original)
+        expected = {"start": "2016-12-03", "end": None}
+        self.assertEqual(converted, expected)
+
+    def test_w_unsupported_range_element_type(self):
+        field = _make_field("RANGE", range_element_type="TIME")
+        with self.assertRaises(ValueError):
+            self._call_fut(
+                field.range_element_type,
+                {"start": datetime.time(12, 13, 41)},
+            )
+
+    def test_w_no_range_element_type(self):
+        field = _make_field("RANGE")
+        with self.assertRaises(ValueError):
+            self._call_fut(field.range_element_type, "2016-12-03")
+
+    def test_w_incorrect_literal_format(self):
+        field = _make_field("RANGE", range_element_type="DATE")
+        original = "[2016-12-03, UNBOUNDED]"
+        with self.assertRaises(ValueError):
+            self._call_fut(field.range_element_type, original)
+
+    def test_w_unsupported_representation(self):
+        field = _make_field("RANGE", range_element_type="DATE")
+        with self.assertRaises(ValueError):
+            self._call_fut(field.range_element_type, object())
+
+
 class Test_field_to_json(unittest.TestCase):
     def _call_fut(self, field, value):
         from google.cloud.bigquery._helpers import _field_to_json
@@ -1284,6 +1388,12 @@ class Test_field_to_json(unittest.TestCase):
         original = 42
         converted = self._call_fut(field, original)
         self.assertEqual(converted, str(original))
+
+    def test_w_range(self):
+        field = _make_field("RANGE", range_element_type="DATE")
+        original = {"start": "2016-12-03", "end": "2024-12-03"}
+        converted = self._call_fut(field, original)
+        self.assertEqual(converted, original)
 
 
 class Test_snake_to_camel_case(unittest.TestCase):
