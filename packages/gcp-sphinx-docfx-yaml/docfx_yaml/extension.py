@@ -396,11 +396,83 @@ def indent_code_left(lines, tab_space):
     return "\n".join(parts)
 
 
-def _parse_docstring_summary(summary):
+def _parse_enum_content(parts: Sequence[str]) -> Sequence[Mapping[str, str]]:
+    """Parses the given content for enums.
+
+    Args:
+        parts: The content to parse, given in the form of a sequence of str,
+            which have been split by newlines and are left-indented.
+
+    Returns:
+        Sequence of mapping of enum entries for name and description.
+
+    Raises:
+        ValueError: If the `Values` enum docstring is malformed.
+    """
+    enum_content: MutableSequence[Mapping[str, str]] = []
+    enum_name = ""
+    enum_description = []
+    for part in parts:
+        if (
+            (current_tab_space := len(part) - len(part.lstrip(" "))) > 0
+        ):
+            enum_description.append(indent_code_left(part, current_tab_space))
+            continue
+
+        # Add the new enum and start collecting new entry.
+        if enum_name and enum_description:
+            enum_content.append({
+                "id": enum_name,
+                "description": " ".join(enum_description),
+        })
+
+        enum_description = []
+        # Only collect the name, not the value.
+        enum_name = part.split(" ")[0]
+
+        if not enum_name and not enum_description:
+            raise ValueError(
+                "The enum docstring is not formatted well. Check the"
+                " docstring:\n\n{}".format("\n".join(parts))
+            )
+
+    # Add the last entry.
+    if not enum_name or not enum_description:
+        raise ValueError(
+            "The enum docstring is not formatted well. Check the"
+            " docstring:\n\n{}".format("\n".join(parts))
+        )
+
+    enum_content.append({
+        "id": enum_name,
+        "description": " ".join(enum_description),
+    })
+
+    return enum_content
+
+
+def _parse_docstring_summary(
+    summary: str,
+) -> tuple[str, Mapping[str, str], Mapping[str, str]]:
+    """
+    Parses the docstring tokens found in the summary.
+
+    Looks for tokens such as codeblocks, attributes, notices and enums.
+
+    Args:
+        summary: The content to parse docstring for.
+
+    Returns:
+        A tuple of the following:
+        * str: The content with parsed docstrings.
+        * Mapping[str, str]: Attribute entries if found.
+        * Mapping[str, str]: Enum entries if found.
+    """
     summary_parts = []
     attributes = []
     attribute_type_token = ":type:"
     enum_type_token = "Values:"
+    enums = []
     keyword = name = description = var_type = ""
 
     notice_open_tag = '<aside class="{notice_tag}">\n<b>{notice_name}:</b>'
@@ -500,14 +572,8 @@ def _parse_docstring_summary(summary):
                 if tab_space == 0:
                     raise ValueError("Content in the block should be indented."\
                                      f"Please check the docstring: \n{summary}")
-                parts = "\n".join(
-                    [indent_code_left(part, tab_space) for part in parts]
-                )
-                summary_parts.append(
-                    "Enum values:\n\n```\n"
-                    f"{parts}"
-                    "\n```\n"
-                )
+                parts = [indent_code_left(part, tab_space) for part in parts]
+                enums = _parse_enum_content(parts)
                 continue
 
             try:
@@ -573,7 +639,7 @@ def _parse_docstring_summary(summary):
             summary_parts.append(notice_close_tag)
 
     # Requires 2 newline chars to properly show on cloud site.
-    return "\n".join(summary_parts), attributes
+    return "\n".join(summary_parts), attributes, enums
 
 
 # Given documentation docstring, parse them into summary_info.
@@ -1014,7 +1080,9 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
             summary = reformat_summary(summary)
             top_summary = _extract_docstring_info(summary_info, summary, name)
             try:
-                datam['summary'], datam['attributes'] = _parse_docstring_summary(top_summary)
+                datam['summary'], datam['attributes'], datam['enum'] = (
+                    _parse_docstring_summary(top_summary)
+                )
             except ValueError:
                 debug_line = []
                 if path:

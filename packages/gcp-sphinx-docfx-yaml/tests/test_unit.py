@@ -201,6 +201,7 @@ Args:
         self.assertEqual(resolved_content, expected_content.split("\n"))
         self.assertCountEqual(xrefs_to_check, expected_xrefs)
 
+
     test_entries = [
         [
             """Required.
@@ -750,9 +751,12 @@ hyphenated term notice.
         summary,
         expected_summary,
     ):
-        parsed_summary, attributes = extension._parse_docstring_summary(summary)
+        parsed_summary, attributes, enums = (
+            extension._parse_docstring_summary(summary)
+        )
         self.assertEqual(parsed_summary, expected_summary)
         self.assertEqual(attributes, [])
+        self.assertEqual(enums, [])
 
 
     test_entries = [
@@ -775,6 +779,15 @@ hyphenated term notice.
 """
 .. warning::
 this is not a properly formatted warning.
+"""
+            ),
+            ValueError,
+        ],
+        [
+            (\
+"""
+Values:
+BAD_FORMATTING (-1): this is not properly formatted enum.
 """
             ),
             ValueError,
@@ -808,6 +821,7 @@ this is not a properly formatted warning.
                 "description": "simple description",
                 "var_type": "str",
             }],
+            [],
         ],
         [
             # Tests for multiple attributes.
@@ -839,6 +853,7 @@ this is not a properly formatted warning.
                 "description": "Table insert request.",
                 "var_type": "google.cloud.bigquery_logging_v1.types.TableInsertRequest",
             }],
+            [],
         ],
         [
             # Tests only attributes in valid format are parsed.
@@ -865,20 +880,71 @@ this is not a properly formatted warning.
                 "description": "proper description.",
                 "var_type": "str",
             }],
+            [],
+        ],
+        [
+            # Tests enums are parsed.
+            (\
+"""
+Values:
+    EMPLOYMENT_TYPE_UNSPECIFIED (0):
+        The default value if the employment type isn't specified.
+    FULL_TIME (1):
+        The job requires working a number of hours that constitute full time
+        employment, typically 40 or more hours per week.
+    PART_TIME (2):
+        The job entails working fewer hours than a full time job,
+        typically less than 40 hours a week.
+"""
+            ),
+            [],
+            [
+                {
+                    "id": "EMPLOYMENT_TYPE_UNSPECIFIED",
+                    "description": (
+                        "The default value if the employment type isn't"
+                        " specified."
+                    ),
+                },
+                {
+                    "id": "FULL_TIME",
+                    "description": (
+                        "The job requires working a number of hours that"
+                        " constitute full time employment, typically 40 or"
+                        " more hours per week."
+                    ),
+                },
+                {
+                    "id": "PART_TIME",
+                    "description": (
+                        "The job entails working fewer hours than a full"
+                        " time job, typically less than 40 hours a week."
+                    ),
+                },
+
+            ],
         ],
     ]
     @parameterized.expand(test_entries)
-    def test_parses_docstring_summary_for_attributes(
+    def test_parses_docstring_summary_for_attributes_and_enums(
         self,
         summary,
         expected_attributes,
+        expected_enums,
     ):
-        _, attributes = extension._parse_docstring_summary(summary)
+        _, attributes, enums = extension._parse_docstring_summary(summary)
+
         self.assertCountEqual(attributes, expected_attributes)
-        for attributes, expected_attributes in zip(
+        self.assertCountEqual(enums, expected_enums)
+
+        for attribute, expected_attribute in zip(
             attributes, expected_attributes
         ):
-            self.assertDictEqual(attributes, expected_attributes)
+            self.assertDictEqual(attribute, expected_attribute)
+        for enum, expected_enum in zip(
+            enums, expected_enums
+        ):
+            self.assertDictEqual(enum, expected_enum)
 
 
     def test_merges_markdown_and_package_toc(self):
