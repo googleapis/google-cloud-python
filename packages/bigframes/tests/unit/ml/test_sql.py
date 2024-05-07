@@ -113,6 +113,13 @@ def test_k_bins_discretizer_correct(
     assert sql == "ML.BUCKETIZE(col_a, [1, 2, 3, 4], FALSE) AS scaled_col_a"
 
 
+def test_k_bins_discretizer_quantile_correct(
+    base_sql_generator: ml_sql.BaseSqlGenerator,
+):
+    sql = base_sql_generator.ml_quantile_bucketize("col_a", 5, "scaled_col_a")
+    assert sql == "ML.QUANTILE_BUCKETIZE(col_a, 5) OVER() AS scaled_col_a"
+
+
 def test_one_hot_encoder_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):

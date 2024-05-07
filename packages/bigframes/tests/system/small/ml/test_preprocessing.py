@@ -373,6 +373,27 @@ def test_k_bins_discretizer_normalized_fit_transform_default_params(new_penguins
     pd.testing.assert_frame_equal(result, expected, rtol=0.1)
 
 
+def test_k_bins_discretizer_normalized_fit_transform_default_params_quantile(
+    new_penguins_df,
+):
+    discretizer = preprocessing.KBinsDiscretizer(strategy="quantile")
+    result = discretizer.fit_transform(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    ).to_pandas()
+
+    expected = pd.DataFrame(
+        {
+            "kbinsdiscretizer_culmen_length_mm": ["bin_2", "bin_2", "bin_1"],
+            "kbinsdiscretizer_culmen_depth_mm": ["bin_2", "bin_1", "bin_2"],
+            "kbinsdiscretizer_flipper_length_mm": ["bin_2", "bin_1", "bin_2"],
+        },
+        dtype="string[pyarrow]",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=0.1)
+
+
 def test_k_bins_discretizer_series_normalizes(
     penguins_df_default_index, new_penguins_df
 ):
@@ -387,6 +408,28 @@ def test_k_bins_discretizer_series_normalizes(
     expected = pd.DataFrame(
         {
             "kbinsdiscretizer_culmen_length_mm": ["bin_3", "bin_3", "bin_3"],
+        },
+        dtype="string[pyarrow]",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=0.1)
+
+
+def test_k_bins_discretizer_series_normalizes_quantile(
+    penguins_df_default_index, new_penguins_df
+):
+    discretizer = preprocessing.KBinsDiscretizer(strategy="quantile")
+    discretizer.fit(penguins_df_default_index["culmen_length_mm"])
+
+    result = discretizer.transform(
+        penguins_df_default_index["culmen_length_mm"]
+    ).to_pandas()
+    result = discretizer.transform(new_penguins_df).to_pandas()
+
+    expected = pd.DataFrame(
+        {
+            "kbinsdiscretizer_culmen_length_mm": ["bin_2", "bin_2", "bin_1"],
         },
         dtype="string[pyarrow]",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
@@ -486,6 +529,21 @@ def test_k_bins_discretizer_save_load(new_penguins_df, dataset_id):
     )
 
     pd.testing.assert_frame_equal(result, expected, rtol=0.1)
+
+
+def test_k_bins_discretizer_save_load_quantile(new_penguins_df, dataset_id):
+    transformer = preprocessing.KBinsDiscretizer(n_bins=6, strategy="quantile")
+    transformer.fit(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    )
+
+    reloaded_transformer = transformer.to_gbq(
+        f"{dataset_id}.temp_configured_model", replace=True
+    )
+    assert isinstance(reloaded_transformer, preprocessing.KBinsDiscretizer)
+    assert reloaded_transformer.n_bins == transformer.n_bins
+    assert reloaded_transformer.strategy == transformer.strategy
+    assert reloaded_transformer._bqml_model is not None
 
 
 def test_one_hot_encoder_default_params(new_penguins_df):

@@ -290,10 +290,6 @@ class KBinsDiscretizer(
         n_bins: int = 5,
         strategy: Literal["uniform", "quantile"] = "quantile",
     ):
-        if strategy != "uniform":
-            raise NotImplementedError(
-                f"Only strategy = 'uniform' is supported now, input is {strategy}."
-            )
         if n_bins < 2:
             raise ValueError(
                 f"n_bins has to be larger than or equal to 2, input is {n_bins}."
@@ -337,30 +333,53 @@ class KBinsDiscretizer(
                     min_value + i * bin_size for i in range(self.n_bins - 1)
                 ]
 
-        return [
-            (
-                self._base_sql_generator.ml_bucketize(
-                    column, array_split_points[column], f"kbinsdiscretizer_{column}"
-                ),
-                f"kbinsdiscretizer_{column}",
+            return [
+                (
+                    self._base_sql_generator.ml_bucketize(
+                        column, array_split_points[column], f"kbinsdiscretizer_{column}"
+                    ),
+                    f"kbinsdiscretizer_{column}",
+                )
+                for column in columns
+            ]
+
+        elif self.strategy == "quantile":
+
+            return [
+                (
+                    self._base_sql_generator.ml_quantile_bucketize(
+                        column, self.n_bins, f"kbinsdiscretizer_{column}"
+                    ),
+                    f"kbinsdiscretizer_{column}",
+                )
+                for column in columns
+            ]
+
+        else:
+            raise ValueError(
+                f"strategy should be set 'quantile' or 'uniform', but your input is {self.strategy}."
             )
-            for column in columns
-        ]
 
     @classmethod
     def _parse_from_sql(cls, sql: str) -> tuple[KBinsDiscretizer, str]:
         """Parse SQL to tuple(KBinsDiscretizer, column_label).
 
         Args:
-            sql: SQL string of format "ML.BUCKETIZE({col_label}, array_split_points, FALSE) OVER()"
+            sql: SQL string of format "ML.BUCKETIZE({col_label}, array_split_points, FALSE)"
+                or ML.QUANTILE_BUCKETIZE({col_label}, num_bucket) OVER()"
 
         Returns:
             tuple(KBinsDiscretizer, column_label)"""
         s = sql[sql.find("(") + 1 : sql.find(")")]
-        array_split_points = s[s.find("[") + 1 : s.find("]")]
         col_label = s[: s.find(",")]
-        n_bins = array_split_points.count(",") + 2
-        return cls(n_bins, "uniform"), col_label
+
+        if sql.startswith("ML.QUANTILE_BUCKETIZE"):
+            num_bins = s.split(",")[1]
+            return cls(int(num_bins), "quantile"), col_label
+        else:
+            array_split_points = s[s.find("[") + 1 : s.find("]")]
+            n_bins = array_split_points.count(",") + 2
+            return cls(n_bins, "uniform"), col_label
 
     def fit(
         self,

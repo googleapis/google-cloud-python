@@ -38,6 +38,7 @@ _BQML_TRANSFROM_TYPE_MAPPING = types.MappingProxyType(
         "ML.MAX_ABS_SCALER": preprocessing.MaxAbsScaler,
         "ML.MIN_MAX_SCALER": preprocessing.MinMaxScaler,
         "ML.BUCKETIZE": preprocessing.KBinsDiscretizer,
+        "ML.QUANTILE_BUCKETIZE": preprocessing.KBinsDiscretizer,
         "ML.LABEL_ENCODER": preprocessing.LabelEncoder,
     }
 )

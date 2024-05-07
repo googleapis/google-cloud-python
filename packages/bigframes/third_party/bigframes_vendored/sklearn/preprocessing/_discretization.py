@@ -18,7 +18,7 @@ class KBinsDiscretizer(TransformerMixin, BaseEstimator):
         strategy ({'uniform', 'quantile'}, default='quantile'):
             Strategy used to define the widths of the bins. 'uniform': All bins
             in each feature have identical widths. 'quantile': All bins in each
-            feature have the same number of points. Only `uniform` is supported.
+            feature have the same number of points.
     """
 
     def fit(self, X, y=None):
