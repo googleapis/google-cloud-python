@@ -20,9 +20,19 @@
                 "delete_instance"
               ]
             },
+            "ExportData": {
+              "methods": [
+                "export_data"
+              ]
+            },
             "GetInstance": {
               "methods": [
                 "get_instance"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
               ]
             },
             "ListInstances": {
@@ -50,9 +60,19 @@
                 "delete_instance"
               ]
             },
+            "ExportData": {
+              "methods": [
+                "export_data"
+              ]
+            },
             "GetInstance": {
               "methods": [
                 "get_instance"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
               ]
             },
             "ListInstances": {
@@ -80,9 +100,19 @@
                 "delete_instance"
               ]
             },
+            "ExportData": {
+              "methods": [
+                "export_data"
+              ]
+            },
             "GetInstance": {
               "methods": [
                 "get_instance"
+              ]
+            },
+            "ImportData": {
+              "methods": [
+                "import_data"
               ]
             },
             "ListInstances": {
