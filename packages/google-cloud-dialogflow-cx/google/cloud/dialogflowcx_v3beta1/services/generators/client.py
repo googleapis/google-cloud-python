@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -537,7 +538,9 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, GeneratorsTransport]] = None,
+        transport: Optional[
+            Union[str, GeneratorsTransport, Callable[..., GeneratorsTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -549,9 +552,11 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, GeneratorsTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,GeneratorsTransport,Callable[..., GeneratorsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the GeneratorsTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -657,8 +662,15 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[GeneratorsTransport], Callable[..., GeneratorsTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., GeneratorsTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -736,8 +748,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -745,10 +757,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a generator.ListGeneratorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, generator.ListGeneratorsRequest):
             request = generator.ListGeneratorsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -854,8 +864,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -863,10 +873,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a generator.GetGeneratorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, generator.GetGeneratorRequest):
             request = generator.GetGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -974,8 +982,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, generator])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -983,10 +991,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcdc_generator.CreateGeneratorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcdc_generator.CreateGeneratorRequest):
             request = gcdc_generator.CreateGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1096,8 +1102,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([generator, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1105,10 +1111,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcdc_generator.UpdateGeneratorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, gcdc_generator.UpdateGeneratorRequest):
             request = gcdc_generator.UpdateGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1196,8 +1200,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1205,10 +1209,8 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a generator.DeleteGeneratorRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, generator.DeleteGeneratorRequest):
             request = generator.DeleteGeneratorRequest(request)
             # If we have keyword arguments corresponding to fields on the

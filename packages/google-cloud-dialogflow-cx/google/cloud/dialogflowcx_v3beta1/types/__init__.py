@@ -51,6 +51,13 @@ from .changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
+from .conversation_history import (
+    Conversation,
+    DeleteConversationRequest,
+    GetConversationRequest,
+    ListConversationsRequest,
+    ListConversationsResponse,
+)
 from .data_store_connection import (
     DataStoreConnection,
     DataStoreConnectionSignals,
@@ -335,6 +342,7 @@ from .webhook import (
     CreateWebhookRequest,
     DeleteWebhookRequest,
     GetWebhookRequest,
+    LanguageInfo,
     ListWebhooksRequest,
     ListWebhooksResponse,
     PageInfo,
@@ -378,6 +386,11 @@ __all__ = (
     "GetChangelogRequest",
     "ListChangelogsRequest",
     "ListChangelogsResponse",
+    "Conversation",
+    "DeleteConversationRequest",
+    "GetConversationRequest",
+    "ListConversationsRequest",
+    "ListConversationsResponse",
     "DataStoreConnection",
     "DataStoreConnectionSignals",
     "DataStoreType",
@@ -628,6 +641,7 @@ __all__ = (
     "CreateWebhookRequest",
     "DeleteWebhookRequest",
     "GetWebhookRequest",
+    "LanguageInfo",
     "ListWebhooksRequest",
     "ListWebhooksResponse",
     "PageInfo",
