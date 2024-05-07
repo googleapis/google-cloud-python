@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -211,7 +212,9 @@ class PlaybooksAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PlaybooksTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, PlaybooksTransport, Callable[..., PlaybooksTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -223,9 +226,11 @@ class PlaybooksAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PlaybooksTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,PlaybooksTransport,Callable[..., PlaybooksTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the PlaybooksTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -352,8 +357,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, playbook])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -361,7 +366,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcdc_playbook.CreatePlaybookRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcdc_playbook.CreatePlaybookRequest):
+            request = gcdc_playbook.CreatePlaybookRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -372,11 +380,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_playbook,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_playbook
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -450,8 +456,8 @@ class PlaybooksAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -459,7 +465,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.DeletePlaybookRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.DeletePlaybookRequest):
+            request = playbook.DeletePlaybookRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -468,11 +477,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_playbook,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_playbook
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -556,8 +563,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -565,7 +572,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.ListPlaybooksRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.ListPlaybooksRequest):
+            request = playbook.ListPlaybooksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -574,11 +584,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_playbooks,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_playbooks
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -681,8 +689,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -690,7 +698,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.GetPlaybookRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.GetPlaybookRequest):
+            request = playbook.GetPlaybookRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -699,11 +710,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_playbook,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_playbook
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -808,8 +817,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([playbook, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -817,7 +826,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcdc_playbook.UpdatePlaybookRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcdc_playbook.UpdatePlaybookRequest):
+            request = gcdc_playbook.UpdatePlaybookRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -828,11 +840,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_playbook,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_playbook
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -925,8 +935,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, playbook_version])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -934,7 +944,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.CreatePlaybookVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.CreatePlaybookVersionRequest):
+            request = playbook.CreatePlaybookVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -945,11 +958,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_playbook_version,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_playbook_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1032,8 +1043,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1041,7 +1052,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.GetPlaybookVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.GetPlaybookVersionRequest):
+            request = playbook.GetPlaybookVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1050,11 +1064,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_playbook_version,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_playbook_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1141,8 +1153,8 @@ class PlaybooksAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1150,7 +1162,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.ListPlaybookVersionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.ListPlaybookVersionsRequest):
+            request = playbook.ListPlaybookVersionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1159,11 +1174,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_playbook_versions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_playbook_versions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1247,8 +1260,8 @@ class PlaybooksAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1256,7 +1269,10 @@ class PlaybooksAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = playbook.DeletePlaybookVersionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.DeletePlaybookVersionRequest):
+            request = playbook.DeletePlaybookVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1265,11 +1281,9 @@ class PlaybooksAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_playbook_version,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_playbook_version
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
