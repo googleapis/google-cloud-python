@@ -128,38 +128,30 @@ class PaLM2TextGenerator(base.BaseEstimator):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> PaLM2TextGenerator:
-        assert model.model_type == "MODEL_TYPE_UNSPECIFIED"
-        assert "remoteModelInfo" in model._properties
-        assert "endpoint" in model._properties["remoteModelInfo"]
-        assert "connection" in model._properties["remoteModelInfo"]
+        assert bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
+        assert "remoteModelInfo" in bq_model._properties
+        assert "endpoint" in bq_model._properties["remoteModelInfo"]
+        assert "connection" in bq_model._properties["remoteModelInfo"]
 
         # Parse the remote model endpoint
-        bqml_endpoint = model._properties["remoteModelInfo"]["endpoint"]
-        model_connection = model._properties["remoteModelInfo"]["connection"]
+        bqml_endpoint = bq_model._properties["remoteModelInfo"]["endpoint"]
+        model_connection = bq_model._properties["remoteModelInfo"]["connection"]
         model_endpoint = bqml_endpoint.split("/")[-1]
 
-        # Get the optional params
-        kwargs: dict = {}
-        last_fitting = model.training_runs[-1]["trainingOptions"]
+        kwargs = utils.retrieve_params_from_bq_model(
+            cls, bq_model, _BQML_PARAMS_MAPPING
+        )
 
-        dummy_text_generator = cls(session=session)
-        for bf_param, _ in dummy_text_generator.__dict__.items():
-            bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
-            if bqml_param in last_fitting:
-                # Convert types
-                if bf_param in ["max_iterations"]:
-                    kwargs[bf_param] = int(last_fitting[bqml_param])
-
-        text_generator_model = cls(
+        model = cls(
             **kwargs,
             session=session,
             model_name=model_endpoint,
             connection_name=model_connection,
         )
-        text_generator_model._bqml_model = core.BqmlModel(session, model)
-        return text_generator_model
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     @property
     def _bqml_options(self) -> dict:
@@ -464,29 +456,30 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> PaLM2TextEmbeddingGenerator:
-        assert model.model_type == "MODEL_TYPE_UNSPECIFIED"
-        assert "remoteModelInfo" in model._properties
-        assert "endpoint" in model._properties["remoteModelInfo"]
-        assert "connection" in model._properties["remoteModelInfo"]
+        assert bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
+        assert "remoteModelInfo" in bq_model._properties
+        assert "endpoint" in bq_model._properties["remoteModelInfo"]
+        assert "connection" in bq_model._properties["remoteModelInfo"]
 
         # Parse the remote model endpoint
-        bqml_endpoint = model._properties["remoteModelInfo"]["endpoint"]
-        model_connection = model._properties["remoteModelInfo"]["connection"]
+        bqml_endpoint = bq_model._properties["remoteModelInfo"]["endpoint"]
+        model_connection = bq_model._properties["remoteModelInfo"]["connection"]
         model_endpoint = bqml_endpoint.split("/")[-1]
 
         model_name, version = utils.parse_model_endpoint(model_endpoint)
 
-        embedding_generator_model = cls(
+        model = cls(
             session=session,
             # str to literals
             model_name=model_name,  # type: ignore
             version=version,
             connection_name=model_connection,
         )
-        embedding_generator_model._bqml_model = core.BqmlModel(session, model)
-        return embedding_generator_model
+
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
@@ -616,18 +609,18 @@ class GeminiTextGenerator(base.BaseEstimator):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> GeminiTextGenerator:
-        assert model.model_type == "MODEL_TYPE_UNSPECIFIED"
-        assert "remoteModelInfo" in model._properties
-        assert "connection" in model._properties["remoteModelInfo"]
+        assert bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
+        assert "remoteModelInfo" in bq_model._properties
+        assert "connection" in bq_model._properties["remoteModelInfo"]
 
         # Parse the remote model endpoint
-        model_connection = model._properties["remoteModelInfo"]["connection"]
+        model_connection = bq_model._properties["remoteModelInfo"]["connection"]
 
-        text_generator_model = cls(session=session, connection_name=model_connection)
-        text_generator_model._bqml_model = core.BqmlModel(session, model)
-        return text_generator_model
+        model = cls(session=session, connection_name=model_connection)
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     def predict(
         self,

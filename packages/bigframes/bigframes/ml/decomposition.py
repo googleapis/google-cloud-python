@@ -27,6 +27,8 @@ from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
+_BQML_PARAMS_MAPPING = {"svd_solver": "pcaSolver"}
+
 
 @log_adapter.class_logger
 class PCA(
@@ -47,23 +49,22 @@ class PCA(
         self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
-    def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> PCA:
-        assert model.model_type == "PCA"
+    def _from_bq(cls, session: bigframes.Session, bq_model: bigquery.Model) -> PCA:
+        assert bq_model.model_type == "PCA"
 
-        kwargs: dict = {}
+        kwargs = utils.retrieve_params_from_bq_model(
+            cls, bq_model, _BQML_PARAMS_MAPPING
+        )
 
-        # See https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
-        last_fitting = model.training_runs[-1]["trainingOptions"]
+        last_fitting = bq_model.training_runs[-1]["trainingOptions"]
         if "numPrincipalComponents" in last_fitting:
             kwargs["n_components"] = int(last_fitting["numPrincipalComponents"])
-        if "pcaExplainedVarianceRatio" in last_fitting:
+        elif "pcaExplainedVarianceRatio" in last_fitting:
             kwargs["n_components"] = float(last_fitting["pcaExplainedVarianceRatio"])
-        if "pcaSolver" in last_fitting:
-            kwargs["svd_solver"] = str(last_fitting["pcaSolver"])
 
-        new_pca = cls(**kwargs)
-        new_pca._bqml_model = core.BqmlModel(session, model)
-        return new_pca
+        model = cls(**kwargs)
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     @property
     def _bqml_options(self) -> dict:

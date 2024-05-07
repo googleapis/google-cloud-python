@@ -121,7 +121,7 @@ def _transformer_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
 def _model_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
     if bq_model.model_type in _BQML_MODEL_TYPE_MAPPING:
         return _BQML_MODEL_TYPE_MAPPING[bq_model.model_type]._from_bq(  # type: ignore
-            session=session, model=bq_model
+            session=session, bq_model=bq_model
         )
     if _is_bq_model_remote(bq_model):
         # Parse the remote model endpoint
@@ -130,7 +130,7 @@ def _model_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
         model_name, _ = utils.parse_model_endpoint(model_endpoint)
 
         return _BQML_ENDPOINT_TYPE_MAPPING[model_name]._from_bq(  # type: ignore
-            session=session, model=bq_model
+            session=session, bq_model=bq_model
         )
 
     raise NotImplementedError(

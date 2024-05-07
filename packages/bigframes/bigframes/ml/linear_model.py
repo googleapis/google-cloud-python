@@ -42,7 +42,6 @@ _BQML_PARAMS_MAPPING = {
     "warm_start": "warmStart",
     "calculate_p_values": "calculatePValues",
     "enable_global_explain": "enableGlobalExplain",
-    "category_encoding_method": "categoryEncodingMethod",
 }
 
 
@@ -88,30 +87,17 @@ class LinearRegression(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> LinearRegression:
-        assert model.model_type == "LINEAR_REGRESSION"
+        assert bq_model.model_type == "LINEAR_REGRESSION"
 
-        # TODO(bmil): construct a standard way to extract these properties
-        kwargs = {}
+        kwargs = utils.retrieve_params_from_bq_model(
+            cls, bq_model, _BQML_PARAMS_MAPPING
+        )
 
-        # See https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
-        last_fitting = model.training_runs[-1]["trainingOptions"]
-
-        dummy_linear = cls()
-        for bf_param, bf_value in dummy_linear.__dict__.items():
-            bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
-            if bqml_param in last_fitting:
-                # Convert types
-                kwargs[bf_param] = (
-                    float(last_fitting[bqml_param])
-                    if bf_param in ["l1_reg", "learning_rate", "ls_init_learning_rate"]
-                    else type(bf_value)(last_fitting[bqml_param])
-                )
-
-        new_linear_regression = cls(**kwargs)
-        new_linear_regression._bqml_model = core.BqmlModel(session, model)
-        return new_linear_regression
+        model = cls(**kwargs)
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     @property
     def _bqml_options(self) -> dict:
@@ -243,33 +229,24 @@ class LogisticRegression(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> LogisticRegression:
-        assert model.model_type == "LOGISTIC_REGRESSION"
+        assert bq_model.model_type == "LOGISTIC_REGRESSION"
 
-        kwargs = {}
+        kwargs = utils.retrieve_params_from_bq_model(
+            cls, bq_model, _BQML_PARAMS_MAPPING
+        )
 
-        # See https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
-        last_fitting = model.training_runs[-1]["trainingOptions"]
-        dummy_logistic = cls()
-        for bf_param, bf_value in dummy_logistic.__dict__.items():
-            bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
-            if bqml_param in last_fitting:
-                # Convert types
-                kwargs[bf_param] = (
-                    float(last_fitting[bqml_param])
-                    if bf_param in ["l1_reg", "learning_rate", "ls_init_learning_rate"]
-                    else type(bf_value)(last_fitting[bqml_param])
-                )
+        last_fitting = bq_model.training_runs[-1]["trainingOptions"]
         if last_fitting["autoClassWeights"]:
             kwargs["class_weight"] = "balanced"
         # TODO(ashleyxu) support class_weight in the constructor.
         # if "labelClassWeights" in last_fitting:
         #     kwargs["class_weight"] = last_fitting["labelClassWeights"]
 
-        new_logistic_regression = cls(**kwargs)
-        new_logistic_regression._bqml_model = core.BqmlModel(session, model)
-        return new_logistic_regression
+        model = cls(**kwargs)
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     @property
     def _bqml_options(self) -> dict:

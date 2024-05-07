@@ -34,6 +34,7 @@ _BQML_PARAMS_MAPPING = {
     "distance_type": "distanceType",
     "max_iter": "maxIterations",
     "tol": "minRelativeProgress",
+    "warm_start": "warmStart",
 }
 
 
@@ -67,27 +68,18 @@ class KMeans(
         self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
-    def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> KMeans:
-        assert model.model_type == "KMEANS"
+    def _from_bq(cls, session: bigframes.Session, bq_model: bigquery.Model) -> KMeans:
+        assert bq_model.model_type == "KMEANS"
 
         kwargs: dict = {}
 
-        # See https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
-        last_fitting = model.training_runs[-1]["trainingOptions"]
-        dummy_kmeans = cls()
-        for bf_param, bf_value in dummy_kmeans.__dict__.items():
-            bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
-            if bqml_param in last_fitting:
-                # Convert types
-                kwargs[bf_param] = (
-                    str(last_fitting[bqml_param])
-                    if bf_param in ["init"]
-                    else type(bf_value)(last_fitting[bqml_param])
-                )
+        kwargs = utils.retrieve_params_from_bq_model(
+            cls, bq_model, _BQML_PARAMS_MAPPING
+        )
 
-        new_kmeans = cls(**kwargs)
-        new_kmeans._bqml_model = core.BqmlModel(session, model)
-        return new_kmeans
+        model = cls(**kwargs)
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     @property
     def _bqml_options(self) -> dict:

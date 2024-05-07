@@ -123,7 +123,7 @@ def test_xgbregressor_dart_booster_multiple_params(
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.booster == "DART"
-    assert reloaded_model.dart_normalized_type == "tree"
+    assert reloaded_model.dart_normalized_type == "TREE"
     assert reloaded_model.tree_method == "AUTO"
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
@@ -236,7 +236,7 @@ def test_xgbclassifier_dart_booster_multiple_params(
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.booster == "DART"
-    assert reloaded_model.dart_normalized_type == "tree"
+    assert reloaded_model.dart_normalized_type == "TREE"
     assert reloaded_model.tree_method == "AUTO"
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95

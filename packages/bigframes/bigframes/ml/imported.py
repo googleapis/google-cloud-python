@@ -56,13 +56,13 @@ class TensorFlowModel(base.Predictor):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> TensorFlowModel:
-        assert model.model_type == "TENSORFLOW"
+        assert bq_model.model_type == "TENSORFLOW"
 
-        tf_model = cls(session=session, model_path="")
-        tf_model._bqml_model = core.BqmlModel(session, model)
-        return tf_model
+        model = cls(session=session, model_path="")
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
@@ -134,12 +134,14 @@ class ONNXModel(base.Predictor):
         )
 
     @classmethod
-    def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> ONNXModel:
-        assert model.model_type == "ONNX"
+    def _from_bq(
+        cls, session: bigframes.Session, bq_model: bigquery.Model
+    ) -> ONNXModel:
+        assert bq_model.model_type == "ONNX"
 
-        onnx_model = cls(session=session, model_path="")
-        onnx_model._bqml_model = core.BqmlModel(session, model)
-        return onnx_model
+        model = cls(session=session, model_path="")
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
@@ -249,13 +251,13 @@ class XGBoostModel(base.Predictor):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, bq_model: bigquery.Model
     ) -> XGBoostModel:
-        assert model.model_type == "XGBOOST"
+        assert bq_model.model_type == "XGBOOST"
 
-        xgboost_model = cls(session=session, model_path="")
-        xgboost_model._bqml_model = core.BqmlModel(session, model)
-        return xgboost_model
+        model = cls(session=session, model_path="")
+        model._bqml_model = core.BqmlModel(session, bq_model)
+        return model
 
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
