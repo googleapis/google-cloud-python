@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.1.1...google-cloud-parallelstore-v0.1.2) (2024-05-07)
+
+
+### Features
+
+* **parallelstore/v1beta:** add ImportData and ExportData RPCs ([635ee31](https://github.com/googleapis/google-cloud-python/commit/635ee31d44fffd0bfee050b685700dbb3be4d46f))
+
+
+### Documentation
+
+* fix typo in Instance.reserved_ip_range field doc ([635ee31](https://github.com/googleapis/google-cloud-python/commit/635ee31d44fffd0bfee050b685700dbb3be4d46f))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.1.0...google-cloud-parallelstore-v0.1.1) (2024-03-05)
 
 
