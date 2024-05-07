@@ -13,10 +13,13 @@
 # limitations under the License.
 
 import pandas
+import pytest
 
 from bigframes.ml import globals
 
 
+# TODO(garrettwu): Re-enable or not check exact numbers.
+@pytest.mark.skip(reason="bqml regression")
 def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_df):
     df = penguins_df_default_index.dropna()
     X_train = df[
