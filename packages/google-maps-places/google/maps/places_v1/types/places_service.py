@@ -334,8 +334,11 @@ class SearchTextRequest(proto.Message):
 
         Values:
             RANK_PREFERENCE_UNSPECIFIED (0):
-                RankPreference value not set. Will default to
-                DISTANCE.
+                For a categorical query such as "Restaurants
+                in New York City", RELEVANCE is the default. For
+                non-categorical queries such as "Mountain View,
+                CA" we recommend that you leave rankPreference
+                unset.
             DISTANCE (1):
                 Ranks results by distance.
             RELEVANCE (2):

@@ -17,6 +17,7 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    Callable,
     Dict,
     Mapping,
     MutableMapping,
@@ -239,7 +240,9 @@ class CloudDeployAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudDeployTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, CloudDeployTransport, Callable[..., CloudDeployTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -251,9 +254,11 @@ class CloudDeployAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudDeployTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,CloudDeployTransport,Callable[..., CloudDeployTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the CloudDeployTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -364,8 +369,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -373,7 +378,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListDeliveryPipelinesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListDeliveryPipelinesRequest):
+            request = cloud_deploy.ListDeliveryPipelinesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -382,20 +390,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_delivery_pipelines,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_delivery_pipelines
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -489,8 +486,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -498,7 +495,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetDeliveryPipelineRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetDeliveryPipelineRequest):
+            request = cloud_deploy.GetDeliveryPipelineRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -507,20 +507,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_delivery_pipeline,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_delivery_pipeline
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -629,8 +618,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, delivery_pipeline, delivery_pipeline_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -638,7 +627,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CreateDeliveryPipelineRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateDeliveryPipelineRequest):
+            request = cloud_deploy.CreateDeliveryPipelineRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -651,11 +643,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_delivery_pipeline,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_delivery_pipeline
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -766,8 +756,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([delivery_pipeline, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -775,7 +765,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.UpdateDeliveryPipelineRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.UpdateDeliveryPipelineRequest):
+            request = cloud_deploy.UpdateDeliveryPipelineRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -786,11 +779,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_delivery_pipeline,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_delivery_pipeline
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -899,8 +890,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -908,7 +899,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.DeleteDeliveryPipelineRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.DeleteDeliveryPipelineRequest):
+            request = cloud_deploy.DeleteDeliveryPipelineRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -917,11 +911,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_delivery_pipeline,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_delivery_pipeline
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1015,8 +1007,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1024,7 +1016,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListTargetsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListTargetsRequest):
+            request = cloud_deploy.ListTargetsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1033,20 +1028,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_targets,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_targets
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1152,8 +1136,8 @@ class CloudDeployAsyncClient:
                 The response object from RollbackTarget.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, target_id, rollout_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1161,7 +1145,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.RollbackTargetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.RollbackTargetRequest):
+            request = cloud_deploy.RollbackTargetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1174,11 +1161,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.rollback_target,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rollback_target
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1262,8 +1247,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1271,7 +1256,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetTargetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetTargetRequest):
+            request = cloud_deploy.GetTargetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1280,20 +1268,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_target,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_target
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1399,8 +1376,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target, target_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1408,7 +1385,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CreateTargetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateTargetRequest):
+            request = cloud_deploy.CreateTargetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1421,11 +1401,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_target,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_target
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1534,8 +1512,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([target, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1543,7 +1521,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.UpdateTargetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.UpdateTargetRequest):
+            request = cloud_deploy.UpdateTargetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1554,11 +1535,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_target,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_target
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1665,8 +1644,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1674,7 +1653,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.DeleteTargetRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.DeleteTargetRequest):
+            request = cloud_deploy.DeleteTargetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1683,11 +1665,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_target,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_target
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1784,8 +1764,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1793,7 +1773,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListCustomTargetTypesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListCustomTargetTypesRequest):
+            request = cloud_deploy.ListCustomTargetTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1802,20 +1785,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_custom_target_types,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_custom_target_types
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1911,8 +1883,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1920,7 +1892,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetCustomTargetTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetCustomTargetTypeRequest):
+            request = cloud_deploy.GetCustomTargetTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1929,20 +1904,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_custom_target_type,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_custom_target_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2057,8 +2021,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_target_type, custom_target_type_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2066,7 +2030,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CreateCustomTargetTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateCustomTargetTypeRequest):
+            request = cloud_deploy.CreateCustomTargetTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2079,11 +2046,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_custom_target_type,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_custom_target_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2200,8 +2165,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_target_type, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2209,7 +2174,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.UpdateCustomTargetTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.UpdateCustomTargetTypeRequest):
+            request = cloud_deploy.UpdateCustomTargetTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2220,11 +2188,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_custom_target_type,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_custom_target_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2333,8 +2299,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2342,7 +2308,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.DeleteCustomTargetTypeRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.DeleteCustomTargetTypeRequest):
+            request = cloud_deploy.DeleteCustomTargetTypeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2351,11 +2320,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_custom_target_type,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_custom_target_type
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2448,8 +2415,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2457,7 +2424,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListReleasesRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListReleasesRequest):
+            request = cloud_deploy.ListReleasesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2466,20 +2436,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_releases,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_releases
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2572,8 +2531,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2581,7 +2540,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetReleaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetReleaseRequest):
+            request = cloud_deploy.GetReleaseRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2590,20 +2552,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_release,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_release
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2710,8 +2661,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, release, release_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2719,7 +2670,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CreateReleaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateReleaseRequest):
+            request = cloud_deploy.CreateReleaseRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2732,11 +2686,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_release,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_release
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2824,8 +2776,8 @@ class CloudDeployAsyncClient:
                 The response object for AbandonRelease.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2833,7 +2785,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.AbandonReleaseRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.AbandonReleaseRequest):
+            request = cloud_deploy.AbandonReleaseRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2842,11 +2797,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.abandon_release,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.abandon_release
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2927,8 +2880,8 @@ class CloudDeployAsyncClient:
                 The response object from ApproveRollout.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2936,7 +2889,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ApproveRolloutRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ApproveRolloutRequest):
+            request = cloud_deploy.ApproveRolloutRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2945,11 +2901,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.approve_rollout,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.approve_rollout
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3036,8 +2990,8 @@ class CloudDeployAsyncClient:
                 The response object from AdvanceRollout.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, phase_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3045,7 +2999,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.AdvanceRolloutRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.AdvanceRolloutRequest):
+            request = cloud_deploy.AdvanceRolloutRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3056,11 +3013,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.advance_rollout,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.advance_rollout
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3140,8 +3095,8 @@ class CloudDeployAsyncClient:
                 The response object from CancelRollout.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3149,7 +3104,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CancelRolloutRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CancelRolloutRequest):
+            request = cloud_deploy.CancelRolloutRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3158,11 +3116,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_rollout,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_rollout
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3249,8 +3205,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3258,7 +3214,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListRolloutsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListRolloutsRequest):
+            request = cloud_deploy.ListRolloutsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3267,20 +3226,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_rollouts,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_rollouts
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3374,8 +3322,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3383,7 +3331,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetRolloutRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetRolloutRequest):
+            request = cloud_deploy.GetRolloutRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3392,20 +3343,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_rollout,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_rollout
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3517,8 +3457,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, rollout, rollout_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3526,7 +3466,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CreateRolloutRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateRolloutRequest):
+            request = cloud_deploy.CreateRolloutRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3539,11 +3482,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_rollout,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_rollout
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3649,8 +3590,8 @@ class CloudDeployAsyncClient:
                 The response object from IgnoreJob.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([rollout, phase_id, job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3658,7 +3599,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.IgnoreJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.IgnoreJobRequest):
+            request = cloud_deploy.IgnoreJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3671,11 +3615,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.ignore_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.ignore_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3774,8 +3716,8 @@ class CloudDeployAsyncClient:
                 The response object from 'RetryJob'.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([rollout, phase_id, job_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3783,7 +3725,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.RetryJobRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.RetryJobRequest):
+            request = cloud_deploy.RetryJobRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3796,11 +3741,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.retry_job,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retry_job
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3887,8 +3830,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -3896,7 +3839,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListJobRunsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListJobRunsRequest):
+            request = cloud_deploy.ListJobRunsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -3905,20 +3851,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_job_runs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_job_runs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4012,8 +3947,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4021,7 +3956,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetJobRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetJobRunRequest):
+            request = cloud_deploy.GetJobRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4030,20 +3968,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_job_run,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_job_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4123,8 +4050,8 @@ class CloudDeployAsyncClient:
                 The response object from TerminateJobRun.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4132,7 +4059,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.TerminateJobRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.TerminateJobRunRequest):
+            request = cloud_deploy.TerminateJobRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4141,11 +4071,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.terminate_job_run,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.terminate_job_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4225,8 +4153,8 @@ class CloudDeployAsyncClient:
                 Service-wide configuration.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4234,7 +4162,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetConfigRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetConfigRequest):
+            request = cloud_deploy.GetConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4243,20 +4174,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_config,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_config
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4372,8 +4292,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, automation, automation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4381,7 +4301,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CreateAutomationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CreateAutomationRequest):
+            request = cloud_deploy.CreateAutomationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4394,11 +4317,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_automation,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_automation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4517,8 +4438,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([automation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4526,7 +4447,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.UpdateAutomationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.UpdateAutomationRequest):
+            request = cloud_deploy.UpdateAutomationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4537,11 +4461,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_automation,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_automation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4648,8 +4570,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4657,7 +4579,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.DeleteAutomationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.DeleteAutomationRequest):
+            request = cloud_deploy.DeleteAutomationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4666,11 +4591,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_automation,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_automation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4766,8 +4689,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4775,7 +4698,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetAutomationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetAutomationRequest):
+            request = cloud_deploy.GetAutomationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4784,20 +4710,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_automation,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_automation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4883,8 +4798,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -4892,7 +4807,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListAutomationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListAutomationsRequest):
+            request = cloud_deploy.ListAutomationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -4901,20 +4819,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_automations,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_automations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5007,8 +4914,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5016,7 +4923,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.GetAutomationRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.GetAutomationRunRequest):
+            request = cloud_deploy.GetAutomationRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5025,20 +4935,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_automation_run,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_automation_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5124,8 +5023,8 @@ class CloudDeployAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5133,7 +5032,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.ListAutomationRunsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.ListAutomationRunsRequest):
+            request = cloud_deploy.ListAutomationRunsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5142,20 +5044,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_automation_runs,
-            default_retry=retries.AsyncRetry(
-                initial=1.0,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_automation_runs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -5248,8 +5139,8 @@ class CloudDeployAsyncClient:
                 The response object from CancelAutomationRun.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -5257,7 +5148,10 @@ class CloudDeployAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = cloud_deploy.CancelAutomationRunRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_deploy.CancelAutomationRunRequest):
+            request = cloud_deploy.CancelAutomationRunRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -5266,11 +5160,9 @@ class CloudDeployAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_automation_run,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.cancel_automation_run
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
