@@ -20,6 +20,11 @@
                 "create_recurring_audience_list"
               ]
             },
+            "CreateReportTask": {
+              "methods": [
+                "create_report_task"
+              ]
+            },
             "GetAudienceList": {
               "methods": [
                 "get_audience_list"
@@ -28,6 +33,11 @@
             "GetRecurringAudienceList": {
               "methods": [
                 "get_recurring_audience_list"
+              ]
+            },
+            "GetReportTask": {
+              "methods": [
+                "get_report_task"
               ]
             },
             "ListAudienceLists": {
@@ -40,9 +50,19 @@
                 "list_recurring_audience_lists"
               ]
             },
+            "ListReportTasks": {
+              "methods": [
+                "list_report_tasks"
+              ]
+            },
             "QueryAudienceList": {
               "methods": [
                 "query_audience_list"
+              ]
+            },
+            "QueryReportTask": {
+              "methods": [
+                "query_report_task"
               ]
             },
             "RunFunnelReport": {
@@ -70,6 +90,11 @@
                 "create_recurring_audience_list"
               ]
             },
+            "CreateReportTask": {
+              "methods": [
+                "create_report_task"
+              ]
+            },
             "GetAudienceList": {
               "methods": [
                 "get_audience_list"
@@ -78,6 +103,11 @@
             "GetRecurringAudienceList": {
               "methods": [
                 "get_recurring_audience_list"
+              ]
+            },
+            "GetReportTask": {
+              "methods": [
+                "get_report_task"
               ]
             },
             "ListAudienceLists": {
@@ -90,9 +120,19 @@
                 "list_recurring_audience_lists"
               ]
             },
+            "ListReportTasks": {
+              "methods": [
+                "list_report_tasks"
+              ]
+            },
             "QueryAudienceList": {
               "methods": [
                 "query_audience_list"
+              ]
+            },
+            "QueryReportTask": {
+              "methods": [
+                "query_report_task"
               ]
             },
             "RunFunnelReport": {
@@ -120,6 +160,11 @@
                 "create_recurring_audience_list"
               ]
             },
+            "CreateReportTask": {
+              "methods": [
+                "create_report_task"
+              ]
+            },
             "GetAudienceList": {
               "methods": [
                 "get_audience_list"
@@ -128,6 +173,11 @@
             "GetRecurringAudienceList": {
               "methods": [
                 "get_recurring_audience_list"
+              ]
+            },
+            "GetReportTask": {
+              "methods": [
+                "get_report_task"
               ]
             },
             "ListAudienceLists": {
@@ -140,9 +190,19 @@
                 "list_recurring_audience_lists"
               ]
             },
+            "ListReportTasks": {
+              "methods": [
+                "list_report_tasks"
+              ]
+            },
             "QueryAudienceList": {
               "methods": [
                 "query_audience_list"
+              ]
+            },
+            "QueryReportTask": {
+              "methods": [
+                "query_report_task"
               ]
             },
             "RunFunnelReport": {

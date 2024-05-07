@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "WebhookResponse",
         "PageInfo",
         "SessionInfo",
+        "LanguageInfo",
     },
 )
 
@@ -593,6 +594,9 @@ class WebhookRequest(proto.Message):
             user request. The field is filled when sentiment
             analysis is configured to be enabled for the
             request.
+        language_info (google.cloud.dialogflowcx_v3beta1.types.LanguageInfo):
+            Information about the language of the
+            request.
     """
 
     class FulfillmentInfo(proto.Message):
@@ -770,6 +774,11 @@ class WebhookRequest(proto.Message):
         proto.MESSAGE,
         number=9,
         message=SentimentAnalysisResult,
+    )
+    language_info: "LanguageInfo" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="LanguageInfo",
     )
 
 
@@ -1080,6 +1089,35 @@ class SessionInfo(proto.Message):
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Value,
+    )
+
+
+class LanguageInfo(proto.Message):
+    r"""Represents the language information of the request.
+
+    Attributes:
+        input_language_code (str):
+            The language code specified in the original
+            [request][google.cloud.dialogflow.cx.v3beta1.QueryInput.language_code].
+        resolved_language_code (str):
+            The language code detected for this request
+            based on the user conversation.
+        confidence_score (float):
+            The confidence score of the detected language
+            between 0 and 1.
+    """
+
+    input_language_code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resolved_language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    confidence_score: float = proto.Field(
+        proto.FLOAT,
+        number=3,
     )
 
 
