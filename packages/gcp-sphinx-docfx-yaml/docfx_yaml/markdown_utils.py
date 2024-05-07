@@ -485,9 +485,11 @@ def remove_unused_pages(
             print(f"Could not delete {page}.")
 
 
-def run_sphinx_markdown() -> None:
+def run_sphinx_markdown(app: sphinx.application) -> None:
     """Runs sphinx-build with Markdown builder in the plugin."""
     cwd = os.getcwd()
+    relative_srcdir = app.srcdir.removeprefix(f"{cwd}/")
+    relative_outdir = app.outdir.removeprefix(f"{cwd}/").removesuffix("/html")
     # Skip running sphinx-build for Markdown for some unit tests.
     # Not required other than to output DocFX YAML.
     if "docs" in cwd:
@@ -498,8 +500,8 @@ def run_sphinx_markdown() -> None:
             "sphinx-build",
             "-M",
             "markdown",
-            "docs/",
-            "docs/_build",
+            relative_srcdir,
+            relative_outdir,
         ],
         hide_output=False
     )

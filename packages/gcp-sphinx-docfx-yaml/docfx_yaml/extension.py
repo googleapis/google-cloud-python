@@ -182,7 +182,7 @@ def build_init(app):
         print("Successfully retrieved repository metadata.")
         app.env.library_shortname = repo_metadata["name"]
     print("Running sphinx-build with Markdown first...")
-    markdown_utils.run_sphinx_markdown()
+    markdown_utils.run_sphinx_markdown(app)
     print("Completed running sphinx-build with Markdown files.")
 
     """
